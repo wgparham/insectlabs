@@ -1,4 +1,6 @@
-# HSB 1.0.2
+# hsb 1.0.2
+
+[Module description and controls](../../README.md)
 
 Canonical source archive, archived 2026-09-28.
 
