@@ -1,0 +1,17 @@
+{
+  "rgb": {
+    "version": "4.0.3",
+    "path": "rgb/versions/4.0.3",
+    "baseline": "4.0.2"
+  },
+  "cmyk": {
+    "version": "1.0.3",
+    "path": "cmyk/versions/1.0.3",
+    "baseline": "1.0.2"
+  },
+  "hsb": {
+    "version": "1.0.2",
+    "path": "hsb/versions/1.0.2",
+    "baseline": "1.0.1"
+  }
+}

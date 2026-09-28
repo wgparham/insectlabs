@@ -1,0 +1,9 @@
+# Preserve exact artifact bytes so archived SHA-256 values survive checkout.
+*.java -text
+*.vmod binary
+*.png binary
+*.md text eol=lf
+*.json text eol=lf
+*.py text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
