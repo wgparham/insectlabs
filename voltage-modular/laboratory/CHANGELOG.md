@@ -1,5 +1,21 @@
 # Laboratory release notes
 
+## Fader|Distr A and B 1.0.0 — 2026-09-29
+
+First canonical releases, approved by the user after successful Designer builds and listening
+tests. Both are mono-first manual utility modules with one BIAS control operating simultaneous
+X/Y-to-Z crossfading and S-to-1/2 distribution.
+
+- A is fixed linear law and has the heavier, woollier relay voice.
+- B is fixed equal-power law and uses a related but more open later-model relay calibration.
+- Both use native-rate routing, a 5 ms manual movement transition, and direct Colorbox-style
+  bypass: S to 1/2 and X to Z.
+- A selected endpoint remains level-conscious without a separate gain stage; equal-power B can
+  raise correlated material at center by design.
+
+Validation: shared core regression suite has 49 checks; both Designer/exported source pairs,
+checksums, tooltips, and Java 17 SDK compilations pass. The user confirmed both final modules.
+
 ## Signal Processor 1.0.0 — 2026-09-29
 
 First canonical release, approved by the user after a successful Designer build and host run.

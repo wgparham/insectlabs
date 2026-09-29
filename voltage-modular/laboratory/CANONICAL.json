@@ -2,5 +2,15 @@
   "signal-processor": {
     "version": "1.0.0",
     "path": "signal-processor/versions/1.0.0"
+  },
+  "faderdistr-a": {
+    "version": "1.0.0",
+    "path": "faderdistr/versions/1.0.0",
+    "module": "faderdistrA"
+  },
+  "faderdistr-b": {
+    "version": "1.0.0",
+    "path": "faderdistr/versions/1.0.0",
+    "module": "faderdistrB"
   }
 }

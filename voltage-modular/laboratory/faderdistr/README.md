@@ -1,6 +1,7 @@
 # Fader|Distr
 
-The next Laboratory family. Fader|Distr A and B are locked working pairs in `development`:
+Fader|Distr A and B 1.0.0 are canonical in [versions/1.0.0](versions/1.0.0/README.md). Their
+locked working pairs remain in `development`:
 `faderdistrA.java` / `faderdistrA.vmod` and `faderdistrB.java` / `faderdistrB.vmod`, each with
 its matching hero image and SHA-256 manifest.
 
