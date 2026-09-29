@@ -1,7 +1,7 @@
-package com.insectlabs.laboratory.panfade;
+package com.insectlabs.laboratory.faderdistr;
 
 /** Shared native-rate DSP for the fixed-law Panfade modules. */
-public final class PanfadeCore {
+public final class FaderDistrCore {
     private static final double SMOOTH_SECONDS = 0.005;
 
     private final boolean equalPower;
@@ -13,7 +13,7 @@ public final class PanfadeCore {
     private double rightOutput;
     private double mixOutput;
 
-    public PanfadeCore(boolean equalPower, double sampleRate) {
+    public FaderDistrCore(boolean equalPower, double sampleRate) {
         if (!Double.isFinite(sampleRate) || sampleRate < 1 || sampleRate > 1_000_000) {
             throw new IllegalArgumentException("Invalid sample rate");
         }

@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--sdk', type=Path, required=True)
 args = parser.parse_args()
 
-folder = root / 'panfade' / 'development'
+folder = root / 'faderdistr' / 'development'
 java_path = folder / 'faderdistrA.java'
 vmod_path = folder / 'faderdistrA.vmod'
 manifest_path = folder / 'SHA256-faderdistrA.json'

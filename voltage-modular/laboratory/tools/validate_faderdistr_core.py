@@ -3,15 +3,15 @@ from pathlib import Path
 import subprocess
 
 root = Path(__file__).resolve().parents[1]
-module = root / 'panfade'
-build = root / 'build' / 'panfade-core'
+module = root / 'faderdistr'
+build = root / 'build' / 'faderdistr-core'
 build.mkdir(parents=True, exist_ok=True)
-source = module / 'prototype' / 'PanfadeCore.java'
-test = module / 'tests' / 'PanfadeCoreTest.java'
+source = module / 'prototype' / 'FaderDistrCore.java'
+test = module / 'tests' / 'FaderDistrCoreTest.java'
 subprocess.run([
     'javac', '--release', '17', '-Xlint:all', '-Werror',
     '-d', str(build), str(source), str(test)
 ], check=True)
 subprocess.run([
-    'java', '-cp', str(build), 'com.insectlabs.laboratory.panfade.PanfadeCoreTest'
+    'java', '-cp', str(build), 'com.insectlabs.laboratory.faderdistr.FaderDistrCoreTest'
 ], check=True)

@@ -16,9 +16,6 @@ Fader|Distr A's matched Designer/source pair has passed source-pair integrity ch
 compilation, and the initial Designer build/load check. It remains a development baseline until
 the complete DSP and host test pass are approved.
 
-The `panfade` directory is retained temporarily because the active Designer project is open from
-this location. Its product identity is Fader|Distr; rename the working directory after Designer
-is closed.
 
 See the [utility specification](../../docs/Series-One-Utilities.md) and
 [infrastructure standards](../../docs/Module-Infrastructure-Standards.md).

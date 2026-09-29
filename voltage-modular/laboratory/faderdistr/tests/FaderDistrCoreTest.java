@@ -1,6 +1,6 @@
-package com.insectlabs.laboratory.panfade;
+package com.insectlabs.laboratory.faderdistr;
 
-public final class PanfadeCoreTest {
+public final class FaderDistrCoreTest {
     private static long checks;
 
     public static void main(String[] args) {
@@ -13,7 +13,7 @@ public final class PanfadeCoreTest {
     }
 
     private static void testLaw(boolean equalPower) {
-        PanfadeCore core = new PanfadeCore(equalPower, 48_000);
+        FaderDistrCore core = new FaderDistrCore(equalPower, 48_000);
         double center = equalPower ? Math.sqrt(0.5) : 0.5;
 
         core.process(0, 8, 3, -5);
@@ -45,7 +45,7 @@ public final class PanfadeCoreTest {
     }
 
     private static void testSmoothing() {
-        PanfadeCore core = new PanfadeCore(false, 1_000);
+        FaderDistrCore core = new FaderDistrCore(false, 1_000);
         core.process(0, 1, 1, 0);
         core.process(1, 1, 1, 0);
         near(0.4, core.getLeftOutput());
@@ -57,7 +57,7 @@ public final class PanfadeCoreTest {
     }
 
     private static void testBypassAndResume() {
-        PanfadeCore core = new PanfadeCore(true, 48_000);
+        FaderDistrCore core = new FaderDistrCore(true, 48_000);
         core.process(-1, 1, 2, 3);
         core.processBypassed(7, -4);
         near(7, core.getLeftOutput());
@@ -70,9 +70,9 @@ public final class PanfadeCoreTest {
     }
 
     private static void testInvalidConstruction() {
-        expectFailure(() -> new PanfadeCore(false, 0));
-        expectFailure(() -> new PanfadeCore(false, Double.NaN));
-        PanfadeCore core = new PanfadeCore(false, 48_000);
+        expectFailure(() -> new FaderDistrCore(false, 0));
+        expectFailure(() -> new FaderDistrCore(false, Double.NaN));
+        FaderDistrCore core = new FaderDistrCore(false, 48_000);
         core.process(Double.NaN, 2, 3, 5);
         near(1, core.getLeftOutput());
         near(1, core.getRightOutput());
