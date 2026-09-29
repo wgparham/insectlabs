@@ -1,11 +1,11 @@
 {
   "collection": "InsectLabs Audio Test Bench",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "seed": 19710510,
   "generator": "generate.py",
   "numpy_version": "2.3.5",
   "format": "WAV PCM signed 24-bit little-endian, 48000 Hz",
-  "audio_rights": "Mixed licenses: generated audio CC0-1.0; recordings retain individual source licenses. See ATTRIBUTION.md.",
+  "audio_rights": "Mixed licenses: generated audio CC0-1.0; third-party recordings retain individual licenses; user-owned original composition is included by permission. See ATTRIBUTION.md.",
   "files": [
     {
       "file": "01-calibration/sine_00020Hz_minus12dBFS.wav",
@@ -1539,6 +1539,39 @@
       ],
       "license": "See source-specific licenses in ATTRIBUTION.md",
       "sha256": "ed654f5ef7bab98a74dd5d72703bee36c04c32a9693bb4ff5185f9d9064b805e"
+    },
+    {
+      "file": "05-musical/after_drinking_at_emalines_original_mix.wav",
+      "frames": 28315677,
+      "seconds": 589.9099375,
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits": 24,
+      "kind": "user-owned original experimental music mix",
+      "loop": "Full composition; not loopable.",
+      "peak_dbfs": [
+        -6.0000004906757844,
+        -6.219593360061725
+      ],
+      "rms_dbfs": [
+        -29.722320216159993,
+        -29.243865468877463
+      ],
+      "dc_mean": [
+        -6.652341093470887e-06,
+        -4.644392649812152e-06
+      ],
+      "correlation": 0.4112504415273619,
+      "boundary_step": [
+        0.005011796951293945,
+        0.005767941474914551
+      ],
+      "purpose": "Full-mix audition fixture for testing InsectLabs modules on the composer's own experimental music.",
+      "notes": "User-supplied stereo mix. Fourier resampled from 22.05 kHz/16-bit PCM to 48 kHz, then globally peak adjusted to -6 dBFS and exported as 24-bit PCM. No fades, effects, EQ, dynamics, or channel processing added.",
+      "source": "after_drinking_at_emalines.wav",
+      "source_sha256": "5ee10739c9c17d05c80f041c455b65debf80fa36da97cbcfd45d5ba188b16fcb",
+      "license": "Copyright retained by the composer; included in the TestBench by permission.",
+      "sha256": "cffdb56b713f5e09bb787684410d75c6a8a6dc6fc4e1d47e98ebdd727742191d"
     }
   ],
   "sources": [

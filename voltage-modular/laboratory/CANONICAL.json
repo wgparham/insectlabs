@@ -12,5 +12,10 @@
     "version": "1.0.0",
     "path": "faderdistr/versions/1.0.0",
     "module": "faderdistrB"
+  },
+  "sw1": {
+    "version": "1.0.0",
+    "path": "sw1/versions/1.0.0",
+    "module": "sw1"
   }
 }

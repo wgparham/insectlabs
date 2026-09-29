@@ -39,3 +39,6 @@ Real moderate-rain field recording.
 ## Changes made for this collection
 
 Used the first 10 seconds of the mirrored guitar, piano and rain files, and the first 24 seconds of birds. Removed the mean; applied 50 ms endpoint fades, Fourier resampled from 44.1 to 48 kHz, reapplied endpoint fades, and adjusted stereo peak to -9 dBFS. Exported as 24-bit PCM without adding effects. This does not restore precision lost in earlier conversions. Mono versions average left and right. Split-channel files pair those mono versions; the performances are independent and not tempo matched. The piano-containing pairs include CC BY 4.0 material: retain the piano credit and license link.
+
+## User-owned original composition
+`05-musical/after_drinking_at_emalines_original_mix.wav` is an original composition and fully mixed stereo recording supplied by the project creator. Copyright remains with the composer; it is included in this TestBench collection with permission for InsectLabs development and audition. Source SHA-256: `5ee10739c9c17d05c80f041c455b65debf80fa36da97cbcfd45d5ba188b16fcb`.

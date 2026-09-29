@@ -1,6 +1,6 @@
 # InsectLabs Audio Test Bench
 
-The full TestBench collection is versioned here. It contains 53 WAV files at 48 kHz/24-bit, a portable ZIP archive, source recordings with license evidence, and a measured catalog, attribution, manifest, and verification results.
+The full TestBench collection is versioned here. It contains 54 WAV files at 48 kHz/24-bit, a portable ZIP archive, source recordings with license evidence, and a measured catalog, attribution, manifest, and verification results.
 
 - `v1` contains the ready-to-patch collection and its listening guide.
 - `sources/ibm-freesound` preserves the source recordings and license evidence used for the recorded fixtures.

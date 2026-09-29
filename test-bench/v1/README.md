@@ -1,6 +1,6 @@
-# InsectLabs Audio Test Bench — v1.0
+# InsectLabs Audio Test Bench — v1.1
 
-53 listening and measurement files for the InsectLabs Voltage Modular collections. All delivery files are **48 kHz, 24-bit PCM WAV**, with mono sources prioritized and explicit stereo routing fixtures. Typical lengths are 4–24 seconds. No Voltage Modular patch or special player is required.
+54 listening and measurement files for the InsectLabs Voltage Modular collections. All delivery files are **48 kHz, 24-bit PCM WAV**, with mono sources prioritized and explicit stereo routing fixtures. Typical lengths are 4–24 seconds, with one complete original experimental-music mix for extended audition. No Voltage Modular patch or special player is required.
 
 ## Start here
 
@@ -8,7 +8,7 @@
 2. **Signal Processor listening:** `07-recordings/guitar_recording_mono.wav` or `piano_recording_mono.wav`. Start at unity gain, zero offset, and compare input/output levels. The piano's source does not identify whether the instrument is acoustic or digital.
 3. **Independent stages:** `07-recordings/recorded_guitar_left_piano_right.wav`. Split the player’s left and right outputs into the two mono stages. The two performances are independent, not a tempo-matched duet.
 4. **Pan/Fade:** compare `04-stereo/dual_mono_correlated.wav` with `independent_pink_noise.wav`. Identical sources and independent sources behave differently when summed: equal-power crossfading is not constant-amplitude crossfading of identical signals.
-5. **Musical audition:** `05-musical/stereo_full_music_mix.wav`, an original synthesized instrumental mix. All folder 05 performances are synthesized, including files whose short filenames omit “synthetic.”
+5. **Musical audition:** `05-musical/stereo_full_music_mix.wav`, an original synthesized instrumental mix; or `after_drinking_at_emalines_original_mix.wav`, a complete user-owned experimental-music mix for extended listening. The other folder 05 performances are synthesized, including files whose short filenames omit “synthetic.”
 6. **Real ambience:** `07-recordings/rain_recording_stereo.wav` and `birds2_recording_stereo.wav`. Folder 06 contains separately labeled procedural outdoor-style textures.
 
 `all-files.m3u8` is a relative-path playlist. `CATALOG.md` describes every file; `catalog.csv` and `manifest.json` provide measurements, loop behavior and checksums. `ATTRIBUTION.md` contains source credits and redistribution terms.
@@ -21,7 +21,7 @@
 | 02-dynamics | 5 | Level staircase, amplitude modulation, gated bursts, impulses, sine plus DC |
 | 03-noise | 7 | White/pink/brown/blue noise, modulated pink noise, random envelope noise, randomly frequency-modulated sine |
 | 04-stereo | 7 | Left/right identification, correlated dual mono, opposite polarity, alternating channels, independent noise |
-| 05-musical | 6 | Original synthesized guitar-like and piano-like performances, split-channel pairs, duo and full instrumental mix |
+| 05-musical | 7 | Original synthesized guitar-like and piano-like performances, split-channel pairs, duo, full instrumental mix and complete user-owned experimental-music mix |
 | 06-ambience | 2 | Synthesized garden and stream textures |
 | 07-recordings | 8 | Sourced guitar and piano, birds and rain, mono instrument versions and split-channel pairs |
 

@@ -7,3 +7,5 @@
 *.py text eol=lf
 .gitignore text eol=lf
 .gitattributes text eol=lf
+test-bench/v1/05-musical/after_drinking_at_emalines_original_mix.wav filter=lfs diff=lfs merge=lfs -text
+test-bench/InsectLabs-TestBench-v1.zip filter=lfs diff=lfs merge=lfs -text

@@ -532,3 +532,13 @@ Reversed channel assignment for routing checks.
 
 See ATTRIBUTION.md. Excerpted, mean removed, Fourier resampled 44.1 to 48 kHz, faded, peak adjusted; no added effects. Original mirror is 16-bit.
 
+## 05-musical/after_drinking_at_emalines_original_mix.wav
+
+589.91 seconds; 2 channel(s); user-owned original experimental music mix.
+
+Loop: Full composition; not loopable.. Peak dBFS: [-6.0000004906757844, -6.219593360061725]; RMS dBFS: [-29.722320216159993, -29.243865468877463].
+
+Full-mix audition fixture for testing InsectLabs modules on the composer's own experimental music.
+
+User-supplied stereo mix. Fourier resampled from 22.05 kHz/16-bit PCM to 48 kHz, then globally peak adjusted to -6 dBFS and exported as 24-bit PCM. No fades, effects, EQ, dynamics, or channel processing added.
+

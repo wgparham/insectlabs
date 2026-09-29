@@ -85,11 +85,34 @@ def control_line(info, old_number):
         return None
     name = control_names[control_ids[0]]
     old_line = old_lines[old_number]
-    rewritten = re.sub(r'\b(?:knob|inputJack|outputJack|textLabel|line)\d+\b',
+    rewritten = re.sub(r'\b(?:knob|inputJack|outputJack|textLabel|line|button|switch|LED)\d+\b',
                        name, old_line)
-    candidates = [index for index, line in enumerate(new_lines) if line == rewritten]
+    candidates = [index for index, line in enumerate(new_lines)
+                  if line == rewritten or line.strip() == rewritten.strip()]
     if candidates:
         return min(candidates, key=lambda index: abs(index - old_number))
+    # A control may have been deliberately renamed. Its Designer placement is
+    # immutable, so use the generated SetPosition line as a stable fallback.
+    declaration_index = next((index for index in range(old_number, -1, -1)
+                              if re.match(r'\s*' + re.escape(name) + r'\s*=\s*new ', old_lines[index])), None)
+    if declaration_index is not None:
+        old_position = next((line.strip() for line in old_lines[declaration_index:]
+                             if line.strip().startswith(name + '.SetPosition(')), None)
+        if old_position:
+            position_suffix = old_position[len(name):]
+            position_matches = [index for index, line in enumerate(new_lines)
+                                if line.strip().endswith(position_suffix)]
+            if len(position_matches) == 1:
+                position_index = position_matches[0]
+                new_declaration = next(index for index in range(position_index, -1, -1)
+                                       if ' = new ' in new_lines[index])
+                new_name = re.match(r'\s*(\w+)\s*=\s*new ', new_lines[new_declaration]).group(1)
+                rewritten = re.sub(r'\b' + re.escape(name) + r'\b', new_name, old_line)
+                candidates = [index for index, line in enumerate(new_lines)
+                              if line == rewritten or line.strip() == rewritten.strip()]
+                if candidates:
+                    return min(candidates, key=lambda index: abs(index - new_declaration))
+                return new_declaration - 1
     if not old_line.strip():
         declaration = next(index for index, line in enumerate(new_lines)
                            if line.startswith('    ' + name + ' = new '))

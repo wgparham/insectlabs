@@ -1,5 +1,22 @@
 # Laboratory release notes
 
+## sw1 1.0.0 — 2026-09-29
+
+First canonical release, approved by the user after successful Designer builds, routing tests,
+and listening tests.
+
+- Manual 2x2 relay routing: normal I1-to-O1/I2-to-O2 and alternate swapped paths.
+- Patch-programmable use as a selector, distributor, swapper, mute, manual flip-flop, or manual
+  gate source, without CV control.
+- Toggle and gate button modes, with complementary +5 V output when no inputs are connected.
+- Optional CLK mode: 1.8 kHz contact filtering plus 2 ms relay settling for click reduction and
+  restrained vintage darkening; direct routing with CLK up.
+- Direct Colorbox-style bypass: I1 to O1 and I2 to O2.
+
+Validation: embedded source matches Java export; checksums and Java 17 Voltage SDK compilation
+pass. The user confirmed the final module's physical controls, patch functions, switching,
+indicator behavior, and CLK voicing.
+
 ## Fader|Distr A and B 1.0.0 — 2026-09-29
 
 First canonical releases, approved by the user after successful Designer builds and listening

@@ -1,7 +1,7 @@
 {
   "result": "PASS",
-  "files": 53,
-  "checks": 255,
+  "files": 54,
+  "checks": 259,
   "details": [
     "01-calibration/sine_00020Hz_minus12dBFS.wav: SHA-256",
     "01-calibration/sine_00020Hz_minus12dBFS.wav: format and duration",
@@ -249,6 +249,10 @@
     "07-recordings/recorded_piano_left_guitar_right.wav: no sample clipping",
     "07-recordings/recorded_piano_left_guitar_right.wav: measured peak agrees",
     "07-recordings/recorded_piano_left_guitar_right.wav: faded endpoints",
+    "05-musical/after_drinking_at_emalines_original_mix.wav: SHA-256",
+    "05-musical/after_drinking_at_emalines_original_mix.wav: format and duration",
+    "05-musical/after_drinking_at_emalines_original_mix.wav: no sample clipping",
+    "05-musical/after_drinking_at_emalines_original_mix.wav: measured peak agrees",
     "Digital silence is exact",
     "Left-only file has silent right",
     "Right-only file has silent left",
