@@ -2,7 +2,7 @@
 
 The Signal Processor is the first Series One Laboratory module. It contains two independent mono stages inspired by early laboratory amplifiers and control equipment. Each stage provides bipolar gain, post-character offset, an external gain-control input with level control, and a PROC/VCA mode selector.
 
-The canonical release is [Signal Processor 1.0.0](versions/1.0.0/README.md), approved by the user after a successful Designer build and host run. [Character notes](versions/1.0.0/CHARACTER-REVISION.md) document the locked sound and mode behavior.
+The canonical release is [Signal Processor 1.0.1](versions/1.0.1/README.md), approved by the user after a successful Designer build and host run. [Character notes](versions/1.0.0/CHARACTER-REVISION.md) document the locked sound and mode behavior.
 
 ## Current design
 

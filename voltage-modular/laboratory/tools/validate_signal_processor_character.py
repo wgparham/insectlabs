@@ -52,12 +52,12 @@ def class_block(text, declaration):
                 return text[start:index + 1]
     raise RuntimeError('Unclosed class: ' + declaration)
 
-constants = '\n'.join(re.findall(r'^private static final double [^;]+;', source, re.M))
+constants = '\n'.join(re.findall(r'^\s*private static final double [^;]+;', source, re.M))
 dsp = class_block(source, 'private static final class SignalProcessorDsp')
 stage = class_block(source, 'private static final class ProcessorStage')
 ramp = class_block(source, 'private static final class ControlRamp')
 clamp = re.search(
-    r'private static double clamp\(double value, double minimum, double maximum\) \{.*?^\}',
+    r'\s*private static double clamp\(double value, double minimum, double maximum\) \{.*?^\s*\}',
     source, re.M | re.S).group(0)
 wrapper = f'''public final class SignalProcessorCore {{
 {constants}

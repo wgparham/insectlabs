@@ -80,7 +80,7 @@ for kind, text in [('embedded', embedded), ('exported', exported)]:
 print('PASS real SDK compilation of both source forms', flush=True)
 
 parts = regions(exported)
-controls = re.findall(r'^private Voltage(Knob|AudioJack) (\w+);', exported, re.M)
+controls = re.findall(r'^\s*private Voltage(Knob|AudioJack) (\w+);', exported, re.M)
 head = '''public final class ProjectTest {
 static class VoltageComponent { double value; boolean connected; int reads;
  double GetValue(){reads++;return value;} void SetValue(double x){value=x;} boolean IsConnected(){return connected;} }

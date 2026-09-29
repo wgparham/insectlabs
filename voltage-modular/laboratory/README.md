@@ -4,7 +4,7 @@ Series One: mono-first, predominantly manual instruments inspired by early labor
 
 | Module | Status | Files |
 | --- | --- | --- |
-| Signal Processor | Canonical 1.0.0 | [Release](signal-processor/versions/1.0.0/README.md) |
+| Signal Processor | Canonical 1.0.1 | [Release](signal-processor/versions/1.0.1/README.md) |
 | Fader|Distr A | Canonical 1.0.0, linear law | [Release](faderdistr/versions/1.0.0/README.md) |
 | Fader|Distr B | Canonical 1.0.0, equal-power law | [Release](faderdistr/versions/1.0.0/README.md) |
 | sw1 | Canonical 1.0.0, manual relay router | [Release](sw1/versions/1.0.0/README.md) |

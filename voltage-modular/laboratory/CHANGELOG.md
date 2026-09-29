@@ -1,5 +1,15 @@
 # Laboratory release notes
 
+## Signal Processor 1.0.1 — 2026-09-29
+
+Canonical maintenance release for the approved Designer UI state.
+
+- Retains the current panel skin.
+- Enables percentage display on both Gain and EXT LVL controls.
+- Preserves 1.0.0 DSP, gain/CV ranges, PROC/VCA behavior, timing, routing, and direct bypass exactly.
+
+Validation: synchronized Designer project/source, release hashes, and Java 17 Voltage SDK compilation pass.
+
 ## sw1 1.0.0 — 2026-09-29
 
 First canonical release, approved by the user after successful Designer builds, routing tests,

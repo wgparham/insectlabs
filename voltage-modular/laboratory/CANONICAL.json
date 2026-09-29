@@ -1,7 +1,7 @@
 {
   "signal-processor": {
-    "version": "1.0.0",
-    "path": "signal-processor/versions/1.0.0"
+    "version": "1.0.1",
+    "path": "signal-processor/versions/1.0.1"
   },
   "faderdistr-a": {
     "version": "1.0.0",
