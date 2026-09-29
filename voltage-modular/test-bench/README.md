@@ -9,12 +9,12 @@ The `archive-metadata` directory preserves the delivery manifest, credits and gu
 Requires Python 3 and NumPy. Run from the outer InsectLabs workspace. Generation rewrites the catalog with the generated subset; run the import step afterward to restore the full catalog. Preserve README.md when rebuilding.
 
 ```powershell
-python repository/voltage-modular/test-bench/tools/generate.py --output Resources/TestBench/v1
-python repository/voltage-modular/test-bench/tools/download_sources.py --output Resources/TestBench/sources/ibm-freesound
-python repository/voltage-modular/test-bench/tools/import_recordings.py --output Resources/TestBench/v1 --sources Resources/TestBench/sources/ibm-freesound
-python repository/voltage-modular/test-bench/tools/verify.py Resources/TestBench/v1
+python C:/Users/wgparham/Dropbox/git/insectlabs/voltage-modular/test-bench/tools/generate.py --output Resources/TestBench/v1
+python C:/Users/wgparham/Dropbox/git/insectlabs/voltage-modular/test-bench/tools/download_sources.py --output Resources/TestBench/sources/ibm-freesound
+python C:/Users/wgparham/Dropbox/git/insectlabs/voltage-modular/test-bench/tools/import_recordings.py --output Resources/TestBench/v1 --sources Resources/TestBench/sources/ibm-freesound
+python C:/Users/wgparham/Dropbox/git/insectlabs/voltage-modular/test-bench/tools/verify.py Resources/TestBench/v1
 ```
 
 Generation uses seed 19710510. The manifest records NumPy's version; floating-point or FFT implementation changes across environments may alter the least significant bits. SHA-256 hashes identify this particular delivered build.
 
-Keep the credits with the WAV distribution. Do not apply the generated-audio CC0 dedication to the sourced recordings. Review the collection by ear and in Voltage Modular before promoting it to a release.
+Keep the credits with the WAV distribution. Do not apply the generated-audio CC0 dedication to the sourced recordings. The user has tested and approved this collection in Voltage Modular. Add useful new test fixtures as the modules develop, updating the catalog, credits, manifest, and verification results together.

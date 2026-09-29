@@ -1,3 +1,6 @@
 __pycache__/
 *.class
 voltage-modular/colorbox/build/
+voltage-modular/laboratory/build/
+.local-archive/
+*.bak
