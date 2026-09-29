@@ -57,27 +57,27 @@ Use two repeated vertical channel strips with GAIN above OFFSET, smaller CV AMOU
 
 Trials: invert an envelope; reduce a bipolar modulation signal; shift its center; amplify a quiet audio source; control a tone with an envelope; use one channel to condition the other's gain CV. Check exact zero/unity/inversion and confirm that offset survives zero gain.
 
-## 2. Pan / Fade: two separate modules
+## 2. Fader|Distr: two separate modules
 
-Required: Pan / Fade Linear and Pan / Fade Equal Power. Identical control and jack layouts, with a clear variant label. Neither has CV inputs, a CV amount control, or a law switch. Both perform simultaneous parallel panning and fading from one large manual POSITION dial.
+Required: Fader|Distr A and Fader|Distr B. Identical control and jack layouts, with a clear variant label. A uses a fixed linear law; B uses fixed equal-power law. Neither has CV inputs, a CV amount control, or a law switch. Both perform simultaneous parallel distribution and crossfading from one large manual BIAS dial.
 
 | Connector/control | Behavior |
 | --- | --- |
-| POSITION | Left/A at minimum, center at midpoint, Right/B at maximum |
-| PAN IN | One mono source |
-| LEFT / RIGHT | Complementary outputs of that mono source |
-| A / B | Two independent mono crossfader inputs |
-| MIX | Crossfaded sum of A and B |
+| BIAS | X / 1 at minimum, balanced at center, Y / 2 at maximum |
+| S | One mono DISTR signal source |
+| 1 / 2 | Complementary outputs of S |
+| X / Y | Two independent mono FADER inputs |
+| Z | Crossfaded sum of X and Y |
 
-All inputs independently default to zero. There is no input normalization or stereo-input processing. Initial position is center.
+All inputs independently default to zero. There is no input normalization or stereo-input processing. Initial BIAS is center.
 
 With dial position p between zero and one, Linear uses weights 1-p and p; Equal Power uses cos(pi*p/2) and sin(pi*p/2). Apply the same weights to the panner and crossfader. At center each Linear path is 0.5, each Equal Power path approximately 0.707. Equal Power can boost correlated identical inputs at the midpoint; Linear preserves their level and also provides straightforward DC interpolation.
 
-CPU plan: use native-rate processing for these linear signal paths. Cache weights while POSITION is stationary. On movement, update the target weights and perform a short, bounded smoothing transition; a simple coefficient interpolation briefly departs from exact equal-power behavior and should be auditioned. Do not evaluate trigonometry continuously at rest. Two instantiated modules incur two sets of host callbacks and routing work, but their arithmetic is small. Measure actual host cost before making numerical performance claims.
+CPU plan: use native-rate processing for these linear signal paths. Cache weights while BIAS is stationary. On movement, update the target weights and perform a short, bounded smoothing transition; a simple coefficient interpolation briefly departs from exact equal-power behavior and should be auditioned. Do not evaluate trigonometry continuously at rest. Two instantiated modules incur two sets of host callbacks and routing work, but their arithmetic is small. Measure actual host cost before making numerical performance claims.
 
-Panel: central oversized POSITION dial with Left/A and Right/B markings. Separate PAN IN/LEFT/RIGHT and A/B/MIX groups beneath it. Keep both variants geometrically identical so placing them side by side is predictable.
+Panel: central oversized BIAS dial with X/1 and Y/2 markings. Separate FADER X/Y/Z and DISTR S/1/2 groups beneath it. Keep both variants geometrically identical so placing them side by side is predictable.
 
-Trials: pan one tone, fade two unrelated sources, fade identical sources, interpolate two reference voltages, operate both functions together, and check endpoint isolation and movement noise. No oversampling is proposed for these functions alone.
+Trials: distribute one tone, fade two unrelated sources, fade identical sources, interpolate two reference voltages, operate both functions together, and check endpoint isolation and movement noise. No oversampling is proposed for these functions alone.
 
 ## 3. Push-Button Router
 
@@ -124,7 +124,7 @@ Trials: compare four oscillators; choose one of four reference voltages; route a
 ## Prototype order and completion criteria
 
 1. Signal Processor: settle gain/CV scaling, DC handling, output headroom, and zero/unity behavior. It becomes a useful tool for evaluating the other modules.
-2. Both Pan / Fade variants: validate their fixed gain laws, independent inputs, manual motion, and usable control travel.
+2. Both Fader|Distr variants: validate their fixed gain laws, independent inputs, manual motion, and usable control travel.
 3. Both routers: share a transition implementation while preserving their distinct manual interactions. Verify saved selections, momentary release, OFF behavior, and audio versus gate operation.
 4. Laboratory Generator: establish the generator tuning controls and stable sine/triangle foundation; then develop Pulse/Sine, Sine/Random, and Deep Tone against it.
 5. Character studies: audition several level-dependent audio voicings using the established sources and utilities. Keep level-matched comparisons and document which behavior belongs to each instrument.
@@ -137,7 +137,7 @@ Before calling a prototype complete, check its defining signal relationships and
 
 - Two identical Signal Processor channels versus a simpler single channel.
 - PROCESS/VCA gain behavior and any future input-specific modulation scaling. Offset CV is excluded.
-- Manual smoothing feel for both fixed-law Pan / Fade modules; shared position and simultaneous operation are retained.
+- Manual smoothing feel for both fixed-law Fader|Distr modules; shared BIAS and simultaneous operation are retained.
 - Two A/B button selectors versus a larger button routing bank.
 - Paired source/destination rotary routing versus separate selectors.
 
@@ -147,7 +147,7 @@ The recommendations above provide a concrete starting point; they do not expand 
 
 Follow Colorbox's direct host-bypass approach: minimal input/output routing, no processing-control reads, no advancing filters or oversampling, and no bypass crossfade that keeps DSP running. Reset stale processing histories once on resumption where necessary. Bypass still incurs host and jack-access work; it is not literally zero CPU.
 
-Recommended bypass routing, pending panel implementation: each Processor IN passes unchanged to its OUT; button selectors use their cached selected source; rotary routing retains its cached selection/OFF; both Pan / Fade variants copy PAN IN to LEFT and RIGHT and A to MIX (B is ignored). These are explicit proposals because multi-output instruments have no unique universal dry path. Cache routing choices outside the per-sample bypass path.
+Recommended bypass routing, pending panel implementation: each Processor IN passes unchanged to its OUT; button selectors use their cached selected source; rotary routing retains its cached selection/OFF; both Fader|Distr variants copy S to 1 and 2 and X to Z (Y is ignored). These are explicit proposals because multi-output instruments have no unique universal dry path. Cache routing choices outside the per-sample bypass path.
 
 Use Colorbox's 2x processing as the first oversampling candidate only for stages that need it. Pure gain, offset, routing, and manual panning stay at native rate. Nonlinear audio coloration and demanding oscillator/modulator cases require specific aliasing and CPU evaluation. Do not increase the factor unless evidence warrants it.
 

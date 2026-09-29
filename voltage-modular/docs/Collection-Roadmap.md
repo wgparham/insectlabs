@@ -62,9 +62,9 @@ Proposed: preset reference frequencies plus continuous fine adjustment; an indep
 
 Recommended design exception: precise, stable reference tone and DC outputs without modeled drift or saturation. Keep reference pink noise consistent enough for comparison and calibration. The dedicated Noise Generator supplies the more strongly colored noise character. This gives both instruments separate jobs.
 
-### Pan / Fade Linear and Pan / Fade Equal Power
+### Fader|Distr A and Fader|Distr B
 
-Required: two separate modules with identical layouts and fixed linear/equal-power laws, clearly labeled by variant. Each performs simultaneous parallel panning and crossfading under one large manual dial. No CV inputs or law switch. Each path is mono; panning distributes a mono source between two outputs.
+Required: two separate modules with identical layouts and fixed linear/equal-power laws, clearly labeled A/B by variant. Each performs simultaneous parallel distribution and crossfading under one large manual BIAS dial. No CV inputs or law switch. Each path is mono; DISTR distributes S between outputs 1 and 2 while FADER crossfades X/Y to Z.
 
 Proposed implementation: cache gains while stationary, briefly smooth manual movement, and avoid oversampling these linear functions. Side-by-side instances have additional host overhead but should remain inexpensive; verify by measurement.
 
@@ -105,8 +105,8 @@ The user explicitly retained all five earlier concepts:
 9. Dynamic Modulator
 10. Pulse Shaper
 11. Balanced Modulator
-12. Pan / Fade Linear
-13. Pan / Fade Equal Power
+12. Fader|Distr A — Linear
+13. Fader|Distr B — Equal Power
 14. Signal Processor (VCA capability under consideration)
 15. Push-Button Router (proposed packaging of the manual switching requirement)
 16. Rotary/Toggle Router (proposed packaging of the manual switching requirement)

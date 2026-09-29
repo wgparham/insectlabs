@@ -15,6 +15,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--java', type=Path, required=True)
 parser.add_argument('--vmod', type=Path, required=True)
 parser.add_argument('--manifest', type=Path)
+parser.add_argument('--asset', type=Path, action='append', default=[])
 args = parser.parse_args()
 
 raw = args.vmod.read_bytes()
@@ -72,6 +73,29 @@ for block in difflib.SequenceMatcher(a=old_lines, b=new_lines, autojunk=False).g
     for offset in range(block.size):
         mapping[block.a + offset] = block.b + offset
 line_properties = code[2][0]
+controls = next(node for node in tree[2] if node[0] == 'controls')
+control_names = {props(control)['UUID']: props(control)['variable name']
+                 for control in controls[2]}
+
+def control_line(info, old_number):
+    """Find a renamed Designer control's generated line by its immutable UUID."""
+    control_ids = [props(child).get('Control ID') for child in info[2]
+                   if props(child).get('Control ID')]
+    if not control_ids:
+        return None
+    name = control_names[control_ids[0]]
+    old_line = old_lines[old_number]
+    rewritten = re.sub(r'\b(?:knob|inputJack|outputJack|textLabel|line)\d+\b',
+                       name, old_line)
+    candidates = [index for index, line in enumerate(new_lines) if line == rewritten]
+    if candidates:
+        return min(candidates, key=lambda index: abs(index - old_number))
+    if not old_line.strip():
+        declaration = next(index for index, line in enumerate(new_lines)
+                           if line.startswith('    ' + name + ' = new '))
+        return declaration - 1
+    raise RuntimeError(f'Cannot locate generated control line for {name}: {old_line!r}')
+
 for info in line_properties[2]:
     old_number = props(info)['line number']
     ids = {props(child).get('ID') for child in info[2]}
@@ -80,9 +104,11 @@ for info in line_properties[2]:
     elif 'user code and variables' in ids:
         number = new_lines.index('// Add your own variables and functions here')
     else:
-        if old_number not in mapping:
+        number = control_line(info, old_number)
+        if number is None and old_number not in mapping:
             raise RuntimeError(f'Cannot preserve Designer section at line {old_number}')
-        number = mapping[old_number]
+        if number is None:
+            number = mapping[old_number]
     setprop(info, 'line number', number)
 all_ids = [props(child).get('ID') for info in line_properties[2] for child in info[2]]
 assert all_ids.count('class closing bracket') == 1
@@ -98,9 +124,12 @@ if normalized(embedded) != normalized(exported_source):
 
 if args.manifest:
     files = [args.vmod.name, args.java.name]
-    hero = args.vmod.parent / 'sigproc_hero.png'
-    if hero.is_file():
-        files.append(hero.name)
+    assets = args.asset or [args.vmod.parent / 'sigproc_hero.png']
+    for asset in assets:
+        asset = asset if asset.is_absolute() else args.vmod.parent / asset
+        if not asset.is_file():
+            raise RuntimeError('Missing manifest asset: ' + str(asset))
+        files.append(asset.name)
     hashes = {name: hashlib.sha256((args.vmod.parent / name).read_bytes()).hexdigest()
               for name in files}
     args.manifest.write_text(json.dumps(hashes, indent=2) + '\n')

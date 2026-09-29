@@ -31,7 +31,7 @@ Follow Colorbox STANDARDS.md for matching project/source pairs, Designer user re
 
 Mono-only signal paths. Dual mono/stereo use requires duplicate stages. Manual controls dominate; essential modulation signals remain part of such instruments as the Balanced Modulator. CV becomes common in the radiophonic series. WWI/WWII-era equipment and its reuse in early studios guide the design, without requiring literal historical replicas.
 
-Pan / Fade Linear and Pan / Fade Equal Power are separate modules, with matching surfaces and no CV or law switch. Both retain simultaneous panning and fading. Processor offset CV is excluded. Gain CV/VCA capability remains the identified exception under consideration.
+Fader|Distr A and Fader|Distr B are separate modules, with matching surfaces and no CV or law switch. Both retain simultaneous FADER and DISTR functions under one BIAS control. Processor offset CV is excluded. Gain CV/VCA capability remains the identified exception under consideration.
 
 Minimize CPU. Direct bypass performs only required routing and state bookkeeping, skipping DSP and processing-control reads. Start with Colorbox's 2x oversampling where necessary; native-rate linear utilities need none solely because they belong to this series. Actual CPU cost must be measured in the host.
 

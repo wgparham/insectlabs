@@ -7,7 +7,7 @@
 1. **Basic gain and polarity:** `01-calibration/sine_00440Hz_minus12dBFS.wav` and `sine_01000Hz_minus12dBFS.wav`.
 2. **Signal Processor listening:** `07-recordings/guitar_recording_mono.wav` or `piano_recording_mono.wav`. Start at unity gain, zero offset, and compare input/output levels. The piano's source does not identify whether the instrument is acoustic or digital.
 3. **Independent stages:** `07-recordings/recorded_guitar_left_piano_right.wav`. Split the player’s left and right outputs into the two mono stages. The two performances are independent, not a tempo-matched duet.
-4. **Pan/Fade:** compare `04-stereo/dual_mono_correlated.wav` with `independent_pink_noise.wav`. Identical sources and independent sources behave differently when summed: equal-power crossfading is not constant-amplitude crossfading of identical signals.
+4. **Fader|Distr:** compare `04-stereo/dual_mono_correlated.wav` with `independent_pink_noise.wav`. Identical sources and independent sources behave differently when summed: equal-power crossfading is not constant-amplitude crossfading of identical signals.
 5. **Musical audition:** `05-musical/stereo_full_music_mix.wav`, an original synthesized instrumental mix. All folder 05 performances are synthesized, including files whose short filenames omit “synthetic.”
 6. **Real ambience:** `07-recordings/rain_recording_stereo.wav` and `birds2_recording_stereo.wav`. Folder 06 contains separately labeled procedural outdoor-style textures.
 
