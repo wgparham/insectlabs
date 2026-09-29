@@ -1,4 +1,4 @@
-package com.insectlabs.faderdistra;
+package com.insectlabs.faderdistrb;
 
 
 import voltage.controllers.*;
@@ -14,21 +14,21 @@ import java.awt.*;
 //[/user-imports]
 
 
-public class faderdistrA extends VoltageModule
+public class faderdistrB extends VoltageModule
 //[user-inheritance]
 //[/user-inheritance]
 {
 
 @SuppressWarnings("this-escape") 
-public faderdistrA( long moduleID, VoltageObjects voltageObjects )
+public faderdistrB( long moduleID, VoltageObjects voltageObjects )
 {
-    super( moduleID, voltageObjects, "fader distributer A", ModuleType.ModuleType_Utility, 1.6 );
+    super( moduleID, voltageObjects, "fader distributer B", ModuleType.ModuleType_Utility, 1.6 );
 
     InitializeControls();
 
 
     canBeBypassed = true;
-    SetSkin( "2e8d7ab1a6b247f28a8fdae6919663df" );
+    SetSkin( "d37ce72071374de3921d3cee57385dca" );
 }
 
 void InitializeControls()
@@ -373,7 +373,7 @@ void InitializeControls()
 public void Initialize()
 {
     //[user-Initialize]   Add your own initialization code here
-    faderDistr = new FaderDistrCore(false, SAMPLE_RATE);
+    faderDistr = new FaderDistrCore(true, SAMPLE_RATE);
     //[/user-Initialize]
 }
 
@@ -666,14 +666,14 @@ public String GetTooltipText( VoltageComponent component )
     //[user-GetTooltipText]   Add your own code here
     if (component == bias) {
         return "BIAS: " + displayBias(bias.GetValue())
-                + " (linear; X / 1 at -1, center at 0, Y / 2 at +1)";
+                + " (equal-power; X / 1 at -1, center at 0, Y / 2 at +1)";
     }
     if (component == xInput) return "FADER X input";
     if (component == yInput) return "FADER Y input";
-    if (component == zOutput) return "FADER Z: linear X/Y mix";
+    if (component == zOutput) return "FADER Z: equal-power X/Y mix";
     if (component == signalInput) return "DISTR S signal input";
-    if (component == oneOutput) return "DISTR 1: linear S distribution";
-    if (component == twoOutput) return "DISTR 2: linear S distribution";
+    if (component == oneOutput) return "DISTR 1: equal-power S distribution";
+    if (component == twoOutput) return "DISTR 2: equal-power S distribution";
     return super.GetTooltipText(component);
     //[/user-GetTooltipText]
 }
@@ -812,7 +812,7 @@ private VoltageLabel faderSectionLabel;
 
 
 //[user-code-and-variables]    Add your own variables and functions here
-// Fader|Distr A: fixed linear law, two simultaneous mono functions.
+// Fader|Distr B: fixed equal-power law, two simultaneous mono functions.
 private static final double SAMPLE_RATE = 48000.0;
 private FaderDistrCore faderDistr;
 
@@ -944,16 +944,16 @@ private static final class FaderDistrCore {
         }
     }
 
-    // Fixed relay/contact character: a soft asymmetric knee and one low-pass state per input.
+    // Refined relay/contact character: a related, slightly more open asymmetric knee and one low-pass state per input.
     // This remains intentionally native-rate and level-matched at either fully selected output.
     private static final class RelayVoice {
-        private static final double KNEE_VOLTS = 1.5;
-        private static final double DRIVE_START_VOLTS = 0.9;
+        private static final double KNEE_VOLTS = 1.8;
+        private static final double DRIVE_START_VOLTS = 1.1;
         private static final double DRIVE_SPAN_VOLTS = 5.0;
-        private static final double POSITIVE_COMPRESSION = 0.10;
-        private static final double NEGATIVE_COMPRESSION = 0.08;
-        private static final double CLEAN_CUTOFF_HZ = 10_000.0;
-        private static final double DRIVEN_CUTOFF_HZ = 6_500.0;
+        private static final double POSITIVE_COMPRESSION = 0.075;
+        private static final double NEGATIVE_COMPRESSION = 0.095;
+        private static final double CLEAN_CUTOFF_HZ = 11_500.0;
+        private static final double DRIVEN_CUTOFF_HZ = 8_000.0;
 
         private final double cleanCoefficient;
         private final double drivenCoefficient;

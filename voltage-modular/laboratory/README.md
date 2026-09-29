@@ -5,8 +5,8 @@ Series One: mono-first, predominantly manual instruments inspired by early labor
 | Module | Status | Files |
 | --- | --- | --- |
 | Signal Processor | Canonical 1.0.0 | [Release](signal-processor/versions/1.0.0/README.md) |
-| Fader|Distr A | Linear-law development pair | [Development](faderdistr/README.md) |
-| Fader|Distr B | Equal-power variant planned | [Development](faderdistr/README.md) |
+| Fader|Distr A | Locked linear-law development pair | [Development](faderdistr/README.md) |
+| Fader|Distr B | Locked equal-power development pair | [Development](faderdistr/README.md) |
 
 [CANONICAL.json](CANONICAL.json) identifies releases without duplicating source pairs.
 
