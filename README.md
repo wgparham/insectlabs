@@ -15,4 +15,4 @@ thee insect, in her laboratory creates...
 
 Designer projects, matching Java source, panel images, prior reference snapshots, release notes, and validation tools are archived together. See the [canonical version index](voltage-modular/colorbox/CANONICAL.json).
 
-[Laboratory canonical version index](voltage-modular/laboratory/CANONICAL.json) · [TestBench audio collection](voltage-modular/test-bench/README.md)
+[Laboratory canonical version index](voltage-modular/laboratory/CANONICAL.json) · [TestBench audio collection](test-bench/README.md)
