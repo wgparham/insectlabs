@@ -1,4 +1,6 @@
-# RGB 4.0.3
+# rgb 4.0.3
+
+[Module description and controls](../../README.md)
 
 Canonical source archive, archived 2026-09-28.
 
