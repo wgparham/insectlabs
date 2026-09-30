@@ -1,5 +1,10 @@
 # Development setup
 
+## Build output
+
+Compile Java class output outside Dropbox and Git at `C:\InsectLabs-Build\<module>`. Clear the module-specific output folder before a clean build. This avoids sync/indexing contention with `javac` class-file writes while keeping source and immutable releases in the repository.
+
+
 ## Current repository state
 
 - Canonical remote: https://github.com/wgparham/insectlabs
