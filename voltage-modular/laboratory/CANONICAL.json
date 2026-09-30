@@ -27,5 +27,10 @@
     "version": "1.0.2",
     "path": "generator/versions/1.0.2",
     "module": "generator"
+  },
+  "function": {
+    "version": "1.0.0",
+    "path": "function/versions/1.0.0",
+    "module": "function"
   }
 }

@@ -16,7 +16,7 @@ Completed below means a user-approved canonical source release, not publication 
 | sw1 — push-button relay router | **Completed — canonical 1.0.0** | [Release](../laboratory/sw1/versions/1.0.0/README.md); routing and final CLK voicing approved |
 | sw2 — rotary selector/distributor | **Completed — canonical 1.0.0** | [Release](../laboratory/sw2/versions/1.0.0/README.md); final routing, CLK voice, 3 V amplifier character, and OFF default approved |
 | Laboratory Generator | **Completed — canonical 1.0.2** | [Release](../laboratory/generator/versions/1.0.2/README.md); approved generator, FM, compression and reference tone; cleanup, duty smoothing and readable Display Names approved |
-| Pulse/Sine Generator | Planned | Develop the separate pulse/sine source |
+| AC/1D SIN-SQR Function Generator | **Completed — canonical 1.0.0** | [Release](../laboratory/function/versions/1.0.0/README.md); independent sine/square boards, calibrated output-frequency display and full-dial high ranges |
 | Sine/Random Generator | Planned | Audition noise modulation and bandwidth behavior |
 | Deep Tone Generator | Planned | Combine the accepted low-frequency and modulation concepts |
 | Noise Generator | Planned | Set noise colors, warm voicing, and S/H Source behavior |
@@ -58,11 +58,11 @@ reference is routed by the up/off/down switch. Meter averaging, power gating and
 See the [release notes](../laboratory/generator/versions/1.0.2/README.md) for exact behavior and validation.
 Pulse generation remains a separate instrument.
 
-### Pulse/Sine Generator
+### AC/1D SIN-SQR Function Generator — completed, canonical 1.0.0
 
-Required: a separate pulse or pulse/sine instrument inspired by the AG-10 reference in Berna 3.
+The completed Function module fulfills the separate AG-10-inspired pulse/sine source: independent sine and square outputs, separate amplitude/range stages, variable square width, a shared output-frequency display and multiplier, and a dirty hand-built laboratory voice. It initializes at C4 on X10 and reaches 23.76 kHz with the upper multiplier ranges spread across the full dial.
 
-Preferred proposal: pulse/sine with separate outputs and level controls. Berna 3 page 17 describes sine and square outputs; adjustable pulse width would be an intentional extension. A square setting should remain easy to find. Its role is periodic excitation, timing, and richer waveforms.
+See the [release notes](../laboratory/function/versions/1.0.0/README.md) for exact behavior and validation.
 
 ### Sine/Random Generator
 
@@ -224,7 +224,7 @@ Series 2's contour generators can focus on studio gestures, while the Series 3 c
 
 ## Next steps and document roles
 
-1. Generator 1.0.2 is canonical after the final code/UI review and user approval. The next proposed instrument is Pulse/Sine Generator, using the AG-10 reference; develop its mockup and detailed controls next. Sine/Random and Deep Tone remain separate planned instruments.
+1. Generator 1.0.2 and Function 1.0.0 are canonical after their final code/UI reviews and user approval. The next proposed instrument is Sine/Random Generator. Deep Tone remains a separate planned instrument.
 2. Develop the remaining noise, reference, and retained processing concepts while keeping Series 2 and Series 3 flexible.
 
 [Series-One-Utilities.md](Series-One-Utilities.md) remains the original utility design draft; its old processor defaults, push-button topology, and unimplemented proposals are superseded by the current module release notes and this roadmap. Its paired rotary source/destination design remains the basis for sw2.

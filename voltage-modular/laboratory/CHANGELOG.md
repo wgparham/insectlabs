@@ -1,5 +1,16 @@
 # Laboratory release notes
 
+## Function 1.0.0 — 2026-09-30
+
+First canonical release, approved after the user's final Designer build, save/reload and listening test.
+
+- Separate hand-built sine and square oscillator boards, sharing manual tuning but retaining independent phase and slow drift.
+- Calibrated output-frequency display with X1 / X10 / X100 / X1K / X10K ranges; X10 initializes at C4 and high ranges use the full dial to the 23.76 kHz ceiling.
+- Separate 0.1 V / 1 V / 10 V output ranges, variable square width, restrained high-level compression and 8 ms physical power fade.
+- Direct source-module bypass: silent output and frozen state.
+
+See [release review](function/versions/1.0.0/REVIEW.md).
+
 ## Generator 1.0.2 — 2026-09-30
 
 Approved canonical maintenance release after the user’s successful final build and runtime test.

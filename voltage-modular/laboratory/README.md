@@ -10,6 +10,7 @@ Series One: mono-first, predominantly manual instruments inspired by early labor
 | sw1 | Canonical 1.0.0, manual relay router | [Release](sw1/versions/1.0.0/README.md) |
 | sw2 | Canonical 1.0.0, manual rotary selector/distributor | [Release](sw2/versions/1.0.0/README.md) |
 | Generator | Canonical 1.0.2, sine/variable-triangle source with FM and 1 kHz reference | [Release](generator/versions/1.0.2/README.md) |
+| Function | Canonical 1.0.0, independent sine/square laboratory source | [Release](function/versions/1.0.0/README.md) |
 
 [CANONICAL.json](CANONICAL.json) identifies releases without duplicating source pairs.
 
@@ -26,3 +27,4 @@ Follow [Colorbox conventions](../colorbox/STANDARDS.md). The modulation referenc
 Release preparation follows the [module release checklist](../docs/Module-Release-Checklist.md).
 Generator 1.0.2 is approved and canonical; its [release review](generator/versions/1.0.2/REVIEW.md)
 records the physical power fade and retained design behavior.
+Function 1.0.0 is approved and canonical; its [release review](function/versions/1.0.0/REVIEW.md) records the independent-board source, calibration and validation.
