@@ -9,7 +9,7 @@ inspired by early test equipment and electronic-music studios.
 | Project | Current state |
 | --- | --- |
 | [Colorbox](voltage-modular/colorbox/README.md) | Canonical RGB 4.0.3, CMYK 1.0.3, and HSB 1.0.2 source archives |
-| [Laboratory](voltage-modular/laboratory/README.md) | Canonical Signal Processor 1.0.1, Fader&#124;Distr A/B 1.0.0, sw1 1.0.0, sw2 1.0.0, and Generator 1.0.0 |
+| [Laboratory](voltage-modular/laboratory/README.md) | Canonical Signal Processor 1.0.1, Fader&#124;Distr A/B 1.0.0, sw1 1.0.0, sw2 1.0.0, and Generator 1.0.1 |
 | [Audio TestBench](test-bench/README.md) | Version 1.1, 54 measurement and listening WAV files at 48 kHz/24-bit |
 
 The [collection roadmap](voltage-modular/docs/Collection-Roadmap.md) records the accepted

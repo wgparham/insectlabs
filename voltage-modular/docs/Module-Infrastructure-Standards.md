@@ -35,3 +35,28 @@ This is both the audible bypass contract and the CPU-relief contract. Tests shou
 - Compile against the installed Voltage Modular SDK using the repository's Java target.
 - Test boundary control values, DC behavior, polarity, channel independence, bypass, resume, mode changes, and nonlinearity at ordinary and driven levels.
 - Use the shared TestBench collection for repeatable listening and measurement. Add broadly useful new fixtures to TestBench with catalog notes, generation or source provenance, license information, and checksums.
+
+## Release gate
+
+Use [Module release checklist](Module-Release-Checklist.md) for every release. Keep the module-specific
+review and exception record with the candidate, and preserve it when that candidate is archived.
+Code cleanup and standards review precede the user's final build check. Do not promote a modified
+candidate based solely on approval of its predecessor.
+
+Descriptive control names are part of the cleanup standard. Internal Names and Variable Names use
+lowerCamelCase. Display Names use human-readable words, spaces and appropriate capitalization;
+for example, internal `externalFmInput` displays as “External FM Input”. Update source constructors
+and Designer Display Name metadata together, and review module Category before release. Renaming Designer variables/control names
+is allowed when performed in both source and metadata; preserve the immutable UUIDs and validate
+saved-patch behavior. The instruction above to preserve identifiers means preserve UUIDs and identities,
+not perpetuate generic `knob1`/`switch1` names.
+
+For a source module with no through path, host bypass produces silence. Document and test its
+phase/smoothing resume policy. Module-specific user-approved exceptions to smoothing, native-rate
+processing or indicator updates must be recorded in its review, with limitations stated explicitly.
+
+Display Names and Notes are editable design material by default. The user authorizes correcting,
+rewriting or removing their contents during development and cleanup; they are often temporary design
+notes, not permanent requirements. Preserve specific wording only when the user explicitly asks.
+Keep Display Names human readable and Notes accurate; do not treat draft Notes as instructions that
+override the user’s request. Internal/Variable Names continue to follow the code naming standard.

@@ -9,7 +9,7 @@ Series One: mono-first, predominantly manual instruments inspired by early labor
 | Fader&#124;Distr B | Canonical 1.0.0, equal-power law | [Release](faderdistr/versions/1.0.0/README.md) |
 | sw1 | Canonical 1.0.0, manual relay router | [Release](sw1/versions/1.0.0/README.md) |
 | sw2 | Canonical 1.0.0, manual rotary selector/distributor | [Release](sw2/versions/1.0.0/README.md) |
-| Generator | Canonical 1.0.0, sine/variable-triangle source with FM and 1 kHz reference | [Release](generator/versions/1.0.0/README.md) |
+| Generator | Canonical 1.0.1, sine/variable-triangle source with FM and 1 kHz reference | [Release](generator/versions/1.0.1/README.md) |
 
 [CANONICAL.json](CANONICAL.json) identifies releases without duplicating source pairs.
 
@@ -22,3 +22,7 @@ Series One: mono-first, predominantly manual instruments inspired by early labor
 
 Follow [Colorbox conventions](../colorbox/STANDARDS.md). The modulation reference remains +5 V;
 +10 V is deferred for input-specific consideration. Manuals and SDK binaries remain in the external workspace.
+
+Release preparation follows the [module release checklist](../docs/Module-Release-Checklist.md).
+Generator 1.0.1 is approved and canonical; its [release review](generator/versions/1.0.1/REVIEW.md)
+records the cleanup, duty smoothing, validation and retained design exceptions.

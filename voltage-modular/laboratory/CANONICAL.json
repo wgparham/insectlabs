@@ -24,8 +24,8 @@
     "module": "sw2"
   },
   "generator": {
-    "version": "1.0.0",
-    "path": "generator/versions/1.0.0",
+    "version": "1.0.1",
+    "path": "generator/versions/1.0.1",
     "module": "generator"
   }
 }

@@ -1,5 +1,18 @@
 # Laboratory release notes
 
+## Generator 1.0.1 — 2026-09-30
+
+Approved canonical maintenance release after the user’s final build/listening check.
+
+- Added 10 ms DUTY CYCLE smoothing; other DSP remains unchanged for equivalent duty input.
+- Renamed internal/variable identifiers, expanded helpers and removed empty notification scaffolding.
+- Human-readable Display Names, corrected Designer notes and Oscillators category.
+- Correct tooltip precision and typed Hz/volt/percentage conversion using the SDK edit path.
+- Both source forms compile; the regression suite passes 11,000,045 checks over one million samples.
+- Added the shared release checklist and recorded module-specific infrastructure exceptions.
+
+See [release review](generator/versions/1.0.1/REVIEW.md). 1.0.0 remains an immutable previous release.
+
 ## Generator 1.0.0 — 2026-09-30
 
 First canonical release following user approval of the final build and sound.
