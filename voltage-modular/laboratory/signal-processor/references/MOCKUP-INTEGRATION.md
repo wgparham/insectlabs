@@ -50,4 +50,6 @@ Use the tested core's top channel for the left strip and bottom channel for the 
 
 No Designer open/build, host audition, or functional integration is claimed by this intake review.
 
-The separate development pair now implements and verifies steps 1-5. See development/README.md for results and the remaining Designer/host checks. This archived intake description still describes the supplied mockup before DSP integration.
+The separate development pair completed the original steps 1-5 and was promoted to the approved
+[Signal Processor 1.0.1 release](../versions/1.0.1/README.md). This archived intake description
+still describes the supplied mockup before DSP integration.

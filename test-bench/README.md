@@ -1,13 +1,16 @@
-# InsectLabs Audio Test Bench
+# InsectLabs Audio TestBench
 
-The full TestBench collection is versioned here. It contains 54 WAV files at 48 kHz/24-bit, a portable ZIP archive, source recordings with license evidence, and a measured catalog, attribution, manifest, and verification results.
+The Audio TestBench is a standalone InsectLabs project for module development, audio/musical
+experimentation, and repeatable listening or measurement. The full TestBench collection is versioned
+here. It contains 54 WAV files at 48 kHz/24-bit, a portable ZIP archive, source recordings with
+license evidence, and a measured catalog, attribution, manifest, and verification results.
 
 - `v1` contains the ready-to-patch collection and its listening guide.
 - `sources/ibm-freesound` preserves the source recordings and license evidence used for the recorded fixtures.
 - `InsectLabs-TestBench-v1.zip` is the portable v1 review copy; its SHA-256 digest is in the adjacent `.sha256` file.
 - `archive-metadata` preserves the original delivery metadata.
 
-Third-party recording licenses are separate from this repository's code license. Keep the credits with the WAV distribution. Do not apply the generated-audio CC0 dedication to the sourced recordings.
+Third-party recording licenses are separate from this repository's code license. Keep the credits with the WAV distribution. Do not apply the generated-audio CC0 dedication to the sourced recordings. The original user-provided composition source is archived separately; this repository contains only its approved delivery mix and provenance.
 
 ## Rebuild
 

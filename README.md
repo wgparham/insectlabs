@@ -1,18 +1,27 @@
-# insectlabs
+# InsectLabs
 
-thee insect, in her laboratory creates...
+InsectLabs develops Voltage Modular instruments and a reusable audio TestBench. The active work is
+the mono-first Laboratory collection: large manual instruments with restrained vintage weight,
+inspired by early test equipment and electronic-music studios.
 
-## Voltage Modular
+## Projects
 
-[Colorbox canonical source archive](voltage-modular/colorbox/README.md)
+| Project | Current state |
+| --- | --- |
+| [Colorbox](voltage-modular/colorbox/README.md) | Canonical RGB 4.0.3, CMYK 1.0.3, and HSB 1.0.2 source archives |
+| [Laboratory](voltage-modular/laboratory/README.md) | Canonical Signal Processor 1.0.1, Fader|Distr A/B 1.0.0, sw1 1.0.0, and sw2 1.0.0 |
+| [Audio TestBench](test-bench/README.md) | Version 1.1, 54 measurement and listening WAV files at 48 kHz/24-bit |
 
-[Laboratory collection and future-series design](voltage-modular/laboratory/README.md)
+The [collection roadmap](voltage-modular/docs/Collection-Roadmap.md) records the accepted
+three-series direction. The next Laboratory instrument is the sine/triangle Laboratory Generator.
 
-- RGB 4.0.3
-- CMYK 1.0.3
-- HSB 1.0.2
-- Signal Processor 1.0.0
+## Repository layout
 
-Designer projects, matching Java source, panel images, prior reference snapshots, release notes, and validation tools are archived together. See the [canonical version index](voltage-modular/colorbox/CANONICAL.json).
+- `voltage-modular/colorbox`: immutable Colorbox releases and shared source-pair tooling.
+- `voltage-modular/laboratory`: canonical Laboratory releases, tests, references, and collection tools.
+- `voltage-modular/docs`: collection planning and implementation standards.
+- `test-bench`: standalone audio fixtures, provenance, generation/import tools, and its portable archive.
 
-[Laboratory canonical version index](voltage-modular/laboratory/CANONICAL.json) · [TestBench audio collection](test-bench/README.md)
+Release folders are immutable. Copy a release into a new module-specific development location before
+starting a future revision. Generated build files, editor backups, caches, SDKs, manuals, and personal
+working archives stay outside Git.

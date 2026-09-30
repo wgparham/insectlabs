@@ -47,4 +47,8 @@ The delivered set passes 255 automated checks: WAV format and duration, checksum
 
 Generated audio in folders 01–06 is dedicated under CC0 1.0. Recordings retain their individual CC0 or CC BY 4.0 terms. **Keep ATTRIBUTION.md with redistributed copies**, particularly piano/rain files and piano-containing channel pairs. The collection is not covered by one blanket CC0 license.
 
-The repository contains generation/import/verification tools and a small archival manifest. WAVs, original source downloads and the review ZIP remain in `Resources/TestBench` for now. After audition and annotation, a versioned GitHub Release asset is a practical home for the audio ZIP; keep scripts, catalogs, attribution, checksums and test notes in Git. Nothing has been published by this task.
+The repository contains the delivery WAVs, portable archive, source downloads where redistribution
+permits, and generation/import/verification tools. The TestBench is its own top-level InsectLabs
+project and is versioned on GitHub. Keep scripts, catalogs, attribution, checksums, and test notes
+with each delivery. The original user-provided composition source is archived separately; only the
+approved converted delivery mix and provenance belong here.
