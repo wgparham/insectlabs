@@ -1,5 +1,15 @@
 # Laboratory release notes
 
+## Generator 1.0.2 — 2026-09-30
+
+Approved canonical maintenance release after the user’s successful final build and runtime test.
+
+- Added an 8 ms physical POWER-switch fade for both main and reference outputs.
+- Power-down stops oscillator processing only after the fade reaches silence; power-up resumes through the same short fade.
+- Retains the Colorbox-style hard host bypass and all approved 1.0.1 oscillator, FM, output-stage and panel behavior.
+
+See [release review](generator/versions/1.0.2/REVIEW.md). 1.0.1 remains an immutable previous release.
+
 ## Generator 1.0.1 — 2026-09-30
 
 Approved canonical maintenance release after the user’s final build/listening check.
