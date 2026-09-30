@@ -8,6 +8,7 @@ Series One: mono-first, predominantly manual instruments inspired by early labor
 | Fader|Distr A | Canonical 1.0.0, linear law | [Release](faderdistr/versions/1.0.0/README.md) |
 | Fader|Distr B | Canonical 1.0.0, equal-power law | [Release](faderdistr/versions/1.0.0/README.md) |
 | sw1 | Canonical 1.0.0, manual relay router | [Release](sw1/versions/1.0.0/README.md) |
+| sw2 | Canonical 1.0.0, manual rotary selector/distributor | [Release](sw2/versions/1.0.0/README.md) |
 
 [CANONICAL.json](CANONICAL.json) identifies releases without duplicating source pairs.
 

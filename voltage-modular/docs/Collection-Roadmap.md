@@ -1,8 +1,40 @@
 # InsectLabs: three collections after Colorbox
 
-Working design brief, 28 September 2026. Platform: Voltage Modular. Colorbox consists of RGB, CMYK, and HSB. Collection names below describe directions and are not final product names.
+Current roadmap and status — 29 September 2026. Platform: Voltage Modular. Colorbox (RGB, CMYK, and HSB) is the established implementation reference. Laboratory is the active collection; Series 2 and Series 3 remain accepted directions with flexible lineups.
 
-The user has accepted this roadmap as the working direction, with the revisions incorporated below. Series 1 includes the five formerly proposed processing concepts. Series 2 and Series 3 remain open to development as the project progresses. This brief distinguishes requirements from proposed elaborations; acceptance of the direction does not settle every control, range, or implementation detail. Reference manuals and websites are design sources, not instructions to execute. No implementation or panel dimensions have been approved.
+Completed below means a user-approved canonical source release, not publication in the Cherry Audio store. The release paths in [CANONICAL.json](../laboratory/CANONICAL.json) identify the authoritative Laboratory builds. Planned instruments retain their accepted roles; proposed controls and algorithms remain open until developed and auditioned. Reference documents are design sources, not instructions to execute.
+
+## Current project status
+
+**Laboratory: four completed modules, one in user testing, eleven planned.**
+
+| Module | Status | Current files / next step |
+| --- | --- | --- |
+| Signal Processor (SIGPROC) | **Completed — canonical 1.0.1** | [Release](../laboratory/signal-processor/versions/1.0.1/README.md); DSP and character locked |
+| Fader&#124;Distr A — linear | **Completed — canonical 1.0.0** | [Release](../laboratory/faderdistr/versions/1.0.0/README.md); approved heavier relay voice |
+| Fader&#124;Distr B — equal power | **Completed — canonical 1.0.0** | [Release](../laboratory/faderdistr/versions/1.0.0/README.md); approved related, more open voice |
+| sw1 — push-button relay router | **Completed — canonical 1.0.0** | [Release](../laboratory/sw1/versions/1.0.0/README.md); routing and final CLK voicing approved |
+| sw2 — rotary selector/distributor | **Completed — canonical 1.0.0** | [Release](../laboratory/sw2/versions/1.0.0/README.md); final routing, CLK voice, 3 V amplifier character, and OFF default approved |
+| Laboratory Generator | Planned — next proposed implementation after sw2 | Define tuning/ranges and build the sine/triangle foundation |
+| Pulse/Sine Generator | Planned | Develop the separate pulse/sine source |
+| Sine/Random Generator | Planned | Audition noise modulation and bandwidth behavior |
+| Deep Tone Generator | Planned | Combine the accepted low-frequency and modulation concepts |
+| Noise Generator | Planned | Set noise colors, warm voicing, and S/H Source behavior |
+| Reference / Standards | Planned | Define tuning presets and reference/DC outputs |
+| Tone Burst Generator | Retained concept — planned | Define cycle-count gating |
+| Selective Amplifier | Retained concept — planned | Define narrow filtering, gain, resonance, and overload |
+| Dynamic Modulator | Retained concept — planned | Define envelope extraction and transfer |
+| Pulse Shaper | Retained concept — planned | Define pulse integration/filtering and contour controls |
+| Balanced Modulator | Retained concept — planned | Define amplitude/ring modulation and carrier contribution |
+
+The working inventory is 16 modules, including separate Fader|Distr A/B and separate sw1/sw2. The Frequency Shifter belongs to Series 2.
+
+### Shared work completed
+
+- Canonical source releases for SIGPROC, Fader|Distr A/B, and sw1 are versioned in the repository. SIGPROC 1.0.1 preserves 1.0.0 DSP and incorporates the approved Designer UI state and percentage displays for Gain/EXT LVL.
+- The charcoal panels, large manual controls, jack styling, and dark red branding establish the current Laboratory visual family. Approved module panels replace the early speculative finish suggestions.
+- [Module infrastructure standards](Module-Infrastructure-Standards.md) document the shared bypass, source-pair, CPU, and validation conventions. New prototypes still require compliance checks before canonization.
+- [Audio TestBench](../../test-bench/README.md) is an independent top-level InsectLabs project, not part of Voltage Modular. Its current 1.1 collection contains 54 WAV files at 48 kHz/24-bit, including the user's original experimental mix. The collection and portable archive are on GitHub. Add useful fixtures with catalog, provenance, attribution, and checksum updates; the user's original mix source is archived separately and need not be duplicated.
 
 ## The progression
 
@@ -14,15 +46,13 @@ The user has accepted this roadmap as the working direction, with the revisions 
 
 Moog modular, rackmount processors, Moogerfooger pedals, and Synthesizers.com are shared references. Their role and visual weight can evolve between series. These are creative eras, not a claim that every referenced technique originated in that period.
 
-The user confirmed German film studios as an influence; "filk" in the original message was a typo.
-
-## Series 1: explicitly requested instruments
+## Series 1: planned sources and reference instruments
 
 ### Laboratory Generator
 
 Required: sine and triangle only; pulse generation belongs to a separate instrument.
 
-Proposed: simultaneous sine and triangle outputs, a large frequency dial, coarse range switching, fine tuning, output amplitude, and external FM. Frequency ranges and tracking policy remain open. Its role is the basic tunable laboratory source.
+Proposed: simultaneous sine and triangle outputs, a large frequency dial, coarse range switching, fine tuning, output amplitude, with external FM only if justified by the manual-first design. Frequency ranges and tracking policy remain open. Its role is the basic tunable laboratory source.
 
 ### Pulse/Sine Generator
 
@@ -44,7 +74,7 @@ Required: combine the Beat Oscillator in Berna 1 with the Tieftone Generator in 
 
 Berna 1 page 19 describes a sine carrier frequency-modulated by a waveform that varies from rising saw through triangle to falling saw. Berna 3 page 15 describes a 0.1-1100 Hz sine generator with AM capability.
 
-Proposed: low-frequency sine carrier, coarse/fine frequency, internal modulation rate, slope/symmetry, FM depth, and AM depth. Include an external modulation input and consider exposing the internal modulator. Start by auditioning the Tieftone reference range rather than treating it as a fixed requirement. This should create slow pressure changes, throbbing bass, sweeps, and rhythmic motion. A true heterodyne implementation is not required by these manual descriptions.
+Proposed: low-frequency sine carrier, coarse/fine frequency, internal modulation rate, slope/symmetry, FM depth, and AM depth. Consider an external modulation input and exposing the internal modulator, subject to the manual-first design review. Start by auditioning the Tieftone reference range rather than treating it as a fixed requirement. This should create slow pressure changes, throbbing bass, sweeps, and rhythmic motion. A true heterodyne implementation is not required by these manual descriptions.
 
 ### Noise Generator
 
@@ -62,25 +92,44 @@ Proposed: preset reference frequencies plus continuous fine adjustment; an indep
 
 Recommended design exception: precise, stable reference tone and DC outputs without modeled drift or saturation. Keep reference pink noise consistent enough for comparison and calibration. The dedicated Noise Generator supplies the more strongly colored noise character. This gives both instruments separate jobs.
 
-### Fader|Distr A and Fader|Distr B
+## Series 1: implemented utility instruments
 
-Required: two separate modules with identical layouts and fixed linear/equal-power laws, clearly labeled A/B by variant. Each performs simultaneous parallel distribution and crossfading under one large manual BIAS dial. No CV inputs or law switch. Each path is mono; DISTR distributes S between outputs 1 and 2 while FADER crossfades X/Y to Z.
+### Signal Processor — completed, canonical 1.0.1
 
-Proposed implementation: cache gains while stationary, briefly smooth manual movement, and avoid oversampling these linear functions. Side-by-side instances have additional host overhead but should remain inexpensive; verify by measurement.
+Two independent mono stages provide attenuation, amplification, inversion, post-character offset, and gain CV with EXT LVL. Both stages initialize in PROC mode. Gain is symmetric from -3 to +3; OFFSET supplies static voltage after processing and has no CV input.
 
-### Signal Processor
+PROC permits bipolar gain and immediate external modulation. Positive gain develops the approved weight and saturation near the top of the range; negative gain provides cleaner inversion. VCA uses unipolar gain with its own rounded response and deliberately pronounced vactrol behavior. The two modes are audibly and functionally distinct. The approved character uses restrained 2x processing and is locked.
 
-Required: attenuation, amplification, inversion, offsetting, and related signal conditioning, using the Q125 data sheet as a possible reference. CV-controlled gain and resulting VCA capabilities are under consideration.
+Direct host bypass passes each input to its corresponding output. The user approved the final Designer build and host behavior. Version 1.0.1 is a UI maintenance release; it changes no DSP, routing, or timing. See the [module overview](../laboratory/signal-processor/README.md).
 
-The Q125 reference combines two processing sections. Its top section has signed gain up to +/-2 and offset up to +/-5 V; its lower section normally provides polarity selection and offset. These are reference values, not adopted Voltage Modular specifications. The documented front-panel controls do not include gain CV.
+### Fader|Distr A and Fader|Distr B — completed, canonical 1.0.0
 
-Proposed: an audio/DC-capable processor organized around output = input x gain + offset, with manual gain and offset plus attenuated CV control of gain. Offset CV is explicitly excluded. Unipolar gain could provide conventional VCA behavior; bipolar gain could provide voltage-controlled inversion. Define that choice, CV scaling, headroom, and offset placement explicitly. Post-gain offset remains at the output when gain reaches zero. Channel count and ranges remain open. Its primary role is general signal conditioning; the Balanced Modulator retains its dedicated modulation role.
+Two separate modules have matching layouts and one large manual BIAS dial. FADER crossfades X/Y to Z; DISTR distributes S between outputs 1 and 2. Both functions run simultaneously. There are no CV inputs or law switches.
 
-### Manual Switches / Routers
+A uses a fixed linear law and the heavier, woollier relay voicing. B uses a fixed equal-power law and a related, more open later-model voice. Both are deliberately more colored than typical Laboratory utilities while remaining below Colorbox's coloration. Their tone and behavior are approved and locked.
 
-Required: manual switching and routing with both push-button and knob/switch interfaces, styled as Series 1 laboratory equipment.
+The native-rate implementation uses a short 5 ms manual transition and inexpensive character processing. Endpoints remain level-conscious; B can boost correlated sources at center as expected from its law. Direct bypass copies S to both distribution outputs and X to Z. See the [release](../laboratory/faderdistr/versions/1.0.0/README.md).
 
-Proposed organization: two complementary modules, a Push-Button Router and a Rotary/Toggle Router. Momentary versus latching operation, exclusive selection versus multiple active routes, input/output counts, and any off position remain open. Support audio and control signals where practical. Smooth audio transitions and exact gate/CV switching have different needs; decide transition behavior deliberately. Series 1 emphasizes direct manual operation; voltage-controlled switching is assigned to Series 2.
+### sw1 — completed, canonical 1.0.0
+
+A manual 2x2 relay router with an illuminated push button and toggle/gate mode selector. The normal position routes I1 to O1 and I2 to O2; the alternate position swaps the paths. Patching makes it a selector, distributor, swapper, mute, or manual toggle/gate source. With no inputs patched it provides complementary +5 V outputs. There is no CV selection input.
+
+CLK defaults up for direct switching. Down enables the approved 1.8 kHz one-pole contact filtering and 2 ms relay-settling transition. This is a practical click-reduction and tone treatment inspired by vintage circuitry, not a component-exact Moog reconstruction. The user approved switching, patch programmability, indicators, and the final CLK sound. Direct host bypass passes I1 to O1 and I2 to O2. See the [release](../laboratory/sw1/versions/1.0.0/README.md).
+
+### sw2 — completed, canonical 1.0.0
+
+The supplied mockup develops the rotary router from [Series-One-Utilities.md](Series-One-Utilities.md). A shared manual selector has five positions: 0 (OFF), 1, 2, 3, and 4.
+
+- The four upper input jacks feed the selected-source output **X**.
+- Common input **Y** feeds only the selected numbered output in the lower bank.
+- The same number selects both independent banks. There is no hidden connection between them.
+- Position 0 turns all outputs off; CLK transitions may briefly fade/filter the previous signal before settling.
+- CLK up selects direct routing; CLK down retains sw1's 2 ms settling with a slightly more open 2.2 kHz filter, giving sw2 a related but distinct voice. The user approved this CLK voicing.
+- Direct bypass preserves the cached selected route/OFF without tone processing and meets the shared CPU and state-handling standards.
+
+The user approved functional testing, the distinct 2.2 kHz CLK voice, and the added amplifier character with its 3 V compression knee. The [canonical release](../laboratory/sw2/versions/1.0.0/README.md) includes the approved source pair, panel, hashes, and release notes. The selector initializes and resets to 0/OFF.
+
+Final review cleaned control IDs/tooltips, corrected bypass state handling, and made rapid CLK changes retarget continuously. Exported and embedded source compile against the SDK; automated routing/DC, bank isolation, transition, and bypass/resume checks pass. sw2 is canonical 1.0.0.
 
 ## Series 1: confirmed retained concepts
 
@@ -92,28 +141,9 @@ The user explicitly retained all five earlier concepts:
 - Pulse Shaper: contours formed by filtering/integrating pulses.
 - Balanced Modulator: amplitude/ring modulation and carrier contribution.
 
-### Current Series 1 inventory
+The status table above is the current inventory. These five retained concepts have not yet reached implementation or panel approval.
 
-1. Laboratory Generator
-2. Pulse/Sine Generator
-3. Sine/Random Generator
-4. Deep Tone Generator
-5. Noise Generator
-6. Reference / Standards
-7. Tone Burst Generator
-8. Selective Amplifier
-9. Dynamic Modulator
-10. Pulse Shaper
-11. Balanced Modulator
-12. Fader|Distr A — Linear
-13. Fader|Distr B — Equal Power
-14. Signal Processor (VCA capability under consideration)
-15. Push-Button Router (proposed packaging of the manual switching requirement)
-16. Rotary/Toggle Router (proposed packaging of the manual switching requirement)
-
-This is a 16-module working layout if the manual routing functions become two modules. Their packaging and final release count are not settled. The Frequency Shifter has moved to Series 2 at the user's request.
-
-## Sound and panel principles: proposals
+## Shared sound, panel, and implementation principles
 
 - Large, readable instruments with a dominant primary control, visible units, range switches, useful meters, and generous spacing.
 - A coherent family with individual instrument personalities: generator dials, amplifier meters, timing switches, and a standards dial need not use identical layouts.
@@ -124,9 +154,11 @@ This is a 16-module working layout if the manual routing functions become two mo
 - Manual controls dominate Series One. CV becomes common in Series Two. Functional signal/modulation inputs remain appropriate where essential; review optional oscillator CV proposals accordingly.
 - Minimize CPU usage. Preserve Colorbox-style direct bypass; start at 2x oversampling only where it is needed and justify any increase with evidence.
 - +5 V remains the working modulation reference. The user deferred +10 V; it may be reconsidered for specific warranted CV inputs. Keep this separate from audio levels, gate detection, and pitch tracking.
-- Exact frequency ranges, panel widths, and common controls require comparison with the canonical Colorbox projects now available at ../colorbox.
+- For remaining instruments, settle frequency ranges, panel widths, and controls against their roles and the established Colorbox/Laboratory conventions. Completed module layouts and voicings are locked.
 
 ## Series 2: accepted general direction, evolving lineup
+
+**Status: planning direction only; no modules in this series are marked completed here.**
 
 Purpose-built studio tools can extend Series 1 with fixed/third-octave filter banks, a sweep/function generator, contour generators, sample-and-hold, matrix routing, tape/loop manipulation, delay, reverb, vocoding, and spatial movement.
 
@@ -144,9 +176,11 @@ Required addition: voltage-controlled switching. Candidate forms include control
 
 ### Studio Manual Switches / Routers
 
-Required addition: more modern manual switches and routers appropriate to the mid-1960s to mid-1970s studio direction. Proposed distinctions from Series 1 include illuminated selection buttons, grouped routing controls, and performance-oriented layouts. Matrix size, channel count, routing rules, and any combination with voltage-controlled switching remain open.
+Required addition: more modern manual switches and routers appropriate to the mid-1960s to mid-1970s studio direction. Potential distinctions from Series 1 include larger grouped routing controls, integrated patch control, and performance-oriented layouts. Illuminated buttons alone are not a distinction: sw1 already uses one. Matrix size, channel count, routing rules, and any combination with voltage-controlled switching remain open.
 
 ## Series 3: candidate territory, not a committed lineup
+
+**Status: concept exploration; no modules in this series are marked completed here.**
 
 - Analog arithmetic: summing, scaling, offset, four-quadrant multiplication, rectification, min/max.
 - Continuous computation: integrators/accumulators, reset/hold conditions, feedback experiments.
@@ -179,12 +213,16 @@ Series 2's contour generators can focus on studio gestures, while the Series 3 c
 - Patchable Devices manual: https://github.com/nullJaX/vcvrack-patchable-devices/blob/master/MANUAL.md
 - Window Generators: https://github.com/nullJaX/vcvrack-patchable-devices/blob/master/modules/WindowGenerators/WindowGenerators.md
 - Voltage Sequencer: https://github.com/nullJaX/vcvrack-patchable-devices/blob/master/modules/VoltageSequencer/VoltageSequencer.md
+- SickoCV Switcher family: https://github.com/sickozell/SickoCV — sw1 patch-programmability inspiration.
+- Moog CP3/contact-filter references: https://amsynths.co.uk/home/synthesizers/schulze-moog-modular-replica/true-cp3-mixer/ and https://modularsynthesis.com/moog/cp3/cp3.htm
+- Airwindows Capacitor/Capacitor2: https://www.airwindows.com/capacitor/ and https://www.airwindows.com/capacitor2/ — filter/voicing references, not a claim of code reuse.
 - User-specified Q123 reference: https://www.synthesizers.com/q123.html (page could not be retrieved during this review; no exact Q123 specifications are asserted here).
 
-The first utility specification is now drafted in [Series-One-Utilities.md](Series-One-Utilities.md). It proposes two Signal Processor channels, simultaneous pan/crossfade, dual A/B push-button selection, and paired source/destination rotary routing. These detailed choices remain proposals; the roadmap's accepted module scope is unchanged.
+## Next steps and document roles
 
-Next design work: review or trial these concrete utility behaviors, establish platform and Colorbox integration conventions, then prototype utilities and specify the four distinct generator types. Keep Series 2 and Series 3 flexible as the system develops.
+1. Begin Laboratory Generator: settle manual frequency ranges, tuning behavior, sine/triangle outputs, and levels. Use this as the foundation for the separate Pulse/Sine, Sine/Random, and Deep Tone instruments. This is the proposed next implementation order, not approval of their detailed panels or controls.
+2. Develop the remaining noise, reference, and retained processing concepts while keeping Series 2 and Series 3 flexible.
 
-Implementation baseline and resource locations are recorded in [Development-Setup.md](Development-Setup.md).
+[Series-One-Utilities.md](Series-One-Utilities.md) remains the original utility design draft; its old processor defaults, push-button topology, and unimplemented proposals are superseded by the current module release notes and this roadmap. Its paired rotary source/destination design remains the basis for sw2.
 
-The first Signal Processor Designer project is wired and passes SDK/callback checks; see [test-build status](../laboratory/signal-processor/development/README.md). Designer open/build and host audition remain ahead.
+[Development-Setup.md](Development-Setup.md) records platform/resource setup. [Module-Infrastructure-Standards.md](Module-Infrastructure-Standards.md) records shared implementation requirements. [Laboratory releases](../laboratory/README.md), [CANONICAL.json](../laboratory/CANONICAL.json), and the [changelog](../laboratory/CHANGELOG.md) identify completed work. TestBench lives independently at [test-bench](../../test-bench/README.md).

@@ -1,5 +1,21 @@
 # Laboratory release notes
 
+## sw2 1.0.0 — 2026-09-29
+
+First canonical release, approved by the user after successful Designer builds, routing tests,
+and listening tests.
+
+- Manual shared OFF/1–4 selector: SOURCE 1–4 to X and Y to the matching destination; the two routing banks remain independent.
+- Position 0 initializes/resets to OFF.
+- Always-on restrained line-amplifier character with 2x midpoint conditioning, an open 14 kHz voice, and gentle asymmetric compression above ±3 V.
+- Direct CLK routing up; CLK down adds a related-but-distinct 2.2 kHz contact filter plus a 2 ms relay transition.
+- Direct Colorbox-style host bypass retains the cached route and performs no DSP/state updates.
+- Rapid CLK selector changes retarget continuously from the current routing mix.
+
+Validation: embedded source matches Java export; checksums, Java 17 Voltage SDK compilation,
+control/tooltips and Designer anchor checks, and 192125 routing/DC/transition/bypass regression
+checks pass. The user confirmed final build/load, sound, behavior, and OFF default.
+
 ## Signal Processor 1.0.1 — 2026-09-29
 
 Canonical maintenance release for the approved Designer UI state.
