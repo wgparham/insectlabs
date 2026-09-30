@@ -12,7 +12,7 @@ Compile Java class output outside Dropbox and Git at `C:\InsectLabs-Build\<modul
 - Active collection: [Laboratory](../laboratory/README.md)
 - Shared audio fixtures: [TestBench](../../test-bench/README.md)
 - Current Laboratory releases: Signal Processor 1.0.1, Fader|Distr A/B 1.0.0, sw1 1.0.0, sw2 1.0.0, and Generator 1.0.2.
-- Next proposed module: Pulse/Sine Generator; Generator is canonical 1.0.1.
+- Next proposed module: Pulse/Sine Generator; Generator is canonical 1.0.2.
 
 The accepted direction and unbuilt inventory live in [Collection Roadmap](Collection-Roadmap.md).
 [Module Infrastructure Standards](Module-Infrastructure-Standards.md) defines the shared
@@ -55,3 +55,4 @@ Module Designer documents are linked from the roadmap and infrastructure standar
 Generator 1.0.2 is canonical in `laboratory/generator/versions/1.0.2/`; its final review and
 user approval are recorded in `REVIEW.md`.
 Use [Module release checklist](Module-Release-Checklist.md) before archiving any subsequent module.
+
