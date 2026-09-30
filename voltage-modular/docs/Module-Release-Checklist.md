@@ -10,6 +10,9 @@ standards review. Approval of sound does not imply approval of a subsequently mo
 - [ ] Identify the current canonical version, source pair and hashes. Preserve that archive unchanged.
 - [ ] Read the latest user-supplied `.vmod`, Java export and artwork. Check for changes made during review.
 - [ ] Work in `development/`. Record the proposed version and distinguish it from the canonical release.
+- [ ] Set the Designer module Notes field to the exact current version before development proceeds.
+  Use `v<version>rc` for a release candidate and the released `v<version>` after promotion. Validate
+  the Notes field against the intended archive version before each build, release, and cleanup.
 - [ ] Consult [Colorbox conventions](../colorbox/STANDARDS.md) and
   [infrastructure standards](Module-Infrastructure-Standards.md). Identify applicable exceptions.
 - [ ] Record what may change: cleanup, UI corrections, DSP changes, or a combination.

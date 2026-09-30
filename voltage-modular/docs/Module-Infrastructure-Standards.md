@@ -60,3 +60,8 @@ rewriting or removing their contents during development and cleanup; they are of
 notes, not permanent requirements. Preserve specific wording only when the user explicitly asks.
 Keep Display Names human readable and Notes accurate; do not treat draft Notes as instructions that
 override the user’s request. Internal/Variable Names continue to follow the code naming standard.
+
+The module Notes field is the visible version marker for active work. It must state the exact current
+version: `v<version>rc` while a release candidate is being edited, then `v<version>` in the archived
+canonical project. Check it before build, promotion, and cleanup; release documentation and hashes do
+not replace this in-project marker.
