@@ -2,7 +2,7 @@
 
 ## Build output
 
-Compile Java class output outside Dropbox and Git at `C:\InsectLabs-Build\<module>`. Clear the module-specific output folder before a clean build. This avoids sync/indexing contention with `javac` class-file writes while keeping source and immutable releases in the repository.
+Compile Java class output outside Dropbox and Git at `C:\InsectLabs-Build\<module>`. Clear the module-specific output folder before a clean build. This separates disposable compiler output from synced source and immutable releases. It has compiled successfully in this workflow; the earlier write failure was not conclusively diagnosed as a file lock. No antivirus exclusion is required by this convention.
 
 
 ## Current repository state
@@ -47,12 +47,17 @@ and Designer/host listening are still required for every release.
 ## External references
 
 Manual PDFs remain in the external workspace `Resources` directory. The roadmap records the
-specific Berna, Moog, Q125/Q123, Serge, and modular-software references. The official Voltage
-Module Designer documents are linked from the roadmap and infrastructure standards.
+specific Berna, Moog, Q125/Q123, Serge, and modular-software references. Keep SDK reference material alongside these resources; the repository contains implementation standards and source-validation tools.
 
 ## Current release gate
 
-Generator 1.0.2 is canonical in `laboratory/generator/versions/1.0.2/`; its final review and
-user approval are recorded in `REVIEW.md`.
+Function 1.0.0 is the latest Laboratory release; its [review](../laboratory/function/versions/1.0.0/REVIEW.md) records the source and validation status.
+The [canonical index](../laboratory/CANONICAL.json) is the authority for all current versions.
 Use [Module release checklist](Module-Release-Checklist.md) before archiving any subsequent module.
 
+
+## Repository checks
+
+From the repository root, run `python tools/check_repository.py` for a read-only audit of tracked release hashes, source pairs, canonical paths and local Markdown file links. Newly added files must be staged to enter the tracked-file audit. The command does not change Designer projects, compile Java or contact the network.
+
+For SDK and DSP checks, see [Validation commands](../../tools/README.md). Older module-specific tests may be fixed to a historical release; they are not interchangeable with tests for the newest release.

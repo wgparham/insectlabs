@@ -25,3 +25,5 @@ three-series direction. Generator and Function are complete; the next proposed L
 Release folders are immutable. Copy a release into a new module-specific development location before
 starting a future revision. Generated build files, editor backups, caches, SDKs, manuals, and personal
 working archives stay outside Git.
+
+[Repository checks and validation commands](tools/README.md) describe the integrity audit and module test entry points.

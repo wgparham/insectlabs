@@ -18,7 +18,7 @@ args = parser.parse_args()
 module = root / 'signal-processor'
 index = json.loads((root / 'CANONICAL.json').read_text())
 folder = root / index['signal-processor']['path']
-build = root / 'build' / 'signal-processor-project'
+build = Path('C:/InsectLabs-Build') / 'signal-processor-project'
 build.mkdir(parents=True, exist_ok=True)
 raw = (folder / 'signal_proc.vmod').read_bytes()
 reader = Reader(raw)

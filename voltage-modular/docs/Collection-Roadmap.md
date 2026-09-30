@@ -6,11 +6,11 @@ Completed below means a user-approved canonical source release, not publication 
 
 ## Current project status
 
-**Laboratory: six completed modules, ten planned.**
+**Laboratory: seven completed modules, nine planned.**
 
 | Module | Status | Current files / next step |
 | --- | --- | --- |
-| Signal Processor (SIGPROC) | **Completed — canonical 1.0.2** | [Release](../laboratory/signal-processor/versions/1.0.2/README.md); DSP and character locked |
+| Signal Processor (SIGPROC) | **Completed — canonical 1.0.1** | [Release](../laboratory/signal-processor/versions/1.0.1/README.md); DSP and character locked |
 | Fader&#124;Distr A — linear | **Completed — canonical 1.0.0** | [Release](../laboratory/faderdistr/versions/1.0.0/README.md); approved heavier relay voice |
 | Fader&#124;Distr B — equal power | **Completed — canonical 1.0.0** | [Release](../laboratory/faderdistr/versions/1.0.0/README.md); approved related, more open voice |
 | sw1 — push-button relay router | **Completed — canonical 1.0.0** | [Release](../laboratory/sw1/versions/1.0.0/README.md); routing and final CLK voicing approved |
@@ -31,7 +31,7 @@ The working inventory is 16 modules, including separate Fader|Distr A/B and sepa
 
 ### Shared work completed
 
-- Canonical source releases for SIGPROC, Fader|Distr A/B, sw1, sw2, and Generator are versioned in the repository. SIGPROC 1.0.1 preserves 1.0.0 DSP and incorporates the approved Designer UI state and percentage displays for Gain/EXT LVL.
+- Canonical source releases for SIGPROC, Fader|Distr A/B, sw1, sw2, Generator, and Function are versioned in the repository. SIGPROC 1.0.1 preserves 1.0.0 DSP and incorporates the approved Designer UI state and percentage displays for Gain/EXT LVL.
 - The charcoal panels, large manual controls, jack styling, and dark red branding establish the current Laboratory visual family. Approved module panels replace the early speculative finish suggestions.
 - [Module infrastructure standards](Module-Infrastructure-Standards.md) document the shared bypass, source-pair, CPU, and validation conventions. New prototypes still require compliance checks before canonization.
 - [Audio TestBench](../../test-bench/README.md) is an independent top-level InsectLabs project, not part of Voltage Modular. Its current 1.1 collection contains 54 WAV files at 48 kHz/24-bit, including the user's original experimental mix. The collection and portable archive are on GitHub. Add useful fixtures with catalog, provenance, attribution, and checksum updates; the user's original mix source is archived separately and need not be duplicated.
@@ -46,7 +46,7 @@ The working inventory is 16 modules, including separate Fader|Distr A/B and sepa
 
 Moog modular, rackmount processors, Moogerfooger pedals, and Synthesizers.com are shared references. Their role and visual weight can evolve between series. These are creative eras, not a claim that every referenced technique originated in that period.
 
-## Series 1: planned sources and reference instruments
+## Series 1: sources and reference instruments
 
 ### Laboratory Generator — completed, canonical 1.0.2
 
@@ -54,7 +54,7 @@ The approved instrument selects sine or variable-slope triangle at one mono outp
 frequency bands cover 0.1–10000 Hz; frequency and amplitude controls are smoothed. The hot output
 stage adds progressive compression above 5 V. SELECT provides Off / Int/4 / Int / Ext, with an internal
 triangle modulator spanning 0.05–50 Hz and external depth controlled by ADJUST. A separate pure 1 kHz
-reference is routed by the up/off/down switch. Meter averaging, power gating and host bypass are approved.
+reference is routed by the up/off/down switch. Meter averaging, the 8 ms physical power fade and silent host bypass are approved.
 See the [release notes](../laboratory/generator/versions/1.0.2/README.md) for exact behavior and validation.
 Pulse generation remains a separate instrument.
 
@@ -227,6 +227,6 @@ Series 2's contour generators can focus on studio gestures, while the Series 3 c
 1. Generator 1.0.2 and Function 1.0.0 are canonical after their final code/UI reviews and user approval. The next proposed instrument is Sine/Random Generator. Deep Tone remains a separate planned instrument.
 2. Develop the remaining noise, reference, and retained processing concepts while keeping Series 2 and Series 3 flexible.
 
-[Series-One-Utilities.md](Series-One-Utilities.md) remains the original utility design draft; its old processor defaults, push-button topology, and unimplemented proposals are superseded by the current module release notes and this roadmap. Its paired rotary source/destination design remains the basis for sw2.
+[Series-One-Utilities.md](Series-One-Utilities.md) summarizes the completed utility designs and remaining utility direction. Versioned release notes and canonical indexes define the released behavior; the roadmap records future work.
 
 [Development-Setup.md](Development-Setup.md) records platform/resource setup. [Module-Infrastructure-Standards.md](Module-Infrastructure-Standards.md) records shared implementation requirements. [Laboratory releases](../laboratory/README.md), [CANONICAL.json](../laboratory/CANONICAL.json), and the [changelog](../laboratory/CHANGELOG.md) identify completed work. TestBench lives independently at [test-bench](../../test-bench/README.md).

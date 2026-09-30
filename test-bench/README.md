@@ -12,15 +12,19 @@ license evidence, and a measured catalog, attribution, manifest, and verificatio
 
 Third-party recording licenses are separate from this repository's code license. Keep the credits with the WAV distribution. Do not apply the generated-audio CC0 dedication to the sourced recordings. The original user-provided composition source is archived separately; this repository contains only its approved delivery mix and provenance.
 
-## Rebuild
+## Verify the delivered collection
 
-Requires Python 3 and NumPy. Run from the repository root. Generation rewrites the catalog with the generated subset; run the import step afterward to restore the full catalog. Preserve `v1/README.md` when rebuilding.
+Run `python test-bench/tools/verify.py test-bench/v1` from the repository root with NumPy installed. This checks the delivered WAV files and updates their QA report. Large assets use Git LFS; run `git lfs pull` after cloning if they are still pointer files.
+
+## Rebuild in a separate destination
+
+Requires Python 3 and NumPy. The commands below produce the generated and third-party subset in disposable local storage. They do not reproduce the complete 54-file delivery: the original composition source is archived separately. To rebuild that fixture, use `import_user_composition.py --source <original-stereo-16-bit-WAV> --output <build-folder>` after the recording import. Keep the delivered collection intact while rebuilding.
 
 ```powershell
-python test-bench/tools/generate.py --output test-bench/v1
+python test-bench/tools/generate.py --output C:/InsectLabs-Build/test-bench
 python test-bench/tools/download_sources.py --output test-bench/sources/ibm-freesound
-python test-bench/tools/import_recordings.py --output test-bench/v1 --sources test-bench/sources/ibm-freesound
-python test-bench/tools/verify.py test-bench/v1
+python test-bench/tools/import_recordings.py --output C:/InsectLabs-Build/test-bench --sources test-bench/sources/ibm-freesound
+python test-bench/tools/verify.py C:/InsectLabs-Build/test-bench
 ```
 
 Generation uses seed 19710510. The manifest records NumPy's version; floating-point or FFT implementation changes across environments may alter the least significant bits. SHA-256 hashes identify this particular delivered build.

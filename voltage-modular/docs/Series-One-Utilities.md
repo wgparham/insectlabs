@@ -8,11 +8,11 @@ was superseded by the approved releases and the [Collection Roadmap](Collection-
 | Module | Release | Role |
 | --- | --- | --- |
 | [Signal Processor](../laboratory/signal-processor/versions/1.0.1/README.md) | 1.0.1 | Two independent mono PROC/VCA stages with bipolar gain, post-character offset, and gain CV |
-| [Fader|Distr A/B](../laboratory/faderdistr/versions/1.0.0/README.md) | 1.0.0 | Simultaneous X/Y-to-Z fader and S-to-1/2 distributor; A is linear, B equal-power |
+| [Fader&#124;Distr A/B](../laboratory/faderdistr/versions/1.0.0/README.md) | 1.0.0 | Simultaneous X/Y-to-Z fader and S-to-1/2 distributor; A is linear, B equal-power |
 | [sw1](../laboratory/sw1/versions/1.0.0/README.md) | 1.0.0 | Manual 2x2 relay router with toggle/gate behavior and optional CLK contact filtering |
 | [sw2](../laboratory/sw2/versions/1.0.0/README.md) | 1.0.0 | Shared OFF/1–4 source selector and destination distributor with optional CLK contact filtering |
 
-All four are manual, mono-first instruments. Their release notes, checksums, and tests define
+These four designs comprise five modules (Fader|Distr A and B are separate). They are manual, mono-first instruments. Their release notes, checksums, and tests define
 their final behavior; this page does not supersede them.
 
 ## Shared collection behavior

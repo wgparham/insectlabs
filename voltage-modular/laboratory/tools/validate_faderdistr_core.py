@@ -4,7 +4,7 @@ import subprocess
 
 root = Path(__file__).resolve().parents[1]
 module = root / 'faderdistr'
-build = root / 'build' / 'faderdistr-core'
+build = Path('C:/InsectLabs-Build') / 'faderdistr-core'
 build.mkdir(parents=True, exist_ok=True)
 source = module / 'prototype' / 'FaderDistrCore.java'
 test = module / 'tests' / 'FaderDistrCoreTest.java'

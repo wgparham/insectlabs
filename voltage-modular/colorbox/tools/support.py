@@ -8,8 +8,8 @@ def tokens(s):
     return re.findall(r'"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'|[A-Za-z_$][\w$]*|\d+(?:\.\d*)?(?:[eE][+-]?\d+)?|[^\s]', re.sub(r'//[^\n]*|/\*.*?\*/', '', s, flags=re.S))
 def normalized(s):
     # Designer exports declarations in a different order. Their initialization is in the constructor.
-    decl = re.compile(r'^private Voltage\w+ \w+;', re.M)
-    return tokens(decl.sub('', s)), sorted(decl.findall(s))
+    decl = re.compile(r'^[ \t]*private Voltage\w+ \w+;[ \t]*$', re.M)
+    return tokens(decl.sub('', s)), sorted(line.strip() for line in decl.findall(s))
 def rename_rgb(s):
     names = {'resetOversamplingState':'resetDsp', 'PARAM_SMOOTH':'CONTROL_SMOOTH'}
     for color in ('red','green','blue'):

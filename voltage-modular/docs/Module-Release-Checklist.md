@@ -45,6 +45,7 @@ standards review. Approval of sound does not imply approval of a subsequently mo
 - [ ] Verify host bypass skips control/CV/DSP work, preserves intended routing and freezes histories.
   For generators, document silent bypass. State and test the intended resume behavior.
 - [ ] Verify power, initialization, reset, saved-patch restoration and mode transitions.
+- [ ] Review generated lifecycle code after a real Designer export. Ensure each base callback (especially `super.Destroy()`) executes exactly once; do not duplicate a generated base call inside a user region.
 - [ ] Review manual smoothing separately from external/audio-rate CV. Do not add smoothing where the
   user intentionally accepted immediate control behavior.
 - [ ] Check sample-rate assumptions, bounds, silent/unpatched inputs, extreme settings, polarity and DC.
@@ -82,6 +83,8 @@ standards review. Approval of sound does not imply approval of a subsequently mo
 - [ ] Update `CANONICAL.json`, collection README/changelog, roadmap, setup docs and affected project indexes.
   Check module counts, next-work statements, links and Markdown tables.
 - [ ] Inspect the complete Git diff and status; do not include unrelated user work, SDKs, caches or backups.
+- [ ] Run `python tools/check_repository.py` after staging the proposed archive. Run its tests from the final archive path before removing working copies.
+- [ ] Stop on any failed validation, commit or push command; do not continue a command sequence after a failure. Preserve canonical Java bytes, including Designer line endings; distinguish CRLF warnings from functional errors.
 - [ ] Commit and push within the user's authorized scope; verify the remote result and clean local status.
 
 ## 7. Cleanup and handoff

@@ -2,7 +2,7 @@ from pathlib import Path
 import re, subprocess, json
 from support import regions, ROOT, VERSIONS, tokens, rename_rgb
 
-out=ROOT/'build/tests';out.mkdir(parents=True,exist_ok=True)
+out=Path('C:/InsectLabs-Build/colorbox/tests');out.mkdir(parents=True,exist_ok=True)
 head='''public class Regression {
 static class VoltageComponent { double v; boolean connected; int reads; double GetValue(){reads++;return v;} void SetValue(double x){v=x;} boolean IsConnected(){return connected;} }
 static void equal(double a,double b,String message){if(!Double.isFinite(a)||Double.doubleToLongBits(a)!=Double.doubleToLongBits(b))throw new AssertionError(message+": "+a+" != "+b);}

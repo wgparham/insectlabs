@@ -16,10 +16,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--sdk', type=Path, required=True)
 args = parser.parse_args()
 
-folder = root / 'faderdistr' / 'development'
+index = json.loads((root / 'CANONICAL.json').read_text())
+folder = root / index['faderdistr-a']['path']
 java_path = folder / 'faderdistrA.java'
 vmod_path = folder / 'faderdistrA.vmod'
-manifest_path = folder / 'SHA256-faderdistrA.json'
+manifest_path = folder / 'SHA256.json'
 
 raw = vmod_path.read_bytes()
 reader = Reader(raw)
@@ -58,7 +59,7 @@ for control in ('bias', 'xInput', 'yInput', 'zOutput', 'signalInput', 'oneOutput
     assert 'component == ' + control in tooltip
 print('PASS Fader|Distr A pair, linear mapping, direct bypass, and tooltips', flush=True)
 
-build = root / 'build' / 'faderdistrA-sdk'
+build = Path('C:/InsectLabs-Build') / 'faderdistrA-sdk'
 for kind, text in [('exported', exported), ('embedded', embedded)]:
     dest = build / kind
     dest.mkdir(parents=True, exist_ok=True)

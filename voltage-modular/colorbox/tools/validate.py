@@ -10,7 +10,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--sdk',type=Path,help='Path to the installed Voltage Modular voltage.jar')
     args=parser.parse_args()
-    build=ROOT/'build';build.mkdir(exist_ok=True)
+    build=Path('C:/InsectLabs-Build/colorbox');build.mkdir(parents=True,exist_ok=True)
     for name,(old,new) in VERSIONS.items():
         trees={}
         for version in (old,new):

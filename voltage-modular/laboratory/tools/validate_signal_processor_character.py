@@ -85,7 +85,7 @@ public double getBottomOutput() {{ return dsp.getRightOutput(); }}
 '''
 generated = 'package com.insectlabs.laboratory.signalprocessor;\n\n' + wrapper
 
-build = root / 'build/signal-processor-character'
+build = Path('C:/InsectLabs-Build/signal-processor-character')
 build.mkdir(parents=True, exist_ok=True)
 (build / 'SignalProcessorCore.java').write_text(generated, encoding='utf-8')
 test = module / 'tests/SignalProcessorCharacterTest.java'

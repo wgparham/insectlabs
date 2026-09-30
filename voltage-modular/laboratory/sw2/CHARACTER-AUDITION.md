@@ -1,10 +1,12 @@
 # sw2 amplifier-character audition
 
-## Current audition: 3 V knee
+Historical audition notes. The 3 V knee was approved and released in [sw2 1.0.0](versions/1.0.0/README.md). Earlier measurements are retained as design history.
+
+## Approved calibration: 3 V knee
 
 The user requested 3 V as the lower bookend against the previous 5 V calibration. Only the knee changed: tone bandwidth, compression amounts/asymmetry, 2x processing, CLK voicing, and relay timing are unchanged. The supplied panel update and official `com.insectlabs.sw2.sw2` identity are preserved.
 
-The static linear region is now +/-3 V. +5 V becomes +4.88 V; -5 V becomes -4.868 V. +10 V becomes +8.416923 V; -10 V becomes -8.258615 V. CV above the knee is intentionally compressed as well as audio. Direct host bypass remains unshaped. Both source forms compile and the revised routing/DC/compression checks pass. Listening approval is pending.
+The static linear region is now +/-3 V. +5 V becomes +4.88 V; -5 V becomes -4.868 V. +10 V becomes +8.416923 V; -10 V becomes -8.258615 V. CV above the knee is intentionally compressed as well as audio. Direct host bypass remains unshaped. Both source forms compile and the revised routing/DC/compression checks pass. Listening approval was received before the canonical 1.0.0 release.
 
 The measurements below describe the earlier 5 V audition, not the new calibration.
 

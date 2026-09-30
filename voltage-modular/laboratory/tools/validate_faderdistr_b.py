@@ -1,4 +1,4 @@
-"""Validate the Fader|Distr B Designer/source pair and its fixed linear wiring."""
+"""Validate the Fader|Distr B Designer/source pair and its fixed equal-power wiring."""
 from pathlib import Path
 import argparse
 import hashlib
@@ -16,10 +16,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--sdk', type=Path, required=True)
 args = parser.parse_args()
 
-folder = root / 'faderdistr' / 'development'
+index = json.loads((root / 'CANONICAL.json').read_text())
+folder = root / index['faderdistr-b']['path']
 java_path = folder / 'faderdistrB.java'
 vmod_path = folder / 'faderdistrB.vmod'
-manifest_path = folder / 'SHA256-faderdistrB.json'
+manifest_path = folder / 'SHA256.json'
 
 raw = vmod_path.read_bytes()
 reader = Reader(raw)
@@ -59,7 +60,7 @@ for control in ('bias', 'xInput', 'yInput', 'zOutput', 'signalInput', 'oneOutput
     assert 'component == ' + control in tooltip
 print('PASS Fader|Distr B pair, equal-power mapping, direct bypass, and tooltips', flush=True)
 
-build = root / 'build' / 'faderdistrB-sdk'
+build = Path('C:/InsectLabs-Build') / 'faderdistrB-sdk'
 for kind, text in [('exported', exported), ('embedded', embedded)]:
     dest = build / kind
     dest.mkdir(parents=True, exist_ok=True)
