@@ -129,7 +129,16 @@ for info in line_properties[2]:
     else:
         number = control_line(info, old_number)
         if number is None and old_number not in mapping:
-            raise RuntimeError(f'Cannot preserve Designer section at line {old_number}')
+            # Non-control Designer anchors (for example a constructor declaration)
+            # survive an export unchanged, but may shift when a user region grows.
+            # Recover them by source text before considering the project unsafe.
+            old_line = old_lines[old_number]
+            candidates = [index for index, line in enumerate(new_lines)
+                          if line == old_line or line.strip() == old_line.strip()]
+            if candidates:
+                number = min(candidates, key=lambda index: abs(index - old_number))
+            else:
+                raise RuntimeError(f'Cannot preserve Designer section at line {old_number}')
         if number is None:
             number = mapping[old_number]
     setprop(info, 'line number', number)

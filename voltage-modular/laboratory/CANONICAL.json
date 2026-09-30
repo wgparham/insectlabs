@@ -22,5 +22,10 @@
     "version": "1.0.0",
     "path": "sw2/versions/1.0.0",
     "module": "sw2"
+  },
+  "generator": {
+    "version": "1.0.0",
+    "path": "generator/versions/1.0.0",
+    "module": "generator"
   }
 }

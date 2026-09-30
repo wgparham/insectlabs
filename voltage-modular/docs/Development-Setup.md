@@ -6,8 +6,8 @@
 - Local checkout: `C:/Users/wgparham/Dropbox/git/insectlabs`
 - Active collection: [Laboratory](../laboratory/README.md)
 - Shared audio fixtures: [TestBench](../../test-bench/README.md)
-- Current Laboratory releases: Signal Processor 1.0.1, Fader|Distr A/B 1.0.0, sw1 1.0.0, and sw2 1.0.0.
-- Next module: Laboratory Generator, with sine and triangle outputs.
+- Current Laboratory releases: Signal Processor 1.0.1, Fader|Distr A/B 1.0.0, sw1 1.0.0, sw2 1.0.0, and Generator 1.0.0.
+- Next proposed module: Pulse/Sine Generator; Generator is canonical 1.0.0.
 
 The accepted direction and unbuilt inventory live in [Collection Roadmap](Collection-Roadmap.md).
 [Module Infrastructure Standards](Module-Infrastructure-Standards.md) defines the shared

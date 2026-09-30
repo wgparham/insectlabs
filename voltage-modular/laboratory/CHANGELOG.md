@@ -1,5 +1,18 @@
 # Laboratory release notes
 
+## Generator 1.0.0 — 2026-09-30
+
+First canonical release following user approval of the final build and sound.
+
+- Four-band sine/variable-triangle generator with smoothed frequency and amplitude.
+- Approved output compression, eased in over 5–7 V with the driven character retained.
+- Off / Int/4 / Int / Ext modulation; internal triangle rate 0.05–50 Hz.
+- Independent pure 1 kHz reference; up to dedicated output, middle off, down to main mix.
+- Averaged meter; power-off and host bypass silence outputs and freeze oscillator state.
+- Approved Designer controls and artwork retained; exported and embedded source matched.
+
+See [release behavior and validation](generator/versions/1.0.0/README.md).
+
 ## sw2 1.0.0 — 2026-09-29
 
 First canonical release, approved by the user after successful Designer builds, routing tests,

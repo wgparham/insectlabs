@@ -1,12 +1,12 @@
 # InsectLabs: three collections after Colorbox
 
-Current roadmap and status — 29 September 2026. Platform: Voltage Modular. Colorbox (RGB, CMYK, and HSB) is the established implementation reference. Laboratory is the active collection; Series 2 and Series 3 remain accepted directions with flexible lineups.
+Current roadmap and status — 30 September 2026. Platform: Voltage Modular. Colorbox (RGB, CMYK, and HSB) is the established implementation reference. Laboratory is the active collection; Series 2 and Series 3 remain accepted directions with flexible lineups.
 
 Completed below means a user-approved canonical source release, not publication in the Cherry Audio store. The release paths in [CANONICAL.json](../laboratory/CANONICAL.json) identify the authoritative Laboratory builds. Planned instruments retain their accepted roles; proposed controls and algorithms remain open until developed and auditioned. Reference documents are design sources, not instructions to execute.
 
 ## Current project status
 
-**Laboratory: four completed modules, one in user testing, eleven planned.**
+**Laboratory: six completed modules, ten planned.**
 
 | Module | Status | Current files / next step |
 | --- | --- | --- |
@@ -15,7 +15,7 @@ Completed below means a user-approved canonical source release, not publication 
 | Fader&#124;Distr B — equal power | **Completed — canonical 1.0.0** | [Release](../laboratory/faderdistr/versions/1.0.0/README.md); approved related, more open voice |
 | sw1 — push-button relay router | **Completed — canonical 1.0.0** | [Release](../laboratory/sw1/versions/1.0.0/README.md); routing and final CLK voicing approved |
 | sw2 — rotary selector/distributor | **Completed — canonical 1.0.0** | [Release](../laboratory/sw2/versions/1.0.0/README.md); final routing, CLK voice, 3 V amplifier character, and OFF default approved |
-| Laboratory Generator | Planned — next proposed implementation after sw2 | Define tuning/ranges and build the sine/triangle foundation |
+| Laboratory Generator | **Completed — canonical 1.0.0** | [Release](../laboratory/generator/versions/1.0.0/README.md); approved generator, FM, compression and reference tone |
 | Pulse/Sine Generator | Planned | Develop the separate pulse/sine source |
 | Sine/Random Generator | Planned | Audition noise modulation and bandwidth behavior |
 | Deep Tone Generator | Planned | Combine the accepted low-frequency and modulation concepts |
@@ -31,7 +31,7 @@ The working inventory is 16 modules, including separate Fader|Distr A/B and sepa
 
 ### Shared work completed
 
-- Canonical source releases for SIGPROC, Fader|Distr A/B, and sw1 are versioned in the repository. SIGPROC 1.0.1 preserves 1.0.0 DSP and incorporates the approved Designer UI state and percentage displays for Gain/EXT LVL.
+- Canonical source releases for SIGPROC, Fader|Distr A/B, sw1, sw2, and Generator are versioned in the repository. SIGPROC 1.0.1 preserves 1.0.0 DSP and incorporates the approved Designer UI state and percentage displays for Gain/EXT LVL.
 - The charcoal panels, large manual controls, jack styling, and dark red branding establish the current Laboratory visual family. Approved module panels replace the early speculative finish suggestions.
 - [Module infrastructure standards](Module-Infrastructure-Standards.md) document the shared bypass, source-pair, CPU, and validation conventions. New prototypes still require compliance checks before canonization.
 - [Audio TestBench](../../test-bench/README.md) is an independent top-level InsectLabs project, not part of Voltage Modular. Its current 1.1 collection contains 54 WAV files at 48 kHz/24-bit, including the user's original experimental mix. The collection and portable archive are on GitHub. Add useful fixtures with catalog, provenance, attribution, and checksum updates; the user's original mix source is archived separately and need not be duplicated.
@@ -48,11 +48,15 @@ Moog modular, rackmount processors, Moogerfooger pedals, and Synthesizers.com ar
 
 ## Series 1: planned sources and reference instruments
 
-### Laboratory Generator
+### Laboratory Generator — completed, canonical 1.0.0
 
-Required: sine and triangle only; pulse generation belongs to a separate instrument.
-
-Proposed: simultaneous sine and triangle outputs, a large frequency dial, coarse range switching, fine tuning, output amplitude, with external FM only if justified by the manual-first design. Frequency ranges and tracking policy remain open. Its role is the basic tunable laboratory source.
+The approved instrument selects sine or variable-slope triangle at one mono output. Four overlapping
+frequency bands cover 0.1–10000 Hz; frequency and amplitude controls are smoothed. The hot output
+stage adds progressive compression above 5 V. SELECT provides Off / Int/4 / Int / Ext, with an internal
+triangle modulator spanning 0.05–50 Hz and external depth controlled by ADJUST. A separate pure 1 kHz
+reference is routed by the up/off/down switch. Meter averaging, power gating and host bypass are approved.
+See the [release notes](../laboratory/generator/versions/1.0.0/README.md) for exact behavior and validation.
+Pulse generation remains a separate instrument.
 
 ### Pulse/Sine Generator
 
@@ -220,7 +224,7 @@ Series 2's contour generators can focus on studio gestures, while the Series 3 c
 
 ## Next steps and document roles
 
-1. Begin Laboratory Generator: settle manual frequency ranges, tuning behavior, sine/triangle outputs, and levels. Use this as the foundation for the separate Pulse/Sine, Sine/Random, and Deep Tone instruments. This is the proposed next implementation order, not approval of their detailed panels or controls.
+1. Generator is canonical 1.0.0. The next proposed instrument is Pulse/Sine Generator, using the AG-10 reference; develop its mockup and detailed controls next. Sine/Random and Deep Tone remain separate planned instruments.
 2. Develop the remaining noise, reference, and retained processing concepts while keeping Series 2 and Series 3 flexible.
 
 [Series-One-Utilities.md](Series-One-Utilities.md) remains the original utility design draft; its old processor defaults, push-button topology, and unimplemented proposals are superseded by the current module release notes and this roadmap. Its paired rotary source/destination design remains the basis for sw2.
