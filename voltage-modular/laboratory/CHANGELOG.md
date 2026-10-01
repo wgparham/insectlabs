@@ -1,5 +1,9 @@
 # Laboratory release notes
 
+## n01 Noise Source 1.0.0 — 2026-10-01
+
+First canonical release. Approved dark WHITE/SPECTRA voice, SLOW RANDOM, continuous 20-120 Hz S&H SOURCE with gentle knob coupling, and manually/externally triggered STEPPED output. Source span remains +/-5 V; no dedicated PINK output or internal STEPPED clock. Cleanup is output-identical to the approved DSP; SDK and callback checks pass. See [review](n01/versions/1.0.0/REVIEW.md).
+
 ## Deep Tone Generator 1.0.0 — 2026-10-01
 
 First canonical release, approved after the final +/-65 Hz OFFSET audition. C4 tuning, independent source buttons, Beat mix/linear FM, 0-200% Swell and fixed-level Courtesy. Fifth-power OFFSET taper; 1/6/2 ms Beat/Swell/Courtesy reset smoothing; approved compression and direct host bypass. Released Java is unchanged from the approved export. See [release review](deeptone/versions/1.0.0/REVIEW.md).

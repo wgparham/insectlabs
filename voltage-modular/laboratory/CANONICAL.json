@@ -42,5 +42,10 @@
     "version": "1.0.0",
     "path": "deeptone/versions/1.0.0",
     "module": "deeptone"
+  },
+  "n01": {
+    "version": "1.0.0",
+    "path": "n01/versions/1.0.0",
+    "module": "n01"
   }
 }

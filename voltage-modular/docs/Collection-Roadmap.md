@@ -6,7 +6,7 @@ Completed below means a user-approved canonical source release, not publication 
 
 ## Current project status
 
-**Laboratory: nine completed modules, none in development, seven planned.**
+**Laboratory: ten completed modules, none in development, six planned.**
 
 | Module | Status | Current files / next step |
 | --- | --- | --- |
@@ -19,7 +19,7 @@ Completed below means a user-approved canonical source release, not publication 
 | AC/1D SIN-SQR Function Generator | **Completed — canonical 1.0.0** | [Release](../laboratory/function/versions/1.0.0/README.md); independent sine/square boards, calibrated output-frequency display and full-dial high ranges |
 | r195L: SIN/RND generator (sinrnd) | **Completed — canonical 1.1.0** | [Release](../laboratory/sinrnd/versions/1.1.0/README.md); sine/noise source, moderated random FM and patched FLT audio path approved |
 | Deep Tone Generator (deeptone) | **Completed — canonical 1.0.0** | [Release](../laboratory/deeptone/versions/1.0.0/README.md); approved +/-65 Hz OFFSET, 200% AM and independent Courtesy |
-| Noise Generator | Planned | Set noise colors, warm voicing, and S/H Source behavior |
+| Noise Source (n01) | **Completed — canonical 1.0.0** | [Release](../laboratory/n01/versions/1.0.0/README.md); dark noise voicing, SLOW RANDOM and coupled S&H SOURCE with triggered STEPPED output |
 | Reference / Standards | Planned | Define tuning presets and reference/DC outputs |
 | Tone Burst Generator | Retained concept — planned | Define cycle-count gating |
 | Selective Amplifier | Retained concept — planned | Define narrow filtering, gain, resonance, and overload |
@@ -87,13 +87,15 @@ Berna 1 page 19 describes a sine carrier frequency-modulated by a waveform that 
 
 Proposed: low-frequency sine carrier, coarse/fine frequency, internal modulation rate, slope/symmetry, FM depth, and AM depth. Consider an external modulation input and exposing the internal modulator, subject to the manual-first design review. Start by auditioning the Tieftone reference range rather than treating it as a fixed requirement. This should create slow pressure changes, throbbing bass, sweeps, and rhythmic motion. A true heterodyne implementation is not required by these manual descriptions.
 
-### Noise Generator
+### Noise Source n01 — completed, canonical 1.0.0
 
-Required: several colors of noise, a Serge-style S/H Source output, and a warmer tube/transformer character.
-
-Proposed starting outputs: white, pink, brown/red, blue, and S/H Source. Exact palette remains open. A common excitation source could feed several color filters and distinct output voicings. Audition bandwidth shaping, rounded overload, asymmetric saturation, and level-dependent low-frequency coloration. "Warm" should be demonstrated with level-matched listening comparisons rather than equated with a single low-pass filter.
-
-The S/H Source is an excitation signal intended to feed a separate sample-and-hold, not automatically an already-held random voltage. Design its voltage distribution intentionally. Saturation changes that distribution; preserve a useful sampling range and assess it separately from the audio outputs. An onboard clock and held output would be additional features, not current requirements.
+The approved module provides WHITE, RED/BLUE-shaped SPECTRA, continuous SLOW RANDOM,
+S&H SOURCE and triggered STEPPED outputs. There is no dedicated PINK output. WHITE has a
+distinct dark broadband voice; SPECTRA retains the approved weight and softer top end.
+RATE controls 0.05-20 Hz random-motion bandwidth and LEVEL controls the SLOW RANDOM amplitude.
+All four knobs gently affect the continuous 20-120 Hz S&H source timing. Its +/-5 V span is fixed;
+STEPPED samples it only on an external trigger or manual press. There is no internal STEPPED clock.
+See the [release notes](../laboratory/n01/versions/1.0.0/README.md).
 
 ### Reference / Standards
 
@@ -231,8 +233,8 @@ Series 2's contour generators can focus on studio gestures, while the Series 3 c
 
 ## Next steps and document roles
 
-1. Generator 1.0.2, Function 1.0.0 and r195L: SIN/RND generator 1.1.0 are canonical after their final code/UI reviews and user approval. Deep Tone 1.0.0 is also canonical after user approval; Noise Generator is the next proposed instrument.
-2. Develop the remaining noise, reference, and retained processing concepts while keeping Series 2 and Series 3 flexible.
+1. Generator 1.0.2, Function 1.0.0 and r195L: SIN/RND generator 1.1.0 are canonical after their final code/UI reviews and user approval. Deep Tone 1.0.0 is also canonical after user approval; Noise Source n01 1.0.0 is canonical after cleanup and validation. Reference / Standards is the next proposed module.
+2. Develop the remaining reference and retained processing concepts while keeping Series 2 and Series 3 flexible.
 
 [Series-One-Utilities.md](Series-One-Utilities.md) summarizes the completed utility designs and remaining utility direction. Versioned release notes and canonical indexes define the released behavior; the roadmap records future work.
 

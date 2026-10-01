@@ -13,6 +13,7 @@ Series One: mono-first, predominantly manual instruments inspired by early labor
 | Function | Canonical 1.0.0, independent sine/square laboratory source | [Release](function/versions/1.0.0/README.md) |
 | r195L: SIN/RND generator | Canonical 1.1.0, sine/noise source and filtered input path | [Release](sinrnd/versions/1.1.0/README.md) |
 | Deep Tone Generator | Canonical 1.0.0, sine/beat source, deep AM and continuous Courtesy | [Release](deeptone/versions/1.0.0/README.md) |
+| n01 Noise Source | Canonical 1.0.0, dark noise and random-voltage source | [Release](n01/versions/1.0.0/README.md) |
 
 [CANONICAL.json](CANONICAL.json) identifies releases without duplicating source pairs.
 
