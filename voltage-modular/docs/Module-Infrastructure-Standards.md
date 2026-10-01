@@ -10,7 +10,7 @@ Bypass follows the established Colorbox design:
 - Read only the signal inputs needed to preserve the module's intended routing and normalization.
 - Copy those signals directly to the corresponding outputs without control reads, CV processing, smoothing, oversampling, filtering, coloration, latency compensation, or crossfading.
 - Do not advance DSP, envelope, VCA, filter, delay, or modulation histories while bypassed.
-- Mark the processing state for resumption. On the first active sample, adopt the current controls and initialize input-dependent histories without replaying stale ramps.
+- Mark the processing state for resumption. On the first active sample, adopt the current controls and apply the documented resume policy without replaying stale control ramps. Source modules may preserve oscillator/filter histories and held voltages; do not reset them indiscriminately.
 - Preserve intentional normalled and cascaded routing in bypass. A module with independent stages keeps them independent; bypass must not invent normalization that the active module does not have.
 
 This is both the audible bypass contract and the CPU-relief contract. Tests should verify sample-exact signal transfer, routing or normal behavior, lack of control and CV reads where measurable, frozen histories, and clean resumption.
@@ -41,7 +41,7 @@ This is both the audible bypass contract and the CPU-relief contract. Tests shou
 Use [Module release checklist](Module-Release-Checklist.md) for every release. Keep the module-specific
 review and exception record with the candidate, and preserve it when that candidate is archived.
 Code cleanup and standards review precede the user's final build check. Do not promote a modified
-candidate based solely on approval of its predecessor.
+candidate based solely on approval of its predecessor. An explicit user instruction permitting behavior-preserving cleanup and promotion after checks is authorization for that scoped path; record comparison evidence and do not invent a new native-host test.
 
 Descriptive control names are part of the cleanup standard. Internal Names and Variable Names use
 lowerCamelCase. Display Names use human-readable words, spaces and appropriate capitalization;

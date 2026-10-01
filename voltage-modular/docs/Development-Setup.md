@@ -44,6 +44,10 @@ and Designer/host listening are still required for every release.
   updates. Do not copy SDKs, manuals, generated classes, editor backups, caches, or personal archive
   folders into Git.
 
+## Before replacing a working pair
+
+Read the latest Designer export and fingerprint it before editing; do not overwrite panel changes with an older candidate. Check numeric and serialized/text default fields together, especially for calibrated frequencies. Keep embedded/exported source synchronized and review generated lifecycle callbacks after export. Preserve canonical Java bytes and line endings; routine text normalization is not a release repair. See the [release checklist](Module-Release-Checklist.md).
+
 ## External references
 
 Manual PDFs remain in the external workspace `Resources` directory. The roadmap records the
@@ -51,7 +55,7 @@ specific Berna, Moog, Q125/Q123, Serge, and modular-software references. Keep SD
 
 ## Current release gate
 
-Function 1.0.0 is the latest Laboratory release; its [review](../laboratory/function/versions/1.0.0/REVIEW.md) records the source and validation status.
+n01 1.0.0 is the latest Laboratory release at this review; its [review](../laboratory/n01/versions/1.0.0/REVIEW.md) records approval, cleanup parity and validation.
 The [canonical index](../laboratory/CANONICAL.json) is the authority for all current versions.
 Use [Module release checklist](Module-Release-Checklist.md) before archiving any subsequent module.
 

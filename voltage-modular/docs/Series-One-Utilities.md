@@ -23,7 +23,7 @@ their final behavior; this page does not supersede them.
 - sw1 and sw2 use manual selection. sw2 position 0 initializes and resets to OFF.
 - Direct host bypass follows [Module Infrastructure Standards](Module-Infrastructure-Standards.md).
   It is dry routing, not a wet/dry blend; it skips character/filter processing and freezes history.
-- Character is assigned by purpose. SIGPROC supplies the strongest deliberate drive; Fader|Distr
+- Character is assigned by purpose. SIGPROC supplies gain-dependent drive and a distinct VCA response; Fader|Distr
   supplies relay weight; sw1 supplies direct/optional contact treatment; sw2 supplies an open
   line-amplifier weight plus a distinct optional contact voice.
 - Series One uses +5 V as its working modulation reference. Do not infer a collection-wide +10 V
@@ -39,3 +39,9 @@ belong to Series Two unless the roadmap is deliberately revised.
 See the roadmap for the full source-generator and reference-instrument sequence. New utility work
 must begin from the current [infrastructure standards](Module-Infrastructure-Standards.md) and use
 TestBench for repeatable checks.
+
+## Capabilities available beyond the utility panels
+
+Generator includes a pure 1 kHz reference, Deep Tone has independently available Courtesy, SIN/RND accepts external audio through its FLT path, and n01 provides continuous and event-sampled random voltages. n01 STEPPED samples its own source, not arbitrary external audio. These existing functions should inform future briefs without being mistaken for a complete standards source, general-purpose filter or external sample-and-hold.
+
+See [pending briefs](Series-One-Pending-Modules.md) for the six accepted unfinished roles, including Reference / Standards. Independent summing and measurement are the strongest optional utility gaps; [gap proposals](Future-Module-Proposals.md) explains their scope. These suggestions have not expanded the accepted inventory.

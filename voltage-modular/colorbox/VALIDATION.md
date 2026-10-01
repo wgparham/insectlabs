@@ -21,4 +21,4 @@ Requires Python 3, a JDK with Java 17 target support, and the Voltage Modular SD
 python path/to/voltage-modular/colorbox/tools/validate.py --sdk C:/ProgramData/Voltage/voltage.jar
 ```
 
-The tool validates hashes and project/source agreement, compiles both source forms, generates the comparison harness directly from the archived versions, and runs the audio/tooltip checks. It writes only to the ignored `colorbox/build/` directory. Without `--sdk`, structural and simulated audio checks still run; real SDK compilation is skipped explicitly.
+The tool validates hashes and project/source agreement, compiles both source forms, generates the comparison harness directly from the archived versions, and runs the audio/tooltip checks. The current tool writes disposable output to `C:/InsectLabs-Build/colorbox`, outside Dropbox and Git (this supersedes the earlier in-repository build path). Without `--sdk`, structural and simulated audio checks still run; real SDK compilation is skipped explicitly.

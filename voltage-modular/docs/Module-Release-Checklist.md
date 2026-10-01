@@ -30,7 +30,7 @@ standards review. Approval of sound does not imply approval of a subsequently mo
 - [ ] If control names change, update Java and Designer control metadata together. Preserve UUIDs,
   package/class identity, artwork, positions, ranges, defaults, saved test state and unrelated metadata.
 - [ ] Check the module Category against its purpose in both Designer and Java (for example, Generator → Oscillators).
-- [ ] Check physical switch directions, position numbers, defaults and jack routing against the panel.
+- [ ] Check physical switch directions, position numbers, defaults and jack routing against the panel. Check numeric and text/serialized default fields together; test calibrated startup values after a real Designer export.
 - [ ] Check notes inside Designer as well as external docs; remove obsolete draft behavior descriptions.
   Display Names and Notes may be rewritten or erased as needed without separate permission. They
   are working design material unless the user explicitly marks particular contents for preservation.
@@ -74,6 +74,8 @@ standards review. Approval of sound does not imply approval of a subsequently mo
 - [ ] User checks affected controls, tooltips, switches, saving/reloading and short listening tests.
 - [ ] Record approval for this exact candidate. If either side changes it afterward, revalidate and identify
   whether another user check is needed. Do not promote an untested cleanup using approval of its predecessor.
+
+If the user explicitly authorizes cleanup followed by promotion after successful checks (as for n01), record that authorization and its scope. For behavior-preserving cleanup, retain automated parity evidence and clearly state whether the exact cleaned pair received a separate native-host check. This exception is not permission to make new audible changes under an earlier approval.
 
 ## 6. Canonical archive and publication
 

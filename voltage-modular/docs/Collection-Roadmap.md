@@ -31,7 +31,7 @@ The working inventory is 16 modules, including separate Fader|Distr A/B and sepa
 
 ### Shared work completed
 
-- Canonical source releases for SIGPROC, Fader|Distr A/B, sw1, sw2, Generator, Function, SIN/RND, and Deep Tone are versioned in the repository. SIGPROC 1.0.1 preserves 1.0.0 DSP and incorporates the approved Designer UI state and percentage displays for Gain/EXT LVL.
+- Canonical source releases for SIGPROC, Fader|Distr A/B, sw1, sw2, Generator, Function, SIN/RND, Deep Tone, and n01 are versioned in the repository. SIGPROC 1.0.1 preserves 1.0.0 DSP and incorporates the approved Designer UI state and percentage displays for Gain/EXT LVL.
 - The charcoal panels, large manual controls, jack styling, and dark red branding establish the current Laboratory visual family. Approved module panels replace the early speculative finish suggestions.
 - [Module infrastructure standards](Module-Infrastructure-Standards.md) document the shared bypass, source-pair, CPU, and validation conventions. New prototypes still require compliance checks before canonization.
 - [Audio TestBench](../../test-bench/README.md) is an independent top-level InsectLabs project, not part of Voltage Modular. Its current 1.1 collection contains 54 WAV files at 48 kHz/24-bit, including the user's original experimental mix. The collection and portable archive are on GitHub. Add useful fixtures with catalog, provenance, attribution, and checksum updates; the user's original mix source is archived separately and need not be duplicated.
@@ -79,13 +79,7 @@ OFFSET spans +/-65 Hz with a fifth-power taper. Courtesy runs independently at f
 with 2 ms reset smoothing; Swell retains 6 ms and Beat 1 ms. Main output retains approved compression.
 See the [canonical release](../laboratory/deeptone/versions/1.0.0/README.md).
 
-Reference background and early proposal:
-
-Required: combine the Beat Oscillator in Berna 1 with the Tieftone Generator in Berna 3.
-
-Berna 1 page 19 describes a sine carrier frequency-modulated by a waveform that varies from rising saw through triangle to falling saw. Berna 3 page 15 describes a 0.1-1100 Hz sine generator with AM capability.
-
-Proposed: low-frequency sine carrier, coarse/fine frequency, internal modulation rate, slope/symmetry, FM depth, and AM depth. Consider an external modulation input and exposing the internal modulator, subject to the manual-first design review. Start by auditioning the Tieftone reference range rather than treating it as a fixed requirement. This should create slow pressure changes, throbbing bass, sweeps, and rhythmic motion. A true heterodyne implementation is not required by these manual descriptions.
+Origin: the Beat Oscillator in Berna 1 and Tieftone Generator in Berna 3. The released controls and ranges above supersede the early coarse/fine and modulation proposals; this is not a required heterodyne circuit reconstruction.
 
 ### Noise Source n01 — completed, canonical 1.0.0
 
@@ -191,6 +185,12 @@ Required addition: voltage-controlled switching. Candidate forms include control
 
 Required addition: more modern manual switches and routers appropriate to the mid-1960s to mid-1970s studio direction. Potential distinctions from Series 1 include larger grouped routing controls, integrated patch control, and performance-oriented layouts. Illuminated buttons alone are not a distinction: sw1 already uses one. Matrix size, channel count, routing rules, and any combination with voltage-controlled switching remain open.
 
+### Random voltage and noise development
+
+The user introduced the EMS Random Voltage Generator as a possible reason to split further noise/random ideas into the Radiophonic collection. n01 is complete and remains the simpler manual noise source. A later instrument could combine two random-voltage channels, selectable held/gliding motion and variable clock timing; external sampling and inhibit/reselect controls are candidates. This is a **proposal awaiting a brief**, not an approved module or a reason to reopen n01.
+
+See [pending briefs](Series-One-Pending-Modules.md) for accepted Laboratory work and [gap proposals](Future-Module-Proposals.md) for optional additions and overlaps.
+
 ## Series 3: candidate territory, not a committed lineup
 
 **Status: concept exploration; no modules in this series are marked completed here.**
@@ -222,7 +222,7 @@ Series 2's contour generators can focus on studio gestures, while the Series 3 c
 - Count Modula logic, counters, and routing: https://library.vcvrack.com/CountModula
 - alef's bits mathematical, probabilistic, and event-processing ideas: https://library.vcvrack.com/alefsbits
 - Lilac accumulator/comparator documentation: https://github.com/grough/lilac-modules-vcv
-- Q125 Signal Processor: Resources/q125data.pdf, both pages; manual gain/polarity and offset reference. Gain CV and VCA behavior would be InsectLabs extensions.
+- Q125 Signal Processor: Resources/q125data.pdf, both pages; manual gain/polarity and offset reference. Gain CV and VCA behavior are implemented InsectLabs extensions.
 - Patchable Devices manual: https://github.com/nullJaX/vcvrack-patchable-devices/blob/master/MANUAL.md
 - Window Generators: https://github.com/nullJaX/vcvrack-patchable-devices/blob/master/modules/WindowGenerators/WindowGenerators.md
 - Voltage Sequencer: https://github.com/nullJaX/vcvrack-patchable-devices/blob/master/modules/VoltageSequencer/VoltageSequencer.md
@@ -231,11 +231,17 @@ Series 2's contour generators can focus on studio gestures, while the Series 3 c
 - Airwindows Capacitor/Capacitor2: https://www.airwindows.com/capacitor/ and https://www.airwindows.com/capacitor2/ — filter/voicing references, not a claim of code reuse.
 - User-specified Q123 reference: https://www.synthesizers.com/q123.html (page could not be retrieved during this review; no exact Q123 specifications are asserted here).
 
+### Noise and random-voltage references added during development
+
+- [CGS597](https://www.elby-designs.com/webtek/cgs/serge/cgs597/cgs597.htm), [CGS97](https://www.elby-designs.com/webtek/cgs/serge/cgs597/cgs97/cgs97_noise.html), and [ES05](https://www.elby-designs.com/webtek/euro-serge/es05-noise-source/es05.htm): noise and sampling-source architecture; n01 implements its own approved interpretation.
+- [Doepfer A-118 manual](https://doepfer.de/a100_man/a118_man.pdf): colored noise and continuous random voltage. Do not import its RATE direction or exact circuitry into n01.
+- [EMW Noise Station](https://www.electronicmusicworks.com/eurorack/noise-station.html): multiple noise voices.
+- [EMS Random Voltage Generator discussion](https://amsynths.co.uk/2026/08/11/ems-random-voltage-generator/): later random-voltage and variable-timing inspiration. The user's supplied panel photograph is visual reference, not a settled specification.
+
 ## Next steps and document roles
 
-1. Generator 1.0.2, Function 1.0.0 and r195L: SIN/RND generator 1.1.0 are canonical after their final code/UI reviews and user approval. Deep Tone 1.0.0 is also canonical after user approval; Noise Source n01 1.0.0 is canonical after cleanup and validation. Reference / Standards is the next proposed module.
-2. Develop the remaining reference and retained processing concepts while keeping Series 2 and Series 3 flexible.
+1. Reference / Standards is the next proposed Laboratory instrument; await the next panel/brief before treating controls or ranges as locked.
+2. Develop the five retained processing concepts. They are accepted roles, with controls and implementation still open.
+3. Review optional gap proposals separately; they do not change the 16-module accepted inventory.
 
-[Series-One-Utilities.md](Series-One-Utilities.md) summarizes the completed utility designs and remaining utility direction. Versioned release notes and canonical indexes define the released behavior; the roadmap records future work.
-
-[Development-Setup.md](Development-Setup.md) records platform/resource setup. [Module-Infrastructure-Standards.md](Module-Infrastructure-Standards.md) records shared implementation requirements. [Laboratory releases](../laboratory/README.md), [CANONICAL.json](../laboratory/CANONICAL.json), and the [changelog](../laboratory/CHANGELOG.md) identify completed work. TestBench lives independently at [test-bench](../../test-bench/README.md).
+The [documentation index](README.md) links current standards, pending briefs and development decisions. Versioned releases and canonical indexes define shipped source behavior; the roadmap defines status and future work. TestBench is an independent [audio project](../../test-bench/README.md).

@@ -1,6 +1,8 @@
 # Supplied Signal Processor mockup
 
-Current reference: references/mockup-2026-09-28-rev2. All three supplied files are archived byte-for-byte with SHA-256 checksums. The first snapshot remains preserved separately. Original workspace files are unchanged.
+**Historical intake notes — superseded.** Current SIGPROC has both stages default to PROC and symmetric -3 to +3 gain. The identifiers, defaults and workspace state below describe the original intake, not current requirements. See the [current module overview](../README.md).
+
+Reference at intake: references/mockup-2026-09-28-rev2. All three supplied files are archived byte-for-byte with SHA-256 checksums. The first snapshot remains preserved separately. Original workspace files are unchanged.
 
 ## User-confirmed defaults
 

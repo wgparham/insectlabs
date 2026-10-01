@@ -28,9 +28,4 @@ Follow [Colorbox conventions](../colorbox/STANDARDS.md). The modulation referenc
 +10 V is deferred for input-specific consideration. Manuals and SDK binaries remain in the external workspace.
 
 Release preparation follows the [module release checklist](../docs/Module-Release-Checklist.md).
-Generator 1.0.2 is approved and canonical; its [release review](generator/versions/1.0.2/REVIEW.md)
-records the physical power fade and retained design behavior.
-Function 1.0.0 is approved and canonical; its [release review](function/versions/1.0.0/REVIEW.md) records the independent-board source, calibration and validation.
-r195L: SIN/RND generator 1.1.0 is approved and canonical; its [release review](sinrnd/versions/1.1.0/REVIEW.md) records the mode-dependent MOD IN routing and release validation.
-
-Deep Tone 1.0.0 is approved and canonical; its [release review](deeptone/versions/1.0.0/REVIEW.md) records the locked voice and validation.
+The current inventory is ten completed modules and six accepted planned roles. Reference / Standards is next proposed; no new panel is assumed approved. See the [documentation index](../docs/README.md), [pending briefs](../docs/Series-One-Pending-Modules.md) and [optional gap proposals](../docs/Future-Module-Proposals.md). Each release retains its own approval and validation evidence.

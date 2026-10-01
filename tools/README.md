@@ -12,7 +12,7 @@ Checks tracked SHA-256 manifests, all archived Designer/source pairs, canonical 
 
 ## SDK and DSP checks
 
-The maintained validators below use `C:/InsectLabs-Build` for disposable compiler output. The SDK remains external at `C:/ProgramData/Voltage/voltage.jar`.
+The validators below keep disposable compiler output outside the checkout: generally `C:/InsectLabs-Build`, with sw2 using an automatically cleaned system temporary directory. The SDK remains external at `C:/ProgramData/Voltage/voltage.jar`.
 
 ```powershell
 python voltage-modular/colorbox/tools/validate.py --sdk C:/ProgramData/Voltage/voltage.jar
@@ -21,6 +21,8 @@ python voltage-modular/laboratory/tools/validate_signal_processor_character.py
 python voltage-modular/laboratory/tools/validate_faderdistr_a.py --sdk C:/ProgramData/Voltage/voltage.jar
 python voltage-modular/laboratory/tools/validate_faderdistr_b.py --sdk C:/ProgramData/Voltage/voltage.jar
 python voltage-modular/laboratory/tools/validate_faderdistr_core.py
+python voltage-modular/laboratory/sw2/tests/verify_character.py
+python voltage-modular/laboratory/sinrnd/versions/1.1.0/tests/validate.py
 python voltage-modular/laboratory/function/versions/1.0.0/tests/validate_callbacks.py
 python voltage-modular/laboratory/deeptone/versions/1.0.0/tests/validate.py
 python voltage-modular/laboratory/n01/versions/1.0.0/tests/validate.py

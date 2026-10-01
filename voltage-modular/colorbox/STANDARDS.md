@@ -17,12 +17,14 @@ Apply these conventions to editable user code; let Voltage Module Designer manag
 
 The existing repository GPL-3.0 license applies. Voltage Modular's SDK is an external build dependency and is not included.
 
+Colorbox resets its input-dependent histories on resume. New source instruments may preserve phase, filters and held values under their documented resume policy; apply the shared infrastructure standard rather than blindly resetting every state.
+
 ## Applying these conventions to new modules
 
 Use descriptive names before final approval. Existing Colorbox identifiers remain stable; generic
 prototype identifiers in new modules should be replaced consistently in source and Designer metadata
 while preserving UUIDs. Follow the shared [release checklist](../docs/Module-Release-Checklist.md),
-including a final user check of the cleaned candidate before canonical promotion.
+including its user build gate or an explicitly authorized, scoped cleanup/promotion path with comparison evidence. Do not infer approval for audible changes from permission for cleanup.
 
 Display Names and Notes are editable design material by default. The user authorizes correcting,
 rewriting or removing their contents during development and cleanup; they are often temporary design
