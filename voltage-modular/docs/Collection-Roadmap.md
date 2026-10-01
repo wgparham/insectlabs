@@ -6,7 +6,7 @@ Completed below means a user-approved canonical source release, not publication 
 
 ## Current project status
 
-**Laboratory: seven completed modules, nine planned.**
+**Laboratory: eight completed modules, eight planned.**
 
 | Module | Status | Current files / next step |
 | --- | --- | --- |
@@ -17,7 +17,7 @@ Completed below means a user-approved canonical source release, not publication 
 | sw2 — rotary selector/distributor | **Completed — canonical 1.0.0** | [Release](../laboratory/sw2/versions/1.0.0/README.md); final routing, CLK voice, 3 V amplifier character, and OFF default approved |
 | Laboratory Generator | **Completed — canonical 1.0.2** | [Release](../laboratory/generator/versions/1.0.2/README.md); approved generator, FM, compression and reference tone; cleanup, duty smoothing and readable Display Names approved |
 | AC/1D SIN-SQR Function Generator | **Completed — canonical 1.0.0** | [Release](../laboratory/function/versions/1.0.0/README.md); independent sine/square boards, calibrated output-frequency display and full-dial high ranges |
-| Sine/Random Generator | Planned | Audition noise modulation and bandwidth behavior |
+| r195L: SIN/RND generator (sinrnd) | **Completed — canonical 1.1.0** | [Release](../laboratory/sinrnd/versions/1.1.0/README.md); sine/noise source, moderated random FM and patched FLT audio path approved |
 | Deep Tone Generator | Planned | Combine the accepted low-frequency and modulation concepts |
 | Noise Generator | Planned | Set noise colors, warm voicing, and S/H Source behavior |
 | Reference / Standards | Planned | Define tuning presets and reference/DC outputs |
@@ -64,13 +64,11 @@ The completed Function module fulfills the separate AG-10-inspired pulse/sine so
 
 See the [release notes](../laboratory/function/versions/1.0.0/README.md) for exact behavior and validation.
 
-### Sine/Random Generator
+### r195L: SIN/RND generator — completed, canonical 1.1.0
 
-Required: based on Berna 3 page 14.
+The approved module takes Berna 3 page 14 as inspiration rather than a circuit reconstruction. It provides a C4-initialized logarithmic sine source, white noise, filtered noise, moderated random FM and four output ranges. MODE selects SIN / RND / RD2 / MOD / FLT. MOD IN is linear FM in SIN and MOD; direct noise modes ignore it. In patched FLT mode, MOD IN becomes a filtered audio input, MOD LEVEL becomes a ±200% bipolar attenuverter/amplifier, and RND MOD blends white noise before filtering. This expands the panel’s stated controls into a useful audio path without a hidden mode.
 
-The manual describes sine, white noise, and a sine modulated by white noise at different bandwidths. It does not specify enough detail to establish the exact modulation algorithm.
-
-Proposed: center frequency, noise modulation bandwidth, deviation/depth, and output amplitude, with sine, random-modulated sine, and noise modes. Noise-driven FM is a candidate to audition, not a verified description of Berna's implementation. Its role is the transition between a stable tone and a fluctuating band of sound.
+See the [release notes](../laboratory/sinrnd/versions/1.1.0/README.md) for exact behavior and validation.
 
 ### Deep Tone Generator
 
@@ -98,7 +96,7 @@ Recommended design exception: precise, stable reference tone and DC outputs with
 
 ## Series 1: implemented utility instruments
 
-### Signal Processor — completed, canonical 1.0.2
+### Signal Processor — completed, canonical 1.0.1
 
 Two independent mono stages provide attenuation, amplification, inversion, post-character offset, and gain CV with EXT LVL. Both stages initialize in PROC mode. Gain is symmetric from -3 to +3; OFFSET supplies static voltage after processing and has no CV input.
 
@@ -224,7 +222,7 @@ Series 2's contour generators can focus on studio gestures, while the Series 3 c
 
 ## Next steps and document roles
 
-1. Generator 1.0.2 and Function 1.0.0 are canonical after their final code/UI reviews and user approval. The next proposed instrument is Sine/Random Generator. Deep Tone remains a separate planned instrument.
+1. Generator 1.0.2, Function 1.0.0 and r195L: SIN/RND generator 1.1.0 are canonical after their final code/UI reviews and user approval. Deep Tone remains the next planned oscillator instrument.
 2. Develop the remaining noise, reference, and retained processing concepts while keeping Series 2 and Series 3 flexible.
 
 [Series-One-Utilities.md](Series-One-Utilities.md) summarizes the completed utility designs and remaining utility direction. Versioned release notes and canonical indexes define the released behavior; the roadmap records future work.

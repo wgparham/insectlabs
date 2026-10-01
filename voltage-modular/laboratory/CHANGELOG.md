@@ -1,5 +1,18 @@
 # Laboratory release notes
 
+## r195L: SIN/RND generator 1.1.0 — 2026-09-30
+
+First canonical release, approved after the final Designer build, save/reload and listening test.
+
+- Logarithmic C4-initialized sine source with ±200-cent fine tuning, white noise, filtered noise, moderated random FM and 0.01 V / 0.1 V / 1 V / 10 V output ranges.
+- MOD IN provides linear FM in SIN and MOD; RND/RD2 remain direct noise outputs.
+- In FLT with MOD IN patched, the oscillator becomes a filtered-audio path. MOD LEVEL is a ±200% bipolar input attenuverter/amplifier; RND MOD blends white noise before filtering; AMP/RANGE remain shared output scaling.
+- Restrained high-level compression, 8 ms physical power fade, direct silent host bypass and frozen source state.
+
+Validation: Java 17 SDK compilation of both source forms; paired-source/project/default checks; and 329,622 callback/DSP assertions pass. The user confirmed final behavior and sound.
+
+See [release review](sinrnd/versions/1.1.0/REVIEW.md).
+
 ## Function 1.0.0 — 2026-09-30
 
 First canonical release, approved after the user's final Designer build, save/reload and listening test.

@@ -11,6 +11,7 @@ Series One: mono-first, predominantly manual instruments inspired by early labor
 | sw2 | Canonical 1.0.0, manual rotary selector/distributor | [Release](sw2/versions/1.0.0/README.md) |
 | Generator | Canonical 1.0.2, sine/variable-triangle source with FM and 1 kHz reference | [Release](generator/versions/1.0.2/README.md) |
 | Function | Canonical 1.0.0, independent sine/square laboratory source | [Release](function/versions/1.0.0/README.md) |
+| r195L: SIN/RND generator | Canonical 1.1.0, sine/noise source and filtered input path | [Release](sinrnd/versions/1.1.0/README.md) |
 
 [CANONICAL.json](CANONICAL.json) identifies releases without duplicating source pairs.
 
@@ -28,3 +29,4 @@ Release preparation follows the [module release checklist](../docs/Module-Releas
 Generator 1.0.2 is approved and canonical; its [release review](generator/versions/1.0.2/REVIEW.md)
 records the physical power fade and retained design behavior.
 Function 1.0.0 is approved and canonical; its [release review](function/versions/1.0.0/REVIEW.md) records the independent-board source, calibration and validation.
+r195L: SIN/RND generator 1.1.0 is approved and canonical; its [release review](sinrnd/versions/1.1.0/REVIEW.md) records the mode-dependent MOD IN routing and release validation.
