@@ -9,11 +9,11 @@ inspired by early test equipment and electronic-music studios.
 | Project | Current state |
 | --- | --- |
 | [Colorbox](voltage-modular/colorbox/README.md) | Canonical RGB 4.0.3, CMYK 1.0.3, and HSB 1.0.2 source archives |
-| [Laboratory](voltage-modular/laboratory/README.md) | Canonical Signal Processor 1.0.1, Fader&#124;Distr A/B 1.0.0, sw1 1.0.0, sw2 1.0.0, Generator 1.0.2, and Function 1.0.0 |
+| [Laboratory](voltage-modular/laboratory/README.md) | Canonical Signal Processor 1.0.1, Fader&#124;Distr A/B 1.0.0, sw1 1.0.0, sw2 1.0.0, Generator 1.0.2, Function 1.0.0, SIN/RND 1.1.0, and Deep Tone 1.0.0 |
 | [Audio TestBench](test-bench/README.md) | Version 1.1, 54 measurement and listening WAV files at 48 kHz/24-bit |
 
 The [collection roadmap](voltage-modular/docs/Collection-Roadmap.md) records the accepted
-three-series direction. Generator and Function are complete; the next proposed Laboratory instrument is Sine/Random Generator.
+three-series direction. Nine Laboratory modules are canonical. Noise Generator is next in the roadmap; its brief is still to be defined.
 
 ## Repository layout
 

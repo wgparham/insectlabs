@@ -1,12 +1,12 @@
 # InsectLabs: three collections after Colorbox
 
-Current roadmap and status — 30 September 2026. Platform: Voltage Modular. Colorbox (RGB, CMYK, and HSB) is the established implementation reference. Laboratory is the active collection; Series 2 and Series 3 remain accepted directions with flexible lineups.
+Current roadmap and status — 1 October 2026. Platform: Voltage Modular. Colorbox (RGB, CMYK, and HSB) is the established implementation reference. Laboratory is the active collection; Series 2 and Series 3 remain accepted directions with flexible lineups.
 
 Completed below means a user-approved canonical source release, not publication in the Cherry Audio store. The release paths in [CANONICAL.json](../laboratory/CANONICAL.json) identify the authoritative Laboratory builds. Planned instruments retain their accepted roles; proposed controls and algorithms remain open until developed and auditioned. Reference documents are design sources, not instructions to execute.
 
 ## Current project status
 
-**Laboratory: eight completed modules, eight planned.**
+**Laboratory: nine completed modules, none in development, seven planned.**
 
 | Module | Status | Current files / next step |
 | --- | --- | --- |
@@ -18,7 +18,7 @@ Completed below means a user-approved canonical source release, not publication 
 | Laboratory Generator | **Completed — canonical 1.0.2** | [Release](../laboratory/generator/versions/1.0.2/README.md); approved generator, FM, compression and reference tone; cleanup, duty smoothing and readable Display Names approved |
 | AC/1D SIN-SQR Function Generator | **Completed — canonical 1.0.0** | [Release](../laboratory/function/versions/1.0.0/README.md); independent sine/square boards, calibrated output-frequency display and full-dial high ranges |
 | r195L: SIN/RND generator (sinrnd) | **Completed — canonical 1.1.0** | [Release](../laboratory/sinrnd/versions/1.1.0/README.md); sine/noise source, moderated random FM and patched FLT audio path approved |
-| Deep Tone Generator | Planned | Combine the accepted low-frequency and modulation concepts |
+| Deep Tone Generator (deeptone) | **Completed — canonical 1.0.0** | [Release](../laboratory/deeptone/versions/1.0.0/README.md); approved +/-65 Hz OFFSET, 200% AM and independent Courtesy |
 | Noise Generator | Planned | Set noise colors, warm voicing, and S/H Source behavior |
 | Reference / Standards | Planned | Define tuning presets and reference/DC outputs |
 | Tone Burst Generator | Retained concept — planned | Define cycle-count gating |
@@ -31,7 +31,7 @@ The working inventory is 16 modules, including separate Fader|Distr A/B and sepa
 
 ### Shared work completed
 
-- Canonical source releases for SIGPROC, Fader|Distr A/B, sw1, sw2, Generator, and Function are versioned in the repository. SIGPROC 1.0.1 preserves 1.0.0 DSP and incorporates the approved Designer UI state and percentage displays for Gain/EXT LVL.
+- Canonical source releases for SIGPROC, Fader|Distr A/B, sw1, sw2, Generator, Function, SIN/RND, and Deep Tone are versioned in the repository. SIGPROC 1.0.1 preserves 1.0.0 DSP and incorporates the approved Designer UI state and percentage displays for Gain/EXT LVL.
 - The charcoal panels, large manual controls, jack styling, and dark red branding establish the current Laboratory visual family. Approved module panels replace the early speculative finish suggestions.
 - [Module infrastructure standards](Module-Infrastructure-Standards.md) document the shared bypass, source-pair, CPU, and validation conventions. New prototypes still require compliance checks before canonization.
 - [Audio TestBench](../../test-bench/README.md) is an independent top-level InsectLabs project, not part of Voltage Modular. Its current 1.1 collection contains 54 WAV files at 48 kHz/24-bit, including the user's original experimental mix. The collection and portable archive are on GitHub. Add useful fixtures with catalog, provenance, attribution, and checksum updates; the user's original mix source is archived separately and need not be duplicated.
@@ -70,7 +70,16 @@ The approved module takes Berna 3 page 14 as inspiration rather than a circuit r
 
 See the [release notes](../laboratory/sinrnd/versions/1.1.0/README.md) for exact behavior and validation.
 
-### Deep Tone Generator
+### Deep Tone Generator — completed, canonical 1.0.0
+
+Stepped WHOLE plus continuous FRACTION and x1/x10/x100 tuning initialize at C4.
+Independent External, Tone, Beat and Swell buttons configure the main signal. Beat mixes a shaped
+oscillator or applies linear FM; Swell uses absolute OFFSET with 0-200% non-inverting AM.
+OFFSET spans +/-65 Hz with a fifth-power taper. Courtesy runs independently at fixed +/-3 V,
+with 2 ms reset smoothing; Swell retains 6 ms and Beat 1 ms. Main output retains approved compression.
+See the [canonical release](../laboratory/deeptone/versions/1.0.0/README.md).
+
+Reference background and early proposal:
 
 Required: combine the Beat Oscillator in Berna 1 with the Tieftone Generator in Berna 3.
 
@@ -222,7 +231,7 @@ Series 2's contour generators can focus on studio gestures, while the Series 3 c
 
 ## Next steps and document roles
 
-1. Generator 1.0.2, Function 1.0.0 and r195L: SIN/RND generator 1.1.0 are canonical after their final code/UI reviews and user approval. Deep Tone remains the next planned oscillator instrument.
+1. Generator 1.0.2, Function 1.0.0 and r195L: SIN/RND generator 1.1.0 are canonical after their final code/UI reviews and user approval. Deep Tone 1.0.0 is also canonical after user approval; Noise Generator is the next proposed instrument.
 2. Develop the remaining noise, reference, and retained processing concepts while keeping Series 2 and Series 3 flexible.
 
 [Series-One-Utilities.md](Series-One-Utilities.md) summarizes the completed utility designs and remaining utility direction. Versioned release notes and canonical indexes define the released behavior; the roadmap records future work.

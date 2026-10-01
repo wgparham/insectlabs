@@ -11,8 +11,8 @@ Compile Java class output outside Dropbox and Git at `C:\InsectLabs-Build\<modul
 - Local checkout: `C:/Users/wgparham/Dropbox/git/insectlabs`
 - Active collection: [Laboratory](../laboratory/README.md)
 - Shared audio fixtures: [TestBench](../../test-bench/README.md)
-- Current Laboratory releases: Signal Processor 1.0.1, Fader|Distr A/B 1.0.0, sw1 1.0.0, sw2 1.0.0, Generator 1.0.2, and Function 1.0.0.
-- Next proposed module: Sine/Random Generator; Function is canonical 1.0.0.
+- Current Laboratory releases: Signal Processor 1.0.1, Fader|Distr A/B 1.0.0, sw1 1.0.0, sw2 1.0.0, Generator 1.0.2, Function 1.0.0, SIN/RND 1.1.0, and Deep Tone 1.0.0.
+- Next proposed module: Noise Generator; Deep Tone is canonical 1.0.0.
 
 The accepted direction and unbuilt inventory live in [Collection Roadmap](Collection-Roadmap.md).
 [Module Infrastructure Standards](Module-Infrastructure-Standards.md) defines the shared

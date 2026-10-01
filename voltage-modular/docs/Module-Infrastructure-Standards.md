@@ -65,3 +65,16 @@ The module Notes field is the visible version marker for active work. It must st
 version: `v<version>rc` while a release candidate is being edited, then `v<version>` in the archived
 canonical project. Check it before build, promotion, and cleanup; release documentation and hashes do
 not replace this in-project marker.
+
+## Courtesy outputs
+
+A Courtesy output remains available whenever its module is powered and not host-bypassed. Source
+start/stop buttons are not module power controls and must not gate Courtesy. Unless explicitly
+specified otherwise, Courtesy bypasses the main output amplitude and character stages. Its documented
+waveform, rate and polarity controls may still shape it. At a zero oscillator rate, holding the current
+voltage is intentional; continuous availability does not imply perpetual motion. Host bypass silences
+Courtesy and freezes its history. A physical module power switch, where present, also turns it off.
+
+Deep Tone has no module power switch. Its Courtesy output follows SHAPE and absolute OFFSET at a
+fixed +/-3 V peak, with a dedicated polarity switch; its four function buttons and depth controls
+affect only the main signal path.

@@ -1,5 +1,9 @@
 # Laboratory release notes
 
+## Deep Tone Generator 1.0.0 — 2026-10-01
+
+First canonical release, approved after the final +/-65 Hz OFFSET audition. C4 tuning, independent source buttons, Beat mix/linear FM, 0-200% Swell and fixed-level Courtesy. Fifth-power OFFSET taper; 1/6/2 ms Beat/Swell/Courtesy reset smoothing; approved compression and direct host bypass. Released Java is unchanged from the approved export. See [release review](deeptone/versions/1.0.0/REVIEW.md).
+
 ## r195L: SIN/RND generator 1.1.0 — 2026-09-30
 
 First canonical release, approved after the final Designer build, save/reload and listening test.
