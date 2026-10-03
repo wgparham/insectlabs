@@ -1,6 +1,6 @@
 {
   "collection": "InsectLabs Audio Test Bench",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "seed": 19710510,
   "generator": "generate.py",
   "numpy_version": "2.3.5",
@@ -1572,6 +1572,122 @@
       "source_sha256": "5ee10739c9c17d05c80f041c455b65debf80fa36da97cbcfd45d5ba188b16fcb",
       "license": "Copyright retained by the composer; included in the TestBench by permission.",
       "sha256": "cffdb56b713f5e09bb787684410d75c6a8a6dc6fc4e1d47e98ebdd727742191d"
+    },
+    {
+      "file": "01-calibration/sn16u_linear_sweep_0p01Hz_23760Hz_42s.wav",
+      "frames": 2016000,
+      "seconds": 42.0,
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits": 24,
+      "kind": "Linear sweep captured from sn-16u v0.1.2rc DSP",
+      "loop": "Not seamless; faded endpoints",
+      "peak_dbfs": [
+        -6.020599913279624
+      ],
+      "rms_dbfs": [
+        -9.032336015444807
+      ],
+      "dc_mean": [
+        0.00017673926711792037
+      ],
+      "correlation": null,
+      "boundary_step": [
+        0.0
+      ],
+      "purpose": "Check frequency response, sweep behavior and high-frequency handling.",
+      "notes": "Full 42-second callback output, 0.01 Hz to 23760 Hz; original 5 ms endpoint fades retained. Nominal 5 V peak becomes 0.5 full scale; no resampling or normalization. Not a loop. Export scale: 0.1 full scale per volt; actual playback voltage depends on the player.",
+      "source": "sn-16u v0.1.2rc actual ProcessSample callback harness; tests/validate.py",
+      "source_sha256": "862e0eb4155e3e84431ce29824f734c2e38f69d426d60461b3e3b1dbeb52728b",
+      "license": "CC0-1.0 (generated audio)",
+      "sha256": "2b8f827d77115f3215b58b7f21d2e6ead8523c3a4aadb7af360f0083275347dd"
+    },
+    {
+      "file": "01-calibration/sn16u_exponential_sweep_0p01Hz_23760Hz_42s.wav",
+      "frames": 2016000,
+      "seconds": 42.0,
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits": 24,
+      "kind": "Exponential sweep captured from sn-16u v0.1.2rc DSP",
+      "loop": "Not seamless; faded endpoints",
+      "peak_dbfs": [
+        -6.020599913279624
+      ],
+      "rms_dbfs": [
+        -9.297974564478235
+      ],
+      "dc_mean": [
+        0.03963905234599397
+      ],
+      "correlation": null,
+      "boundary_step": [
+        0.0
+      ],
+      "purpose": "Check frequency response, sweep behavior and high-frequency handling.",
+      "notes": "Full 42-second callback output, 0.01 Hz to 23760 Hz; original 5 ms endpoint fades retained. Nominal 5 V peak becomes 0.5 full scale; no resampling or normalization. Not a loop. Export scale: 0.1 full scale per volt; actual playback voltage depends on the player.",
+      "source": "sn-16u v0.1.2rc actual ProcessSample callback harness; tests/validate.py",
+      "source_sha256": "862e0eb4155e3e84431ce29824f734c2e38f69d426d60461b3e3b1dbeb52728b",
+      "license": "CC0-1.0 (generated audio)",
+      "sha256": "8c49924286ebda9261f803e84790678ff3279c3c2d3efbebfe93d5123a0cbc5a"
+    },
+    {
+      "file": "03-noise/sn16u_pink_noise_11s.wav",
+      "frames": 528000,
+      "seconds": 11.0,
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits": 24,
+      "kind": "Pink noise captured from sn-16u v0.1.2rc DSP",
+      "loop": "Not seamless; faded endpoints",
+      "peak_dbfs": [
+        -8.908977735305875
+      ],
+      "rms_dbfs": [
+        -21.215022051369722
+      ],
+      "dc_mean": [
+        -0.0006777146903402878
+      ],
+      "correlation": null,
+      "boundary_step": [
+        0.0
+      ],
+      "purpose": "Compare clean reference noise colors and measure approximate spectral response.",
+      "notes": "Seed 19710510; first second discarded for settling; 50 ms endpoint fades added. Pink and blue come from the same run and are correlated. Original relative voltage levels retained; not peak or RMS normalized and not seamless. Pink uses the Paul Kellett filter; blue differentiates its output. Export scale: 0.1 full scale per volt; actual playback voltage depends on the player.",
+      "source": "sn-16u v0.1.2rc actual ProcessSample callback harness; tests/validate.py",
+      "source_sha256": "862e0eb4155e3e84431ce29824f734c2e38f69d426d60461b3e3b1dbeb52728b",
+      "license": "CC0-1.0 (generated audio)",
+      "sha256": "f78e35e914c827b02876f5808ff6a326293ae2f789b059266a9b4bfb3c5f135c"
+    },
+    {
+      "file": "03-noise/sn16u_blue_noise_11s.wav",
+      "frames": 528000,
+      "seconds": 11.0,
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits": 24,
+      "kind": "Blue noise captured from sn-16u v0.1.2rc DSP",
+      "loop": "Not seamless; faded endpoints",
+      "peak_dbfs": [
+        -10.341570708781244
+      ],
+      "rms_dbfs": [
+        -18.79547801356024
+      ],
+      "dc_mean": [
+        7.584465272498853e-08
+      ],
+      "correlation": null,
+      "boundary_step": [
+        0.0
+      ],
+      "purpose": "Compare clean reference noise colors and measure approximate spectral response.",
+      "notes": "Seed 19710510; first second discarded for settling; 50 ms endpoint fades added. Pink and blue come from the same run and are correlated. Original relative voltage levels retained; not peak or RMS normalized and not seamless. Pink uses the Paul Kellett filter; blue differentiates its output. Export scale: 0.1 full scale per volt; actual playback voltage depends on the player.",
+      "source": "sn-16u v0.1.2rc actual ProcessSample callback harness; tests/validate.py",
+      "source_sha256": "862e0eb4155e3e84431ce29824f734c2e38f69d426d60461b3e3b1dbeb52728b",
+      "license": "CC0-1.0 (generated audio)",
+      "sha256": "eed50b931e523a6a65f176818592145759916b0469c0263eeb7106906298d320"
     }
   ],
   "sources": [

@@ -44,4 +44,4 @@ TestBench for repeatable checks.
 
 Generator includes a pure 1 kHz reference, Deep Tone has independently available Courtesy, SIN/RND accepts external audio through its FLT path, and n01 provides continuous and event-sampled random voltages. n01 STEPPED samples its own source, not arbitrary external audio. These existing functions should inform future briefs without being mistaken for a complete standards source, general-purpose filter or external sample-and-hold.
 
-See [pending briefs](Series-One-Pending-Modules.md) for the six accepted unfinished roles, including Reference / Standards. Independent summing and measurement are the strongest optional utility gaps; [gap proposals](Future-Module-Proposals.md) explains their scope. These suggestions have not expanded the accepted inventory.
+See [pending briefs](Series-One-Pending-Modules.md) for the five accepted unfinished roles. SN-16u provides reference and measurement functions plus independent HPF/LPF. Independent summing remains an optional utility gap; [gap proposals](Future-Module-Proposals.md) explains their scope. These suggestions have not expanded the accepted inventory.

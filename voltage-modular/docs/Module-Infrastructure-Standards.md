@@ -78,3 +78,9 @@ Courtesy and freezes its history. A physical module power switch, where present,
 Deep Tone has no module power switch. Its Courtesy output follows SHAPE and absolute OFFSET at a
 fixed +/-3 V peak, with a dedicated polarity switch; its four function buttons and depth controls
 affect only the main signal path.
+
+## Working Notes and release cleanup
+
+Keep all working Notes fields synchronized with confirmed decisions. Read them again before editing a module, especially after a user export; unresolved proposals must be labeled pending. At canonization strip Notes from the module, controls and labels except the exact module version and text the user explicitly asks to retain. Preserve useful decisions and test evidence in external release documentation before stripping working notes.
+
+Any useful audio test files generated during development should be converted to TestBench standards and added with catalog entries, provenance and checksums. This applies throughout development, not just release preparation; disposable or redundant captures need not become fixtures. The SN-16u sweep is 42 seconds; its useful sweep and noise captures are included in TestBench.

@@ -542,3 +542,43 @@ Full-mix audition fixture for testing InsectLabs modules on the composer's own e
 
 User-supplied stereo mix. Fourier resampled from 22.05 kHz/16-bit PCM to 48 kHz, then globally peak adjusted to -6 dBFS and exported as 24-bit PCM. No fades, effects, EQ, dynamics, or channel processing added.
 
+## 01-calibration/sn16u_linear_sweep_0p01Hz_23760Hz_42s.wav
+
+42 seconds; 1 channel(s); Linear sweep captured from sn-16u v0.1.2rc DSP.
+
+Loop: Not seamless; faded endpoints. Peak dBFS: [-6.020599913279624]; RMS dBFS: [-9.032336015444807].
+
+Check frequency response, sweep behavior and high-frequency handling.
+
+Full 42-second callback output, 0.01 Hz to 23760 Hz; original 5 ms endpoint fades retained. Nominal 5 V peak becomes 0.5 full scale; no resampling or normalization. Not a loop. Export scale: 0.1 full scale per volt; actual playback voltage depends on the player.
+
+## 01-calibration/sn16u_exponential_sweep_0p01Hz_23760Hz_42s.wav
+
+42 seconds; 1 channel(s); Exponential sweep captured from sn-16u v0.1.2rc DSP.
+
+Loop: Not seamless; faded endpoints. Peak dBFS: [-6.020599913279624]; RMS dBFS: [-9.297974564478235].
+
+Check frequency response, sweep behavior and high-frequency handling.
+
+Full 42-second callback output, 0.01 Hz to 23760 Hz; original 5 ms endpoint fades retained. Nominal 5 V peak becomes 0.5 full scale; no resampling or normalization. Not a loop. Export scale: 0.1 full scale per volt; actual playback voltage depends on the player.
+
+## 03-noise/sn16u_pink_noise_11s.wav
+
+11 seconds; 1 channel(s); Pink noise captured from sn-16u v0.1.2rc DSP.
+
+Loop: Not seamless; faded endpoints. Peak dBFS: [-8.908977735305875]; RMS dBFS: [-21.215022051369722].
+
+Compare clean reference noise colors and measure approximate spectral response.
+
+Seed 19710510; first second discarded for settling; 50 ms endpoint fades added. Pink and blue come from the same run and are correlated. Original relative voltage levels retained; not peak or RMS normalized and not seamless. Pink uses the Paul Kellett filter; blue differentiates its output. Export scale: 0.1 full scale per volt; actual playback voltage depends on the player.
+
+## 03-noise/sn16u_blue_noise_11s.wav
+
+11 seconds; 1 channel(s); Blue noise captured from sn-16u v0.1.2rc DSP.
+
+Loop: Not seamless; faded endpoints. Peak dBFS: [-10.341570708781244]; RMS dBFS: [-18.79547801356024].
+
+Compare clean reference noise colors and measure approximate spectral response.
+
+Seed 19710510; first second discarded for settling; 50 ms endpoint fades added. Pink and blue come from the same run and are correlated. Original relative voltage levels retained; not peak or RMS normalized and not seamless. Pink uses the Paul Kellett filter; blue differentiates its output. Export scale: 0.1 full scale per volt; actual playback voltage depends on the player.
+

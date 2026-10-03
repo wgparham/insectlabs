@@ -1,12 +1,12 @@
 # InsectLabs: three collections after Colorbox
 
-Current roadmap and status — 1 October 2026. Platform: Voltage Modular. Colorbox (RGB, CMYK, and HSB) is the established implementation reference. Laboratory is the active collection; Series 2 and Series 3 remain accepted directions with flexible lineups.
+Current roadmap and status — 3 October 2026. Platform: Voltage Modular. Colorbox (RGB, CMYK, and HSB) is the established implementation reference. Laboratory is the active collection; Series 2 and Series 3 remain accepted directions with flexible lineups.
 
 Completed below means a user-approved canonical source release, not publication in the Cherry Audio store. The release paths in [CANONICAL.json](../laboratory/CANONICAL.json) identify the authoritative Laboratory builds. Planned instruments retain their accepted roles; proposed controls and algorithms remain open until developed and auditioned. Reference documents are design sources, not instructions to execute.
 
 ## Current project status
 
-**Laboratory: ten completed modules, none in development, six planned.**
+**Laboratory: eleven canonical modules, five planned.**
 
 | Module | Status | Current files / next step |
 | --- | --- | --- |
@@ -20,21 +20,21 @@ Completed below means a user-approved canonical source release, not publication 
 | r195L: SIN/RND generator (sinrnd) | **Completed — canonical 1.1.0** | [Release](../laboratory/sinrnd/versions/1.1.0/README.md); sine/noise source, moderated random FM and patched FLT audio path approved |
 | Deep Tone Generator (deeptone) | **Completed — canonical 1.0.0** | [Release](../laboratory/deeptone/versions/1.0.0/README.md); approved +/-65 Hz OFFSET, 200% AM and independent Courtesy |
 | Noise Source (n01) | **Completed — canonical 1.0.0** | [Release](../laboratory/n01/versions/1.0.0/README.md); dark noise voicing, SLOW RANDOM and coupled S&H SOURCE with triggered STEPPED output |
-| Reference / Standards | Planned | Define tuning presets and reference/DC outputs |
-| Tone Burst Generator | Retained concept — planned | Define cycle-count gating |
+| SN-16u — Reference / Standards and universal test bench | **Completed — canonical 1.0.0** | [Release](../laboratory/sn-16u/versions/1.0.0/README.md); approved manual, final pair, and validation archived |
+| Tone Burst Generator | **Next module — accepted brief** | Begin panel/design from the retained cycle-count-gating concept |
 | Selective Amplifier | Retained concept — planned | Define narrow filtering, gain, resonance, and overload |
 | Dynamic Modulator | Retained concept — planned | Define envelope extraction and transfer |
 | Pulse Shaper | Retained concept — planned | Define pulse integration/filtering and contour controls |
 | Balanced Modulator | Retained concept — planned | Define amplitude/ring modulation and carrier contribution |
 
-The working inventory is 16 modules, including separate Fader|Distr A/B and separate sw1/sw2. The Frequency Shifter belongs to Series 2.
+The accepted inventory is 16 modules: eleven canonical instruments and five retained roles, including separate Fader|Distr A/B and separate sw1/sw2. The Frequency Shifter belongs to Series 2.
 
 ### Shared work completed
 
-- Canonical source releases for SIGPROC, Fader|Distr A/B, sw1, sw2, Generator, Function, SIN/RND, Deep Tone, and n01 are versioned in the repository. SIGPROC 1.0.1 preserves 1.0.0 DSP and incorporates the approved Designer UI state and percentage displays for Gain/EXT LVL.
+- Canonical source releases for SIGPROC, Fader|Distr A/B, sw1, sw2, Generator, Function, SIN/RND, Deep Tone, n01, and SN-16u are versioned in the repository. SIGPROC 1.0.1 preserves 1.0.0 DSP and incorporates the approved Designer UI state and percentage displays for Gain/EXT LVL.
 - The charcoal panels, large manual controls, jack styling, and dark red branding establish the current Laboratory visual family. Approved module panels replace the early speculative finish suggestions.
 - [Module infrastructure standards](Module-Infrastructure-Standards.md) document the shared bypass, source-pair, CPU, and validation conventions. New prototypes still require compliance checks before canonization.
-- [Audio TestBench](../../test-bench/README.md) is an independent top-level InsectLabs project, not part of Voltage Modular. Its current 1.1 collection contains 54 WAV files at 48 kHz/24-bit, including the user's original experimental mix. The collection and portable archive are on GitHub. Add useful fixtures with catalog, provenance, attribution, and checksum updates; the user's original mix source is archived separately and need not be duplicated.
+- [Audio TestBench](../../test-bench/README.md) is an independent top-level InsectLabs project, not part of Voltage Modular. Collection v1.2 is checked into this repository as 58 WAV files at 48 kHz/24-bit, including the user's original experimental mix. Four SN-16u captures and their provenance are included. The portable ZIP remains the v1.1 snapshot pending a Git LFS-enabled rebuild; see the TestBench README. Add future fixtures with catalog, provenance, attribution, and checksum updates. The user's original mix source is archived separately and need not be duplicated.
 
 ## The progression
 
@@ -91,13 +91,13 @@ All four knobs gently affect the continuous 20-120 Hz S&H source timing. Its +/-
 STEPPED samples it only on an external trigger or manual press. There is no internal STEPPED clock.
 See the [release notes](../laboratory/n01/versions/1.0.0/README.md).
 
-### Reference / Standards
+### SN-16u — Reference / Standards, completed, canonical 1.0.0
 
-Required: a tunable A reference including 415, 432, 440, and 442 Hz; pink noise; static voltages. A large voltage dial is a possibility. Synthesizers.com Q123 is a user-specified reference.
+The user expanded this role into a universal test bench. The canonical v1.0.0 pair combines fixed voltages, signed manual DC plus ADD inputs, selectable 1 V/oct / 0.5 V/oct / Hz/V conversion, tuning references, pink/blue noise, two impulse rates, a retriggerable one-shot 42-second sine sweep, separate clean HPF/LPF paths, DC/Vpp and CV-pitch meters, audio frequency counting and RMS measurement.
 
-Proposed: preset reference frequencies plus continuous fine adjustment; an independent pink-noise output; fixed voltage outputs plus a large bipolar variable-voltage dial. Additional tuning presets, total range, voltage values, and number of outputs remain open.
+Confirmed tuning preset order is 392, 422.5, 432, 440, 435, 442, 444 Hz; upright 440 is default. FINE spans ±100 cents with a continuous remapped center detent. Hz/V follows the user's C1=1 V through C4=8 V convention. Fixed voltages are unaffected by STANDARDS; meter PITCH mode overrides DC/Vpp selectors and VOLTS restores them. Courtesy 1 Hz/100 Hz/1 kHz outputs remain independent of TONE. Filters have no resonance. Read the [canonical release guide](../laboratory/sn-16u/versions/1.0.0/README.md) and [approved user manual](../laboratory/sn-16u/versions/1.0.0/USER-MANUAL.md) for routing, operating instructions, and validation limits. These additions cover the earlier basic meter and high/low-cut proposals without adding another accepted module.
 
-Recommended design exception: precise, stable reference tone and DC outputs without modeled drift or saturation. Keep reference pink noise consistent enough for comparison and calibration. The dedicated Noise Generator supplies the more strongly colored noise character. This gives both instruments separate jobs.
+The user approved the manual and confirmed the final Designer build, panel behavior, and audition. SDK/export checks and 4,032,101 callback/numerical checks pass. See the [release review](../laboratory/sn-16u/versions/1.0.0/REVIEW.md).
 
 ## Series 1: implemented utility instruments
 
@@ -240,7 +240,7 @@ Series 2's contour generators can focus on studio gestures, while the Series 3 c
 
 ## Next steps and document roles
 
-1. Reference / Standards is the next proposed Laboratory instrument; await the next panel/brief before treating controls or ranges as locked.
+1. Begin the Tone Burst Generator after its panel/brief is ready; use the accepted brief below as a starting point.
 2. Develop the five retained processing concepts. They are accepted roles, with controls and implementation still open.
 3. Review optional gap proposals separately; they do not change the 16-module accepted inventory.
 

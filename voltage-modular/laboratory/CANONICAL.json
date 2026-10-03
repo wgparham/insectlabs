@@ -47,5 +47,10 @@
     "version": "1.0.0",
     "path": "n01/versions/1.0.0",
     "module": "n01"
+  },
+  "sn-16u": {
+    "version": "1.0.0",
+    "path": "sn-16u/versions/1.0.0",
+    "module": "sn16u"
   }
 }

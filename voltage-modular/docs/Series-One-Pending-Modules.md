@@ -1,16 +1,12 @@
 # Laboratory: pending instrument briefs
 
-Updated 1 October 2026. Six accepted roles remain after ten canonical modules. These are working briefs, not approved panels or DSP specifications. The [roadmap](Collection-Roadmap.md) owns status; [new proposals](Future-Module-Proposals.md) are separate from this inventory. Manual-first, mono-first operation and current infrastructure standards apply.
+Updated 3 October 2026. Eleven modules are canonical and five accepted roles remain planned. Future roles below are working briefs, not approved panels or DSP specifications. The [roadmap](Collection-Roadmap.md) owns status; [new proposals](Future-Module-Proposals.md) are separate from this inventory. Manual-first, mono-first operation and current infrastructure standards apply.
 
-## Reference / Standards — next proposed
+## SN-16u / Reference / Standards — completed, canonical 1.0.0
 
-**User requirements:** tunable A with common standards including A415, A432, A440 and A442; pink noise; static voltages. A large manual voltage dial is an option, with Synthesizers.com Q123 as inspiration. The decision to omit PINK from n01 does not remove this reference instrument's pink-noise requirement.
+The expanded test bench combines precision fixed/manual voltages, tuning references, standards conversion, two measurement meters, frequency counting, RMS measurement, pink/blue noise, impulse sources, separate clean HPF/LPF paths, and a retriggerable 42-second sine sweep. The user approved the comprehensive manual and confirmed the final build and behavior. See the [canonical release](../laboratory/sn-16u/versions/1.0.0/README.md).
 
-**Recommended brief:** independent tuning-tone, pink-noise and variable-DC outputs, with explicit volts and Hz. Keep tuning and DC stable and neutral; this instrument should check the rest of the collection rather than add drift to it. Generator's fixed 1 kHz reference does not replace tunable A or DC standards. SIGPROC can supply offsets, but lacks a dedicated reference interface.
-
-**Decide with the panel:** preset selector plus fine trim versus continuous tuning; extra historical pitches and total range; DC span, polarity and fixed outputs; reference amplitudes; simultaneous output availability and power control. Do not assume +10 V CV scaling. Any Courtesy output follows the shared always-available-while-on rule. A measurement display is optional; a full meter/analyzer is a separate proposal.
-
-## Tone Burst Generator — retained
+## Tone Burst Generator — next module
 
 **Accepted role:** gate a signal according to open/closed clock-cycle counts.
 

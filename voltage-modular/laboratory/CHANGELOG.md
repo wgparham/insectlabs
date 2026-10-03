@@ -1,5 +1,9 @@
 # Laboratory release notes
 
+## SN-16u 1.0.0 — 2026-10-03
+
+First canonical release of the manual-first universal test bench. Includes the approved tuning and fixed-voltage references, three pitch standards, sweep, courtesy tones, noise/impulse sources, precise HPF/LPF paths and measurement functions. The comprehensive user manual is included with the release. SDK/export checks and 4,032,101 callback/numerical checks pass; TestBench v1.2 verifies 58 WAVs. See [release review](sn-16u/versions/1.0.0/REVIEW.md).
+
 ## n01 Noise Source 1.0.0 — 2026-10-01
 
 First canonical release. Approved dark WHITE/SPECTRA voice, SLOW RANDOM, continuous 20-120 Hz S&H SOURCE with gentle knob coupling, and manually/externally triggered STEPPED output. Source span remains +/-5 V; no dedicated PINK output or internal STEPPED clock. Cleanup is output-identical to the approved DSP; SDK and callback checks pass. See [review](n01/versions/1.0.0/REVIEW.md).

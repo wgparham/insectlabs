@@ -1,0 +1,8 @@
+{
+  "version": "v1.0.0",
+  "candidate_before_final_metadata_cleanup": {
+    "sn16u.java": "2498EAB37027E95A7BB9618E8EABB1A3917938950937A73ADB52C6AC2AE368A9",
+    "sn16u.vmod": "2bc0028b697e49549d3f55f429ab3e60301f0594d042a82bd3c54da3a32dfad4"
+  },
+  "scope": "Human-readable static-label identifiers/display names and release Notes only; DSP and signal routing unchanged."
+}

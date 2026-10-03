@@ -1,12 +1,12 @@
 # Voltage Modular documentation
 
-Current documentation review: 1 October 2026. Laboratory has **ten canonical modules and six accepted planned roles**. Colorbox has three canonical modules. Canonical means the repository's authoritative source release; it does not mean store publication or imply testing beyond each release's recorded evidence.
+Current documentation review: 3 October 2026. Laboratory has **eleven canonical modules and five accepted planned roles**. Tone Burst Generator is next. Colorbox has three canonical modules. Canonical means the repository's authoritative source release; it does not mean store publication or imply testing beyond each release's recorded evidence.
 
 | Document | Purpose |
 | --- | --- |
 | [Collection roadmap](Collection-Roadmap.md) | Current status, accepted inventory, series directions and design references |
 | [Series One utilities](Series-One-Utilities.md) | Completed utility capabilities and remaining roles |
-| [Pending instrument briefs](Series-One-Pending-Modules.md) | Requirements, suggestions and unresolved choices for six accepted roles |
+| [Pending instrument briefs](Series-One-Pending-Modules.md) | Next Tone Burst Generator brief and five accepted future roles |
 | [Future module proposals](Future-Module-Proposals.md) | Optional gap-fillers, kept separate from the committed inventory |
 | [Development decisions](Development-Decisions.md) | Chat decisions, superseded drafts and current documentation clarifications |
 | [Infrastructure standards](Module-Infrastructure-Standards.md) | Naming, bypass, DSP, source pairs and Courtesy behavior |

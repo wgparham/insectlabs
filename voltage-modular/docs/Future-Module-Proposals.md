@@ -1,6 +1,6 @@
 # Optional gap-fillers and later-series ideas
 
-Proposal review: 1 October 2026. **None of the additions below is an approved module.** The accepted Laboratory inventory remains ten completed plus six planned. These suggestions come from comparing current capabilities and the retained briefs; they are not historical user decisions.
+Proposal review: 3 October 2026. **None of the additions below is an approved module.** The accepted Laboratory inventory has eleven canonical modules and five planned roles. These suggestions come from comparing current capabilities and the retained briefs; they are not historical user decisions.
 
 ## Laboratory priorities
 
@@ -12,7 +12,7 @@ Proposal review: 1 October 2026. **None of the additions below is an approved mo
 
 For the mixer, keep the first design simple: no CV, stereo bus or built-in EQ. Restrained overload could give it a distinct Laboratory line-stage voice. An inverted sum is an optional useful extra, not a required expansion. Preserve DC use unless the brief deliberately calls for an audio-only path.
 
-The meter complements Reference / Standards: one generates known signals, the other observes them. Do not burden the reference source with an analyzer before its core panel is settled. Avoid promising laboratory measurement accuracy until calibrated and tested.
+SN-16u 1.0.0 provides DC/Vpp, CV pitch, audio Hz and RMS measurement, along with independent clean HPF/LPF paths. The meter and band-limiting proposals above are substantially covered by that release, not separate approved modules. Revisit only if native testing exposes a remaining need. Avoid promising laboratory measurement accuracy beyond tested limits.
 
 ## Fill these gaps within accepted concepts first
 
@@ -38,4 +38,4 @@ Keep arithmetic, logic, accumulators, explicit state and coordinated event proce
 
 ## Suggested decision
 
-Complete Reference / Standards and retain the five processing concepts. If expanding Laboratory, discuss the Summing Amplifier first, then the meter. Try to solve the remaining smaller gaps within those existing briefs before increasing module count.
+Develop the Tone Burst Generator next; retain the other four processing concepts for later. If expanding Laboratory, discuss the Summing Amplifier first; evaluate any further meter needs after the SN-16u release. Try to solve the remaining smaller gaps within those existing briefs before increasing module count.

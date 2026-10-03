@@ -26,6 +26,7 @@ python voltage-modular/laboratory/sinrnd/versions/1.1.0/tests/validate.py
 python voltage-modular/laboratory/function/versions/1.0.0/tests/validate_callbacks.py
 python voltage-modular/laboratory/deeptone/versions/1.0.0/tests/validate.py
 python voltage-modular/laboratory/n01/versions/1.0.0/tests/validate.py
+python voltage-modular/laboratory/sn-16u/versions/1.0.0/tests/validate.py
 ```
 
 Fader|Distr and SIGPROC project checks resolve their release folder through the Laboratory canonical index. Colorbox compares its documented old/new release pairs. The shared Fader|Distr core test exercises the retained prototype/core; it supplements the two actual module checks. Function's suite is frozen with its release. Generator's historical cleanup comparison targets 1.0.1 against 1.0.0 and must not be presented as validation of the later power-fade release.

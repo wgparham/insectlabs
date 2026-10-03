@@ -91,6 +91,12 @@ def control_line(info, old_number):
                   if line == rewritten or line.strip() == rewritten.strip()]
     if candidates:
         return min(candidates, key=lambda index: abs(index - old_number))
+    # Human-readable Display Names may differ from the internal variable name.
+    # In that case, preserve the control anchor on its generated constructor line.
+    declaration = next((index for index, line in enumerate(new_lines)
+                        if re.match(r'\s*' + re.escape(name) + r'\s*=\s*new\b', line)), None)
+    if declaration is not None:
+        return declaration
     # A control may have been deliberately renamed. Its Designer placement is
     # immutable, so use the generated SetPosition line as a stable fallback.
     declaration_index = next((index for index in range(old_number, -1, -1)

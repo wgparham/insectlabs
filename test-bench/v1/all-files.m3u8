@@ -53,3 +53,7 @@
 07-recordings/recorded_guitar_left_piano_right.wav
 07-recordings/recorded_piano_left_guitar_right.wav
 05-musical/after_drinking_at_emalines_original_mix.wav
+01-calibration/sn16u_linear_sweep_0p01Hz_23760Hz_42s.wav
+01-calibration/sn16u_exponential_sweep_0p01Hz_23760Hz_42s.wav
+03-noise/sn16u_pink_noise_11s.wav
+03-noise/sn16u_blue_noise_11s.wav

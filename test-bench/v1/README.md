@@ -1,6 +1,6 @@
-# InsectLabs Audio Test Bench — v1.1
+# InsectLabs Audio Test Bench — v1.2
 
-54 listening and measurement files for the InsectLabs Voltage Modular collections. All delivery files are **48 kHz, 24-bit PCM WAV**, with mono sources prioritized and explicit stereo routing fixtures. Typical lengths are 4–24 seconds, with one complete original experimental-music mix for extended audition. No Voltage Modular patch or special player is required.
+58 listening and measurement files for the InsectLabs Voltage Modular collections. All delivery files are **48 kHz, 24-bit PCM WAV**, with mono sources prioritized and explicit stereo routing fixtures. Typical lengths are 4–24 seconds, plus two 42-second sn-16u sweeps, with one complete original experimental-music mix for extended audition. No Voltage Modular patch or special player is required.
 
 ## Start here
 
@@ -17,9 +17,9 @@
 
 | Folder | Files | Contents |
 |---|---:|---|
-| 01-calibration | 18 | Sines at 20, 50, 60, 100, 220, 415, 432, 440, 442, 1000, 3000, 8000 and 12000 Hz; silence; beating and IMD pairs; multitone; 20 Hz–18 kHz sweep |
+| 01-calibration | 20 | Sines at 20, 50, 60, 100, 220, 415, 432, 440, 442, 1000, 3000, 8000 and 12000 Hz; silence; beating and IMD pairs; multitone; 20 Hz–18 kHz sweep; sn-16u linear/exponential 0.01 Hz–23.76 kHz sweeps |
 | 02-dynamics | 5 | Level staircase, amplitude modulation, gated bursts, impulses, sine plus DC |
-| 03-noise | 7 | White/pink/brown/blue noise, modulated pink noise, random envelope noise, randomly frequency-modulated sine |
+| 03-noise | 9 | White/pink/brown/blue noise, modulated pink noise, random envelope noise, randomly frequency-modulated sine; sn-16u pink/blue captures |
 | 04-stereo | 7 | Left/right identification, correlated dual mono, opposite polarity, alternating channels, independent noise |
 | 05-musical | 7 | Original synthesized guitar-like and piano-like performances, split-channel pairs, duo, full instrumental mix and complete user-owned experimental-music mix |
 | 06-ambience | 2 | Synthesized garden and stream textures |
@@ -43,7 +43,7 @@ The real-source files were obtained from a pinned public IBM sample mirror with 
 
 ## Validation and archiving
 
-The delivered set passes 255 automated checks: WAV format and duration, checksums, peak measurements, sample clipping, calibrated sine values/frequencies, exact stereo cancellation, channel isolation, channel swaps, and faded recording endpoints. See `QA.json`. Subjective listening and playback inside Voltage Modular remain to be done.
+The delivered set passes 275 automated checks: WAV format and duration, checksums, peak measurements, sample clipping, calibrated sine values/frequencies, exact stereo cancellation, channel isolation, channel swaps, and faded recording endpoints. See `QA.json`. The original 54-file set was user-approved in Voltage Modular. The four new sn-16u captures await user playback.
 
 Generated audio in folders 01–06 is dedicated under CC0 1.0. Recordings retain their individual CC0 or CC BY 4.0 terms. **Keep ATTRIBUTION.md with redistributed copies**, particularly piano/rain files and piano-containing channel pairs. The collection is not covered by one blanket CC0 license.
 
@@ -52,3 +52,7 @@ permits, and generation/import/verification tools. The TestBench is its own top-
 project and is versioned on GitHub. Keep scripts, catalogs, attribution, checksums, and test notes
 with each delivery. The original user-provided composition source is archived separately; only the
 approved converted delivery mix and provenance belong here.
+
+## sn-16u capture levels
+
+The four sn-16u v0.1.2rc fixtures preserve relative module voltage levels using 0.1 full scale per volt. The sweeps have nominal -6.0206 dBFS peaks and retain their original 5 ms fades; the noise excerpts discard one settling second and add 50 ms endpoint fades. Neither noise excerpt is peak/loudness normalized. Pink and blue share the same random sequence. These are DSP callback captures, not native host recordings, and they are not seamless loops. The player's voltage scaling still determines their actual playback voltage.
