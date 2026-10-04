@@ -1,4 +1,7 @@
 # rgb
+
+[Complete user manual](USER-MANUAL.md)
+
 **Three-stage saturation processor · v4.0.3**
 
 rgb combines three distinct waveshaping stages, each with its own drive control. RED brings firmer, more aggressive saturation; GREEN is rounder and more gradual; BLUE becomes increasingly asymmetric as drive rises, adding an uneven, gritty edge. Together they range from gentle harmonic thickening to dense, layered distortion.

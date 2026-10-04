@@ -11,8 +11,8 @@ Compile Java class output outside Dropbox and Git at `C:\InsectLabs-Build\<modul
 - Local checkout: `C:/Users/wgparham/Dropbox/git/insectlabs`
 - Active collection: [Laboratory](../laboratory/README.md)
 - Shared audio fixtures: [TestBench](../../test-bench/README.md)
-- Current Laboratory releases: Signal Processor 1.0.1, Fader|Distr A/B 1.0.0, sw1/sw2 1.0.0, Generator 1.0.2, Function 1.0.0, SIN/RND 1.1.0, Deep Tone 1.0.0, n01 Noise Source 1.0.0, and SN-16u 1.0.0.
-- Next module: Tone Burst Generator, beginning from its accepted brief when the panel is ready. SN-16u is canonical at `laboratory/sn-16u/versions/1.0.0`; n01 remains canonical 1.0.0.
+- Current Laboratory releases: Signal Processor 1.0.1, Fader|Distr A/B 1.0.0, sw1/sw2 1.0.0, Generator 1.0.2, Function 1.0.0, SIN/RND 1.1.0, Deep Tone 1.0.0, n01 Noise Source 1.0.0, SN-16u 1.0.0, and Burstgen 1.0.0.
+- Next module: Selective Amplifier, starting from the mockup in `laboratory/selective service/`. Burstgen is canonical at `laboratory/burstgen/versions/1.0.0` with its comprehensive manual.
 
 The accepted direction and unbuilt inventory live in [Collection Roadmap](Collection-Roadmap.md).
 [Module Infrastructure Standards](Module-Infrastructure-Standards.md) defines the shared
@@ -22,7 +22,7 @@ source-pair, bypass, DSP, and validation contract.
 
 - Voltage Module Designer SDK: `C:/ProgramData/Voltage/voltage.jar`
 - Installed Java: JDK 27. Compile sources with the established Java 17 target:
-  `javac --release 17 -Xlint:all -Werror`.
+  `javac --release 17` with the available warning checks. On the installed JDK 27, `-Xlint:all` currently fails while emitting Burstgen's large nested DSP class; do not report that mode as passing.
 - Python scripts run with the available local Python runtime. The TestBench tools require NumPy.
 
 Colorbox validation has been run against this SDK and Java 17 target. Module-specific validation

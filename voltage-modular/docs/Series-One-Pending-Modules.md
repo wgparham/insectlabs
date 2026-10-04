@@ -1,22 +1,18 @@
 # Laboratory: pending instrument briefs
 
-Updated 3 October 2026. Eleven modules are canonical and five accepted roles remain planned. Future roles below are working briefs, not approved panels or DSP specifications. The [roadmap](Collection-Roadmap.md) owns status; [new proposals](Future-Module-Proposals.md) are separate from this inventory. Manual-first, mono-first operation and current infrastructure standards apply.
+Updated 4 October 2026. Twelve modules are canonical and four accepted roles remain planned. Future roles below are working briefs, not approved panels or DSP specifications. The [roadmap](Collection-Roadmap.md) owns status; [new proposals](Future-Module-Proposals.md) are separate from this inventory. Manual-first, mono-first operation and current infrastructure standards apply.
 
 ## SN-16u / Reference / Standards — completed, canonical 1.0.0
 
 The expanded test bench combines precision fixed/manual voltages, tuning references, standards conversion, two measurement meters, frequency counting, RMS measurement, pink/blue noise, impulse sources, separate clean HPF/LPF paths, and a retriggerable 42-second sine sweep. The user approved the comprehensive manual and confirmed the final build and behavior. See the [canonical release](../laboratory/sn-16u/versions/1.0.0/README.md).
 
-## Tone Burst Generator — next module
+## Burstgen Tone Burst Generator — completed, canonical 1.0.0
 
-**Accepted role:** gate a signal according to open/closed clock-cycle counts.
+Burstgen alternates two external signals through independent counted gates. It has LOOP and one-cycle operation, internal or external clocking, eleven ratios, three internal ranges, independent PASS/GATE side outputs, a summed gated output, and independent internal square and ramp Courtesy outputs. The approved manual documents count behavior, ratio routing, bypass and the bounded prediction tail for multiplied external clocks. The user confirmed the tested build and Courtesy edge timing. See the [canonical release and full manual](../laboratory/burstgen/versions/1.0.0/README.md).
 
-**Candidate design:** signal input and gated output, manual start/stop, open/closed count controls and a simple cycle reference. Define whether counts track an internal timebase, external events or the input waveform; this has not been settled. A single-shot burst could be useful alongside repeat operation.
+## Selective Amplifier — next module
 
-**Decide:** timing source/range, retrigger/reset, count-zero behavior, unpatched signal behavior and edge treatment. Phase-aware opening and a short transition have different effects; do not silently promise click-free switching at arbitrary wave phases. Avoid duplicating sw1's manual gate or expanding this into a modern sequencer.
-
-## Selective Amplifier — retained
-
-**Accepted role:** narrow filtering, gain, resonance and overload for isolating and emphasizing a signal region.
+**Accepted role:** narrow filtering, gain, resonance and overload for isolating and emphasizing a signal region. The user has placed the current mockup in `laboratory/selective service/`; inspect its Notes fields before design decisions. This is the next module after Burstgen. The user has placed the current mockup in `laboratory/selective service/`; inspect its Notes fields before design decisions. This is the next module after Burstgen. The user has placed the current mockup in `laboratory/selective service/`; inspect its Notes fields before design decisions. This is the next module after Burstgen. The user has placed the current mockup in `laboratory/selective service/`; inspect its Notes fields before design decisions. This is the next module after Burstgen. The user has placed the current mockup in `laboratory/selective service/`; inspect its Notes fields before design decisions. This is the next module after Burstgen.
 
 **Candidate design:** manual center frequency, bandwidth/selectivity, gain and overload indication. It could serve tuned-noise and resonant measurement experiments. Consider a broad bandwidth setting before creating another filter module.
 

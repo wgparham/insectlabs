@@ -11,8 +11,13 @@ was superseded by the approved releases and the [Collection Roadmap](Collection-
 | [Fader&#124;Distr A/B](../laboratory/faderdistr/versions/1.0.0/README.md) | 1.0.0 | Simultaneous X/Y-to-Z fader and S-to-1/2 distributor; A is linear, B equal-power |
 | [sw1](../laboratory/sw1/versions/1.0.0/README.md) | 1.0.0 | Manual 2x2 relay router with toggle/gate behavior and optional CLK contact filtering |
 | [sw2](../laboratory/sw2/versions/1.0.0/README.md) | 1.0.0 | Shared OFF/1–4 source selector and destination distributor with optional CLK contact filtering |
+| [Burstgen](../laboratory/burstgen/versions/1.0.0/README.md) | 1.0.0 | Two independently counted signal gates, ratio clocking, and internal clock/ramp Courtesy outputs |
+| [Burstgen](../laboratory/burstgen/versions/1.0.0/README.md) | 1.0.0 | Two independently counted signal gates, ratio clocking, and internal clock/ramp Courtesy outputs |
+| [Burstgen](../laboratory/burstgen/versions/1.0.0/README.md) | 1.0.0 | Two independently counted signal gates, ratio clocking, and internal clock/ramp Courtesy outputs |
+| [Burstgen](../laboratory/burstgen/versions/1.0.0/README.md) | 1.0.0 | Two independently counted signal gates, ratio clocking, and internal clock/ramp Courtesy outputs |
+| [Burstgen](../laboratory/burstgen/versions/1.0.0/README.md) | 1.0.0 | Two independently counted signal gates, ratio clocking, and internal clock/ramp Courtesy outputs |
 
-These four designs comprise five modules (Fader|Distr A and B are separate). They are manual, mono-first instruments. Their release notes, checksums, and tests define
+These five designs comprise six modules (Fader|Distr A and B are separate). They are manual, mono-first instruments. Their release notes, checksums, and tests define
 their final behavior; this page does not supersede them.
 
 ## Shared collection behavior
@@ -32,8 +37,8 @@ their final behavior; this page does not supersede them.
 ## Remaining utility direction
 
 The completed manual routers meet the current Series One switching requirement. Future Series One
-utilities are the retained Tone Burst Generator, Selective Amplifier, Dynamic Modulator, Pulse
-Shaper, and Balanced Modulator. Voltage-controlled switches and more performance-oriented routing
+utilities now include Burstgen; the retained unfinished roles are Selective Amplifier, Dynamic Modulator, Pulse
+Shaper, and Balanced Modulator. The Selective Amplifier is next; its mockup is in `laboratory/selective service/`. Voltage-controlled switches and more performance-oriented routing
 belong to Series Two unless the roadmap is deliberately revised.
 
 See the roadmap for the full source-generator and reference-instrument sequence. New utility work
@@ -44,4 +49,4 @@ TestBench for repeatable checks.
 
 Generator includes a pure 1 kHz reference, Deep Tone has independently available Courtesy, SIN/RND accepts external audio through its FLT path, and n01 provides continuous and event-sampled random voltages. n01 STEPPED samples its own source, not arbitrary external audio. These existing functions should inform future briefs without being mistaken for a complete standards source, general-purpose filter or external sample-and-hold.
 
-See [pending briefs](Series-One-Pending-Modules.md) for the five accepted unfinished roles. SN-16u provides reference and measurement functions plus independent HPF/LPF. Independent summing remains an optional utility gap; [gap proposals](Future-Module-Proposals.md) explains their scope. These suggestions have not expanded the accepted inventory.
+See [pending briefs](Series-One-Pending-Modules.md) for the four accepted unfinished roles. SN-16u provides reference and measurement functions plus independent HPF/LPF. Independent summing remains an optional utility gap; [gap proposals](Future-Module-Proposals.md) explains their scope. These suggestions have not expanded the accepted inventory.

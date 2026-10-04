@@ -7,10 +7,10 @@ InsectLabs develops Voltage Modular instruments and a reusable audio TestBench. 
 | Project | Current state |
 | --- | --- |
 | [Colorbox](voltage-modular/colorbox/README.md) | Canonical RGB 4.0.3, CMYK 1.0.3, and HSB 1.0.2 source archives |
-| [Laboratory](voltage-modular/laboratory/README.md) | Eleven canonical modules; Tone Burst Generator is next |
+| [Laboratory](voltage-modular/laboratory/README.md) | Twelve canonical modules; Selective Amplifier is next |
 | [Audio TestBench](test-bench/README.md) | Collection v1.2: 58 checked-in WAV files at 48 kHz/24-bit; portable ZIP remains the v1.1 snapshot |
 
-The [collection roadmap](voltage-modular/docs/Collection-Roadmap.md) records the accepted three-series direction. All eleven currently developed Laboratory modules are canonical. Tone Burst Generator is the next module; five accepted Series-One roles remain planned.
+The [collection roadmap](voltage-modular/docs/Collection-Roadmap.md) records the accepted three-series direction. All twelve currently developed Laboratory modules are canonical. The Selective Amplifier is next; four accepted Series-One roles remain planned.
 
 ## Repository layout
 

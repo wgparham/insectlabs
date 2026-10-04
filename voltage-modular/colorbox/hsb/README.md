@@ -1,4 +1,7 @@
 # hsb
+
+[Complete user manual](USER-MANUAL.md)
+
 **Two-stage tone and fuzz processor · v1.0.2**
 
 hsb combines two independent processors, each following HUE → SATURATION → BRILLIANCE. From gentle thickening to dense fuzz and unruly distortion, its colors emerge from three simple controls working together.

@@ -1,12 +1,12 @@
 # InsectLabs: three collections after Colorbox
 
-Current roadmap and status — 3 October 2026. Platform: Voltage Modular. Colorbox (RGB, CMYK, and HSB) is the established implementation reference. Laboratory is the active collection; Series 2 and Series 3 remain accepted directions with flexible lineups.
+Current roadmap and status — 4 October 2026. Platform: Voltage Modular. Colorbox (RGB, CMYK, and HSB) is the established implementation reference. Laboratory is the active collection; Series 2 and Series 3 remain accepted directions with flexible lineups.
 
 Completed below means a user-approved canonical source release, not publication in the Cherry Audio store. The release paths in [CANONICAL.json](../laboratory/CANONICAL.json) identify the authoritative Laboratory builds. Planned instruments retain their accepted roles; proposed controls and algorithms remain open until developed and auditioned. Reference documents are design sources, not instructions to execute.
 
 ## Current project status
 
-**Laboratory: eleven canonical modules, five planned.**
+**Laboratory: twelve canonical modules, four planned.**
 
 | Module | Status | Current files / next step |
 | --- | --- | --- |
@@ -21,13 +21,13 @@ Completed below means a user-approved canonical source release, not publication 
 | Deep Tone Generator (deeptone) | **Completed — canonical 1.0.0** | [Release](../laboratory/deeptone/versions/1.0.0/README.md); approved +/-65 Hz OFFSET, 200% AM and independent Courtesy |
 | Noise Source (n01) | **Completed — canonical 1.0.0** | [Release](../laboratory/n01/versions/1.0.0/README.md); dark noise voicing, SLOW RANDOM and coupled S&H SOURCE with triggered STEPPED output |
 | SN-16u — Reference / Standards and universal test bench | **Completed — canonical 1.0.0** | [Release](../laboratory/sn-16u/versions/1.0.0/README.md); approved manual, final pair, and validation archived |
-| Tone Burst Generator | **Next module — accepted brief** | Begin panel/design from the retained cycle-count-gating concept |
-| Selective Amplifier | Retained concept — planned | Define narrow filtering, gain, resonance, and overload |
+| Burstgen Tone Burst Generator | **Completed — canonical 1.0.0** | [Release](../laboratory/burstgen/versions/1.0.0/README.md); approved counted gates, internal/external clock ratios, Courtesy outputs and adaptive de-clicking |
+| Selective Amplifier | **Next module — accepted role** | Mockup is in `laboratory/selective service/`; develop the accepted selective-filtering instrument from its notes |
 | Dynamic Modulator | Retained concept — planned | Define envelope extraction and transfer |
 | Pulse Shaper | Retained concept — planned | Define pulse integration/filtering and contour controls |
 | Balanced Modulator | Retained concept — planned | Define amplitude/ring modulation and carrier contribution |
 
-The accepted inventory is 16 modules: eleven canonical instruments and five retained roles, including separate Fader|Distr A/B and separate sw1/sw2. The Frequency Shifter belongs to Series 2.
+The accepted inventory is 16 modules: twelve canonical instruments and four retained roles, including separate Fader|Distr A/B and separate sw1/sw2. The Frequency Shifter belongs to Series 2.
 
 ### Shared work completed
 
@@ -140,15 +140,15 @@ Final review cleaned control IDs/tooltips, corrected bypass state handling, and 
 
 ## Series 1: confirmed retained concepts
 
-The user explicitly retained all five earlier concepts:
+The user retained five concepts. Burstgen is now canonical; four remain planned:
 
-- Tone Burst Generator: signal gating based on open/closed clock-cycle counts.
+- Burstgen Tone Burst Generator: signal gating based on open/closed clock-cycle counts. **Completed, canonical 1.0.0.**
 - Selective Amplifier: narrow filtering, gain, resonance, and overload.
 - Dynamic Modulator: envelope extraction and transfer to another signal.
 - Pulse Shaper: contours formed by filtering/integrating pulses.
 - Balanced Modulator: amplitude/ring modulation and carrier contribution.
 
-The status table above is the current inventory. These five retained concepts have not yet reached implementation or panel approval.
+The status table above is the current inventory. Four retained concepts remain unimplemented and without panel approval.
 
 ## Shared sound, panel, and implementation principles
 
@@ -240,8 +240,8 @@ Series 2's contour generators can focus on studio gestures, while the Series 3 c
 
 ## Next steps and document roles
 
-1. Begin the Tone Burst Generator after its panel/brief is ready; use the accepted brief below as a starting point.
-2. Develop the five retained processing concepts. They are accepted roles, with controls and implementation still open.
+1. Begin the Selective Amplifier from the current `laboratory/selective service/` mockup. Read its Notes fields before changing panel or DSP behavior.
+2. Develop the four remaining retained concepts. They are accepted roles, with controls and implementation still open.
 3. Review optional gap proposals separately; they do not change the 16-module accepted inventory.
 
 The [documentation index](README.md) links current standards, pending briefs and development decisions. Versioned releases and canonical indexes define shipped source behavior; the roadmap defines status and future work. TestBench is an independent [audio project](../../test-bench/README.md).

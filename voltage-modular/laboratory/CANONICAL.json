@@ -52,5 +52,10 @@
     "version": "1.0.0",
     "path": "sn-16u/versions/1.0.0",
     "module": "sn16u"
+  },
+  "burstgen": {
+    "version": "1.0.0",
+    "path": "burstgen/versions/1.0.0",
+    "module": "burstgen"
   }
 }

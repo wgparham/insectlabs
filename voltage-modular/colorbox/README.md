@@ -1,5 +1,7 @@
 # Colorbox for Voltage Modular
 
+[Colorbox user manual](../docs/manuals/Colorbox-Collection-User-Manual.md)
+
 Canonical source projects from insect laboratories. Small mono processing stages combine through normalled routing into cascades, parallel processing, stereo, and dual mono patches.
 
 | Module | Current version | Character |

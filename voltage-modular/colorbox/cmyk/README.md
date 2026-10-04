@@ -1,4 +1,7 @@
 # cmyk
+
+[Complete user manual](USER-MANUAL.md)
+
 **Four-stage wavefolder · v1.0.3**
 
 cmyk combines four wavefolding stages with bipolar input levels and CV control over folding depth. Two alternating folder shapes bring warm, rounded harmonics and brighter, more angular textures, ranging from subtle coloration to dense, complex distortion.
