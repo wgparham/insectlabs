@@ -1,6 +1,6 @@
 # Optional gap-fillers and later-series ideas
 
-Proposal review: 4 October 2026. **None of the additions below is an approved module.** The accepted Laboratory inventory has twelve canonical modules and four planned roles. These suggestions come from comparing current capabilities and the retained briefs; they are not historical user decisions.
+Proposal review: 5 October 2026. **None of the additions below is an approved module.** The accepted Laboratory inventory has thirteen canonical modules and three planned roles. These suggestions come from comparing current capabilities and the retained briefs; they are not historical user decisions.
 
 ## Laboratory priorities
 
@@ -38,4 +38,4 @@ Keep arithmetic, logic, accumulators, explicit state and coordinated event proce
 
 ## Suggested decision
 
-Develop the Selective Amplifier next from the existing mockup; retain the other three processing concepts for later. If expanding Laboratory, discuss the Summing Amplifier first; evaluate any further meter needs after the SN-16u release. Try to solve the remaining smaller gaps within those existing briefs before increasing module count.
+Develop the Dynamic Modulator brief next; Selective Service is now canonical. Retain the other two processing concepts for later. If expanding Laboratory, discuss the Summing Amplifier first; evaluate any further meter needs after the SN-16u release. Try to solve the remaining smaller gaps within those existing briefs before increasing module count.

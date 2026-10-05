@@ -1,6 +1,6 @@
 # Laboratory: pending instrument briefs
 
-Updated 4 October 2026. Twelve modules are canonical and four accepted roles remain planned. Future roles below are working briefs, not approved panels or DSP specifications. The [roadmap](Collection-Roadmap.md) owns status; [new proposals](Future-Module-Proposals.md) are separate from this inventory. Manual-first, mono-first operation and current infrastructure standards apply.
+Updated 5 October 2026. Thirteen modules are canonical and three accepted roles remain planned. Future roles below are working briefs, not approved panels or DSP specifications. The [roadmap](Collection-Roadmap.md) owns status; [new proposals](Future-Module-Proposals.md) are separate from this inventory. Manual-first, mono-first operation and current infrastructure standards apply.
 
 ## SN-16u / Reference / Standards — completed, canonical 1.0.0
 
@@ -10,13 +10,13 @@ The expanded test bench combines precision fixed/manual voltages, tuning referen
 
 Burstgen alternates two external signals through independent counted gates. It has LOOP and one-cycle operation, internal or external clocking, eleven ratios, three internal ranges, independent PASS/GATE side outputs, a summed gated output, and independent internal square and ramp Courtesy outputs. The approved manual documents count behavior, ratio routing, bypass and the bounded prediction tail for multiplied external clocks. The user confirmed the tested build and Courtesy edge timing. See the [canonical release and full manual](../laboratory/burstgen/versions/1.0.0/README.md).
 
-## Selective Amplifier — next module
+## Selective Service / Selective Amplifier — completed, canonical 1.0.0
 
-**Accepted role:** narrow filtering, gain, resonance and overload for isolating and emphasizing a signal region. The user has placed the current mockup in `laboratory/selective service/`; inspect its Notes fields before design decisions. This is the next module after Burstgen. The user has placed the current mockup in `laboratory/selective service/`; inspect its Notes fields before design decisions. This is the next module after Burstgen. The user has placed the current mockup in `laboratory/selective service/`; inspect its Notes fields before design decisions. This is the next module after Burstgen. The user has placed the current mockup in `laboratory/selective service/`; inspect its Notes fields before design decisions. This is the next module after Burstgen. The user has placed the current mockup in `laboratory/selective service/`; inspect its Notes fields before design decisions. This is the next module after Burstgen.
+**Completed role:** mono selective amplifier with matched band-pass MAIN and complementary band-reject C outputs; clean input GAIN, MAIN-only AMP, manual frequency/width/slope, V/Oct and FM, indicators, power-off behavior and exact splitter bypass. The user approved canonical 1.0.0 after successful build and testing. See the [release and manual](../laboratory/selectiveService/versions/1.0.0/README.md).
 
-**Candidate design:** manual center frequency, bandwidth/selectivity, gain and overload indication. It could serve tuned-noise and resonant measurement experiments. Consider a broad bandwidth setting before creating another filter module.
+**Canonical behavior:** center frequency spans 20 Hz–18 kHz with ±2 Hz fine adjustment; bandwidth is 2–100 Hz; slope is 1–12 poles per skirt. GAIN spans ±24 dB before both filters; AMP spans −24/+36 dB after MAIN only. MAIN is transparent through ±20 V and approaches ±24 V; C is transparent through ±16 V and approaches ±20 V. POWER OFF silences MAIN and sends raw S through C’s ceiling. Host BYPASS sends exact raw S to both outputs, by explicit design.
 
-**Decide:** passband topology, tuning range, resonance/self-oscillation, DC behavior and headroom. SIN/RND's external FLT path already provides a voiced filter, but is not specified as a general independent high-pass/low-pass instrument. Do not describe it as a conventional low-pass solely because it uses filter state variables.
+**Release evidence:** the canonical archive includes the matched source pair, approved panel, user manual, review, checksums and callback validation.
 
 ## Dynamic Modulator — retained
 

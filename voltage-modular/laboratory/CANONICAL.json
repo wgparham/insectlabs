@@ -57,5 +57,10 @@
     "version": "1.0.0",
     "path": "burstgen/versions/1.0.0",
     "module": "burstgen"
+  },
+  "selectiveService": {
+    "version": "1.0.0",
+    "path": "selectiveService/versions/1.0.0",
+    "module": "selectiveService"
   }
 }

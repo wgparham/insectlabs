@@ -37,6 +37,14 @@ x=signals['recorded_guitar_left_piano_right'];y=signals['recorded_piano_left_gui
 check(np.array_equal(x,y[:,::-1]),'Recorded channel-swap pair is exact')
 check(np.array_equal(x[:,0],signals['guitar_recording_mono'][:,0]),'Split left matches mono guitar')
 check(np.array_equal(x[:,1],signals['piano_recording_mono'][:,0]),'Split right matches mono piano')
+if 'selectivity_1k_neighbours_8s' in signals:
+    probe=signals['selectivity_1k_neighbours_8s'][:,0]
+    check(np.array_equal(probe,np.tile(probe[:48000],8)),'Selectivity probe: exact one-second periodic construction')
+    spectrum=abs(np.fft.rfft(probe[:48000]/8388608))*2/48000
+    bins=[990,999,1000,1001,1010];components=spectrum[bins]
+    check(np.ptp(components)<1e-8,'Selectivity probe: five equal-amplitude component levels')
+    residual=spectrum.copy();residual[bins]=0
+    check(np.sum(residual**2)<1e-10*np.sum(components**2),'Selectivity probe: residual spectral energy below -100 dB')
 check(len(list(a.folder.rglob('*.wav')))==len(m['files']),'No uncatalogued WAV files')
 report={'result':'PASS','files':len(m['files']),'checks':len(checks),'details':checks,
         'scope':'File integrity and numerical audio checks. No host playback or subjective listening validation performed.'}

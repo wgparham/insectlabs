@@ -46,3 +46,10 @@ Used the first 10 seconds of the mirrored guitar, piano and rain files, and the 
 ## sn-16u generated captures (1.2.0)
 
 The `sn16u_` sweeps and noise files are generated audio dedicated under CC0-1.0. They were captured from the actual sn-16u v0.1.2rc callback test harness at 48 kHz, with deterministic noise seed 19710510. The manifest records source and delivery SHA-256 values; the importer documents scaling and fades. The pink algorithm is Paul Kellett's refined [pink-noise filter](https://www.musicdsp.org/en/latest/Filters/76-pink-noise-filter.html); blue differentiates its output. This audio dedication does not change the source code's license or the licenses of other recordings.
+
+## 1.3.0 — original narrow-band selectivity probe
+
+`01-calibration/selectivity_1k_neighbours_8s.wav`: original analytic five-sine construction,
+generated for InsectLabs by `test-bench/tools/add_selectivity_fixture.py`. No third-party samples.
+Dedicated under CC0 1.0, matching the collection's other generated calibration fixtures.
+The manifest records the generator hash, NumPy version, frequencies, component levels and WAV hash.

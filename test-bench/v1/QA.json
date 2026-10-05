@@ -1,7 +1,7 @@
 {
   "result": "PASS",
-  "files": 58,
-  "checks": 275,
+  "files": 59,
+  "checks": 282,
   "details": [
     "01-calibration/sine_00020Hz_minus12dBFS.wav: SHA-256",
     "01-calibration/sine_00020Hz_minus12dBFS.wav: format and duration",
@@ -269,6 +269,10 @@
     "03-noise/sn16u_blue_noise_11s.wav: format and duration",
     "03-noise/sn16u_blue_noise_11s.wav: no sample clipping",
     "03-noise/sn16u_blue_noise_11s.wav: measured peak agrees",
+    "01-calibration/selectivity_1k_neighbours_8s.wav: SHA-256",
+    "01-calibration/selectivity_1k_neighbours_8s.wav: format and duration",
+    "01-calibration/selectivity_1k_neighbours_8s.wav: no sample clipping",
+    "01-calibration/selectivity_1k_neighbours_8s.wav: measured peak agrees",
     "Digital silence is exact",
     "Left-only file has silent right",
     "Right-only file has silent left",
@@ -277,6 +281,9 @@
     "Recorded channel-swap pair is exact",
     "Split left matches mono guitar",
     "Split right matches mono piano",
+    "Selectivity probe: exact one-second periodic construction",
+    "Selectivity probe: five equal-amplitude component levels",
+    "Selectivity probe: residual spectral energy below -100 dB",
     "No uncatalogued WAV files"
   ],
   "scope": "File integrity and numerical audio checks. No host playback or subjective listening validation performed."

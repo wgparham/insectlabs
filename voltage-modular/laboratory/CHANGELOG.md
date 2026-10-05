@@ -1,5 +1,9 @@
 # Laboratory release notes
 
+## Selective Service 1.0.0 — 2026-10-05
+
+First canonical release after user testing. The selective band-pass and complementary band-reject paths use manual frequency, fine, width and slope controls, input GAIN and MAIN-only AMP. POWER OFF silences MAIN and passes raw input through C's ceiling; host BYPASS is the approved exact splitter. See [release review](selectiveService/versions/1.0.0/REVIEW.md).
+
 ## SN-16u 1.0.0 — 2026-10-03
 
 First canonical release of the manual-first universal test bench. Includes the approved tuning and fixed-voltage references, three pitch standards, sweep, courtesy tones, noise/impulse sources, precise HPF/LPF paths and measurement functions. The comprehensive user manual is included with the release. SDK/export checks and 4,032,101 callback/numerical checks pass; TestBench v1.2 verifies 58 WAVs. See [release review](sn-16u/versions/1.0.0/REVIEW.md).

@@ -1,6 +1,6 @@
-# InsectLabs Audio Test Bench — v1.2
+# InsectLabs Audio Test Bench — v1.3
 
-58 listening and measurement files for the InsectLabs Voltage Modular collections. All delivery files are **48 kHz, 24-bit PCM WAV**, with mono sources prioritized and explicit stereo routing fixtures. Typical lengths are 4–24 seconds, plus two 42-second sn-16u sweeps, with one complete original experimental-music mix for extended audition. No Voltage Modular patch or special player is required.
+59 listening and measurement files for the InsectLabs Voltage Modular collections. All delivery files are **48 kHz, 24-bit PCM WAV**, with mono sources prioritized and explicit stereo routing fixtures. Typical lengths are 4–24 seconds, plus two 42-second sn-16u sweeps, with one complete original experimental-music mix for extended audition. No Voltage Modular patch or special player is required.
 
 ## Start here
 
@@ -17,7 +17,7 @@
 
 | Folder | Files | Contents |
 |---|---:|---|
-| 01-calibration | 20 | Sines at 20, 50, 60, 100, 220, 415, 432, 440, 442, 1000, 3000, 8000 and 12000 Hz; silence; beating and IMD pairs; multitone; 20 Hz–18 kHz sweep; sn-16u linear/exponential 0.01 Hz–23.76 kHz sweeps |
+| 01-calibration | 21 | Sines at 20, 50, 60, 100, 220, 415, 432, 440, 442, 1000, 3000, 8000 and 12000 Hz; silence; beating and IMD pairs; multitone; 20 Hz–18 kHz sweep; sn-16u linear/exponential 0.01 Hz–23.76 kHz sweeps; close-spaced 1 kHz selectivity probe |
 | 02-dynamics | 5 | Level staircase, amplitude modulation, gated bursts, impulses, sine plus DC |
 | 03-noise | 9 | White/pink/brown/blue noise, modulated pink noise, random envelope noise, randomly frequency-modulated sine; sn-16u pink/blue captures |
 | 04-stereo | 7 | Left/right identification, correlated dual mono, opposite polarity, alternating channels, independent noise |
@@ -43,7 +43,7 @@ The real-source files were obtained from a pinned public IBM sample mirror with 
 
 ## Validation and archiving
 
-The delivered set passes 275 automated checks: WAV format and duration, checksums, peak measurements, sample clipping, calibrated sine values/frequencies, exact stereo cancellation, channel isolation, channel swaps, and faded recording endpoints. See `QA.json`. The original 54-file set was user-approved in Voltage Modular. The four new sn-16u captures await user playback.
+The delivered set passes automated checks (the current count is recorded in `QA.json`): WAV format and duration, checksums, peak measurements, sample clipping, calibrated sine values/frequencies, exact stereo cancellation, channel isolation, channel swaps, and faded recording endpoints. See `QA.json`. The original 54-file set was user-approved in Voltage Modular. The four new sn-16u captures await user playback.
 
 Generated audio in folders 01–06 is dedicated under CC0 1.0. Recordings retain their individual CC0 or CC BY 4.0 terms. **Keep ATTRIBUTION.md with redistributed copies**, particularly piano/rain files and piano-containing channel pairs. The collection is not covered by one blanket CC0 license.
 
@@ -56,3 +56,15 @@ approved converted delivery mix and provenance belong here.
 ## sn-16u capture levels
 
 The four sn-16u v0.1.2rc fixtures preserve relative module voltage levels using 0.1 full scale per volt. The sweeps have nominal -6.0206 dBFS peaks and retain their original 5 ms fades; the noise excerpts discard one settling second and add 50 ms endpoint fades. Neither noise excerpt is peak/loudness normalized. Pink and blue share the same random sequence. These are DSP callback captures, not native host recordings, and they are not seamless loops. The player's voltage scaling still determines their actual playback voltage.
+
+## Narrow-band selectivity probe (1.3.0)
+
+`01-calibration/selectivity_1k_neighbours_8s.wav` combines equal-amplitude tones at 990, 999,
+1000, 1001 and 1010 Hz. The **combined** signal peaks at −12 dBFS; each individual tone is lower
+(see the manifest). It is an exact repeated one-second period in an eight-second mono file,
+with no fades or dither. Loop continuously for narrow/high-order filters to settle.
+
+At a 1 kHz center and 2 Hz bandwidth, the center tone tests unity bandpass and the notch null,
+the ±1 Hz tones test the transition edges, and the ±10 Hz tones test rejection/preservation.
+Use sufficient FFT resolution to separate 1 Hz spacing. Finite filter slopes overlap at the
+edges. This analytic fixture is numerically verified; native host playback is pending.

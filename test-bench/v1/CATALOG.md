@@ -582,3 +582,13 @@ Compare clean reference noise colors and measure approximate spectral response.
 
 Seed 19710510; first second discarded for settling; 50 ms endpoint fades added. Pink and blue come from the same run and are correlated. Original relative voltage levels retained; not peak or RMS normalized and not seamless. Pink uses the Paul Kellett filter; blue differentiates its output. Export scale: 0.1 full scale per volt; actual playback voltage depends on the player.
 
+## 01-calibration/selectivity_1k_neighbours_8s.wav
+
+8 seconds; 1 channel(s); analytic five-tone selectivity probe.
+
+Loop: periodic; exact repeated one-second period. Peak dBFS: [-12.000000253286988]; RMS dBFS: [-21.999567090962657].
+
+Measure narrow bandpass selection, notch rejection and neighbouring-frequency leakage around 1 kHz.
+
+Equal-amplitude 990, 999, 1000, 1001 and 1010 Hz sine components. Composite peak -12 dBFS; each component is lower. One-second period repeated eight times without fades or dither. Loop for settling of very narrow/high-order filters. With a 1 kHz, 2 Hz-wide matched BP/notch pair: center should pass MAIN and null C; neighbours near +/-1 Hz sit near the transition edges, while +/-10 Hz test rejection/preservation. Finite slopes necessarily overlap at the band edges. Use an FFT window long enough to resolve 1 Hz spacing. Playback voltage depends on the player.
+

@@ -18,14 +18,11 @@ Series One: mono-first, predominantly manual instruments inspired by early labor
 | n01 Noise Source | Canonical 1.0.0, dark noise and random-voltage source | [Release](n01/versions/1.0.0/README.md) | [Manual](n01/USER-MANUAL.md) |
 | SN-16u | Canonical 1.0.0, universal test bench | [Release](sn-16u/versions/1.0.0/README.md) | [Approved manual](sn-16u/versions/1.0.0/USER-MANUAL.md) |
 | Burstgen | Canonical 1.0.0, counted two-stage tone burst gate | [Release](burstgen/versions/1.0.0/README.md) | [Manual](burstgen/USER-MANUAL.md) |
-| Burstgen | Canonical 1.0.0, counted two-stage tone burst gate | [Release](burstgen/versions/1.0.0/README.md) | [Manual](burstgen/USER-MANUAL.md) |
-| Burstgen | Canonical 1.0.0, counted two-stage tone burst gate | [Release](burstgen/versions/1.0.0/README.md) | [Manual](burstgen/USER-MANUAL.md) |
-| Burstgen | Canonical 1.0.0, counted two-stage tone burst gate | [Release](burstgen/versions/1.0.0/README.md) | [Manual](burstgen/USER-MANUAL.md) |
-| Burstgen | Canonical 1.0.0, counted two-stage tone burst gate | [Release](burstgen/versions/1.0.0/README.md) | [Manual](burstgen/USER-MANUAL.md) |
+| Selective Service | Canonical 1.0.0, selective amplifier and splitter | [Release](selectiveService/versions/1.0.0/README.md) | [Manual](selectiveService/versions/1.0.0/USER-MANUAL.md) |
 
 [CANONICAL.json](CANONICAL.json) identifies releases without duplicating source pairs.
 
-Next module: [Selective Amplifier](../docs/Series-One-Pending-Modules.md#selective-amplifier--next-module), with its current mockup in `selective service/`. The accepted future inventory contains four retained roles.
+Next planned brief: [Dynamic Modulator](../docs/Series-One-Pending-Modules.md#dynamic-modulator--retained). Three accepted future roles remain.
 
 - [Release notes](CHANGELOG.md)
 - [Collection roadmap](../docs/Collection-Roadmap.md)
@@ -38,4 +35,4 @@ Follow [Colorbox conventions](../colorbox/STANDARDS.md). The modulation referenc
 +10 V is deferred for input-specific consideration. Third-party reference manuals and SDK binaries remain in external Resources; InsectLabs user manuals are stored with their module documentation.
 
 Release preparation follows the [module release checklist](../docs/Module-Release-Checklist.md).
-The current inventory is twelve canonical modules and four accepted planned roles. See the [documentation index](../docs/README.md), [pending briefs](../docs/Series-One-Pending-Modules.md) and [optional gap proposals](../docs/Future-Module-Proposals.md). Each release retains its own approval and validation evidence.
+The current inventory is thirteen canonical modules and three accepted planned roles. See the [documentation index](../docs/README.md), [pending briefs](../docs/Series-One-Pending-Modules.md) and [optional gap proposals](../docs/Future-Module-Proposals.md). Each release retains its own approval and validation evidence.

@@ -2,11 +2,11 @@
 
 **Insect Laboratories · Voltage Modular · Series One**
 
-Collection manual updated 4 October 2026
+Collection manual updated 5 October 2026
 
 Laboratory is a mono-first collection of early test-equipment-inspired sources, processors, routers and measurement tools. Most controls are manual. The instruments share a restrained hardware character, while each keeps a distinct purpose and voice. Audio and control-voltage levels are part of the sound; check the output level before sending a hot source into another processor.
 
-This manual covers the twelve canonical releases. The release links identify the exact version described and contain its Voltage Module Designer project, matching source export, artwork and review record.
+This manual covers the thirteen canonical releases. The release links identify the exact version described and contain its Voltage Module Designer project, matching source export, artwork and review record.
 
 | Module | Canonical version | Main use | Full manual |
 | --- | ---: | --- | --- |

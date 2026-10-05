@@ -1,6 +1,6 @@
 {
   "collection": "InsectLabs Audio Test Bench",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "seed": 19710510,
   "generator": "generate.py",
   "numpy_version": "2.3.5",
@@ -1688,6 +1688,50 @@
       "source_sha256": "862e0eb4155e3e84431ce29824f734c2e38f69d426d60461b3e3b1dbeb52728b",
       "license": "CC0-1.0 (generated audio)",
       "sha256": "eed50b931e523a6a65f176818592145759916b0469c0263eeb7106906298d320"
+    },
+    {
+      "file": "01-calibration/selectivity_1k_neighbours_8s.wav",
+      "frames": 384000,
+      "seconds": 8.0,
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits": 24,
+      "kind": "analytic five-tone selectivity probe",
+      "loop": "periodic; exact repeated one-second period",
+      "peak_dbfs": [
+        -12.000000253286988
+      ],
+      "rms_dbfs": [
+        -21.999567090962657
+      ],
+      "dc_mean": [
+        0.0
+      ],
+      "correlation": null,
+      "boundary_step": [
+        0.03278827667236328
+      ],
+      "purpose": "Measure narrow bandpass selection, notch rejection and neighbouring-frequency leakage around 1 kHz.",
+      "notes": "Equal-amplitude 990, 999, 1000, 1001 and 1010 Hz sine components. Composite peak -12 dBFS; each component is lower. One-second period repeated eight times without fades or dither. Loop for settling of very narrow/high-order filters. With a 1 kHz, 2 Hz-wide matched BP/notch pair: center should pass MAIN and null C; neighbours near +/-1 Hz sit near the transition edges, while +/-10 Hz test rejection/preservation. Finite slopes necessarily overlap at the band edges. Use an FFT window long enough to resolve 1 Hz spacing. Playback voltage depends on the player.",
+      "frequencies_hz": [
+        990,
+        999,
+        1000,
+        1001,
+        1010
+      ],
+      "component_peak_dbfs": [
+        -25.978967182035483,
+        -25.978967089878235,
+        -25.978967114170814,
+        -25.978967228594122,
+        -25.978967273740388
+      ],
+      "source": "Original analytic NumPy construction; test-bench/tools/add_selectivity_fixture.py",
+      "generator_sha256": "b529dc9a7023722767edae7702435fd1fad825640b8341bf962f571d5c5d8483",
+      "numpy_version": "2.3.5",
+      "license": "CC0-1.0 (generated audio)",
+      "sha256": "f4664f7913824c04d87cbeae070d05c70209f9dd13497b52fafeb3ea431f9587"
     }
   ],
   "sources": [

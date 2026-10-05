@@ -11,8 +11,8 @@ Compile Java class output outside Dropbox and Git at `C:\InsectLabs-Build\<modul
 - Local checkout: `C:/Users/wgparham/Dropbox/git/insectlabs`
 - Active collection: [Laboratory](../laboratory/README.md)
 - Shared audio fixtures: [TestBench](../../test-bench/README.md)
-- Current Laboratory releases: Signal Processor 1.0.1, Fader|Distr A/B 1.0.0, sw1/sw2 1.0.0, Generator 1.0.2, Function 1.0.0, SIN/RND 1.1.0, Deep Tone 1.0.0, n01 Noise Source 1.0.0, SN-16u 1.0.0, and Burstgen 1.0.0.
-- Next module: Selective Amplifier, starting from the mockup in `laboratory/selective service/`. Burstgen is canonical at `laboratory/burstgen/versions/1.0.0` with its comprehensive manual.
+- Current Laboratory releases: Signal Processor 1.0.1, Fader|Distr A/B 1.0.0, sw1/sw2 1.0.0, Generator 1.0.2, Function 1.0.0, SIN/RND 1.1.0, Deep Tone 1.0.0, n01 Noise Source 1.0.0, SN-16u 1.0.0, Burstgen 1.0.0, and Selective Service 1.0.0.
+- Next planned brief: Dynamic Modulator. Selective Service is canonical at `laboratory/selectiveService/versions/1.0.0` with its comprehensive manual.
 
 The accepted direction and unbuilt inventory live in [Collection Roadmap](Collection-Roadmap.md).
 [Module Infrastructure Standards](Module-Infrastructure-Standards.md) defines the shared
