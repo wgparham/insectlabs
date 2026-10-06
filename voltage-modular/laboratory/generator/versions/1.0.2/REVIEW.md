@@ -11,3 +11,9 @@
 The new gain state is initialized and reset safely, fades both the main and reference outputs, and stops source processing after a completed power-down fade. No frequency, waveform, FM, compression, duty-cycle, meter, routing or reference-tone behavior was changed outside the power transition.
 
 The user built, loaded and passed the final release candidate before promotion.
+
+## Canonical file refresh — 2026-10-06
+
+The user confirmed the current Designer-saved 1.0.2 pair is canonical. The refresh changes the
+Designer skin ID only; control metadata and DSP/user-code regions are unchanged. `SHA256.json`
+records the current canonical file bytes. No new audio behavior or release version is introduced.

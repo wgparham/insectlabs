@@ -28,7 +28,7 @@ public class generator extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "24461202b60c4616ab25c6cd216f5ee1" );
+        SetSkin( "6555658fa3054a88aa314b8d028eecd0" );
     }
 
 void InitializeControls()
