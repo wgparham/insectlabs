@@ -62,5 +62,10 @@
     "version": "1.0.0",
     "path": "selectiveService/versions/1.0.0",
     "module": "selectiveService"
+  },
+  "following": {
+    "version": "1.0.0",
+    "path": "following/versions/1.0.0",
+    "module": "following"
   }
 }

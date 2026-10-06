@@ -6,7 +6,7 @@ Collection manual updated 5 October 2026
 
 Laboratory is a mono-first collection of early test-equipment-inspired sources, processors, routers and measurement tools. Most controls are manual. The instruments share a restrained hardware character, while each keeps a distinct purpose and voice. Audio and control-voltage levels are part of the sound; check the output level before sending a hot source into another processor.
 
-This manual covers the thirteen canonical releases. The release links identify the exact version described and contain its Voltage Module Designer project, matching source export, artwork and review record.
+This manual covers the fourteen canonical releases. The release links identify the exact version described and contain its Voltage Module Designer project, matching source export, artwork and review record.
 
 | Module | Canonical version | Main use | Full manual |
 | --- | ---: | --- | --- |
@@ -22,10 +22,9 @@ This manual covers the thirteen canonical releases. The release links identify t
 | [n01 Noise Source](../../laboratory/n01/versions/1.0.0/) | 1.0.0 | Noise, continuous random voltage and sample/hold | [Manual](../../laboratory/n01/USER-MANUAL.md) |
 | [SN-16u Test Bench](../../laboratory/sn-16u/versions/1.0.0/) | 1.0.0 | Pitch standards, references, meters, sweep and filters | [Approved manual](../../laboratory/sn-16u/versions/1.0.0/USER-MANUAL.md) |
 | [Burstgen Tone Burst Generator](../../laboratory/burstgen/versions/1.0.0/) | 1.0.0 | Two counted signal gates, clock ratios and independent C/R Courtesy | [Manual](../../laboratory/burstgen/USER-MANUAL.md) |
-| [Burstgen Tone Burst Generator](../../laboratory/burstgen/versions/1.0.0/) | 1.0.0 | Two counted signal gates, clock ratios and independent C/R Courtesy | [Manual](../../laboratory/burstgen/USER-MANUAL.md) |
-| [Burstgen Tone Burst Generator](../../laboratory/burstgen/versions/1.0.0/) | 1.0.0 | Two counted signal gates, clock ratios and independent C/R Courtesy | [Manual](../../laboratory/burstgen/USER-MANUAL.md) |
-| [Burstgen Tone Burst Generator](../../laboratory/burstgen/versions/1.0.0/) | 1.0.0 | Two counted signal gates, clock ratios and independent C/R Courtesy | [Manual](../../laboratory/burstgen/USER-MANUAL.md) |
-| [Burstgen Tone Burst Generator](../../laboratory/burstgen/versions/1.0.0/) | 1.0.0 | Two counted signal gates, clock ratios and independent C/R Courtesy | [Manual](../../laboratory/burstgen/USER-MANUAL.md) |
+| [Selective Service](../../laboratory/selectiveService/versions/1.0.0/) | 1.0.0 | Selective band-pass amplifier and complementary notch | [Manual](../../laboratory/selectiveService/versions/1.0.0/USER-MANUAL.md) |
+| [Following](../../laboratory/following/versions/1.0.0/) | 1.0.0 | Driven amplifier, envelope/gate extraction and delay | [Manual](../../laboratory/following/versions/1.0.0/USER-MANUAL.md) |
+
 
 ## Signal Processor · two independent mono stages · v1.0.1
 
@@ -206,3 +205,28 @@ Burstgen alternates two patched live signals according to independent X and Y co
 X and Y outputs each have PASS/GATE selection. Z always sums the counted gates. The short adaptive de-click fade stops at high tick rates to retain fast modulation. Host bypass routes X and Y directly to their matching outputs, sums them at Z, and silences Courtesy.
 
 At external 2.5 kHz and ×7, the predicted tick rate approaches 17.5 kHz. Internal HI at ×7 reaches 21 kHz, where gates are only a few audio samples wide. External multiplication uses measured clock periods and can produce up to six predicted trailing ticks when the external source stops. See the [complete Burstgen manual](../../laboratory/burstgen/USER-MANUAL.md) for full control behavior, timing examples and limits.
+
+## Selective Service · selective amplifier · v1.0.0
+
+![Selective Service panel](../../laboratory/selectiveService/versions/1.0.0/selectiveService_hero.png)
+
+S feeds input GAIN and matched band-pass/notch processing. MAIN is the isolated passband
+with its own AMP stage; C rejects that band and bypasses AMP. FREQUENCY spans 20 Hz–18 kHz,
+WIDTH 2–100 Hz, and SLOPE 1–12 poles per skirt. GAIN is ±24 dB; AMP is −24/+36 dB.
+Power-off silences MAIN while C carries input through its ceiling. Host bypass is an exact
+splitter from S to both outputs. See the [full manual](../../laboratory/selectiveService/versions/1.0.0/USER-MANUAL.md).
+
+## Following · dynamic modulator · v1.0.0
+
+![Following panel](../../laboratory/following/versions/1.0.0/following_hero.png)
+
+S enters shared gain and compression. SIGNAL THROUGH carries that colored audio; a
+separate 20–200 Hz high-pass feeds envelope detection. AUTO/MANUAL attack share a
+two-stage program-dependent release. DELAY shifts the whole envelope up to three seconds;
+BALANCE linearly blends immediate and delayed copies for +/− outputs. G and the delayed
+gate have independent lamps; courtesy outputs ignore BALANCE. There is no internal carrier
+VCA: patch an envelope into SIGPROC to transfer the source's dynamics to another sound.
+
+Startup is OFF/AUTO with unity gain, minimum filter/attack/delay, immediate BALANCE and
+5 V THRESHOLD. Lower THRESHOLD for ordinary sources. Host bypass passes raw S through
+the audio jack and silences CV. See the [full manual](../../laboratory/following/versions/1.0.0/USER-MANUAL.md).

@@ -1,6 +1,6 @@
 # Laboratory: pending instrument briefs
 
-Updated 5 October 2026. Thirteen modules are canonical and three accepted roles remain planned. Future roles below are working briefs, not approved panels or DSP specifications. The [roadmap](Collection-Roadmap.md) owns status; [new proposals](Future-Module-Proposals.md) are separate from this inventory. Manual-first, mono-first operation and current infrastructure standards apply.
+Updated 5 October 2026. Fourteen modules are canonical and two accepted roles remain planned. Future roles below are working briefs, not approved panels or DSP specifications. The [roadmap](Collection-Roadmap.md) owns status; [new proposals](Future-Module-Proposals.md) are separate from this inventory. Manual-first, mono-first operation and current infrastructure standards apply.
 
 ## SN-16u / Reference / Standards — completed, canonical 1.0.0
 
@@ -18,13 +18,14 @@ Burstgen alternates two external signals through independent counted gates. It h
 
 **Release evidence:** the canonical archive includes the matched source pair, approved panel, user manual, review, checksums and callback validation.
 
-## Dynamic Modulator — retained
+## Dynamic Modulator / Following — completed, canonical 1.0.0
 
-**Accepted role:** extract one signal's envelope and transfer its dynamics to another.
-
-**Candidate design:** detector input, carrier/program input, sensitivity, rise/fall response and depth. An exposed envelope output would make it useful with existing processors. Rectification and attack/release are functional operations, not optional vintage noise.
-
-**Decide:** peak versus averaged detection, normalization, response range, depth polarity, envelope voltage reference and idle behavior. A threshold/event output is an optional way to fill a trigger-extraction gap. SIGPROC's VCA is the gain element; this instrument's new contribution is extracting and applying dynamics.
+Following extracts envelopes and sustained gates for use with SIGPROC or another external
+VCA. Its shared input gain/character stage feeds SIGNAL THROUGH and a detector-only
+20–200 Hz high-pass. It provides AUTO/MANUAL attack, two-stage program-dependent release,
+true 0–3 s envelope delay, linear balance, positive/inverted CV, and independent gate lamps.
+It has no built-in carrier input or audio gain element for applying the envelope to another
+source. See the [canonical release and manual](../laboratory/following/versions/1.0.0/README.md).
 
 ## Pulse Shaper — retained
 

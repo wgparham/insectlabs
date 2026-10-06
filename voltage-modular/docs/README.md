@@ -1,12 +1,12 @@
 # Voltage Modular documentation
 
-Current documentation review: 5 October 2026. Laboratory has **thirteen canonical modules and three accepted planned roles**. Dynamic Modulator is the next planned brief. Colorbox has three canonical modules. Canonical means the repository's authoritative source release; it does not mean store publication or imply testing beyond each release's recorded evidence.
+Current documentation review: 5 October 2026. Laboratory has **fourteen canonical modules and two accepted planned roles**. Following 1.0.0 is canonical. Pulse Shaper is the next suggested brief. Colorbox has three canonical modules. Canonical means the repository's authoritative source release; it does not mean store publication or imply testing beyond each release's recorded evidence.
 
 | Document | Purpose |
 | --- | --- |
 | [Collection roadmap](Collection-Roadmap.md) | Current status, accepted inventory, series directions and design references |
 | [Series One utilities](Series-One-Utilities.md) | Completed utility capabilities and remaining roles |
-| [Pending instrument briefs](Series-One-Pending-Modules.md) | Completed Burstgen and Selective Service releases, plus three accepted future roles |
+| [Pending instrument briefs](Series-One-Pending-Modules.md) | Completed Burstgen, Selective Service and Following releases, plus two accepted future roles |
 | [Future module proposals](Future-Module-Proposals.md) | Optional gap-fillers, kept separate from the committed inventory |
 | [Development decisions](Development-Decisions.md) | Chat decisions, superseded drafts and current documentation clarifications |
 | [Infrastructure standards](Module-Infrastructure-Standards.md) | Naming, bypass, DSP, source pairs and Courtesy behavior |
@@ -14,7 +14,7 @@ Current documentation review: 5 October 2026. Laboratory has **thirteen canonica
 | [Development setup](Development-Setup.md) | Local paths, SDK, external compiler output and workflow |
 | [Validation tools](../../tools/README.md) | Repeatable checks and their limits |
 | [Colorbox user manual](manuals/Colorbox-Collection-User-Manual.md) | Collection overview and shared patching guide for RGB, CMYK and HSB |
-| [Laboratory user manual](manuals/Laboratory-Collection-User-Manual.md) | Collection overview and index for thirteen canonical modules |
+| [Laboratory user manual](manuals/Laboratory-Collection-User-Manual.md) | Collection overview and index for fourteen canonical modules |
 | [Signal Processor manual](../laboratory/signal-processor/USER-MANUAL.md) | Complete operating guide for Signal Processor 1.0.1 |
 | [Fader\|Distr A manual](../laboratory/faderdistr/USER-MANUAL-A.md) | Complete operating guide for Fader\|Distr A 1.0.0 |
 | [Fader\|Distr B manual](../laboratory/faderdistr/USER-MANUAL-B.md) | Complete operating guide for Fader\|Distr B 1.0.0 |

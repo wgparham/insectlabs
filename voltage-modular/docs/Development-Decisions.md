@@ -45,3 +45,7 @@ The EMS random-voltage reference is retained for later Radiophonic exploration. 
 ## Audit boundary
 
 This refresh updates living Markdown guides, module indexes and historical-reference labels. Versioned sources, projects, images, hashes and release reviews remain immutable. The repository audit checks tracked links, canonical targets, hashes and source agreement; it does not replace listening or native Designer checks. Proposals are explicitly separated from accepted plans. No new panel, DSP behavior or module release is approved by this documentation pass.
+
+## Following — canonical 1.0.0
+
+The Dynamic Modulator role is realized as Following. SIGNAL THROUGH is tapped after shared gain and coloration; it is not a raw active splitter. FILTER is detector-only, 20–200 Hz. DELAY shifts the entire envelope rather than extending release. AUTO/MANUAL share a two-stage program-dependent release. BALANCE affects the positive/inverted envelope only; both gate outputs and delayed courtesy remain independent. Gate LEDs track actual levels without pulse stretching. Final defaults are OFF, AUTO, unity amplitude, minimum filter/attack/delay, immediate balance and 5 V threshold. Host bypass alone provides raw audio through; CV is silent.

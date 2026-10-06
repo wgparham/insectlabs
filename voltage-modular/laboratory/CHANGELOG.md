@@ -1,5 +1,9 @@
 # Laboratory release notes
 
+## Following 1.0.0
+
+First canonical release after user approval. Shared driven amplifier and audio tap, detector-only 20–200 Hz filter, AUTO/MANUAL attack, two-stage program-dependent release, three-second envelope delay, linear balance, ±5 V envelopes and independent gate LEDs. Finalization preserves approved DSP and defaults. [Review](following/versions/1.0.0/REVIEW.md) and [manual](following/versions/1.0.0/USER-MANUAL.md).
+
 ## Selective Service 1.0.0 — 2026-10-05
 
 First canonical release after user testing. The selective band-pass and complementary band-reject paths use manual frequency, fine, width and slope controls, input GAIN and MAIN-only AMP. POWER OFF silences MAIN and passes raw input through C's ceiling; host BYPASS is the approved exact splitter. See [release review](selectiveService/versions/1.0.0/REVIEW.md).

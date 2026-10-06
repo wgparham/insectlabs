@@ -6,7 +6,7 @@ Completed below means a user-approved canonical source release, not publication 
 
 ## Current project status
 
-**Laboratory: thirteen canonical modules, three planned.**
+**Laboratory: fourteen canonical modules, two planned.**
 
 | Module | Status | Current files / next step |
 | --- | --- | --- |
@@ -23,11 +23,11 @@ Completed below means a user-approved canonical source release, not publication 
 | SN-16u — Reference / Standards and universal test bench | **Completed — canonical 1.0.0** | [Release](../laboratory/sn-16u/versions/1.0.0/README.md); approved manual, final pair, and validation archived |
 | Burstgen Tone Burst Generator | **Completed — canonical 1.0.0** | [Release](../laboratory/burstgen/versions/1.0.0/README.md); approved counted gates, internal/external clock ratios, Courtesy outputs and adaptive de-clicking |
 | Selective Service (Selective Amplifier) | **Completed — canonical 1.0.0** | [Release](../laboratory/selectiveService/versions/1.0.0/README.md); tested selective band-pass/notch instrument with manual gain staging |
-| Dynamic Modulator | **Next planned brief — retained concept** | Define envelope extraction and transfer |
+| Following (Dynamic Modulator) | **Completed — canonical 1.0.0** | [Release](../laboratory/following/versions/1.0.0/README.md); driven audio tap, envelopes, gates, two-stage release and true delay |
 | Pulse Shaper | Retained concept — planned | Define pulse integration/filtering and contour controls |
 | Balanced Modulator | Retained concept — planned | Define amplitude/ring modulation and carrier contribution |
 
-The accepted inventory is 16 modules: thirteen canonical instruments and three retained roles, including separate Fader|Distr A/B and separate sw1/sw2. The Frequency Shifter belongs to Series 2.
+The accepted inventory is 16 modules: fourteen canonical instruments and two retained roles, including separate Fader|Distr A/B and separate sw1/sw2. The Frequency Shifter belongs to Series 2.
 
 ### Shared work completed
 
@@ -140,15 +140,15 @@ Final review cleaned control IDs/tooltips, corrected bypass state handling, and 
 
 ## Series 1: confirmed retained concepts
 
-The user retained five concepts. Burstgen is now canonical; four remain planned:
+The user retained five processing/timing roles. Three are now complete:
 
-- Burstgen Tone Burst Generator: signal gating based on open/closed clock-cycle counts. **Completed, canonical 1.0.0.**
-- Selective Amplifier: narrow filtering, gain, resonance, and overload.
-- Dynamic Modulator: envelope extraction and transfer to another signal.
-- Pulse Shaper: contours formed by filtering/integrating pulses.
-- Balanced Modulator: amplitude/ring modulation and carrier contribution.
+- Burstgen Tone Burst Generator — canonical 1.0.0.
+- Selective Amplifier — Selective Service, canonical 1.0.0.
+- Dynamic Modulator — Following, canonical 1.0.0. Exposes envelopes/gates for an external VCA; it has no second carrier input.
+- Pulse Shaper — retained and planned.
+- Balanced Modulator — retained and planned.
 
-The status table above is the current inventory. Four retained concepts remain unimplemented and without panel approval.
+The status table above is the current 16-module inventory: fourteen completed and two planned.
 
 ## Shared sound, panel, and implementation principles
 
@@ -240,8 +240,8 @@ Series 2's contour generators can focus on studio gestures, while the Series 3 c
 
 ## Next steps and document roles
 
-1. Begin the Dynamic Modulator brief when its panel/mockup is ready; its accepted role is envelope extraction and transfer.
-2. Continue the three retained concepts: Dynamic Modulator, Pulse Shaper and Balanced Modulator. Controls and implementation remain open until designed and tested.
+1. Discuss Pulse Shaper as the next retained brief; Following is now canonical. No new implementation starts without the user’s brief.
+2. Continue the two retained concepts: Pulse Shaper and Balanced Modulator. Controls and implementation remain open until designed and tested.
 3. Review optional gap proposals separately; they do not change the 16-module accepted inventory.
 
 The [documentation index](README.md) links current standards, pending briefs and development decisions. Versioned releases and canonical indexes define shipped source behavior; the roadmap defines status and future work. TestBench is an independent [audio project](../../test-bench/README.md).
