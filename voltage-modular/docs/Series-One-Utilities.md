@@ -33,7 +33,7 @@ their final behavior; this page does not supersede them.
 
 ## Remaining utility direction
 
-The completed manual routers meet the current Series One switching requirement. Burstgen, Selective Service and Following are canonical. Following adds a driven audio tap, envelope extraction, true envelope delay and threshold gates. The retained unfinished roles are Pulse Shaper and Balanced Modulator; Pulse Shaper is the next suggested brief. Voltage-controlled switches and more performance-oriented routing belong to Series Two unless the roadmap is deliberately revised.
+The completed manual routers meet the current Series One switching requirement. Burstgen, Selective Service and Following are canonical. Following adds a driven audio tap, envelope extraction, true envelope delay and threshold gates. Sherlock now completes the Pulse Shaper role with independent linear slews and patch feedback. Balanced Modulator is the remaining unfinished role. Voltage-controlled switches and more performance-oriented routing belong to Series Two unless the roadmap is deliberately revised.
 
 See the roadmap for the full source-generator and reference-instrument sequence. New utility work
 must begin from the current [infrastructure standards](Module-Infrastructure-Standards.md) and use

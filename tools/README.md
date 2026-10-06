@@ -22,6 +22,7 @@ python voltage-modular/laboratory/tools/validate_faderdistr_a.py --sdk C:/Progra
 python voltage-modular/laboratory/tools/validate_faderdistr_b.py --sdk C:/ProgramData/Voltage/voltage.jar
 python voltage-modular/laboratory/tools/validate_faderdistr_core.py
 python voltage-modular/laboratory/following/tests/validate.py
+python voltage-modular/laboratory/sherlock/tests/validate.py
 python voltage-modular/laboratory/sw2/tests/verify_character.py
 python voltage-modular/laboratory/sinrnd/versions/1.1.0/tests/validate.py
 python voltage-modular/laboratory/function/versions/1.0.0/tests/validate_callbacks.py

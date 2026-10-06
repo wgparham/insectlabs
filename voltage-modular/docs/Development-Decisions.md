@@ -49,3 +49,7 @@ This refresh updates living Markdown guides, module indexes and historical-refer
 ## Following — canonical 1.0.0
 
 The Dynamic Modulator role is realized as Following. SIGNAL THROUGH is tapped after shared gain and coloration; it is not a raw active splitter. FILTER is detector-only, 20–200 Hz. DELAY shifts the entire envelope rather than extending release. AUTO/MANUAL share a two-stage program-dependent release. BALANCE affects the positive/inverted envelope only; both gate outputs and delayed courtesy remain independent. Gate LEDs track actual levels without pulse stretching. Final defaults are OFF, AUTO, unity amplitude, minimum filter/attack/delay, immediate balance and 5 V threshold. Host bypass alone provides raw audio through; CV is silent.
+
+## Sherlock — canonical 1.0.0
+
+The Pulse Shaper role is realized as Sherlock: independent positive/negative linear slew sections, deliberately without internal normalization. External cables provide cascades and feedback. FAST is 100 us–4 s per 5 V; SLOW multiplies every setting by 1000 (100 ms–4000 s). Positive defaults FAST near C4, Negative SLOW near C−1, both VC amounts zero. The 5/10 V switch changes the positive generated peak, not slew rate or pulse-gate voltage. Busy START edges are ignored; SUSTAIN can start/hold the rise. Pulse LO and Negative PULSE are low-voltage comparators and stay high below zero. Host bypass is independent direct transfer, pulse outputs silent.

@@ -2,11 +2,11 @@
 
 **Insect Laboratories · Voltage Modular · Series One**
 
-Collection manual updated 5 October 2026
+Collection manual updated 6 October 2026
 
 Laboratory is a mono-first collection of early test-equipment-inspired sources, processors, routers and measurement tools. Most controls are manual. The instruments share a restrained hardware character, while each keeps a distinct purpose and voice. Audio and control-voltage levels are part of the sound; check the output level before sending a hot source into another processor.
 
-This manual covers the fourteen canonical releases. The release links identify the exact version described and contain its Voltage Module Designer project, matching source export, artwork and review record.
+This manual covers the fifteen canonical releases. The release links identify the exact version described and contain its Voltage Module Designer project, matching source export, artwork and review record.
 
 | Module | Canonical version | Main use | Full manual |
 | --- | ---: | --- | --- |
@@ -24,6 +24,8 @@ This manual covers the fourteen canonical releases. The release links identify t
 | [Burstgen Tone Burst Generator](../../laboratory/burstgen/versions/1.0.0/) | 1.0.0 | Two counted signal gates, clock ratios and independent C/R Courtesy | [Manual](../../laboratory/burstgen/USER-MANUAL.md) |
 | [Selective Service](../../laboratory/selectiveService/versions/1.0.0/) | 1.0.0 | Selective band-pass amplifier and complementary notch | [Manual](../../laboratory/selectiveService/versions/1.0.0/USER-MANUAL.md) |
 | [Following](../../laboratory/following/versions/1.0.0/) | 1.0.0 | Driven amplifier, envelope/gate extraction and delay | [Manual](../../laboratory/following/versions/1.0.0/USER-MANUAL.md) |
+| [Sherlock](../../laboratory/sherlock/versions/1.0.0/) | 1.0.0 | Independent positive/negative slew, contours and patch feedback | [Manual](../../laboratory/sherlock/versions/1.0.0/USER-MANUAL.md) |
+
 
 
 ## Signal Processor · two independent mono stages · v1.0.1
@@ -230,3 +232,11 @@ VCA: patch an envelope into SIGPROC to transfer the source's dynamics to another
 Startup is OFF/AUTO with unity gain, minimum filter/attack/delay, immediate BALANCE and
 5 V THRESHOLD. Lower THRESHOLD for ordinary sources. Host bypass passes raw S through
 the audio jack and silences CV. See the [full manual](../../laboratory/following/versions/1.0.0/USER-MANUAL.md).
+
+## Sherlock · dual slew generator · v1.0.0
+
+![Sherlock panel](../../laboratory/sherlock/versions/1.0.0/sherlock_hero.png)
+
+Positive limits upward voltage movement; Negative limits downward movement. Both preserve bipolar signal levels and work independently. Patch Positive OUT to Negative IN when both edges need shaping. FAST spans 100 us–4 s per 5 V; SLOW is exactly 1000 times slower. START/SUSTAIN generates rising contours at 5 or 10 V, with twice the excursion taking twice the time. Patch PULSE LO to START or Negative PULSE to Negative IN for feedback oscillation. RATE VC has a bipolar amount control on each half.
+
+Defaults are Positive FAST near C4, Negative SLOW near C−1, zero VC amounts and 5 V. Host bypass passes each signal input directly to its own output and silences pulse outputs. See the [full manual](../../laboratory/sherlock/versions/1.0.0/USER-MANUAL.md).

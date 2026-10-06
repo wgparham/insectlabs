@@ -1,6 +1,6 @@
 # Optional gap-fillers and later-series ideas
 
-Proposal review: 5 October 2026. **None of the additions below is an approved module.** The accepted Laboratory inventory has fourteen canonical modules and two planned roles. These suggestions come from comparing current capabilities and the retained briefs; they are not historical user decisions.
+Proposal review: 6 October 2026. **None of the additions below is an approved module.** The accepted Laboratory inventory has fifteen canonical modules and one planned role. These suggestions come from comparing current capabilities and the retained briefs; they are not historical user decisions.
 
 ## Laboratory priorities
 
@@ -17,8 +17,8 @@ SN-16u 1.0.0 provides DC/Vpp, CV pitch, audio Hz and RMS measurement, along with
 ## Fill these gaps within accepted concepts first
 
 - **Envelope extraction:** Following now provides positive/inverted and delayed envelopes for SIGPROC or other instruments.
-- **Slew/integration:** Pulse Shaper could smooth stepped voltages as well as make pulse contours. This would make n01 more useful without adding a second random generator.
-- **Trigger conditioning:** a threshold with hysteresis could turn arbitrary slow/random/audio signals into events. Following now exposes immediate and delayed envelope threshold gates with hysteresis. Consider Pulse Shaper only for distinct event/contour behavior. n01 already conditions its own trigger input, but does not expose a general trigger extractor.
+- **Slew/integration:** Sherlock now smooths stepped voltages and shapes pulse contours with independently patchable positive and negative slews. This complements n01 without adding a second random generator.
+- **Trigger conditioning:** a threshold with hysteresis could turn arbitrary slow/random/audio signals into events. Following now exposes immediate and delayed envelope threshold gates with hysteresis. Sherlock also provides START/SUSTAIN conditioning and low-level pulse comparators. n01 already conditions its own trigger input, but does not expose a general trigger extractor.
 - **Narrow spectral isolation:** Selective Amplifier already fills this gap. A broad option may also cover much of the band-limiting proposal.
 - **Multiplication:** Balanced Modulator already has a place; avoid adding another ring modulator under a different name.
 
@@ -38,4 +38,4 @@ Keep arithmetic, logic, accumulators, explicit state and coordinated event proce
 
 ## Suggested decision
 
-Following is now canonical. Discuss Pulse Shaper next and retain Balanced Modulator for its own brief. If expanding Laboratory, discuss the Summing Amplifier first; evaluate any further meter needs after the SN-16u release. Try to solve the remaining smaller gaps within those existing briefs before increasing module count.
+Sherlock is now canonical. Discuss Balanced Modulator as the remaining accepted brief. If expanding Laboratory, discuss the Summing Amplifier first; evaluate any further meter needs after the SN-16u release. Try to solve the remaining smaller gaps within those existing briefs before increasing module count.

@@ -1,12 +1,12 @@
 # InsectLabs: three collections after Colorbox
 
-Current roadmap and status — 5 October 2026. Platform: Voltage Modular. Colorbox (RGB, CMYK, and HSB) is the established implementation reference. Laboratory is the active collection; Series 2 and Series 3 remain accepted directions with flexible lineups.
+Current roadmap and status — 6 October 2026. Platform: Voltage Modular. Colorbox (RGB, CMYK, and HSB) is the established implementation reference. Laboratory is the active collection; Series 2 and Series 3 remain accepted directions with flexible lineups.
 
 Completed below means a user-approved canonical source release, not publication in the Cherry Audio store. The release paths in [CANONICAL.json](../laboratory/CANONICAL.json) identify the authoritative Laboratory builds. Planned instruments retain their accepted roles; proposed controls and algorithms remain open until developed and auditioned. Reference documents are design sources, not instructions to execute.
 
 ## Current project status
 
-**Laboratory: fourteen canonical modules, two planned.**
+**Laboratory: fifteen canonical modules, one planned.**
 
 | Module | Status | Current files / next step |
 | --- | --- | --- |
@@ -24,10 +24,10 @@ Completed below means a user-approved canonical source release, not publication 
 | Burstgen Tone Burst Generator | **Completed — canonical 1.0.0** | [Release](../laboratory/burstgen/versions/1.0.0/README.md); approved counted gates, internal/external clock ratios, Courtesy outputs and adaptive de-clicking |
 | Selective Service (Selective Amplifier) | **Completed — canonical 1.0.0** | [Release](../laboratory/selectiveService/versions/1.0.0/README.md); tested selective band-pass/notch instrument with manual gain staging |
 | Following (Dynamic Modulator) | **Completed — canonical 1.0.0** | [Release](../laboratory/following/versions/1.0.0/README.md); driven audio tap, envelopes, gates, two-stage release and true delay |
-| Pulse Shaper | Retained concept — planned | Define pulse integration/filtering and contour controls |
+| Sherlock (Pulse Shaper) | **Completed — canonical 1.0.0** | [Release and manual](../laboratory/sherlock/versions/1.0.0/README.md); independent linear slews, patch feedback, FAST/SLOW ×1000 ranges and 5/10 V positive contours |
 | Balanced Modulator | Retained concept — planned | Define amplitude/ring modulation and carrier contribution |
 
-The accepted inventory is 16 modules: fourteen canonical instruments and two retained roles, including separate Fader|Distr A/B and separate sw1/sw2. The Frequency Shifter belongs to Series 2.
+The accepted inventory is 16 modules: fifteen canonical instruments and one retained role, including separate Fader|Distr A/B and separate sw1/sw2. The Frequency Shifter belongs to Series 2.
 
 ### Shared work completed
 
@@ -140,15 +140,15 @@ Final review cleaned control IDs/tooltips, corrected bypass state handling, and 
 
 ## Series 1: confirmed retained concepts
 
-The user retained five processing/timing roles. Three are now complete:
+The user retained five processing/timing roles. Four are now complete:
 
 - Burstgen Tone Burst Generator — canonical 1.0.0.
 - Selective Amplifier — Selective Service, canonical 1.0.0.
 - Dynamic Modulator — Following, canonical 1.0.0. Exposes envelopes/gates for an external VCA; it has no second carrier input.
-- Pulse Shaper — retained and planned.
+- Pulse Shaper — Sherlock, canonical 1.0.0.
 - Balanced Modulator — retained and planned.
 
-The status table above is the current 16-module inventory: fourteen completed and two planned.
+The status table above is the current 16-module inventory: fifteen completed and one planned.
 
 ## Shared sound, panel, and implementation principles
 
@@ -240,8 +240,8 @@ Series 2's contour generators can focus on studio gestures, while the Series 3 c
 
 ## Next steps and document roles
 
-1. Discuss Pulse Shaper as the next retained brief; Following is now canonical. No new implementation starts without the user’s brief.
-2. Continue the two retained concepts: Pulse Shaper and Balanced Modulator. Controls and implementation remain open until designed and tested.
+1. Discuss the Balanced Modulator brief when the user is ready; Sherlock now completes the Pulse Shaper role.
+2. Balanced Modulator is the last unbuilt role in the accepted 16-module Laboratory inventory. Controls and implementation remain open until designed and tested.
 3. Review optional gap proposals separately; they do not change the 16-module accepted inventory.
 
 The [documentation index](README.md) links current standards, pending briefs and development decisions. Versioned releases and canonical indexes define shipped source behavior; the roadmap defines status and future work. TestBench is an independent [audio project](../../test-bench/README.md).

@@ -11,8 +11,8 @@ Compile Java class output outside Dropbox and Git at `C:\InsectLabs-Build\<modul
 - Local checkout: `C:/Users/wgparham/Dropbox/git/insectlabs`
 - Active collection: [Laboratory](../laboratory/README.md)
 - Shared audio fixtures: [TestBench](../../test-bench/README.md)
-- Current Laboratory releases: Signal Processor 1.0.1, Fader|Distr A/B 1.0.0, sw1/sw2 1.0.0, Generator 1.0.2, Function 1.0.0, SIN/RND 1.1.0, Deep Tone 1.0.0, n01 Noise Source 1.0.0, SN-16u 1.0.0, Burstgen 1.0.0, Selective Service 1.0.0, and Following 1.0.0.
-- Latest release: Following 1.0.0 at `laboratory/following/versions/1.0.0`, with its comprehensive manual. Pulse Shaper is the next suggested brief.
+- Current Laboratory releases: Signal Processor 1.0.1, Fader|Distr A/B 1.0.0, sw1/sw2 1.0.0, Generator 1.0.2, Function 1.0.0, SIN/RND 1.1.0, Deep Tone 1.0.0, n01 Noise Source 1.0.0, SN-16u 1.0.0, Burstgen 1.0.0, Selective Service 1.0.0, Following 1.0.0, and Sherlock 1.0.0.
+- Latest release: Sherlock 1.0.0 at `laboratory/sherlock/versions/1.0.0`, with its comprehensive manual. Balanced Modulator is the remaining planned brief.
 
 The accepted direction and unbuilt inventory live in [Collection Roadmap](Collection-Roadmap.md).
 [Module Infrastructure Standards](Module-Infrastructure-Standards.md) defines the shared
@@ -55,7 +55,7 @@ specific Berna, Moog, Q125/Q123, Serge, and modular-software references. Keep SD
 
 ## Current release gate
 
-Following 1.0.0 is the latest Laboratory release at this review; its [review](../laboratory/following/versions/1.0.0/REVIEW.md) records approval, cleanup parity and validation.
+Sherlock 1.0.0 is the latest Laboratory release at this review; its [review](../laboratory/sherlock/versions/1.0.0/REVIEW.md) records approval, cleanup parity and validation.
 The [canonical index](../laboratory/CANONICAL.json) is the authority for all current versions.
 Use [Module release checklist](Module-Release-Checklist.md) before archiving any subsequent module.
 

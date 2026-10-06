@@ -1,6 +1,6 @@
 # Laboratory: pending instrument briefs
 
-Updated 5 October 2026. Fourteen modules are canonical and two accepted roles remain planned. Future roles below are working briefs, not approved panels or DSP specifications. The [roadmap](Collection-Roadmap.md) owns status; [new proposals](Future-Module-Proposals.md) are separate from this inventory. Manual-first, mono-first operation and current infrastructure standards apply.
+Updated 6 October 2026. Fifteen modules are canonical and one accepted role remains planned. Future roles below are working briefs, not approved panels or DSP specifications. The [roadmap](Collection-Roadmap.md) owns status; [new proposals](Future-Module-Proposals.md) are separate from this inventory. Manual-first, mono-first operation and current infrastructure standards apply.
 
 ## SN-16u / Reference / Standards — completed, canonical 1.0.0
 
@@ -27,13 +27,24 @@ true 0–3 s envelope delay, linear balance, positive/inverted CV, and independe
 It has no built-in carrier input or audio gain element for applying the envelope to another
 source. See the [canonical release and manual](../laboratory/following/versions/1.0.0/README.md).
 
-## Pulse Shaper — retained
+## Pulse Shaper / Sherlock — completed, canonical 1.0.0
 
-**Accepted role:** form contours by filtering/integrating pulses.
+**Status:** canonical 1.0.0 after user build and listening approval.
+See the [canonical module](../laboratory/sherlock/README.md) and
+[user manual](../laboratory/sherlock/versions/1.0.0/USER-MANUAL.md).
 
-**Candidate design:** pulse input with manual rise/fall or integration controls; consider a continuous slew mode usable with n01 STEPPED. Keep the front panel focused rather than adding a complete modern envelope generator.
+Independent positive and negative linear slew limiters; no internal normal. Patch a cable
+for either cascade order. Positive START/SUSTAIN generates a full rise/reset or held contour.
+Pulse outputs permit external feedback cycling. Generated positive peak is 5/10 V; pulse
+gates stay 0/+5 V. Ordinary signal paths preserve bipolar levels.
 
-**Decide:** whether it reshapes arbitrary incoming voltages or detects events and generates a fixed contour; retrigger behavior; amplitude/polarity preservation; time ranges and outputs. Hysteresis/threshold conditioning may fit here if event extraction is needed. These are suggestions, not extra accepted modules.
+Each RATE knob spans 100 us–4 s per 5 V in FAST and 100 ms–4000 s in SLOW, an exact ×1000
+time change. Positive defaults FAST near C4; Negative defaults SLOW near C−1 in their
+feedback loops. Both VC attenuverters start at zero. CV doubles rate per volt
+at full positive gain within the selected range. Native-rate processing, direct independent
+bypass, descriptive identifiers and human-readable Display Names are in place.
+
+The approved sound and ranges are locked; the release retains checks and approval evidence.
 
 ## Balanced Modulator — retained
 

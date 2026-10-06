@@ -1,5 +1,9 @@
 # Laboratory release notes
 
+## Sherlock 1.0.0 — 2026-10-06
+
+First canonical release after user approval. Independent linear positive/negative slew, patch feedback cycling, FAST/SLOW ×1000 time ranges, 5/10 V positive contours, START/SUSTAIN and direct independent bypass. Approved DSP and latest panel preserved. [Review](sherlock/versions/1.0.0/REVIEW.md) and [manual](sherlock/versions/1.0.0/USER-MANUAL.md).
+
 ## Following 1.0.0
 
 First canonical release after user approval. Shared driven amplifier and audio tap, detector-only 20–200 Hz filter, AUTO/MANUAL attack, two-stage program-dependent release, three-second envelope delay, linear balance, ±5 V envelopes and independent gate LEDs. Finalization preserves approved DSP and defaults. [Review](following/versions/1.0.0/REVIEW.md) and [manual](following/versions/1.0.0/USER-MANUAL.md).

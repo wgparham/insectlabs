@@ -7,10 +7,10 @@ InsectLabs develops Voltage Modular instruments and a reusable audio TestBench. 
 | Project | Current state |
 | --- | --- |
 | [Colorbox](voltage-modular/colorbox/README.md) | Canonical RGB 4.0.3, CMYK 1.0.3, and HSB 1.0.2 source archives |
-| [Laboratory](voltage-modular/laboratory/README.md) | Fourteen canonical modules; Following 1.0.0 is the latest release |
+| [Laboratory](voltage-modular/laboratory/README.md) | Fifteen canonical modules; Sherlock 1.0.0 is the latest release |
 | [Audio TestBench](test-bench/README.md) | Collection v1.2: 58 checked-in WAV files at 48 kHz/24-bit; portable ZIP remains the v1.1 snapshot |
 
-The [collection roadmap](voltage-modular/docs/Collection-Roadmap.md) records the accepted three-series direction. All fourteen currently developed Laboratory modules are canonical. Pulse Shaper and Balanced Modulator remain planned; their briefs will be settled with the user.
+The [collection roadmap](voltage-modular/docs/Collection-Roadmap.md) records the accepted three-series direction. All fifteen currently developed Laboratory modules are canonical. Sherlock completes the Pulse Shaper role. Balanced Modulator remains planned; its brief will be settled with the user.
 
 ## Repository layout
 

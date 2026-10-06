@@ -67,5 +67,10 @@
     "version": "1.0.0",
     "path": "following/versions/1.0.0",
     "module": "following"
+  },
+  "sherlock": {
+    "version": "1.0.0",
+    "path": "sherlock/versions/1.0.0",
+    "module": "sherlock"
   }
 }
