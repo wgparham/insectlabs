@@ -1,46 +1,27 @@
-# Series One utility instruments
+# Wardenclyffe Station utility instruments
 
-This document is the current utility status and implementation reference. The earlier design draft
-was superseded by the approved releases and the [Collection Roadmap](Collection-Roadmap.md).
+This document records utility capabilities in the completed collection. Module release manuals and review records are authoritative for exact behavior.
 
-## Completed instruments
+| Product | Current version | Role |
+| --- | ---: | --- |
+| [Type 23 Signal Processor](../Wardenclyffe%20Station/type-23/versions/2.0.0/README.md) | 2.0.0 | Two independent mono PROC/VCA stages with bipolar gain, post-character offset and external control input |
+| [6121198a Fader / Distributer A](../Wardenclyffe%20Station/6121198a/versions/2.0.0/README.md) | 2.0.0 | Linear X/Y-to-Z crossfade and S-to-1/2 distribution |
+| [6121198b Fader / Distributer B](../Wardenclyffe%20Station/6121198b/versions/2.0.0/README.md) | 2.0.0 | Equal-power variant with a related, distinct relay voice |
+| [SW1 Relay Switch](../Wardenclyffe%20Station/sw1/versions/2.0.0/README.md) | 2.0.0 | Patch-programmable relay switching with optional CLK contact filter |
+| [SW2 Switch / Distributer](../Wardenclyffe%20Station/sw2/versions/2.0.0/README.md) | 2.0.0 | Manual source selector and output distributor with optional CLK treatment |
+| [1919/ln Tone Burst Generator](../Wardenclyffe%20Station/1919-ln/versions/2.0.1/README.md) | 2.0.1 | Two counted audio gates, external/internal clocking and independent Courtesy clocks |
+| [Type 9414 Frequency Analyzer](../Wardenclyffe%20Station/type-9414/versions/2.0.0/README.md) | 2.0.0 | Selective band-pass, matched band-reject and exact splitter bypass |
+| [c2-34 Balanced Modulator](../Wardenclyffe%20Station/c2-34/versions/2.0.0/README.md) | 2.0.0 | Carrier-suppressed four-quadrant modulation and unipolar VCA region |
 
-| Module | Release | Role |
-| --- | --- | --- |
-| [Signal Processor](../laboratory/signal-processor/versions/1.0.1/README.md) | 1.0.1 | Two independent mono PROC/VCA stages with bipolar gain, post-character offset, and gain CV |
-| [Fader&#124;Distr A/B](../laboratory/faderdistr/versions/1.0.0/README.md) | 1.0.0 | Simultaneous X/Y-to-Z fader and S-to-1/2 distributor; A is linear, B equal-power |
-| [sw1](../laboratory/sw1/versions/1.0.0/README.md) | 1.0.0 | Manual 2x2 relay router with toggle/gate behavior and optional CLK contact filtering |
-| [sw2](../laboratory/sw2/versions/1.0.0/README.md) | 1.0.0 | Shared OFF/1–4 source selector and destination distributor with optional CLK contact filtering |
-| [Burstgen](../laboratory/burstgen/versions/1.0.0/README.md) | 1.0.0 | Two independently counted signal gates, ratio clocking, and internal clock/ramp Courtesy outputs |
-| [Selective Service](../laboratory/selectiveService/versions/1.0.0/README.md) | 1.0.0 | Tunable band-pass amplifier, complementary notch and exact splitter bypass |
+These eight functions remain mono-first and manually oriented. Later Radiophonic plans add more CV-controlled switching and performance routing. The final planned Wardenclyffe instrument is a mono summing/mixing amplifier; see [future module proposals](Future-Module-Proposals.md) for its open brief boundary.
 
-These six designs comprise seven modules (Fader|Distr A and B are separate). They are manual, mono-first instruments. Their release notes, checksums, and tests define
-their final behavior; this page does not supersede them.
+## Shared operating conventions
 
-## Shared collection behavior
+- Ordinary unpatched inputs contribute zero unless the module manual documents another normalization.
+- Fader/distributor controls are manual and shared across two independent functions; there is no hidden stereo architecture or CV law selection.
+- SW1 and SW2 are manual switching devices. SW2 initializes and resets to OFF.
+- Host BYPASS is the shared direct patch-through/silence path. It skips filters and character and can click. Physical POWER behavior is device-specific.
+- Character is assigned by product: Type 23 has gain-dependent drive and vactrol response; the 6121198 pair carries the strongest relay weight; the switches have their own contact voicing.
+- +5 V is the common working modulation reference. Treat any future +10 V interface as a documented module-specific exception.
 
-- Ordinary unpatched signal inputs contribute zero unless a release documents a normalization.
-- Fader|Distr is the only intentional simultaneous crossfade/distribution design. It has no hidden
-  stereo architecture and no CV law selection.
-- sw1 and sw2 use manual selection. sw2 position 0 initializes and resets to OFF.
-- Direct host bypass follows [Module Infrastructure Standards](Module-Infrastructure-Standards.md).
-  It is dry routing, not a wet/dry blend; it skips character/filter processing and freezes history.
-- Character is assigned by purpose. SIGPROC supplies gain-dependent drive and a distinct VCA response; Fader|Distr
-  supplies relay weight; sw1 supplies direct/optional contact treatment; sw2 supplies an open
-  line-amplifier weight plus a distinct optional contact voice.
-- Series One uses +5 V as its working modulation reference. Do not infer a collection-wide +10 V
-  convention from a single future interface decision.
-
-## Remaining utility direction
-
-The completed manual routers meet the current Series One switching requirement. Burstgen, Selective Service and Following are canonical. Following adds a driven audio tap, envelope extraction, true envelope delay and threshold gates. Sherlock now completes the Pulse Shaper role with independent linear slews and patch feedback. Balanced Modulator is the remaining unfinished role. Voltage-controlled switches and more performance-oriented routing belong to Series Two unless the roadmap is deliberately revised.
-
-See the roadmap for the full source-generator and reference-instrument sequence. New utility work
-must begin from the current [infrastructure standards](Module-Infrastructure-Standards.md) and use
-TestBench for repeatable checks.
-
-## Capabilities available beyond the utility panels
-
-Generator includes a pure 1 kHz reference, Deep Tone has independently available Courtesy, SIN/RND accepts external audio through its FLT path, and n01 provides continuous and event-sampled random voltages. n01 STEPPED samples its own source, not arbitrary external audio. These existing functions should inform future briefs without being mistaken for a complete standards source, general-purpose filter or external sample-and-hold.
-
-See [pending briefs](Series-One-Pending-Modules.md) for the three accepted unfinished roles. SN-16u provides reference and measurement functions plus independent HPF/LPF. Independent summing remains an optional utility gap; [gap proposals](Future-Module-Proposals.md) explains their scope. These suggestions have not expanded the accepted inventory.
+For the full sixteen-product inventory, see the [roadmap](Collection-Roadmap.md) and [collection manual](../Wardenclyffe%20Station/USER-MANUAL.md).

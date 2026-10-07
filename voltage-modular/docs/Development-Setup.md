@@ -1,67 +1,21 @@
 # Development setup
 
-## Build output
+## Repository layout
 
-Compile Java class output outside Dropbox and Git at `C:\InsectLabs-Build\<module>`. Clear the module-specific output folder before a clean build. This separates disposable compiler output from synced source and immutable releases. It has compiled successfully in this workflow; the earlier write failure was not conclusively diagnosed as a file lock. No antivirus exclusion is required by this convention.
-
-
-## Current repository state
-
-- Canonical remote: https://github.com/wgparham/insectlabs
 - Local checkout: `C:/Users/wgparham/Dropbox/git/insectlabs`
-- Active collection: [Laboratory](../laboratory/README.md)
-- Shared audio fixtures: [TestBench](../../test-bench/README.md)
-- Current Laboratory releases: Signal Processor 1.0.1, Fader|Distr A/B 1.0.0, sw1/sw2 1.0.0, Generator 1.0.2, Function 1.0.0, SIN/RND 1.1.0, Deep Tone 1.0.0, n01 Noise Source 1.0.0, SN-16u 1.0.0, Burstgen 1.0.0, Selective Service 1.0.0, Following 1.0.0, and Sherlock 1.0.0.
-- Latest release: Sherlock 1.0.0 at `laboratory/sherlock/versions/1.0.0`, with its comprehensive manual. Balanced Modulator is the remaining planned brief.
-
-The accepted direction and unbuilt inventory live in [Collection Roadmap](Collection-Roadmap.md).
-[Module Infrastructure Standards](Module-Infrastructure-Standards.md) defines the shared
-source-pair, bypass, DSP, and validation contract.
-
-## Toolchain
-
+- Current module collection: [`voltage-modular/Wardenclyffe Station`](../Wardenclyffe%20Station/README.md)
+- Independent reusable audio fixtures: [`test-bench`](../../test-bench/README.md)
 - Voltage Module Designer SDK: `C:/ProgramData/Voltage/voltage.jar`
-- Installed Java: JDK 27. Compile sources with the established Java 17 target:
-  `javac --release 17` with the available warning checks. On the installed JDK 27, `-Xlint:all` currently fails while emitting Burstgen's large nested DSP class; do not report that mode as passing.
-- Python scripts run with the available local Python runtime. The TestBench tools require NumPy.
+- Compile output belongs outside Dropbox/Git, for example `C:/InsectLabs-Build/<module>`.
 
-Colorbox validation has been run against this SDK and Java 17 target. Module-specific validation
-and Designer/host listening are still required for every release.
+Each product folder contains its active 2.x release and preserved 1.x archive. Open the current `.vmod` in Voltage Module Designer; its matching `.java` is the exported source. [`CANONICAL.json`](../Wardenclyffe%20Station/CANONICAL.json) is authoritative for active versions and paths.
 
-## Working rules
+## Toolchain and validation
 
-- A `.vmod` and its exported `.java` are a matched pair. Synchronize embedded source after a code
-  change, preserve Designer control UUIDs/positions/test state, then validate both forms.
-- Keep canonical releases immutable under `versions/<version>/`. Create a module-specific
-  development copy only when beginning a new revision.
-- Use direct host bypass as defined in the infrastructure standards. Keep audio callbacks
-  allocation-free and avoid processing-control reads while bypassed.
-- Linear utilities run at native rate unless sound tests justify additional processing. Use the
-  established 2x approach for nonlinear stages that need it.
-- Series One is mono-first and manual-first. +5 V is the working modulation reference; +10 V
-  remains deferred for an individual input that specifically warrants it.
-- Add useful fixtures to TestBench with catalog, provenance, attribution, manifest, and verification
-  updates. Do not copy SDKs, manuals, generated classes, editor backups, caches, or personal archive
-  folders into Git.
+Use Java 17 bytecode with the installed JDK (`javac --release 17`) and `C:/ProgramData/Voltage/voltage.jar`. Repository checks validate tracked release hashes, project round trips, embedded-source parity, canonical paths and local Markdown links; they do not replace a native Designer build, Voltage host audition or DSP tests.
 
-## Before replacing a working pair
+Keep canonical folders immutable after release. Work in a module-specific development copy, preserve Designer UUIDs and panel state, synchronize both source forms, and review generated lifecycle callbacks. Keep audio processing allocation-free and follow [infrastructure standards](Module-Infrastructure-Standards.md). Use the [release checklist](Module-Release-Checklist.md) before canonization.
 
-Read the latest Designer export and fingerprint it before editing; do not overwrite panel changes with an older candidate. Check numeric and serialized/text default fields together, especially for calibrated frequencies. Keep embedded/exported source synchronized and review generated lifecycle callbacks after export. Preserve canonical Java bytes and line endings; routine text normalization is not a release repair. See the [release checklist](Module-Release-Checklist.md).
+Series One is mono-first and predominantly manual. +5 V is the common modulation reference; +10 V remains a module-specific possibility, not a series-wide standard. Add reusable audio fixtures to TestBench using its documented format, provenance, catalog and checksum rules.
 
-## External references
-
-Manual PDFs remain in the external workspace `Resources` directory. The roadmap records the
-specific Berna, Moog, Q125/Q123, Serge, and modular-software references. Keep SDK reference material alongside these resources; the repository contains implementation standards and source-validation tools.
-
-## Current release gate
-
-Sherlock 1.0.0 is the latest Laboratory release at this review; its [review](../laboratory/sherlock/versions/1.0.0/REVIEW.md) records approval, cleanup parity and validation.
-The [canonical index](../laboratory/CANONICAL.json) is the authority for all current versions.
-Use [Module release checklist](Module-Release-Checklist.md) before archiving any subsequent module.
-
-
-## Repository checks
-
-From the repository root, run `python tools/check_repository.py` for a read-only audit of tracked release hashes, source pairs, canonical paths and local Markdown file links. Newly added files must be staged to enter the tracked-file audit. The command does not change Designer projects, compile Java or contact the network.
-
-For SDK and DSP checks, see [Validation commands](../../tools/README.md). Older module-specific tests may be fixed to a historical release; they are not interchangeable with tests for the newest release.
+The Berna manuals, 1971 Moog catalog, Q125 data and other hardware/software references are maintained in the local Resources folder rather than duplicated in the repository. Collection decisions are summarized in the [roadmap](Collection-Roadmap.md).

@@ -1,12 +1,9 @@
 # InsectLabs for Voltage Modular
 
-This directory contains the canonical source archives and development standards for InsectLabs
-Voltage Modular modules.
+This directory contains canonical Voltage Modular source archives and development standards.
 
 - [Colorbox](colorbox/README.md) is the established implementation baseline.
-- [Laboratory](laboratory/README.md) is the active Series One collection.
-- [Documentation](docs/README.md) contains the roadmap, shared infrastructure rules,
-  and current setup information.
+- [Wardenclyffe Station](Wardenclyffe%20Station/README.md) is the completed mono-first postwar equipment collection; a mono summing/mixing amplifier is its final planned module.
+- [Documentation](docs/README.md) contains the roadmap, shared infrastructure rules, manuals and release checklist.
 
-Every released module stores its matching `.vmod`, exported `.java`, panel image, checksum manifest,
-and release notes together in a versioned folder. Do not edit a release in place.
+Each released module keeps its `.vmod`, matching exported `.java`, panel art, release notes and checksums together in a versioned folder. Do not edit an archived release in place.

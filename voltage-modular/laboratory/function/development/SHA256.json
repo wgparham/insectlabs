@@ -1,6 +1,0 @@
-{
-  "function.java": "17b2f6cf22c97ac00a634925c5f76457769f970dc7424da560273c1d39a7a9f1",
-  "function.vmod": "76daeb02d554bf0eb91e64c90e8758d4cb9552657989c75a04326fbb05d75e0f",
-  "tests/FunctionCallbackTest.java": "95f61e45ac039d11583fd3d9c129860de15ae4f5df41ad190cd7c2117b46030d",
-  "tests/validate_callbacks.py": "953b9b8e38bd5a744fddf4975219b0c7331e2d2b4f0d71aa7708fef89b456204"
-}

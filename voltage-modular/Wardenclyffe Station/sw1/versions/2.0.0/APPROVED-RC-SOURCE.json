@@ -1,0 +1,9 @@
+{
+  "source_pair": [
+    "sw1.java",
+    "sw1.vmod"
+  ],
+  "candidate_notes_version": "v2.0.0rc",
+  "approved_by_user": true,
+  "approval_basis": "User confirmed the current Wardenclyffe release candidate had been built, auditioned, and approved before code and metadata cleanup."
+}

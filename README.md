@@ -1,24 +1,21 @@
 # InsectLabs
 
-InsectLabs develops Voltage Modular instruments and a reusable audio TestBench. The active work is the mono-first Laboratory collection: large manual instruments with restrained vintage weight, inspired by early test equipment and electronic-music studios.
-
-## Projects
+InsectLabs develops Voltage Modular instruments and a reusable audio TestBench.
 
 | Project | Current state |
 | --- | --- |
-| [Colorbox](voltage-modular/colorbox/README.md) | Canonical RGB 4.0.3, CMYK 1.0.3, and HSB 1.0.2 source archives |
-| [Laboratory](voltage-modular/laboratory/README.md) | Fifteen canonical modules; Sherlock 1.0.0 is the latest release |
-| [Audio TestBench](test-bench/README.md) | Collection v1.2: 58 checked-in WAV files at 48 kHz/24-bit; portable ZIP remains the v1.1 snapshot |
+| [Colorbox](voltage-modular/colorbox/README.md) | RGB, CMYK and HSB canonical releases |
+| [Wardenclyffe Station](voltage-modular/Wardenclyffe%20Station/README.md) | Sixteen canonized 2.x mono-first modules, each with its 1.x archive; one final mixer planned |
+| [Audio TestBench](test-bench/README.md) | Standalone reusable audio fixture collection |
 
-The [collection roadmap](voltage-modular/docs/Collection-Roadmap.md) records the accepted three-series direction. All fifteen currently developed Laboratory modules are canonical. Sherlock completes the Pulse Shaper role. Balanced Modulator remains planned; its brief will be settled with the user.
+The [Voltage Modular roadmap](voltage-modular/docs/Collection-Roadmap.md) tracks the finished Wardenclyffe collection, the final planned mixer and the flexible Radiophonic and computation series.
 
 ## Repository layout
 
-- `voltage-modular/colorbox`: immutable Colorbox releases and shared source-pair tooling.
-- `voltage-modular/laboratory`: canonical Laboratory releases, tests, references, and collection tools.
-- `voltage-modular/docs`: collection planning and implementation standards.
-- `test-bench`: standalone audio fixtures, provenance, generation/import tools, and its portable archive.
+- `voltage-modular/colorbox`: Colorbox modules and shared source-pair tooling.
+- `voltage-modular/Wardenclyffe Station`: the complete postwar laboratory collection, release archives, manuals and review records.
+- `voltage-modular/docs`: product roadmap, decisions, infrastructure standards and release checklist.
+- `test-bench`: standalone audio fixtures, provenance, generation/import tools and its portable archive.
+- `tools`: repository integrity audit and shared maintenance utilities.
 
-Release folders are immutable. Copy a release into a new module-specific development location before starting a future revision. Generated build files, editor backups, caches, SDKs, manuals, and personal working archives stay outside Git.
-
-[Repository checks and validation commands](tools/README.md) describe the integrity audit and module test entry points.
+Released source pairs are versioned and immutable. Create a development copy for a future revision. Keep generated classes, SDKs, caches, editor backups and personal reference archives outside Git.

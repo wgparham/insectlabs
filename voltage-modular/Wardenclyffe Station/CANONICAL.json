@@ -1,0 +1,165 @@
+{
+  "burstgen": {
+    "version": "2.0.1",
+    "path": "1919-ln/versions/2.0.1",
+    "module": "nineteennineteen",
+    "name": "1919/ln Tone Burst Generator",
+    "archived_version": "1.0.0",
+    "archived_versions": [
+      "1.0.0"
+    ]
+  },
+  "sinrnd": {
+    "version": "2.0.0",
+    "path": "1947b/versions/2.0.0",
+    "module": "nineteenfortyseven",
+    "name": "1947B SIN/RND Generator / Filter",
+    "archived_version": "1.1.0",
+    "archived_versions": [
+      "1.1.0"
+    ]
+  },
+  "generator": {
+    "version": "2.0.0",
+    "path": "1958/versions/2.0.0",
+    "module": "nineteenfiftyeight",
+    "name": "1958 Dual Waveform Generator",
+    "archived_version": "1.0.2",
+    "archived_versions": [
+      "1.0.0",
+      "1.0.1",
+      "1.0.2"
+    ]
+  },
+  "following": {
+    "version": "2.0.0",
+    "path": "1998-4/versions/2.0.0",
+    "module": "nineteenninetyeight",
+    "name": "1998/4 Dynamic Modulator",
+    "archived_version": "1.0.0",
+    "archived_versions": [
+      "1.0.0"
+    ]
+  },
+  "deeptone": {
+    "version": "2.0.0",
+    "path": "1a-30/versions/2.0.0",
+    "module": "deeptone",
+    "name": "1A-30 Deep Tone Generator / Modulator",
+    "archived_version": "1.0.0",
+    "archived_versions": [
+      "1.0.0"
+    ]
+  },
+  "faderdistr-a": {
+    "version": "2.0.0",
+    "path": "6121198a/versions/2.0.0",
+    "module": "faderdistributera",
+    "name": "6121198a Fader / Distributer \u2014 Linear",
+    "archived_version": "1.0.0",
+    "archived_versions": [
+      "1.0.0"
+    ]
+  },
+  "faderdistr-b": {
+    "version": "2.0.0",
+    "path": "6121198b/versions/2.0.0",
+    "module": "faderdistributerb",
+    "name": "6121198b Fader / Distributer \u2014 Equal Power",
+    "archived_version": "1.0.0",
+    "archived_versions": [
+      "1.0.0"
+    ]
+  },
+  "function": {
+    "version": "2.1.2",
+    "path": "ac-1d/versions/2.1.2",
+    "module": "ac1d",
+    "name": "AC/1D SQR/SIN Function Generator",
+    "archived_version": "1.0.0",
+    "archived_versions": [
+      "1.0.0"
+    ]
+  },
+  "c2-34": {
+    "version": "2.0.0",
+    "path": "c2-34/versions/2.0.0",
+    "module": "c234",
+    "name": "c2-34 Balanced Modulator",
+    "archived_version": "1.0.0",
+    "archived_versions": [
+      "1.0.0"
+    ]
+  },
+  "n01": {
+    "version": "2.0.0",
+    "path": "n01/versions/2.0.0",
+    "module": "n01",
+    "name": "n01 Noise Generator",
+    "archived_version": "1.0.0",
+    "archived_versions": [
+      "1.0.0"
+    ]
+  },
+  "sherlock": {
+    "version": "2.0.0",
+    "path": "sh-7437/versions/2.0.0",
+    "module": "shDot7437",
+    "name": "sh.7437 Dual Slew Processor",
+    "archived_version": "1.0.0",
+    "archived_versions": [
+      "1.0.0"
+    ]
+  },
+  "sn-16u": {
+    "version": "2.0.0",
+    "path": "sn-16u/versions/2.0.0",
+    "module": "sn16u",
+    "name": "sn-16u Universal Test Bench",
+    "archived_version": "1.0.0",
+    "archived_versions": [
+      "1.0.0"
+    ]
+  },
+  "sw1": {
+    "version": "2.0.0",
+    "path": "sw1/versions/2.0.0",
+    "module": "sw1",
+    "name": "SW1 Switch",
+    "archived_version": "1.0.0",
+    "archived_versions": [
+      "1.0.0"
+    ]
+  },
+  "sw2": {
+    "version": "2.0.0",
+    "path": "sw2/versions/2.0.0",
+    "module": "sw2",
+    "name": "SW2 Switch / Distributer",
+    "archived_version": "1.0.0",
+    "archived_versions": [
+      "1.0.0"
+    ]
+  },
+  "selectiveService": {
+    "version": "2.0.0",
+    "path": "type-9414/versions/2.0.0",
+    "module": "type9414",
+    "name": "Type 9414 Frequency Analyzer",
+    "archived_version": "1.0.0",
+    "archived_versions": [
+      "1.0.0"
+    ]
+  },
+  "signal-processor": {
+    "version": "2.0.0",
+    "path": "type-23/versions/2.0.0",
+    "module": "type23",
+    "name": "Type 23 Signal Processor",
+    "archived_version": "1.0.1",
+    "archived_versions": [
+      "1.0.0",
+      "1.0.1"
+    ]
+  }
+}

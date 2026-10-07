@@ -1,26 +1,26 @@
 # Optional gap-fillers and later-series ideas
 
-Proposal review: 6 October 2026. **None of the additions below is an approved module.** The accepted Laboratory inventory has fifteen canonical modules and one planned role. These suggestions come from comparing current capabilities and the retained briefs; they are not historical user decisions.
+Proposal review: 7 October 2026. The mono summing/mixing amplifier is the accepted final Wardenclyffe module and next brief. Other additions below remain optional proposals. All sixteen existing Wardenclyffe products are canonized. These suggestions come from comparing current capabilities and the completed briefs; they are not historical user decisions.
 
-## Laboratory priorities
+## Final Wardenclyffe module and optional gap-fillers
 
 | Priority | Proposal | Gap and recommended scope |
 | --- | --- | --- |
-| 1 | Summing / Mixing Amplifier | Three or four mono inputs with independent manual levels and one sum output. Fader|Distr has complementary weights rather than independent channel levels; SIGPROC processes separate stages. A dedicated mixer adds repeatable balance, headroom and useful overload indication even where host patching already sums signals. |
+| Accepted final module | Summing / Mixing Amplifier | Three or four mono inputs with independent manual levels and one sum output. 6121198a/b pair has complementary weights rather than independent channel levels; Type 23 Signal Processor processes separate stages. A dedicated mixer adds repeatable balance, headroom and useful overload indication even where host patching already sums signals. |
 | 2 | Measuring Amplifier / Level and Polarity Meter | An instrument for checking audio level, DC offset and polarity. Start with a large slow meter, manual ranges and AC/DC selection. Decide RMS/peak/average behavior explicitly and label it honestly. A unity through path or a monitoring-only input would avoid unintended coloration. |
-| 3 | Band-Limiting Amplifier | Manual low and high cut for preparing audio, noise and feedback paths. Consider a broad mode in the canonical Selective Service first; add a separate box only if independent high/low limits justify it. |
+| 3 | Band-Limiting Amplifier | Manual low and high cut for preparing audio, noise and feedback paths. Consider a broad mode in the canonical Type 9414 Frequency Analyzer first; add a separate box only if independent high/low limits justify it. |
 
-For the mixer, keep the first design simple: no CV, stereo bus or built-in EQ. Restrained overload could give it a distinct Laboratory line-stage voice. An inverted sum is an optional useful extra, not a required expansion. Preserve DC use unless the brief deliberately calls for an audio-only path.
+A useful starting hypothesis is a compact manual summing amplifier with independent input levels, a mono sum, and restrained overload character. Input count, headroom, DC handling, polarity options, meters, and any CV/stereo features remain open for the design brief.
 
-SN-16u 1.0.0 provides DC/Vpp, CV pitch, audio Hz and RMS measurement, along with independent clean HPF/LPF paths. The meter and band-limiting proposals above are substantially covered by that release, not separate approved modules. Revisit only if native testing exposes a remaining need. Avoid promising laboratory measurement accuracy beyond tested limits.
+sn-16u 1.0.0 provides DC/Vpp, CV pitch, audio Hz and RMS measurement, along with independent clean HPF/LPF paths. The meter and band-limiting proposals above are substantially covered by that release, not separate approved modules. Revisit only if native testing exposes a remaining need. Avoid promising laboratory measurement accuracy beyond tested limits.
 
 ## Fill these gaps within accepted concepts first
 
-- **Envelope extraction:** Following now provides positive/inverted and delayed envelopes for SIGPROC or other instruments.
-- **Slew/integration:** Sherlock now smooths stepped voltages and shapes pulse contours with independently patchable positive and negative slews. This complements n01 without adding a second random generator.
-- **Trigger conditioning:** a threshold with hysteresis could turn arbitrary slow/random/audio signals into events. Following now exposes immediate and delayed envelope threshold gates with hysteresis. Sherlock also provides START/SUSTAIN conditioning and low-level pulse comparators. n01 already conditions its own trigger input, but does not expose a general trigger extractor.
-- **Narrow spectral isolation:** Selective Amplifier already fills this gap. A broad option may also cover much of the band-limiting proposal.
-- **Multiplication:** Balanced Modulator already has a place; avoid adding another ring modulator under a different name.
+- **Envelope extraction:** 1998/4 now provides positive/inverted and delayed envelopes for Type 23 Signal Processor or other instruments.
+- **Slew/integration:** sh.7437 now smooths stepped voltages and shapes pulse contours with independently patchable positive and negative slews. This complements n01 without adding a second random generator.
+- **Trigger conditioning:** a threshold with hysteresis could turn arbitrary slow/random/audio signals into events. 1998/4 now exposes immediate and delayed envelope threshold gates with hysteresis. sh.7437 also provides START/SUSTAIN conditioning and low-level pulse comparators. n01 already conditions its own trigger input, but does not expose a general trigger extractor.
+- **Narrow spectral isolation:** Type 9414 Frequency Analyzer already fills this gap. A broad option may also cover much of the band-limiting proposal.
+- **Multiplication:** c2-34 Balanced Modulator already has a place; avoid adding another ring modulator under a different name.
 
 ## Radiophonic possibilities
 
@@ -36,6 +36,6 @@ Frequency shifting with separate UP/DOWN outputs, voltage-controlled switches, m
 
 Keep arithmetic, logic, accumulators, explicit state and coordinated event processing in Series Three. The requested Patchable Devices Window Generator inspiration is a multi-envelope/stage-event idea; a voltage-window comparator is a different possible instrument. The Voltage Sequencer remains a candidate for programmable voltage/state selection. Avoid adding incidental coloration to exact arithmetic without an explicit design reason.
 
-## Suggested decision
+## Status
 
-Sherlock is now canonical. Discuss Balanced Modulator as the remaining accepted brief. If expanding Laboratory, discuss the Summing Amplifier first; evaluate any further meter needs after the SN-16u release. Try to solve the remaining smaller gaps within those existing briefs before increasing module count.
+The summing/mixing amplifier is the final accepted Wardenclyffe module and is next to design. Keep it mono and manual-first unless its brief establishes a need for more. The meter and band-limiting ideas remain optional: sn-16u already covers much of that territory. The Radiophonic and computation ideas remain flexible later-series references, not a locked inventory.
