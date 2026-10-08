@@ -4,7 +4,7 @@ Wardenclyffe Station is the completed first collection in Insect Laboratories’
 
 ## Current collection
 
-All sixteen current products are canonized in [Wardenclyffe Station](../Wardenclyffe%20Station/README.md). Every product folder contains its active 2.x release and every prior canonical 1.x archive.
+Seventeen current products are canonized in [Wardenclyffe Station](../Wardenclyffe%20Station/README.md). Earlier products retain active 2.x releases and their prior 1.x archives; LM-21 is canonical at v1.0.1.
 
 | Product | Current | 1.x archives | Role | Manual |
 | --- | ---: | ---: | --- | --- |
@@ -35,7 +35,11 @@ All sixteen current products are canonized in [Wardenclyffe Station](../Wardencl
 
 ## Final planned Wardenclyffe instrument
 
-The next and final module is a mono summing/mixing amplifier. It is the only remaining planned Wardenclyffe role. The brief is not locked: begin from a compact manual mixer with independent input levels and a summed output; define input count, headroom, overload character and any polarity options with the user before DSP. No CV, stereo bus or EQ is assumed unless the new brief calls for it.
+The final planned Wardenclyffe instrument, **LM-21 Mk III Matrix Mixer — Artificial Acoustic Distance Generator**, is canonical at **v1.0.1**, approved after native-host testing on 2026-10-08. Its 4×4 bipolar mono matrix feeds independent 984-inspired row tone/character stages and independent additive reverb. MIX provides pre-character drive up to +12 dB; PERSPECTIVE spans 0.5–30 seconds with 5.5 seconds at 60% travel. FULL MIX averages A–D before saturation. Power has a 13.6-second warmup and 2.1-second cooldown; MULT remains live. Direct host bypass freezes DSP and power histories. The archive, manuals, developer notes and tests are in `Wardenclyffe Station/mixer/versions/1.0.1`.
+
+The simpler, period-faithful **minimixer** remains a separate development project. Host CPU profiling remains unmeasured.
+
+References: [Moog 984 corrected schematic](https://modularsynthesis.com/moog/984/984%20Four%20Channel%20Mixer%20(corrected).pdf), [AM984 product overview](https://www.amsynthstore.co.uk/product/am984-four-channel-mixer), [T984 circuit notes](http://www.analog-monster.de/mmt984_en.html), and [CP3 documentation](https://modularsynthesis.com/moog/cp3/cp3.htm).
 
 ## Later collections
 

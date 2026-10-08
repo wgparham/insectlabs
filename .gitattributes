@@ -1,5 +1,6 @@
 # Preserve exact artifact bytes so archived SHA-256 values survive checkout.
 *.java -text
+*.java.txt -text
 *.vmod binary
 *.png binary
 *.md text eol=lf

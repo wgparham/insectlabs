@@ -2,9 +2,9 @@
 
 Wardenclyffe Station is Insect Laboratories’ mono-first collection of postwar test instruments adapted for electronic music. The panels and behavior emphasize manual operation, visible signal flow, useful voltage standards, and distinct hardware character.
 
-The collection contains sixteen canonized product modules. Each product folder keeps its previous 1.x archive alongside the current 2.x release. Use [CANONICAL.json](CANONICAL.json) for the exact active releases and [USER-MANUAL.md](USER-MANUAL.md) for operating guidance.
+The collection contains seventeen canonized product modules. Earlier products retain their 1.x archives alongside their 2.x releases; LM-21 is released as v1.0.1. Use [CANONICAL.json](CANONICAL.json) for the exact active releases and [USER-MANUAL.md](USER-MANUAL.md) for operating guidance.
 
-The 1.x versions are retained as historical releases; they are not overwritten by the 2.x product renaming or panel revisions. The next and final planned instrument for this collection is a mono summing / mixing amplifier. Its panel and behavior remain to be designed. An early Designer sketch is preserved in [mixer/development](mixer/README.md) and is not a canonized module.
+Earlier archives remain unchanged. The final planned matrix mixer, LM-21 Mk III, is now canonical. The simpler minimixer remains a distinct development project.
 
 ## Canonical modules
 
@@ -26,3 +26,4 @@ The 1.x versions are retained as historical releases; they are not overwritten b
 | [SW2 Switch / Distributer](sw2/versions/2.0.0/) | 1.0.0 | 2.0.0 | [User manual](sw2/versions/2.0.0/USER-MANUAL.md) |
 | [Type 9414 Frequency Analyzer](type-9414/versions/2.0.0/) | 1.0.0 | 2.0.0 | [User manual](type-9414/versions/2.0.0/USER-MANUAL.md) |
 | [Type 23 Signal Processor](type-23/versions/2.0.0/) | 1.0.0, 1.0.1 | 2.0.0 | [User manual](type-23/versions/2.0.0/USER-MANUAL.md) |
+| [LM-21 Mk III Matrix Mixer](mixer/versions/1.0.1/) | — | 1.0.1 | [User manual](mixer/versions/1.0.1/USER-MANUAL.md) |

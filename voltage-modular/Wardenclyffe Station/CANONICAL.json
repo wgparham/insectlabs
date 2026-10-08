@@ -55,7 +55,7 @@
     "version": "2.0.0",
     "path": "6121198a/versions/2.0.0",
     "module": "faderdistributera",
-    "name": "6121198a Fader / Distributer \u2014 Linear",
+    "name": "6121198a Fader / Distributer — Linear",
     "archived_version": "1.0.0",
     "archived_versions": [
       "1.0.0"
@@ -65,7 +65,7 @@
     "version": "2.0.0",
     "path": "6121198b/versions/2.0.0",
     "module": "faderdistributerb",
-    "name": "6121198b Fader / Distributer \u2014 Equal Power",
+    "name": "6121198b Fader / Distributer — Equal Power",
     "archived_version": "1.0.0",
     "archived_versions": [
       "1.0.0"
@@ -161,5 +161,11 @@
       "1.0.0",
       "1.0.1"
     ]
+  },
+  "lm-21": {
+    "version": "1.0.1",
+    "path": "mixer/versions/1.0.1",
+    "module": "lm21mark3",
+    "name": "LM-21 Mk III Matrix Mixer — Artificial Acoustic Distance Generator"
   }
 }

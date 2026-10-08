@@ -1,5 +1,11 @@
-# Mixer development
+# LM-21 Mk III Matrix Mixer
 
-This folder preserves the early `minimixer` Designer export that was present in the 2.x working tree. It is a development sketch only: its generated Java class and module identity still use Designer placeholders, and it has not been reviewed, tested, or canonized. The final Wardenclyffe Station mixer remains the next module to design and develop.
+**Canonical release: v1.0.1**, user approved on 2026-10-08 after correcting the panel text, recompiling and testing. LM-21 is Wardenclyffe Station's 4×4 mono matrix mixer and Artificial Acoustic Distance Generator, with bipolar crosspoints, independent 984-inspired row character, pre-character MIX drive up to +12 dB, independent additive reverb and shared 0.5–30 second PERSPECTIVE. Its 5.5-second point is at 60% travel. FULL MIX averages A–D before gentle saturation.
 
-The original `.java` and `.vmod` files are kept unchanged in [development](development/).
+Power has a 13.6-second warmup and 2.1-second cooldown. MULT stays live. Host bypass maps I–IV directly to A–D, silences FULL MIX and freezes processing/power histories. Active DSP remained sample-identical during cleanup. Native-host CPU profiling remains unmeasured.
+
+- [Canonical files and release record](versions/1.0.1/README.md)
+- [User manual](USER-MANUAL.md) and [developer notes](DEVELOPER-NOTES.md)
+- [Editable Designer project](development/lm-21_mk3.vmod) and [Java export](development/lm-21_mk3.java)
+
+The historical ReverbSC prototype and the distinct minimixer development project remain preserved. The immutable release resides under versions/1.0.1; the development pair remains editable.
