@@ -167,5 +167,11 @@
     "path": "mixer/versions/1.0.1",
     "module": "lm21mark3",
     "name": "LM-21 Mk III Matrix Mixer — Artificial Acoustic Distance Generator"
+  },
+  "rm1010": {
+    "version": "1.0.0",
+    "path": "minimixer/versions/1.0.0",
+    "module": "rm1010",
+    "name": "RM1010 Mixing Amplifier"
   }
 }

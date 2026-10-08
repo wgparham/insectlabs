@@ -1,0 +1,6 @@
+{
+  "PROVENANCE.json": "ec2fccbdaab7e1f0e0d8806e23546373f6431bd2bd84e6034cfed6cead7c349c",
+  "README.md": "54d01aa48fb9035d387291eb9bcc1ec300a043a6457beee1b281406850851740",
+  "tests/validate.py": "fc46ecd5e129880aefd60e296fafb5518f166b6b9a76898fff1af7fe529fc5d1",
+  "src/com/insectlabs/dsp/filters/HalfBand19.java": "fd2154506475dbc322137e47be4797f9303a04b7392e80159acd94ddfd04a4a0"
+}

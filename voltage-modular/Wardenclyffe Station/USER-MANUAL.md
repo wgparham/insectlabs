@@ -2,7 +2,7 @@
 
 **Voltage Modular · Insect Laboratories · 7 October 2026**
 
-Wardenclyffe Station is a mono-first electronic-music laboratory built from imagined postwar test equipment. The seventeen current instruments span tone and noise sources, reference standards, signal conditioning, switching, modulation, slew shaping and selective filtering. Individual manuals describe each front panel and its exact release behavior.
+Wardenclyffe Station is a mono-first electronic-music laboratory built from imagined postwar test equipment. The eighteen current instruments span tone and noise sources, reference standards, signal conditioning, switching, modulation, slew shaping and selective filtering. Individual manuals describe each front panel and its exact release behavior.
 
 ## Module directory
 
@@ -25,6 +25,7 @@ Wardenclyffe Station is a mono-first electronic-music laboratory built from imag
 | Type 9414 Frequency Analyzer | 2.0.0 | [Type 9414 Frequency Analyzer](type-9414/versions/2.0.0/USER-MANUAL.md) |
 | Type 23 Signal Processor | 2.0.0 | [Type 23 Signal Processor](type-23/versions/2.0.0/USER-MANUAL.md) |
 | LM-21 Mk III Matrix Mixer | 1.0.1 | [LM-21 manual](mixer/versions/1.0.1/USER-MANUAL.md) |
+| RM1010 Mixing Amplifier | 1.0.0 | [RM1010 manual](minimixer/versions/1.0.0/USER-MANUAL.md) |
 
 
 ## Shared operating conventions

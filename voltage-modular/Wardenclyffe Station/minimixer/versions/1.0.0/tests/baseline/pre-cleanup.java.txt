@@ -34,7 +34,7 @@ public class rm1010 extends VoltageModule
 void InitializeControls()
 {
 
-        labelBalance = new VoltageLabel( "labelBalance", "Label Balance", this, "BALANCE" );
+        labelBalance = new VoltageLabel( "labelBalance", "Balance Label", this, "BALANCE" );
         AddComponent( labelBalance );
         labelBalance.SetWantsMouseNotifications( false );
         labelBalance.SetPosition( 158, 25 );
@@ -55,7 +55,7 @@ void InitializeControls()
         labelBalance.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelBalance.SetFont( "Times New Roman", 7, true, false );
 
-        labelProcess = new VoltageLabel( "labelProcess", "Label Process", this, "PROCESS" );
+        labelProcess = new VoltageLabel( "labelProcess", "PROCESS Label", this, "PROCESS" );
         AddComponent( labelProcess );
         labelProcess.SetWantsMouseNotifications( false );
         labelProcess.SetPosition( 198, 25 );
@@ -76,7 +76,7 @@ void InitializeControls()
         labelProcess.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelProcess.SetFont( "Times New Roman", 7, true, false );
 
-        labelGain = new VoltageLabel( "labelGain", "Label Gain", this, "GAIN" );
+        labelGain = new VoltageLabel( "labelGain", "GAIN Label", this, "GAIN" );
         AddComponent( labelGain );
         labelGain.SetWantsMouseNotifications( false );
         labelGain.SetPosition( 19, 25 );
@@ -97,7 +97,7 @@ void InitializeControls()
         labelGain.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelGain.SetFont( "Times New Roman", 7, true, false );
 
-        labelVolume = new VoltageLabel( "labelVolume", "Label Volume", this, "VOLUME" );
+        labelVolume = new VoltageLabel( "labelVolume", "VOLUME Label", this, "VOLUME" );
         AddComponent( labelVolume );
         labelVolume.SetWantsMouseNotifications( false );
         labelVolume.SetPosition( 57, 25 );
@@ -118,14 +118,14 @@ void InitializeControls()
         labelVolume.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelVolume.SetFont( "Times New Roman", 7, true, false );
 
-        output3 = new VoltageAudioJack( "output3", "Submix 3 Output", this, JackType.JackType_AudioOutput );
+        output3 = new VoltageAudioJack( "output3", "3 Output", this, JackType.JackType_AudioOutput );
         AddComponent( output3 );
         output3.SetWantsMouseNotifications( false );
         output3.SetPosition( 165, 220 );
         output3.SetSize( 37, 37 );
         output3.SetSkin( "Rotated Half" );
 
-        input4 = new VoltageAudioJack( "input4", "Input 4", this, JackType.JackType_AudioInput );
+        input4 = new VoltageAudioJack( "input4", "Input IIII", this, JackType.JackType_AudioInput );
         AddComponent( input4 );
         input4.SetWantsMouseNotifications( false );
         input4.SetPosition( 62, 275 );
@@ -160,7 +160,7 @@ void InitializeControls()
         manufacturerLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         manufacturerLabel.SetFont( "Courier New", 13, true, false );
 
-        descriptionLabel = new VoltageLabel( "descriptionLabel", "Description Label", this, "mixing amplifier" );
+        descriptionLabel = new VoltageLabel( "descriptionLabel", "MODULE DESCRIPTION", this, "mixing amplifier" );
         AddComponent( descriptionLabel );
         descriptionLabel.SetWantsMouseNotifications( false );
         descriptionLabel.SetPosition( 3, 0 );
@@ -181,7 +181,7 @@ void InitializeControls()
         descriptionLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         descriptionLabel.SetFont( "Courier New", 13, true, false );
 
-        numberLabel = new VoltageLabel( "numberLabel", "Number Label", this, "rm1010" );
+        numberLabel = new VoltageLabel( "numberLabel", "Model Number Label", this, "rm1010" );
         AddComponent( numberLabel );
         numberLabel.SetWantsMouseNotifications( false );
         numberLabel.SetPosition( 177, 335 );
@@ -334,119 +334,119 @@ void InitializeControls()
         volume4.DisplayValueInPercent( true );
         volume4.SetKnobAdjustsRing( true );
 
-        input1 = new VoltageAudioJack( "input1", "Input 1", this, JackType.JackType_AudioInput );
+        input1 = new VoltageAudioJack( "input1", "Input I", this, JackType.JackType_AudioInput );
         AddComponent( input1 );
         input1.SetWantsMouseNotifications( false );
         input1.SetPosition( 22, 220 );
         input1.SetSize( 37, 37 );
         input1.SetSkin( "Dark Jack Straight" );
 
-        input3 = new VoltageAudioJack( "input3", "Input 3", this, JackType.JackType_AudioInput );
+        input3 = new VoltageAudioJack( "input3", "Input III", this, JackType.JackType_AudioInput );
         AddComponent( input3 );
         input3.SetWantsMouseNotifications( false );
         input3.SetPosition( 22, 275 );
         input3.SetSize( 37, 37 );
         input3.SetSkin( "Dark Jack Straight" );
 
-        input2 = new VoltageAudioJack( "input2", "Input 2", this, JackType.JackType_AudioInput );
+        input2 = new VoltageAudioJack( "input2", "Input II", this, JackType.JackType_AudioInput );
         AddComponent( input2 );
         input2.SetWantsMouseNotifications( false );
         input2.SetPosition( 62, 220 );
         input2.SetSize( 37, 37 );
         input2.SetSkin( "Dark Jack Straight" );
 
-        switchRange1 = new VoltageSwitch( "switchRange1", "Switch Range 1", this, 1 );
+        switchRange1 = new VoltageSwitch( "switchRange1", "GAIN RANGE SWITCH 1", this, 1 );
         AddComponent( switchRange1 );
         switchRange1.SetWantsMouseNotifications( false );
         switchRange1.SetPosition( 102, 53 );
         switchRange1.SetSize( 51, 15 );
         switchRange1.SetSkin( "4-State Slide Horiz" );
 
-        jackInput1Label = new VoltageLabel( "jackInput1Label", "Jack Input 1 Label", this, "I" );
-        AddComponent( jackInput1Label );
-        jackInput1Label.SetWantsMouseNotifications( false );
-        jackInput1Label.SetPosition( 30, 255 );
-        jackInput1Label.SetSize( 21, 20 );
-        jackInput1Label.SetEditable( false, false );
-        jackInput1Label.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        jackInput1Label.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        jackInput1Label.SetColor( new Color( 232, 232, 232, 255 ) );
-        jackInput1Label.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        jackInput1Label.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        jackInput1Label.SetBorderSize( 1 );
-        jackInput1Label.SetMultiLineEdit( false );
-        jackInput1Label.SetIsNumberEditor( false );
-        jackInput1Label.SetNumberEditorRange( 0, 100 );
-        jackInput1Label.SetNumberEditorInterval( 1 );
-        jackInput1Label.SetNumberEditorUsesMouseWheel( false );
-        jackInput1Label.SetHasCustomTextHoverColor( false );
-        jackInput1Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        jackInput1Label.SetFont( "Times New Roman", 13, true, false );
+        textLabel6 = new VoltageLabel( "textLabel6", "textLabel6", this, "I" );
+        AddComponent( textLabel6 );
+        textLabel6.SetWantsMouseNotifications( false );
+        textLabel6.SetPosition( 30, 255 );
+        textLabel6.SetSize( 21, 20 );
+        textLabel6.SetEditable( false, false );
+        textLabel6.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        textLabel6.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        textLabel6.SetColor( new Color( 232, 232, 232, 255 ) );
+        textLabel6.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        textLabel6.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        textLabel6.SetBorderSize( 1 );
+        textLabel6.SetMultiLineEdit( false );
+        textLabel6.SetIsNumberEditor( false );
+        textLabel6.SetNumberEditorRange( 0, 100 );
+        textLabel6.SetNumberEditorInterval( 1 );
+        textLabel6.SetNumberEditorUsesMouseWheel( false );
+        textLabel6.SetHasCustomTextHoverColor( false );
+        textLabel6.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        textLabel6.SetFont( "Times New Roman", 13, true, false );
 
-        jackInput2Label = new VoltageLabel( "jackInput2Label", "Jack Input 2 Label", this, "II" );
-        AddComponent( jackInput2Label );
-        jackInput2Label.SetWantsMouseNotifications( false );
-        jackInput2Label.SetPosition( 70, 255 );
-        jackInput2Label.SetSize( 21, 20 );
-        jackInput2Label.SetEditable( false, false );
-        jackInput2Label.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        jackInput2Label.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        jackInput2Label.SetColor( new Color( 232, 232, 232, 255 ) );
-        jackInput2Label.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        jackInput2Label.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        jackInput2Label.SetBorderSize( 1 );
-        jackInput2Label.SetMultiLineEdit( false );
-        jackInput2Label.SetIsNumberEditor( false );
-        jackInput2Label.SetNumberEditorRange( 0, 100 );
-        jackInput2Label.SetNumberEditorInterval( 1 );
-        jackInput2Label.SetNumberEditorUsesMouseWheel( false );
-        jackInput2Label.SetHasCustomTextHoverColor( false );
-        jackInput2Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        jackInput2Label.SetFont( "Times New Roman", 13, true, false );
+        textLabel7 = new VoltageLabel( "textLabel7", "textLabel7", this, "II" );
+        AddComponent( textLabel7 );
+        textLabel7.SetWantsMouseNotifications( false );
+        textLabel7.SetPosition( 70, 255 );
+        textLabel7.SetSize( 21, 20 );
+        textLabel7.SetEditable( false, false );
+        textLabel7.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        textLabel7.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        textLabel7.SetColor( new Color( 232, 232, 232, 255 ) );
+        textLabel7.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        textLabel7.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        textLabel7.SetBorderSize( 1 );
+        textLabel7.SetMultiLineEdit( false );
+        textLabel7.SetIsNumberEditor( false );
+        textLabel7.SetNumberEditorRange( 0, 100 );
+        textLabel7.SetNumberEditorInterval( 1 );
+        textLabel7.SetNumberEditorUsesMouseWheel( false );
+        textLabel7.SetHasCustomTextHoverColor( false );
+        textLabel7.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        textLabel7.SetFont( "Times New Roman", 13, true, false );
 
-        jackInput3Label = new VoltageLabel( "jackInput3Label", "Jack Input 3 Label", this, "III" );
-        AddComponent( jackInput3Label );
-        jackInput3Label.SetWantsMouseNotifications( false );
-        jackInput3Label.SetPosition( 29, 310 );
-        jackInput3Label.SetSize( 21, 20 );
-        jackInput3Label.SetEditable( false, false );
-        jackInput3Label.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        jackInput3Label.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        jackInput3Label.SetColor( new Color( 232, 232, 232, 255 ) );
-        jackInput3Label.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        jackInput3Label.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        jackInput3Label.SetBorderSize( 1 );
-        jackInput3Label.SetMultiLineEdit( false );
-        jackInput3Label.SetIsNumberEditor( false );
-        jackInput3Label.SetNumberEditorRange( 0, 100 );
-        jackInput3Label.SetNumberEditorInterval( 1 );
-        jackInput3Label.SetNumberEditorUsesMouseWheel( false );
-        jackInput3Label.SetHasCustomTextHoverColor( false );
-        jackInput3Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        jackInput3Label.SetFont( "Times New Roman", 13, true, false );
+        textLabel8 = new VoltageLabel( "textLabel8", "textLabel8", this, "III" );
+        AddComponent( textLabel8 );
+        textLabel8.SetWantsMouseNotifications( false );
+        textLabel8.SetPosition( 29, 310 );
+        textLabel8.SetSize( 21, 20 );
+        textLabel8.SetEditable( false, false );
+        textLabel8.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        textLabel8.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        textLabel8.SetColor( new Color( 232, 232, 232, 255 ) );
+        textLabel8.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        textLabel8.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        textLabel8.SetBorderSize( 1 );
+        textLabel8.SetMultiLineEdit( false );
+        textLabel8.SetIsNumberEditor( false );
+        textLabel8.SetNumberEditorRange( 0, 100 );
+        textLabel8.SetNumberEditorInterval( 1 );
+        textLabel8.SetNumberEditorUsesMouseWheel( false );
+        textLabel8.SetHasCustomTextHoverColor( false );
+        textLabel8.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        textLabel8.SetFont( "Times New Roman", 13, true, false );
 
-        jackInput4Label = new VoltageLabel( "jackInput4Label", "Jack Input 4 Label", this, "IIII" );
-        AddComponent( jackInput4Label );
-        jackInput4Label.SetWantsMouseNotifications( false );
-        jackInput4Label.SetPosition( 69, 310 );
-        jackInput4Label.SetSize( 21, 20 );
-        jackInput4Label.SetEditable( false, false );
-        jackInput4Label.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        jackInput4Label.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        jackInput4Label.SetColor( new Color( 232, 232, 232, 255 ) );
-        jackInput4Label.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        jackInput4Label.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        jackInput4Label.SetBorderSize( 1 );
-        jackInput4Label.SetMultiLineEdit( false );
-        jackInput4Label.SetIsNumberEditor( false );
-        jackInput4Label.SetNumberEditorRange( 0, 100 );
-        jackInput4Label.SetNumberEditorInterval( 1 );
-        jackInput4Label.SetNumberEditorUsesMouseWheel( false );
-        jackInput4Label.SetHasCustomTextHoverColor( false );
-        jackInput4Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        jackInput4Label.SetFont( "Times New Roman", 13, true, false );
+        textLabel9 = new VoltageLabel( "textLabel9", "textLabel9", this, "IIII" );
+        AddComponent( textLabel9 );
+        textLabel9.SetWantsMouseNotifications( false );
+        textLabel9.SetPosition( 69, 310 );
+        textLabel9.SetSize( 21, 20 );
+        textLabel9.SetEditable( false, false );
+        textLabel9.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        textLabel9.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        textLabel9.SetColor( new Color( 232, 232, 232, 255 ) );
+        textLabel9.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        textLabel9.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        textLabel9.SetBorderSize( 1 );
+        textLabel9.SetMultiLineEdit( false );
+        textLabel9.SetIsNumberEditor( false );
+        textLabel9.SetNumberEditorRange( 0, 100 );
+        textLabel9.SetNumberEditorInterval( 1 );
+        textLabel9.SetNumberEditorUsesMouseWheel( false );
+        textLabel9.SetHasCustomTextHoverColor( false );
+        textLabel9.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        textLabel9.SetFont( "Times New Roman", 13, true, false );
 
-        labelChannel1 = new VoltageLabel( "labelChannel1", "Label Channel 1", this, "I" );
+        labelChannel1 = new VoltageLabel( "labelChannel1", "CHANNEL I Label", this, "I" );
         AddComponent( labelChannel1 );
         labelChannel1.SetWantsMouseNotifications( false );
         labelChannel1.SetPosition( 0, 50 );
@@ -467,7 +467,7 @@ void InitializeControls()
         labelChannel1.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelChannel1.SetFont( "Times New Roman", 13, true, false );
 
-        labelChannel2 = new VoltageLabel( "labelChannel2", "Label Channel 2", this, "II" );
+        labelChannel2 = new VoltageLabel( "labelChannel2", "CHANNEL II Label", this, "II" );
         AddComponent( labelChannel2 );
         labelChannel2.SetWantsMouseNotifications( false );
         labelChannel2.SetPosition( 0, 90 );
@@ -488,7 +488,7 @@ void InitializeControls()
         labelChannel2.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelChannel2.SetFont( "Times New Roman", 13, true, false );
 
-        labelChannel3 = new VoltageLabel( "labelChannel3", "Label Channel 3", this, "III" );
+        labelChannel3 = new VoltageLabel( "labelChannel3", "CHANNEL III Label", this, "III" );
         AddComponent( labelChannel3 );
         labelChannel3.SetWantsMouseNotifications( false );
         labelChannel3.SetPosition( 0, 135 );
@@ -509,7 +509,7 @@ void InitializeControls()
         labelChannel3.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelChannel3.SetFont( "Times New Roman", 13, true, false );
 
-        labelChannel4 = new VoltageLabel( "labelChannel4", "Label Channel 4", this, "IIII" );
+        labelChannel4 = new VoltageLabel( "labelChannel4", "CHANNEL IIII", this, "IIII" );
         AddComponent( labelChannel4 );
         labelChannel4.SetWantsMouseNotifications( false );
         labelChannel4.SetPosition( 0, 175 );
@@ -530,7 +530,7 @@ void InitializeControls()
         labelChannel4.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelChannel4.SetFont( "Times New Roman", 13, true, false );
 
-        labelRange1 = new VoltageLabel( "labelRange1", "Label Range 1", this, "0 • L • M • H" );
+        labelRange1 = new VoltageLabel( "labelRange1", "GAIN RANGE Label 1", this, "0 • L • M • H" );
         AddComponent( labelRange1 );
         labelRange1.SetWantsMouseNotifications( false );
         labelRange1.SetPosition( 101, 63 );
@@ -551,35 +551,35 @@ void InitializeControls()
         labelRange1.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelRange1.SetFont( "Courier New", 6, true, false );
 
-        returnJack = new VoltageAudioJack( "returnJack", "Process Return", this, JackType.JackType_AudioInput );
+        returnJack = new VoltageAudioJack( "returnJack", "PROCESS RETURN", this, JackType.JackType_AudioInput );
         AddComponent( returnJack );
         returnJack.SetWantsMouseNotifications( false );
         returnJack.SetPosition( 130, 275 );
         returnJack.SetSize( 37, 37 );
         returnJack.SetSkin( "Jack Round" );
 
-        sendJack = new VoltageAudioJack( "sendJack", "Process Send", this, JackType.JackType_AudioOutput );
+        sendJack = new VoltageAudioJack( "sendJack", "PROCESS SEND", this, JackType.JackType_AudioOutput );
         AddComponent( sendJack );
         sendJack.SetWantsMouseNotifications( false );
         sendJack.SetPosition( 103, 282 );
         sendJack.SetSize( 25, 25 );
         sendJack.SetSkin( "Mini Jack 25px" );
 
-        output7 = new VoltageAudioJack( "output7", "Submix 7 Output", this, JackType.JackType_AudioOutput );
+        output7 = new VoltageAudioJack( "output7", "7 Output", this, JackType.JackType_AudioOutput );
         AddComponent( output7 );
         output7.SetWantsMouseNotifications( false );
         output7.SetPosition( 165, 275 );
         output7.SetSize( 37, 37 );
         output7.SetSkin( "Rotated Half" );
 
-        switchRange2 = new VoltageSwitch( "switchRange2", "Switch Range 2", this, 0 );
+        switchRange2 = new VoltageSwitch( "switchRange2", "GAIN RANGE SWITCH 2", this, 0 );
         AddComponent( switchRange2 );
         switchRange2.SetWantsMouseNotifications( false );
         switchRange2.SetPosition( 102, 93 );
         switchRange2.SetSize( 51, 15 );
         switchRange2.SetSkin( "4-State Slide Horiz" );
 
-        labelRange2 = new VoltageLabel( "labelRange2", "Label Range 2", this, "0 • L • M • H" );
+        labelRange2 = new VoltageLabel( "labelRange2", "GAIN RANGE LABEL 2", this, "0 • L • M • H" );
         AddComponent( labelRange2 );
         labelRange2.SetWantsMouseNotifications( false );
         labelRange2.SetPosition( 101, 103 );
@@ -600,14 +600,14 @@ void InitializeControls()
         labelRange2.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelRange2.SetFont( "Courier New", 6, true, false );
 
-        switchRange3 = new VoltageSwitch( "switchRange3", "Switch Range 3", this, 2 );
+        switchRange3 = new VoltageSwitch( "switchRange3", "GAIN RANGE SWITCH 3", this, 2 );
         AddComponent( switchRange3 );
         switchRange3.SetWantsMouseNotifications( false );
         switchRange3.SetPosition( 102, 138 );
         switchRange3.SetSize( 51, 15 );
         switchRange3.SetSkin( "4-State Slide Horiz" );
 
-        labelRange3 = new VoltageLabel( "labelRange3", "Label Range 3", this, "0 • L • M • H" );
+        labelRange3 = new VoltageLabel( "labelRange3", "GAIN RANGE LABEL 3", this, "0 • L • M • H" );
         AddComponent( labelRange3 );
         labelRange3.SetWantsMouseNotifications( false );
         labelRange3.SetPosition( 101, 148 );
@@ -628,14 +628,14 @@ void InitializeControls()
         labelRange3.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelRange3.SetFont( "Courier New", 6, true, false );
 
-        switchRange4 = new VoltageSwitch( "switchRange4", "Switch Range 4", this, 0 );
+        switchRange4 = new VoltageSwitch( "switchRange4", "GAIN RANGE SWITCH 4", this, 0 );
         AddComponent( switchRange4 );
         switchRange4.SetWantsMouseNotifications( false );
         switchRange4.SetPosition( 102, 178 );
         switchRange4.SetSize( 51, 15 );
         switchRange4.SetSkin( "4-State Slide Horiz" );
 
-        labelRange4 = new VoltageLabel( "labelRange4", "Label Range 4", this, "0 • L • M • H" );
+        labelRange4 = new VoltageLabel( "labelRange4", "GAIN RANGE LABEL 4", this, "0 • L • M • H" );
         AddComponent( labelRange4 );
         labelRange4.SetWantsMouseNotifications( false );
         labelRange4.SetPosition( 101, 188 );
@@ -700,110 +700,110 @@ void InitializeControls()
         process4.DisplayValueInPercent( false );
         process4.SetKnobAdjustsRing( true );
 
-        submix3Label = new VoltageLabel( "submix3Label", "Submix 3 Label", this, "3" );
-        AddComponent( submix3Label );
-        submix3Label.SetWantsMouseNotifications( false );
-        submix3Label.SetPosition( 170, 255 );
-        submix3Label.SetSize( 21, 20 );
-        submix3Label.SetEditable( false, false );
-        submix3Label.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        submix3Label.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        submix3Label.SetColor( new Color( 232, 232, 232, 255 ) );
-        submix3Label.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        submix3Label.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        submix3Label.SetBorderSize( 1 );
-        submix3Label.SetMultiLineEdit( false );
-        submix3Label.SetIsNumberEditor( false );
-        submix3Label.SetNumberEditorRange( 0, 100 );
-        submix3Label.SetNumberEditorInterval( 1 );
-        submix3Label.SetNumberEditorUsesMouseWheel( false );
-        submix3Label.SetHasCustomTextHoverColor( false );
-        submix3Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        submix3Label.SetFont( "Times New Roman", 13, true, false );
+        textLabel18 = new VoltageLabel( "textLabel18", "textLabel18", this, "3" );
+        AddComponent( textLabel18 );
+        textLabel18.SetWantsMouseNotifications( false );
+        textLabel18.SetPosition( 170, 255 );
+        textLabel18.SetSize( 21, 20 );
+        textLabel18.SetEditable( false, false );
+        textLabel18.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        textLabel18.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        textLabel18.SetColor( new Color( 232, 232, 232, 255 ) );
+        textLabel18.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        textLabel18.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        textLabel18.SetBorderSize( 1 );
+        textLabel18.SetMultiLineEdit( false );
+        textLabel18.SetIsNumberEditor( false );
+        textLabel18.SetNumberEditorRange( 0, 100 );
+        textLabel18.SetNumberEditorInterval( 1 );
+        textLabel18.SetNumberEditorUsesMouseWheel( false );
+        textLabel18.SetHasCustomTextHoverColor( false );
+        textLabel18.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        textLabel18.SetFont( "Times New Roman", 13, true, false );
 
-        submix7Label = new VoltageLabel( "submix7Label", "Submix 7 Label", this, "7" );
-        AddComponent( submix7Label );
-        submix7Label.SetWantsMouseNotifications( false );
-        submix7Label.SetPosition( 170, 310 );
-        submix7Label.SetSize( 21, 20 );
-        submix7Label.SetEditable( false, false );
-        submix7Label.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        submix7Label.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        submix7Label.SetColor( new Color( 232, 232, 232, 255 ) );
-        submix7Label.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        submix7Label.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        submix7Label.SetBorderSize( 1 );
-        submix7Label.SetMultiLineEdit( false );
-        submix7Label.SetIsNumberEditor( false );
-        submix7Label.SetNumberEditorRange( 0, 100 );
-        submix7Label.SetNumberEditorInterval( 1 );
-        submix7Label.SetNumberEditorUsesMouseWheel( false );
-        submix7Label.SetHasCustomTextHoverColor( false );
-        submix7Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        submix7Label.SetFont( "Times New Roman", 13, true, false );
+        textLabel19 = new VoltageLabel( "textLabel19", "textLabel19", this, "7" );
+        AddComponent( textLabel19 );
+        textLabel19.SetWantsMouseNotifications( false );
+        textLabel19.SetPosition( 170, 310 );
+        textLabel19.SetSize( 21, 20 );
+        textLabel19.SetEditable( false, false );
+        textLabel19.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        textLabel19.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        textLabel19.SetColor( new Color( 232, 232, 232, 255 ) );
+        textLabel19.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        textLabel19.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        textLabel19.SetBorderSize( 1 );
+        textLabel19.SetMultiLineEdit( false );
+        textLabel19.SetIsNumberEditor( false );
+        textLabel19.SetNumberEditorRange( 0, 100 );
+        textLabel19.SetNumberEditorInterval( 1 );
+        textLabel19.SetNumberEditorUsesMouseWheel( false );
+        textLabel19.SetHasCustomTextHoverColor( false );
+        textLabel19.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        textLabel19.SetFont( "Times New Roman", 13, true, false );
 
-        sendLabel = new VoltageLabel( "sendLabel", "Send Label", this, "S" );
-        AddComponent( sendLabel );
-        sendLabel.SetWantsMouseNotifications( false );
-        sendLabel.SetPosition( 95, 310 );
-        sendLabel.SetSize( 41, 20 );
-        sendLabel.SetEditable( false, false );
-        sendLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        sendLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        sendLabel.SetColor( new Color( 232, 232, 232, 255 ) );
-        sendLabel.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        sendLabel.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        sendLabel.SetBorderSize( 1 );
-        sendLabel.SetMultiLineEdit( false );
-        sendLabel.SetIsNumberEditor( false );
-        sendLabel.SetNumberEditorRange( 0, 100 );
-        sendLabel.SetNumberEditorInterval( 1 );
-        sendLabel.SetNumberEditorUsesMouseWheel( false );
-        sendLabel.SetHasCustomTextHoverColor( false );
-        sendLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        sendLabel.SetFont( "Times New Roman", 13, true, false );
+        textLabel20 = new VoltageLabel( "textLabel20", "textLabel20", this, "S" );
+        AddComponent( textLabel20 );
+        textLabel20.SetWantsMouseNotifications( false );
+        textLabel20.SetPosition( 95, 310 );
+        textLabel20.SetSize( 41, 20 );
+        textLabel20.SetEditable( false, false );
+        textLabel20.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        textLabel20.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        textLabel20.SetColor( new Color( 232, 232, 232, 255 ) );
+        textLabel20.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        textLabel20.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        textLabel20.SetBorderSize( 1 );
+        textLabel20.SetMultiLineEdit( false );
+        textLabel20.SetIsNumberEditor( false );
+        textLabel20.SetNumberEditorRange( 0, 100 );
+        textLabel20.SetNumberEditorInterval( 1 );
+        textLabel20.SetNumberEditorUsesMouseWheel( false );
+        textLabel20.SetHasCustomTextHoverColor( false );
+        textLabel20.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        textLabel20.SetFont( "Times New Roman", 13, true, false );
 
-        returnLabel = new VoltageLabel( "returnLabel", "Return Label", this, "R" );
-        AddComponent( returnLabel );
-        returnLabel.SetWantsMouseNotifications( false );
-        returnLabel.SetPosition( 130, 310 );
-        returnLabel.SetSize( 41, 20 );
-        returnLabel.SetEditable( false, false );
-        returnLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        returnLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        returnLabel.SetColor( new Color( 232, 232, 232, 255 ) );
-        returnLabel.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        returnLabel.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        returnLabel.SetBorderSize( 1 );
-        returnLabel.SetMultiLineEdit( false );
-        returnLabel.SetIsNumberEditor( false );
-        returnLabel.SetNumberEditorRange( 0, 100 );
-        returnLabel.SetNumberEditorInterval( 1 );
-        returnLabel.SetNumberEditorUsesMouseWheel( false );
-        returnLabel.SetHasCustomTextHoverColor( false );
-        returnLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        returnLabel.SetFont( "Times New Roman", 13, true, false );
+        textLabel21 = new VoltageLabel( "textLabel21", "textLabel21", this, "R" );
+        AddComponent( textLabel21 );
+        textLabel21.SetWantsMouseNotifications( false );
+        textLabel21.SetPosition( 130, 310 );
+        textLabel21.SetSize( 41, 20 );
+        textLabel21.SetEditable( false, false );
+        textLabel21.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        textLabel21.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        textLabel21.SetColor( new Color( 232, 232, 232, 255 ) );
+        textLabel21.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        textLabel21.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        textLabel21.SetBorderSize( 1 );
+        textLabel21.SetMultiLineEdit( false );
+        textLabel21.SetIsNumberEditor( false );
+        textLabel21.SetNumberEditorRange( 0, 100 );
+        textLabel21.SetNumberEditorInterval( 1 );
+        textLabel21.SetNumberEditorUsesMouseWheel( false );
+        textLabel21.SetHasCustomTextHoverColor( false );
+        textLabel21.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        textLabel21.SetFont( "Times New Roman", 13, true, false );
 
-        linkLabel = new VoltageLabel( "linkLabel", "Link Label", this, "LINK" );
-        AddComponent( linkLabel );
-        linkLabel.SetWantsMouseNotifications( false );
-        linkLabel.SetPosition( 5, 270 );
-        linkLabel.SetSize( 21, 20 );
-        linkLabel.SetEditable( false, false );
-        linkLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        linkLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        linkLabel.SetColor( new Color( 232, 232, 232, 255 ) );
-        linkLabel.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        linkLabel.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        linkLabel.SetBorderSize( 1 );
-        linkLabel.SetMultiLineEdit( false );
-        linkLabel.SetIsNumberEditor( false );
-        linkLabel.SetNumberEditorRange( 0, 100 );
-        linkLabel.SetNumberEditorInterval( 1 );
-        linkLabel.SetNumberEditorUsesMouseWheel( false );
-        linkLabel.SetHasCustomTextHoverColor( false );
-        linkLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        linkLabel.SetFont( "Times New Roman", 7, true, false );
+        textLabel22 = new VoltageLabel( "textLabel22", "textLabel22", this, "LINK" );
+        AddComponent( textLabel22 );
+        textLabel22.SetWantsMouseNotifications( false );
+        textLabel22.SetPosition( 5, 270 );
+        textLabel22.SetSize( 21, 20 );
+        textLabel22.SetEditable( false, false );
+        textLabel22.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        textLabel22.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        textLabel22.SetColor( new Color( 232, 232, 232, 255 ) );
+        textLabel22.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        textLabel22.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        textLabel22.SetBorderSize( 1 );
+        textLabel22.SetMultiLineEdit( false );
+        textLabel22.SetIsNumberEditor( false );
+        textLabel22.SetNumberEditorRange( 0, 100 );
+        textLabel22.SetNumberEditorInterval( 1 );
+        textLabel22.SetNumberEditorUsesMouseWheel( false );
+        textLabel22.SetHasCustomTextHoverColor( false );
+        textLabel22.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        textLabel22.SetFont( "Times New Roman", 7, true, false );
 
         inputLevel1Led = new VoltageLED( "inputLevel1Led", "Input 1 Level", this );
         AddComponent( inputLevel1Led );
@@ -833,40 +833,40 @@ void InitializeControls()
         inputLevel4Led.SetSize( 7, 7 );
         inputLevel4Led.SetSkin( "2500 Lamp Green" );
 
-        output10 = new VoltageAudioJack( "output10", "Main 10 Output", this, JackType.JackType_AudioOutput );
+        output10 = new VoltageAudioJack( "output10", "10 Output", this, JackType.JackType_AudioOutput );
         AddComponent( output10 );
         output10.SetWantsMouseNotifications( false );
         output10.SetPosition( 190, 245 );
         output10.SetSize( 37, 37 );
         output10.SetSkin( "Rotated Half" );
 
-        mainOutputLabel = new VoltageLabel( "mainOutputLabel", "Main Output Label", this, "10" );
-        AddComponent( mainOutputLabel );
-        mainOutputLabel.SetWantsMouseNotifications( false );
-        mainOutputLabel.SetPosition( 200, 280 );
-        mainOutputLabel.SetSize( 21, 20 );
-        mainOutputLabel.SetEditable( false, false );
-        mainOutputLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        mainOutputLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        mainOutputLabel.SetColor( new Color( 232, 232, 232, 255 ) );
-        mainOutputLabel.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        mainOutputLabel.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        mainOutputLabel.SetBorderSize( 1 );
-        mainOutputLabel.SetMultiLineEdit( false );
-        mainOutputLabel.SetIsNumberEditor( false );
-        mainOutputLabel.SetNumberEditorRange( 0, 100 );
-        mainOutputLabel.SetNumberEditorInterval( 1 );
-        mainOutputLabel.SetNumberEditorUsesMouseWheel( false );
-        mainOutputLabel.SetHasCustomTextHoverColor( false );
-        mainOutputLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        mainOutputLabel.SetFont( "Times New Roman", 13, true, false );
+        textLabel27 = new VoltageLabel( "textLabel27", "textLabel27", this, "10" );
+        AddComponent( textLabel27 );
+        textLabel27.SetWantsMouseNotifications( false );
+        textLabel27.SetPosition( 200, 280 );
+        textLabel27.SetSize( 21, 20 );
+        textLabel27.SetEditable( false, false );
+        textLabel27.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        textLabel27.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        textLabel27.SetColor( new Color( 232, 232, 232, 255 ) );
+        textLabel27.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        textLabel27.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        textLabel27.SetBorderSize( 1 );
+        textLabel27.SetMultiLineEdit( false );
+        textLabel27.SetIsNumberEditor( false );
+        textLabel27.SetNumberEditorRange( 0, 100 );
+        textLabel27.SetNumberEditorInterval( 1 );
+        textLabel27.SetNumberEditorUsesMouseWheel( false );
+        textLabel27.SetHasCustomTextHoverColor( false );
+        textLabel27.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        textLabel27.SetFont( "Times New Roman", 13, true, false );
 
-        brandLogoImage = new VoltageImage( "brandLogoImage", "Brand Logo Image", this, false );
-        AddComponent( brandLogoImage );
-        brandLogoImage.SetWantsMouseNotifications( false );
-        brandLogoImage.SetPosition( 83, 211 );
-        brandLogoImage.SetSize( 98, 74 );
-        brandLogoImage.SetCurrentImage( "image image.png" );
+        image3 = new VoltageImage( "image3", "image3", this, false );
+        AddComponent( image3 );
+        image3.SetWantsMouseNotifications( false );
+        image3.SetPosition( 83, 211 );
+        image3.SetSize( 98, 74 );
+        image3.SetCurrentImage( "image image.png" );
 }
 
 
@@ -1201,18 +1201,18 @@ void InitializeControls()
 
 
     // Auto-generated variables
-    private VoltageImage brandLogoImage;
-    private VoltageLabel mainOutputLabel;
+    private VoltageImage image3;
+    private VoltageLabel textLabel27;
     private VoltageAudioJack output10;
     private VoltageLED inputLevel4Led;
     private VoltageLED inputLevel3Led;
     private VoltageLED inputLevel2Led;
     private VoltageLED inputLevel1Led;
-    private VoltageLabel linkLabel;
-    private VoltageLabel returnLabel;
-    private VoltageLabel sendLabel;
-    private VoltageLabel submix7Label;
-    private VoltageLabel submix3Label;
+    private VoltageLabel textLabel22;
+    private VoltageLabel textLabel21;
+    private VoltageLabel textLabel20;
+    private VoltageLabel textLabel19;
+    private VoltageLabel textLabel18;
     private VoltageKnob process4;
     private VoltageKnob process3;
     private VoltageKnob process2;
@@ -1231,10 +1231,10 @@ void InitializeControls()
     private VoltageLabel labelChannel3;
     private VoltageLabel labelChannel2;
     private VoltageLabel labelChannel1;
-    private VoltageLabel jackInput4Label;
-    private VoltageLabel jackInput3Label;
-    private VoltageLabel jackInput2Label;
-    private VoltageLabel jackInput1Label;
+    private VoltageLabel textLabel9;
+    private VoltageLabel textLabel8;
+    private VoltageLabel textLabel7;
+    private VoltageLabel textLabel6;
     private VoltageSwitch switchRange1;
     private VoltageAudioJack input2;
     private VoltageAudioJack input3;
@@ -1266,7 +1266,7 @@ void InitializeControls()
     //[user-code-and-variables]    Add your own variables and functions here
 
 
-    // RM1010 v1.0.0: 48 kHz host, established Colorbox 2x half-band filtering.
+    // RM1010 v0.1.0m: 48 kHz host, established Colorbox 2x half-band filtering.
     private final Rm1010Core mixerCore = new Rm1010Core();
     private final double[] audioInputs = new double[6];
     private VoltageKnob[] gainKnobs, balanceKnobs, volumeKnobs, processKnobs;
@@ -1277,20 +1277,17 @@ void InitializeControls()
     private int ledCountdown = 1;
 
     private void syncControlTargets() {
-        if (gainKnobs == null)
-            return;
+        if (gainKnobs == null) return;
         for (int i = 0; i < 4; i++)
             mixerCore.setControls(i, gainKnobs[i].GetValue(), balanceKnobs[i].GetValue(),
                 volumeKnobs[i].GetValue(), processKnobs[i].GetValue(), (int)Math.round(rangeSwitches[i].GetValue()));
     }
 
     private static double readInput(VoltageAudioJack jack) {
-        if (!jack.IsConnected())
-            return 0.0;
+        if (!jack.IsConnected()) return 0.0;
 
         double input = jack.GetValue();
-        if (!Double.isFinite(input))
-            return 0.0;
+        if (!Double.isFinite(input)) return 0.0;
 
         return Rm1010Core.limit(input, -1.0e6, 1.0e6);
     }
@@ -1393,8 +1390,7 @@ void InitializeControls()
         }
 
         private static double limit(double x, double min, double max) {
-            if (!Double.isFinite(x))
-                return 0.0;
+            if (!Double.isFinite(x)) return 0.0;
             return x < min ? min : (x > max ? max : x);
         }
     }

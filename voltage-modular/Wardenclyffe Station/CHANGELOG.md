@@ -1,5 +1,11 @@
 # Wardenclyffe Station changelog
 
+## RM1010 v1.0.0 · 8 October 2026
+
+- Canonized the compact four-channel mixing amplifier with drive, 900 Hz tilt, pair taps and PROCESS loop.
+- Preserved approved audio through cleanup with sample-exact callback parity; retained documentation, tests and reusable FIR provenance.
+- Added the eighteenth canonical instrument.
+
 ## LM-21 Mk III v1.0.1 · 8 October 2026
 
 - Canonized the user-tested 4×4 matrix mixer and independent acoustic-distance engines.

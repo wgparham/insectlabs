@@ -1,0 +1,10 @@
+{
+  "minimixer.java": "b8eeda604a4d14286129880e125cbb9700c11e4e0cd149f70081c1813f416d1e",
+  "minimixer.vmod": "1a0e7eabb6536e7975b5491b85ad2ff9123531585f665363b347a01d391eca49",
+  "tests/validate.py": "0e6a39497ec803ba96a116d539c4bfe44ff2bf83bec49f4741653a99c642d63e",
+  "tests/baseline/pre-cleanup.java.txt": "7dbd1668a6a0a7e83858ec9c722564f45bd8f585114c6540b62bd639af081688",
+  "REVIEW.md": "2e70e6e64995e89ff2db41dcd069b99c5edf9a233b3b42153821ab80b4841b80",
+  "../README.md": "fe76d24c85c8f232aa351fee914db16308c17f71fc39fc056988db89a4cb0df4",
+  "../DEVELOPER-NOTES.md": "d190d144071320a6e919798f3e63373a26c37451a2584061da0e17b0d3d0dcbd",
+  "../USER-MANUAL.md": "a8d2ff83d79ac8a7aa12f1664bae7da0e864cb03a81225cce1e4cb56059864de"
+}
