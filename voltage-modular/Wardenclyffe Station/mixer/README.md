@@ -6,6 +6,6 @@ Power has a 13.6-second warmup and 2.1-second cooldown. MULT stays live. Host by
 
 - [Canonical files and release record](versions/1.0.1/README.md)
 - [User manual](USER-MANUAL.md) and [developer notes](DEVELOPER-NOTES.md)
-- [Editable Designer project](development/lm-21_mk3.vmod) and [Java export](development/lm-21_mk3.java)
+- [Canonical Designer project](versions/1.0.1/lm-21_mk3.vmod) and [Java export](versions/1.0.1/lm-21_mk3.java)
 
-The historical ReverbSC prototype and the distinct minimixer development project remain preserved. The immutable release resides under versions/1.0.1; the development pair remains editable.
+The historical prototype remains in the immutable release. Reusable DSP is extracted into [reverb-primitives](../../../reverb-primitives/README.md). The separate [minimixer](../minimixer/README.md) has its own development folder. The retired LM-21 development folder has been removed; make a new working copy from the archive when a future revision is needed.

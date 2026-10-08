@@ -1,8 +1,8 @@
 # LM-21 Mk III — DSP and maintenance notes
 
 **Status:** `v1.0.1`, automated validation passed; the user recompiled, tested and approved the corrected panel on 2026-10-08.  
-**Pair:** `development/lm-21_mk3.java` and `development/lm-21_mk3.vmod`. The Java source is also embedded in the Designer file; keep them synchronized after every edit.  
-**Prototype:** `development/lm-21_mk3_reverbsc_prototype.java` is retained as historical DSP reference.
+**Pair:** `versions/1.0.1/lm-21_mk3.java` and `versions/1.0.1/lm-21_mk3.vmod`. The Java source is also embedded in the Designer file; this archived pair is immutable; copy it into a new development folder before editing.  
+**Prototype:** `versions/1.0.1/references/lm-21_mk3_reverbsc_prototype.java.txt` is retained as historical DSP reference.
 
 ## Intent and boundaries
 
@@ -12,9 +12,9 @@ Keep the module mono-first and audio-only. Do not add CV or stereo behavior unle
 
 ## File responsibilities
 
-- `development/lm-21_mk3.vmod`: Voltage Module Designer panel, control definitions, and embedded source. Notes must carry the active development version and current decisions.
-- `development/lm-21_mk3.java`: working Java export. Treat this and the embedded Java as a synchronized pair.
-- `development/lm-21_mk3_reverbsc_prototype.java`: pre-integration experiment; compare only when investigating earlier behavior.
+- `versions/1.0.1/lm-21_mk3.vmod`: immutable approved Designer panel, control definitions and embedded source. Notes carry the release version.
+- `versions/1.0.1/lm-21_mk3.java`: immutable canonical Java export, synchronized with the archived Designer source.
+- `versions/1.0.1/references/lm-21_mk3_reverbsc_prototype.java.txt`: pre-integration experiment; compare only when investigating earlier behavior.
 - `README.md`: module scope and concise status.
 - `USER-MANUAL.md`: operator-facing reference; update whenever control behavior changes.
 - `DEVELOPER-NOTES.md`: DSP equations, architecture, and validation plan.
@@ -90,7 +90,7 @@ The cleanup renamed control variables/Internal Names consistently and gave Displ
 
 Both source forms compile with `--release 17 -Xlint:all -Werror` against the installed Voltage SDK. The retained validator extracts actual DSP and callback bodies into a headless test class, using value/connection mocks for SDK controls. It tests 32 signed crosspoint routes, notification mappings, typed EQ/MIX/DIST./PERSPECTIVE edits, preset restoration, row/reverb independence, averaging, MULT, frozen-history bypass, resume, power timing, 1,001 taper round-trips, unpatched/nonfinite inputs, and 30 seconds of reverb response at each of three PERSPECTIVE settings. Active output digests match the pre-cleanup baseline exactly: `14811806090894522753`.
 
-Run `python development/tests/validate.py` from any directory. Use `--baseline development/tests/baseline/pre-cleanup.java.txt` to repeat the recorded baseline comparison, or supply another saved source path. The harness reads/extracts code at test time; it does not duplicate the audio algorithm. It does not emulate Designer, native control events, saved-patch storage, automation/undo integration, skin rendering or real-time scheduling.
+Run `python versions/1.0.1/tests/validate.py` from any directory. Use `--baseline versions/1.0.1/tests/baseline/pre-cleanup.java.txt` to repeat the recorded baseline comparison, or supply another saved source path. The harness reads/extracts code at test time; it does not duplicate the audio algorithm. It does not emulate Designer, native control events, saved-patch storage, automation/undo integration, skin rendering or real-time scheduling.
 
 - Native-host build/run tests and canonical approval were confirmed on 2026-10-08; dedicated automation/undo tests remain unmeasured.
 - 48 kHz is the documented callback assumption, consistent with the SDK-generated 48,000-callback comment. Other processing rates are not supported by this fixed-rate DSP without adaptation.
@@ -103,3 +103,7 @@ Run `python development/tests/validate.py` from any directory. Use `--baseline d
 ## Design provenance
 
 The module is for personal use. Its reverb prototype follows the ReverbSC family of scattering-network design and is retained with source lineage in the code comments. It is an adaptation for this mono instrument, not a claim of a component-accurate physical reverb or a commercial product.
+
+## Local organization after release
+
+The retired development folder has been removed after archive verification. Minimixer and its rLogo asset are in the sibling minimixer/development folder. A standalone reverb engine, parameter helpers and validation are kept in the root reverb-primitives project; the archived prototype and released module remain unchanged.
