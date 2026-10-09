@@ -1,6 +1,7 @@
 {
-  "PROVENANCE.json": "ec2fccbdaab7e1f0e0d8806e23546373f6431bd2bd84e6034cfed6cead7c349c",
-  "README.md": "54d01aa48fb9035d387291eb9bcc1ec300a043a6457beee1b281406850851740",
-  "tests/validate.py": "fc46ecd5e129880aefd60e296fafb5518f166b6b9a76898fff1af7fe529fc5d1",
-  "src/com/insectlabs/dsp/filters/HalfBand19.java": "fd2154506475dbc322137e47be4797f9303a04b7392e80159acd94ddfd04a4a0"
+  "PROVENANCE.json": "127bd3fb04d92633a727045a2165fefda95b00fbff00a8b55f69a6ab9d88fa8b",
+  "README.md": "0d280a6cf9c5f0c9b9f7d0b066dd3f4a76d92446e6b0e3b69119d2175ad247b3",
+  "tests/validate.py": "e742c83797b84ba70ec0ee13c2210e364e3eef94b9eaf01d11482b8f302988c6",
+  "src/com/insectlabs/dsp/filters/HalfBand19.java": "fd2154506475dbc322137e47be4797f9303a04b7392e80159acd94ddfd04a4a0",
+  "src/com/insectlabs/dsp/interpolation/CubicHermite.java": "eb0e9b428dc111031f6773d6c8731cdabe1e3db1c6313af970c6acdadba98451"
 }

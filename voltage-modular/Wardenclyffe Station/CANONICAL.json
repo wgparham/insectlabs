@@ -164,14 +164,20 @@
   },
   "lm-21": {
     "version": "1.0.1",
-    "path": "mixer/versions/1.0.1",
+    "path": "lm-21/versions/1.0.1",
     "module": "lm21mark3",
     "name": "LM-21 Mk III Matrix Mixer — Artificial Acoustic Distance Generator"
   },
   "rm1010": {
     "version": "1.0.0",
-    "path": "minimixer/versions/1.0.0",
+    "path": "rm1010/versions/1.0.0",
     "module": "rm1010",
     "name": "RM1010 Mixing Amplifier"
+  },
+  "model-62": {
+    "version": "1.0.0",
+    "path": "model-62/versions/1.0.0",
+    "module": "model62",
+    "name": "Model 62 Wire Player Recorder"
   }
 }

@@ -1,6 +1,6 @@
-# InsectLabs Audio Test Bench — v1.3
+# InsectLabs Audio Test Bench — v1.4
 
-59 listening and measurement files for the InsectLabs Voltage Modular collections. All delivery files are **48 kHz, 24-bit PCM WAV**, with mono sources prioritized and explicit stereo routing fixtures. Typical lengths are 4–24 seconds, plus two 42-second sn-16u sweeps, with one complete original experimental-music mix for extended audition. No Voltage Modular patch or special player is required.
+60 listening and measurement files for the InsectLabs Voltage Modular collections. All delivery files are **48 kHz, 24-bit PCM WAV**, with mono sources prioritized and explicit stereo routing fixtures. Typical lengths are 4–24 seconds, plus two 42-second sn-16u sweeps, with one complete original experimental-music mix for extended audition. No Voltage Modular patch or special player is required.
 
 ## Start here
 
@@ -43,7 +43,7 @@ The real-source files were obtained from a pinned public IBM sample mirror with 
 
 ## Validation and archiving
 
-The delivered set passes automated checks (the current count is recorded in `QA.json`): WAV format and duration, checksums, peak measurements, sample clipping, calibrated sine values/frequencies, exact stereo cancellation, channel isolation, channel swaps, and faded recording endpoints. See `QA.json`. The original 54-file set was user-approved in Voltage Modular. The four new sn-16u captures await user playback.
+The delivered set passes automated checks (the current count is recorded in `QA.json`): WAV format and duration, checksums, peak measurements, sample clipping, calibrated sine values/frequencies, exact stereo cancellation, channel isolation, channel swaps, and faded recording endpoints. See `QA.json`. The original 54-file set was user-approved in Voltage Modular. The four new sn-16u captures await user playback; Model 62 fixture playback is also pending.
 
 Generated audio in folders 01–06 is dedicated under CC0 1.0. Recordings retain their individual CC0 or CC BY 4.0 terms. **Keep ATTRIBUTION.md with redistributed copies**, particularly piano/rain files and piano-containing channel pairs. The collection is not covered by one blanket CC0 license.
 
@@ -68,3 +68,12 @@ At a 1 kHz center and 2 Hz bandwidth, the center tone tests unity bandpass and t
 the ±1 Hz tones test the transition edges, and the ±10 Hz tones test rejection/preservation.
 Use sufficient FFT resolution to separate 1 Hz spacing. Finite filter slopes overlap at the
 edges. This analytic fixture is numerically verified; native host playback is pending.
+
+## Model 62 head-spacing impulses (1.4.0)
+
+`02-dynamics/model62_head_spacing_impulses_150Hz_minus18dBFS.wav` has three stereo pulse pairs;
+the left-channel pulse leads the right by 54, 108 and 13.5 ms, corresponding to a 33 mm head gap at
+1×, 1/2× and 4× speed. Each 150 Hz Hann-windowed pulse is 10 ms long and peaks at −18 dBFS.
+It is a one-shot, not a seamless loop. Use it to check short echo/head timing, transient response,
+stereo offset and transport-speed relationships. Numerical format, level and pulse placement checks
+pass; native host playback is pending. Rebuild with `python test-bench/tools/add_model62_head_impulses.py --output test-bench/v1`.

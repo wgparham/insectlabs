@@ -1,5 +1,5 @@
 {
-  "extracted_from": "voltage-modular/Wardenclyffe Station/mixer/versions/1.0.1/references/lm-21_mk3_reverbsc_prototype.java.txt",
+  "extracted_from": "voltage-modular/Wardenclyffe Station/lm-21/versions/1.0.1/references/lm-21_mk3_reverbsc_prototype.java.txt",
   "source_sha256": "00c66098b8ff9c5bb2b4b22de0a48d5a29628305ad881da232bc0e45382e4625",
   "date": "2026-10-08",
   "status": "reusable development primitive; not integrated into released modules"

@@ -2,12 +2,12 @@
 
 The Audio TestBench is a standalone InsectLabs project for module development, audio/musical
 experimentation, and repeatable listening or measurement. The full TestBench collection is versioned
-here. The current v1.3 collection contains 59 WAV files at 48 kHz/24-bit, source recordings with
+here. The current v1.4 collection contains 60 WAV files at 48 kHz/24-bit, source recordings with
 license evidence, and a measured catalog, attribution, manifest, and verification results.
 
 - `v1` contains the ready-to-patch collection and its listening guide.
 - `sources/ibm-freesound` preserves the source recordings and license evidence used for the recorded fixtures.
-- `InsectLabs-TestBench-v1.zip` remains the portable v1.1 snapshot (54 WAVs); its SHA-256 digest is in the adjacent `.sha256` file. The current v1.3 WAVs and metadata are checked in individually. Rebuilding the 241 MB archive requires Git LFS tooling, which was unavailable during this release.
+- `InsectLabs-TestBench-v1.zip` remains the portable v1.1 snapshot (54 WAVs); its SHA-256 digest is in the adjacent `.sha256` file. The current v1.4 WAVs and metadata are checked in individually. Rebuilding the 241 MB archive requires Git LFS tooling, which was unavailable during this release.
 - `archive-metadata` preserves the original delivery metadata.
 
 Third-party recording licenses are separate from this repository's code license. Keep the credits with the WAV distribution. Do not apply the generated-audio CC0 dedication to the sourced recordings. The original user-provided composition source is archived separately; this repository contains only its approved delivery mix and provenance.
@@ -46,3 +46,7 @@ Numerical spectrum/format checks pass; user playback is pending.
 Rebuild or add it to an existing collection with
 `python test-bench/tools/add_selectivity_fixture.py --output <collection-folder>`.
 The portable ZIP remains the older v1.1 snapshot; individually versioned WAVs and metadata are current.
+
+## Model 62 head-spacing impulses added in 1.4.0
+
+`v1/02-dynamics/model62_head_spacing_impulses_150Hz_minus18dBFS.wav` is an analytic stereo one-shot fixture with three 150 Hz Hann-windowed pulse pairs. The left-to-right delays (54, 108 and 13.5 ms) model the 33 mm head gap at 1×, 1/2× and 4× transport speeds. The signal is fixed at −18 dBFS peak per channel. It is useful for checking short echo timing, stereo offset, transient response and speed relationships. Rebuild it with `python test-bench/tools/add_model62_head_impulses.py --output test-bench/v1`.

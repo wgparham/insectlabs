@@ -1,0 +1,193 @@
+    static void check(boolean ok, String message) {
+        if (!ok) throw new AssertionError(message);
+    }
+    static void near(double a, double b, double tolerance, String message) {
+        check(Math.abs(a - b) <= tolerance, message + ": " + a + " != " + b);
+    }
+    static WireCore active(double rate) {
+        WireCore c = new WireCore(rate);
+        c.setPower(true);
+        c.gatesArmed = true;
+        c.playing = true;
+        c.wobbleEnabled = false;
+        c.speed = 1;
+        c.runAge = 1;
+        return c;
+    }
+    static void tick(WireCore c, double input, double speed, boolean record, boolean elastic) {
+        c.recordLatched = record;
+        c.tick(input, speed, 0, 4, .5, 1, 1, false, false, elastic, false);
+    }
+    static void testCore() throws Exception {
+        for (double rate : new double[]{44100, 48000, 96000}) {
+            WireCore c = active(rate);
+            int hit = (int) (rate * .3), peakAt = 0;
+            double peak = 0;
+            for (int i = 0; i < rate * .6; i++) {
+                tick(c, i == hit ? 5 : 0, 1, true, true);
+                if (Math.abs(c.output) > peak) { peak = Math.abs(c.output); peakAt = i; }
+                check(Double.isFinite(c.output), "finite impulse response");
+            }
+            near((peakAt - hit) / rate, 33.0 / 609.6, .001, "physical head delay at " + rate);
+            check(peak > .1, "impulse reaches playback");
+        }
+        // Cell-crossing writes: every crossed cell once, regardless of host step.
+        for (double step : new double[]{.1, .5, 2, -.1, -.5, -2}) {
+            WireCore c = active(48000);
+            double position = step > 0 ? 100.25 : 220.75;
+            for (int i = 0; i < Math.ceil(100 / Math.abs(step)); i++) {
+                c.writeCrossings(position, step, 1, 1, 0, 1);
+                position = c.wrap(position + step);
+            }
+            int first = step > 0 ? 102 : 122;
+            for (int i = first; i < first + 95; i++) check(c.sample(i) > .99, "no write holes at " + step + " cell " + i);
+        }
+        WireCore stopped = active(48000);
+        stopped.playing = false; stopped.speed = 0;
+        for (int i = 0; i < 1000; i++) tick(stopped, 5, 0, true, true);
+        near(stopped.sample(1300), 0, 0, "stopped elastic does not pile input into one cell");
+        near(stopped.readPosition, 0, 0, "stopped read head frozen");
+
+        WireCore c = active(48000);
+        c.speed = 0;
+        double writeStart = c.writePosition;
+        for (int i = 0; i < 4800; i++) tick(c, 1, 0, true, false);
+        near(c.readPosition, 0, 0, "locked stationary playback");
+        near(c.wrap(c.writePosition - writeStart), 2400, .01, "locked writer stays 1x");
+        check(c.sample(1500) > .8, "locked recording works while playback held");
+        c = active(48000); c.speed = -1;
+        double p = c.readPosition;
+        for (int i = 0; i < 4800; i++) tick(c, 1, -1, true, true);
+        near(c.wrap(c.readPosition - p), c.length - 2400, .01, "reverse play movement");
+        near(c.wrap(c.writePosition - c.readPosition), WireCore.HEAD_DISTANCE, .001, "elastic fixed physical head spacing");
+
+        c = active(48000);
+        for (int i = 0; i < 10000; i++) tick(c, Math.sin(i * .1) * 500, 1, true, true);
+        check(!c.broken, "ordinary recording does not break wire");
+        double maximum = 0;
+        for (int i = 0; i < c.length; i++) maximum = Math.max(maximum, Math.abs(c.sample(i)));
+        check(maximum <= 12.001 && maximum > 5, "write compression is bounded and driven");
+        c.setPower(false);
+        for (int i = 0; i < 100000; i++) tick(c, 0, 1, false, true);
+        near(c.output, 0, 1e-8, "power-off silent after coast");
+        check(!c.playing && !c.recordLatched && c.speed == 0, "power off stops/disarms");
+        WireCore saved = WireCore.load(c.save(), 48000);
+        boolean retainedAudio = false;
+        for (int i = 0; i < c.length; i++) {
+            near(c.sample(i), saved.sample(i), 0, "power-off save round-trip");
+            retainedAudio |= Math.abs(c.sample(i)) > .1;
+        }
+        check(retainedAudio, "power off retains recorded content");
+
+        c = active(48000); c.speed = 4;
+        for (int i = 0; i < 48000 && !c.broken; i++) tick(c, 0, -4, false, true);
+        check(c.broken, "extreme reversal snaps");
+        tick(c, 0, -4, false, true);
+        near(c.alarm, 5, 0, "held fault gate");
+        double firstBreak = c.breakPosition;
+        c.repair();
+        check(!c.broken && !c.playing && c.repairs == 1, "manual repair leaves stopped");
+        check(c.scarAt(firstBreak) > .3, "first physical scar");
+        c.readPosition = c.wrap(firstBreak + 1000); c.snap(); c.repair();
+        check(c.repairs == 2 && c.scarAt(firstBreak) > .3, "additional repair retains old knot");
+        double secondBreak = c.breakPosition;
+        check(c.scarAt(secondBreak) > .3, "second knot exists");
+        for (int i = -14; i <= 14; i++) c.writeCrossings(c.wrap(firstBreak + i), 1, 1, 1, 0, 1);
+        check(c.scarAt(firstBreak) > .3, "recording does not erase knot");
+        byte[] state = c.save(); WireCore loaded = WireCore.load(state, 48000);
+        check(!loaded.playing && !loaded.recordLatched && loaded.speed == 0, "recall stopped/disarmed");
+        near(loaded.readPosition, c.readPosition, 0, "saved read position");
+        near(loaded.writePosition, c.writePosition, 0, "saved write position");
+        check(loaded.repairs == 2 && loaded.scarAt(firstBreak) > .3, "saved splice history");
+        loaded.setPower(true);
+        for (int i = 0; i < 100; i++) loaded.tick(1, 1, 0, 2, 1, 1, 1, true, true, true, true);
+        check(!loaded.playing && !loaded.recording, "held gates do not start recall");
+        loaded.tick(0, 1, 0, 2, 1, 1, 1, false, false, true, false);
+        loaded.tick(0, 1, 0, 2, 1, 1, 1, true, true, true, true);
+        check(loaded.playing && loaded.recording, "new edge arms restored transport");
+        c.snap(); loaded = WireCore.load(c.save(), 48000);
+        check(loaded.broken, "broken fault persists in patch");
+        byte[] corrupt = state.clone(); corrupt[70] ^= 1;
+        try { WireCore.load(corrupt, 48000); throw new AssertionError("corrupt state accepted"); }
+        catch (IllegalArgumentException expected) { }
+        c = active(48000); c.preparePage(0); c.wire[10] = 1234;
+        c.selectSpool(5);
+        check(c.broken && c.spool == 5 && c.sample(10) == 0, "moving spool change replaces medium and snaps");
+        c.repair(); c.selectSpool(0);
+        check(!c.broken && c.repairs == 0 && c.scarAt(0) == 0, "stopped spool change is fresh");
+        check(c.save().length < 50000, "short-spool state only stores active length");
+
+        for (int spool = 0; spool < 6; spool++) {
+            WireCore boundary = new WireCore(48000);
+            boundary.selectSpool(spool); boundary.setPower(true); boundary.gatesArmed = true;
+            boundary.playing = true; boundary.recordLatched = true;
+            boundary.readPosition = boundary.length - .25;
+            boundary.writePosition = boundary.length - .25;
+            for (int i = 0; i < 24000; i++) {
+                boundary.recordLatched = true;
+                boundary.tick(i % 2 == 0 ? 1000 : -1000, 4, 100, 4,
+                        (i / 1024) % 2 == 0 ? 0 : 1, 2.5, 2, false, false, false, true);
+                check(Double.isFinite(boundary.output), "all spools hot boundary finite");
+                check(boundary.readPosition >= 0 && boundary.readPosition < boundary.length, "read wrap");
+                check(boundary.writePosition >= 0 && boundary.writePosition < boundary.length, "write wrap");
+                check(!boundary.broken, "startup to 4x does not snap");
+            }
+            WireCore recall = WireCore.load(boundary.save(),48000);
+            check(recall.spool == spool && recall.length == boundary.length, "all spool sizes recall");
+        }
+
+        // A simultaneous save captures every page at one logical instant; writes
+        // protect pre-save page contents instead of blocking for a full copy.
+        final WireCore concurrent = active(48000);
+        concurrent.selectSpool(5); concurrent.broken = false;
+        final java.util.concurrent.atomic.AtomicBoolean running = new java.util.concurrent.atomic.AtomicBoolean(true);
+        Thread writer = new Thread(() -> {
+            while (running.get()) synchronized (concurrent) {
+                concurrent.repairs++;
+                short value = (short) (concurrent.repairs % 30000);
+                for (int page = 0; page < WireCore.PAGES; page++) {
+                    concurrent.preparePage(page);
+                    concurrent.wire[page * WireCore.PAGE] = value;
+                }
+            }
+        });
+        writer.start();
+        try {
+            for (int n = 0; n < 3; n++) {
+                WireCore snap = WireCore.load(concurrent.save(), 48000);
+                short value = (short) (snap.repairs % 30000);
+                for (int page = 0; page < WireCore.PAGES; page++) check(snap.wire[page * WireCore.PAGE] == value, "coherent concurrent save");
+            }
+        } finally { running.set(false); writer.join(); }
+        WireCore wobble = active(48000); wobble.wobbleEnabled = true;
+        wobble.driftCountdown = Integer.MAX_VALUE;
+        for (int i = 0; i < 48000; i++) tick(wobble, 0, 1, false, true);
+        double phaseAtOne = wobble.flutterPhase;
+        WireCore twice = active(48000); twice.wobbleEnabled = true; twice.speed = 2;
+        twice.driftCountdown = Integer.MAX_VALUE;
+        for (int i = 0; i < 24000; i++) tick(twice, 0, 2, false, true);
+        near(Math.sin(2*Math.PI*phaseAtOne),Math.sin(2*Math.PI*twice.flutterPhase),1e-8,"flutter rate scales with speed");
+        near(wobble.wowPhase,twice.wowPhase,1e-8,"wow rate scales with speed");
+        wobble.playing=false;wobble.speed=0;
+        double frozenPhase=wobble.flutterPhase;
+        for(int i=0;i<1000;i++)tick(wobble,0,0,false,true);
+        near(wobble.flutterPhase,frozenPhase,0,"wow/flutter stop with wire");
+
+        WireCore band = active(48000);band.selectSpool(0);
+        for(int i=0;i<band.length;i++){
+            band.preparePage(i/WireCore.PAGE);
+            band.wire[i]=(short)Math.round(Math.sin(2*Math.PI*8000*i/WireCore.WIRE_RATE)*WireCore.STORAGE_SCALE);
+        }
+        double normalEnergy=0,fastEnergy=0;
+        for(int i=0;i<24000;i++){
+            double normal=band.readBandlimited(i+.25,1), fast=band.readBandlimited(i+.25,2);
+            normalEnergy+=normal*normal;fastEnergy+=fast*fast;
+        }
+        check(normalEnergy>1000 && fastEnergy/normalEnergy < .0025,"fast-read alias rejection at 8 kHz wire frequency");
+        // Not a native-host CPU benchmark: reports core processing throughput only.
+        c = active(48000); c.wobbleEnabled = true;
+        long start = System.nanoTime();
+        for (int i = 0; i < 480000; i++) tick(c, Math.sin(i * .04), 1, true, true);
+        System.out.printf(java.util.Locale.ROOT, "CORE_THROUGHPUT: 10 s audio in %.3f s (headless, not host CPU)\n", (System.nanoTime()-start)/1e9);
+        System.out.println("PASS core: delays, rate conversion, cell coverage, reverse, stop, power, compression, breaks, splices, concurrent persistence, corruption and gate recall");
+    }

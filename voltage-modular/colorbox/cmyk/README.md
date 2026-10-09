@@ -13,3 +13,5 @@ The stages form a normalled cascade, with individual inputs and outputs for inde
 **Bypass prioritizes low CPU use.** Switching it on or off can produce pops and clicks because processing stops immediately without a crossfade. Use an external mute when you need a quiet transition—or embrace the rough edges as part of its DIY electronic character.
 
 [Current source files and Designer project](versions/1.0.3/)
+
+See [developer notes](DEVELOPER-NOTES.md) for the source map, DSP implementation details, bypass contract, and maintenance checklist.

@@ -592,3 +592,13 @@ Measure narrow bandpass selection, notch rejection and neighbouring-frequency le
 
 Equal-amplitude 990, 999, 1000, 1001 and 1010 Hz sine components. Composite peak -12 dBFS; each component is lower. One-second period repeated eight times without fades or dither. Loop for settling of very narrow/high-order filters. With a 1 kHz, 2 Hz-wide matched BP/notch pair: center should pass MAIN and null C; neighbours near +/-1 Hz sit near the transition edges, while +/-10 Hz test rejection/preservation. Finite slopes necessarily overlap at the band edges. Use an FFT window long enough to resolve 1 Hz spacing. Playback voltage depends on the player.
 
+## 02-dynamics/model62_head_spacing_impulses_150Hz_minus18dBFS.wav
+
+6.2055 seconds; 2 channel(s); analytic stereo impulse-pair fixture.
+
+Loop: one-shot sequence with two seconds of digital silence between pairs. Peak dBFS: [-18.0, -18.0]; RMS dBFS: [-48.43459, -48.43459].
+
+Check playback-head spacing, short echo timing, stereo offset, transient response, and transport-speed relationships on Model 62 and other delay or recorder modules.
+
+Three 150 Hz, 10 ms Hann-windowed pulse pairs. Left pulse leads right by 54 ms (33 mm at 1x), 108 ms (1/2x), then 13.5 ms (4x); two seconds of digital silence separates pairs. Fixed -18 dBFS peak per channel. One-shot, not a seamless loop.
+

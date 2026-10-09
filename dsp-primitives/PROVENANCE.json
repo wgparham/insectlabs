@@ -1,7 +1,17 @@
 {
-  "primitive": "HalfBand19",
-  "origin": "voltage-modular/colorbox/rgb/versions/4.0.2/rgb_4-0-2.java",
-  "extracted_from": "voltage-modular/Wardenclyffe Station/minimixer/development/minimixer.java",
-  "date": "2026-10-08",
-  "arithmetic_and_coefficients": "unchanged"
+  "primitives": [
+    {
+      "name": "HalfBand19",
+      "origin": "voltage-modular/colorbox/rgb/versions/4.0.2/rgb_4-0-2.java",
+      "extracted_from": "voltage-modular/Wardenclyffe Station/rm1010/development/minimixer.java",
+      "date": "2026-10-08",
+      "arithmetic_and_coefficients": "unchanged"
+    },
+    {
+      "name": "CubicHermite",
+      "origin": "voltage-modular/Wardenclyffe Station/model-62/versions/1.0.0/tests/WireTests.txt; user-provided exploratory testCode/cubicHermite.java",
+      "date": "2026-10-09",
+      "arithmetic": "four-sample Catmull-Rom tangent cubic; transcribed as a stateless reusable utility; not used by Model 62 DSP"
+    }
+  ]
 }

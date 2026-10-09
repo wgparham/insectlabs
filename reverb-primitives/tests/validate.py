@@ -2,7 +2,7 @@ from pathlib import Path
 import re, textwrap, subprocess, tempfile
 ROOT = Path(__file__).resolve().parents[2]
 PROJECT = Path(__file__).resolve().parents[1]
-reference = ROOT / 'voltage-modular/Wardenclyffe Station/mixer/versions/1.0.1/references/lm-21_mk3_reverbsc_prototype.java.txt'
+reference = ROOT / 'voltage-modular/Wardenclyffe Station/lm-21/versions/1.0.1/references/lm-21_mk3_reverbsc_prototype.java.txt'
 source = reference.read_text(encoding='utf-8-sig')
 start = source.index('    private static final class ReverbSCMono')
 opening = source.index('{', start); depth = 1; end = opening + 1

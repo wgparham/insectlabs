@@ -1,7 +1,7 @@
 {
   "result": "PASS",
-  "files": 59,
-  "checks": 282,
+  "files": 60,
+  "checks": 294,
   "details": [
     "01-calibration/sine_00020Hz_minus12dBFS.wav: SHA-256",
     "01-calibration/sine_00020Hz_minus12dBFS.wav: format and duration",
@@ -273,6 +273,10 @@
     "01-calibration/selectivity_1k_neighbours_8s.wav: format and duration",
     "01-calibration/selectivity_1k_neighbours_8s.wav: no sample clipping",
     "01-calibration/selectivity_1k_neighbours_8s.wav: measured peak agrees",
+    "02-dynamics/model62_head_spacing_impulses_150Hz_minus18dBFS.wav: SHA-256",
+    "02-dynamics/model62_head_spacing_impulses_150Hz_minus18dBFS.wav: format and duration",
+    "02-dynamics/model62_head_spacing_impulses_150Hz_minus18dBFS.wav: no sample clipping",
+    "02-dynamics/model62_head_spacing_impulses_150Hz_minus18dBFS.wav: measured peak agrees",
     "Digital silence is exact",
     "Left-only file has silent right",
     "Right-only file has silent left",
@@ -284,6 +288,14 @@
     "Selectivity probe: exact one-second periodic construction",
     "Selectivity probe: five equal-amplitude component levels",
     "Selectivity probe: residual spectral energy below -100 dB",
+    "Model 62 impulse pair at 0: left lead pulse present",
+    "Model 62 impulse pair at 0: right pulse at expected head gap",
+    "Model 62 impulse pair at 99072: left lead pulse present",
+    "Model 62 impulse pair at 99072: right pulse at expected head gap",
+    "Model 62 impulse pair at 200736: left lead pulse present",
+    "Model 62 impulse pair at 200736: right pulse at expected head gap",
+    "Model 62 impulse fixture: silence outside six pulse windows",
+    "Model 62 impulse fixture: fixed -18 dBFS peak in both channels",
     "No uncatalogued WAV files"
   ],
   "scope": "File integrity and numerical audio checks. No host playback or subjective listening validation performed."

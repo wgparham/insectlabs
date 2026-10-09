@@ -1,16 +1,16 @@
 # Optional gap-fillers and later-series ideas
 
-Proposal review: 7 October 2026. The mono summing/mixing amplifier is the accepted final Wardenclyffe module and next brief. Other additions below remain optional proposals. All sixteen existing Wardenclyffe products are canonized. These suggestions come from comparing current capabilities and the completed briefs; they are not historical user decisions.
+Proposal review: 7 October 2026. The LM-21 Mk III 4×4 Matrix Mixer / Artificial Acoustic Distance Generator is the final Wardenclyffe instrument in active development. The simpler, period-faithful minimixer is a separate project thread. Other additions below remain optional proposals. All sixteen existing Wardenclyffe products are canonized. These suggestions come from comparing current capabilities and the completed briefs; they are not historical user decisions.
 
 ## Final Wardenclyffe module and optional gap-fillers
 
 | Priority | Proposal | Gap and recommended scope |
 | --- | --- | --- |
-| Accepted final module | Summing / Mixing Amplifier | Three or four mono inputs with independent manual levels and one sum output. 6121198a/b pair has complementary weights rather than independent channel levels; Type 23 Signal Processor processes separate stages. A dedicated mixer adds repeatable balance, headroom and useful overload indication even where host patching already sums signals. |
+| Active final module | LM-21 Mk III Matrix Mixer / Artificial Acoustic Distance Generator | A bespoke 4×4 mono audio matrix with four independently processed output rows, bipolar crosspoints, bass/treble tone shaping, per-row level and ambience, shared reverb perspective, and a full-mix output. This intentionally expands the original compact-mixer brief into a custom WDR/RAI-style studio centerpiece. |
 | 2 | Measuring Amplifier / Level and Polarity Meter | An instrument for checking audio level, DC offset and polarity. Start with a large slow meter, manual ranges and AC/DC selection. Decide RMS/peak/average behavior explicitly and label it honestly. A unity through path or a monitoring-only input would avoid unintended coloration. |
 | 3 | Band-Limiting Amplifier | Manual low and high cut for preparing audio, noise and feedback paths. Consider a broad mode in the canonical Type 9414 Frequency Analyzer first; add a separate box only if independent high/low limits justify it. |
 
-A useful starting hypothesis is a compact manual summing amplifier with independent input levels, a mono sum, and restrained overload character. Input count, headroom, DC handling, polarity options, meters, and any CV/stereo features remain open for the design brief.
+Keep the LM-21's final headroom, tone-control curve, ambience behavior, courtesy-mix scaling, and overload character open until DSP and host audition. Its 4×4 topology and four independent reverb engines are intentional. The minimixer remains separate, simpler and more period-faithful; its precise brief should not inherit LM-21's features by default.
 
 sn-16u 1.0.0 provides DC/Vpp, CV pitch, audio Hz and RMS measurement, along with independent clean HPF/LPF paths. The meter and band-limiting proposals above are substantially covered by that release, not separate approved modules. Revisit only if native testing exposes a remaining need. Avoid promising laboratory measurement accuracy beyond tested limits.
 
@@ -38,4 +38,4 @@ Keep arithmetic, logic, accumulators, explicit state and coordinated event proce
 
 ## Status
 
-The summing/mixing amplifier is the final accepted Wardenclyffe module and is next to design. Keep it mono and manual-first unless its brief establishes a need for more. The meter and band-limiting ideas remain optional: sn-16u already covers much of that territory. The Radiophonic and computation ideas remain flexible later-series references, not a locked inventory.
+LM-21 Mk III is the final planned Wardenclyffe module and is in active design. The minimixer is a separate simpler design. The meter and band-limiting ideas remain optional: sn-16u already covers much of that territory. The Radiophonic and computation ideas remain flexible later-series references, not a locked inventory.

@@ -5,10 +5,10 @@ InsectLabs develops Voltage Modular instruments and a reusable audio TestBench.
 | Project | Current state |
 | --- | --- |
 | [Colorbox](voltage-modular/colorbox/README.md) | RGB, CMYK and HSB canonical releases |
-| [Wardenclyffe Station](voltage-modular/Wardenclyffe%20Station/README.md) | Eighteen canonical mono-first modules, including LM-21 and RM1010; earlier 1.x archives retained |
+| [Wardenclyffe Station](voltage-modular/Wardenclyffe%20Station/README.md) | Nineteen canonical mono-first modules, including LM-21 and RM1010; earlier 1.x archives retained |
 | [DSP primitives](dsp-primitives/README.md) | Reusable SDK-independent audio filters and building blocks |
 | [Reverb primitives](reverb-primitives/README.md) | SDK-independent reusable Java mono reverb and parameter helpers |
-| [Minimixer](voltage-modular/Wardenclyffe%20Station/minimixer/README.md) | RM1010 Mixing Amplifier canonical v1.0.0 |
+| [RM1010](voltage-modular/Wardenclyffe%20Station/rm1010/README.md) | Mixing Amplifier canonical v1.0.0 |
 | [Audio TestBench](test-bench/README.md) | Standalone reusable audio fixture collection |
 
 The [Voltage Modular roadmap](voltage-modular/docs/Collection-Roadmap.md) tracks the finished Wardenclyffe collection, separate minimixer work and the flexible Radiophonic and computation series.

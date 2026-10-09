@@ -8,4 +8,12 @@ SDK-independent reusable audio building blocks, preserved when module developmen
 
 Provenance: unchanged coefficients/arithmetic from Colorbox RGB 4.0.2, extracted from the RM1010 embedded copy on 2026-10-08. The repository license applies. This is not a perfect brick-wall anti-alias filter; preserve the approved performance/CPU compromise when reusing it.
 
-Run `python tests/validate.py` with Java 17 for impulse/symmetry, gain, reset and independence checks. The existing Colorbox/RM1010 module tests exercise this exact filter in their signal paths. Additional reusable DSP belongs here with provenance, documentation and meaningful tests; the separate reverb-primitives project contains the reverb engine.
+## CubicHermite
+
+[Source](src/com/insectlabs/dsp/interpolation/CubicHermite.java): a stateless, allocation-free four-point cubic interpolator using Catmull-Rom tangent estimates and Horner evaluation. It interpolates between the middle samples, `s1` at fraction 0 and `s2` at fraction 1. Derived from the abandoned user-provided `testCode/cubicHermite.java` sketch and archived with the Model 62 release tests as provenance.
+
+This is a low-cost interpolation primitive, not an anti-aliasing resampler. For pitch reduction or playback-rate conversion, pair it with a suitable band-limit filter. Model 62 uses a windowed-sinc table instead; it does not use this primitive in its approved audio path.
+
+## Validation
+
+Run `python tests/validate.py` with Java 17 for half-band impulse/symmetry, gain, reset and independence checks plus cubic interpolation endpoints, constants, and linear ramps.

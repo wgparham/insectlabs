@@ -4,7 +4,7 @@ Wardenclyffe Station is the completed first collection in Insect Laboratories’
 
 ## Current collection
 
-Eighteen current products are canonized in [Wardenclyffe Station](../Wardenclyffe%20Station/README.md). Earlier products retain active 2.x releases and their prior 1.x archives; LM-21 is canonical at v1.0.1.
+Nineteen current products are canonized in [Wardenclyffe Station](../Wardenclyffe%20Station/README.md). Earlier products retain active 2.x releases and their prior 1.x archives; LM-21 is canonical at v1.0.1.
 
 | Product | Current | 1.x archives | Role | Manual |
 | --- | ---: | ---: | --- | --- |
@@ -24,6 +24,7 @@ Eighteen current products are canonized in [Wardenclyffe Station](../Wardenclyff
 | [SW2 Switch / Distributer](../Wardenclyffe%20Station/sw2/versions/2.0.0/) | 2.0.0 | 1.0.0 | Manual input selector and output distributor | [Manual](../Wardenclyffe%20Station/sw2/versions/2.0.0/USER-MANUAL.md) |
 | [Type 9414 Frequency Analyzer](../Wardenclyffe%20Station/type-9414/versions/2.0.0/) | 2.0.0 | 1.0.0 | Selective band-pass and matched band-reject instrument | [Manual](../Wardenclyffe%20Station/type-9414/versions/2.0.0/USER-MANUAL.md) |
 | [Type 23 Signal Processor](../Wardenclyffe%20Station/type-23/versions/2.0.0/) | 2.0.0 | 1.0.0, 1.0.1 | Dual mono processor/VCA with independent stages | [Manual](../Wardenclyffe%20Station/type-23/versions/2.0.0/USER-MANUAL.md) |
+| [Model 62 Wire Player Recorder](../Wardenclyffe%20Station/model-62/versions/1.0.0/) | 1.0.0 | — | 24 kHz varispeed wire recorder with LOCKED/ELASTIC recording and persistent splices | [Manual](../Wardenclyffe%20Station/model-62/versions/1.0.0/USER-MANUAL.md) |
 
 ## Shared design and engineering decisions
 
@@ -35,9 +36,9 @@ Eighteen current products are canonized in [Wardenclyffe Station](../Wardenclyff
 
 ## Final planned Wardenclyffe instrument
 
-The final planned Wardenclyffe instrument, **LM-21 Mk III Matrix Mixer — Artificial Acoustic Distance Generator**, is canonical at **v1.0.1**, approved after native-host testing on 2026-10-08. Its 4×4 bipolar mono matrix feeds independent 984-inspired row tone/character stages and independent additive reverb. MIX provides pre-character drive up to +12 dB; PERSPECTIVE spans 0.5–30 seconds with 5.5 seconds at 60% travel. FULL MIX averages A–D before saturation. Power has a 13.6-second warmup and 2.1-second cooldown; MULT remains live. Direct host bypass freezes DSP and power histories. The archive, manuals, developer notes and tests are in `Wardenclyffe Station/mixer/versions/1.0.1`.
+The final planned Wardenclyffe instrument, **LM-21 Mk III Matrix Mixer — Artificial Acoustic Distance Generator**, is canonical at **v1.0.1**, approved after native-host testing on 2026-10-08. Its 4×4 bipolar mono matrix feeds independent 984-inspired row tone/character stages and independent additive reverb. MIX provides pre-character drive up to +12 dB; PERSPECTIVE spans 0.5–30 seconds with 5.5 seconds at 60% travel. FULL MIX averages A–D before saturation. Power has a 13.6-second warmup and 2.1-second cooldown; MULT remains live. Direct host bypass freezes DSP and power histories. The archive, manuals, developer notes and tests are in `Wardenclyffe Station/lm-21/versions/1.0.1`.
 
-The compact **RM1010 Mixing Amplifier** (minimixer) is now canonical v1.0.0, with independent channel drive, 900 Hz tilt, pair outputs 3/7, summed PROCESS loop and final output 10. Its manual, developer notes, baseline-parity tests and archive are in `Wardenclyffe Station/minimixer/versions/1.0.0`. Host CPU profiling remains unmeasured.
+The compact **RM1010 Mixing Amplifier** (minimixer) is now canonical v1.0.0, with independent channel drive, 900 Hz tilt, pair outputs 3/7, summed PROCESS loop and final output 10. Its manual, developer notes, baseline-parity tests and archive are in `Wardenclyffe Station/rm1010/versions/1.0.0`. Host CPU profiling remains unmeasured.
 
 References: [Moog 984 corrected schematic](https://modularsynthesis.com/moog/984/984%20Four%20Channel%20Mixer%20(corrected).pdf), [AM984 product overview](https://www.amsynthstore.co.uk/product/am984-four-channel-mixer), [T984 circuit notes](http://www.analog-monster.de/mmt984_en.html), and [CP3 documentation](https://modularsynthesis.com/moog/cp3/cp3.htm).
 
@@ -48,3 +49,6 @@ References: [Moog 984 corrected schematic](https://modularsynthesis.com/moog/984
 **Series Three — Electronic Computation.** Keep the accepted direction broad: analog arithmetic, accumulation and integration, comparison and windows, logic, latches, counters, registers and event routing. ACE, Befaco A*B+C, Count Modula, alef’s bits, Lilac and Patchable Devices are references. Window Generator and Voltage Sequencer remain concepts to explore, not locked briefs. Preserve distinctions between continuous integration and clocked accumulation, and between a voltage-window comparator and a multi-stage envelope generator.
 
 The detailed design records and optional gap analysis are indexed in [docs](README.md). These later-series ideas do not reopen or alter Wardenclyffe releases.
+
+
+**Model 62 Wire Player Recorder** is canonized at v1.0.0. This mono 24 kHz virtual wire recorder adds varispeed, LOCKED/ELASTIC recording, persistent splices, and cumulative medium character. Its complete pair, artwork, manuals, review and tests are in `Wardenclyffe Station/model-62/versions/1.0.0`.

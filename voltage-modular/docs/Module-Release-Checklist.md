@@ -80,6 +80,7 @@ If the user explicitly authorizes cleanup followed by promotion after successful
 ## 6. Canonical archive and publication
 
 - [ ] Before final release validation, transfer useful working Notes into external documentation, then remove all Notes except the exact module version and text explicitly designated to stay. Recheck source-pair integrity after metadata cleanup.
+- [ ] Write or update version-specific `DEVELOPER-NOTES.md` from the exact candidate source pair, following [Developer notes standard](Developer-Notes-Standard.md). Keep the active module-root copy linked from its README and include a snapshot in the canonical version folder.
 - [ ] Only after the candidate is approved, create its immutable `versions/<version>/` folder containing
   the source pair, artwork, README/release notes, review record and SHA-256 manifest.
 - [ ] Use a patch increment for cleanup/small corrections; do not overwrite the previous canonical version.

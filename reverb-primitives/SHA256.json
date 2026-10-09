@@ -1,8 +1,8 @@
 {
   "DEVELOPER-NOTES.md": "d421c035e5d4d09ce81b5fb03be35a6d42ab1651cd0648bfb0c9d358ce64303a",
-  "PROVENANCE.json": "7a319247ec48838faaff3ed7d8f28086ce81a628ba9df59c1a6426d2eb100b27",
-  "README.md": "8b50937f21ad7aa81cbe084f2a905e540df1b50b468750315fd47ed670160c28",
-  "tests/validate.py": "c707cd593b7cfb71db00055c735b6edeeafc06b5a6b5150de1b400fd925f7027",
+  "PROVENANCE.json": "748ab6946253c64d1fcf9dd9b73d879dee0f9def172dc0f1923b428ec83efb76",
+  "README.md": "c64059d2f2ea59d21b398ef8b1188f5ecf75aa35a716725dcd4e95002f59a315",
+  "tests/validate.py": "2ca102875408af5eb66bba5ef684f5ddcc49497193163b96977b7819a9062d10",
   "src/com/insectlabs/dsp/reverb/ReverbParameters.java": "a7c378c96a0e54910839d5adad0d59bea09dfd6138401279d9dcb66c7d61a6b6",
   "src/com/insectlabs/dsp/reverb/ReverbScMono.java": "f57b21f908f31881b4ee9af8748ad5d09cae826e32f637ff31f72d2f3aea005d"
 }

@@ -15,6 +15,7 @@
 | [Development decisions](Development-Decisions.md) | Decisions, superseded approaches and clarifications |
 | [Module infrastructure standards](Module-Infrastructure-Standards.md) | Naming, bypass, DSP, source pairs and Courtesy behavior |
 | [Module release checklist](Module-Release-Checklist.md) | Required review, validation, canonization and cleanup checks |
+| [Developer notes standard](Developer-Notes-Standard.md) | Required implementation notes included with every canonized build |
 | [Development setup](Development-Setup.md) | SDK, compiler and repository workflow |
 | [Validation tools](../../tools/README.md) | Repository checks and their limits |
 | [Colorbox collection manual](manuals/Colorbox-Collection-User-Manual.md) | RGB, CMYK and HSB operation |

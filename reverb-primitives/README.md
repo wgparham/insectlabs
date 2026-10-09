@@ -5,7 +5,7 @@ Reusable Java audio DSP extracted from the LM-21 Mk III ReverbSC prototype. This
 - [ReverbScMono](src/com/insectlabs/dsp/reverb/ReverbScMono.java): allocation-free sample processing, configurable 8–192 kHz construction, deterministic reset.
 - [ReverbParameters](src/com/insectlabs/dsp/reverb/ReverbParameters.java): nominal RT60 feedback and cutoff/damping conversions.
 - [Developer notes](DEVELOPER-NOTES.md) and [repeatable tests](tests/validate.py).
-- [Original prototype](../voltage-modular/Wardenclyffe%20Station/mixer/versions/1.0.1/references/lm-21_mk3_reverbsc_prototype.java.txt).
+- [Original prototype](../voltage-modular/Wardenclyffe%20Station/lm-21/versions/1.0.1/references/lm-21_mk3_reverbsc_prototype.java.txt).
 
 ```java
 ReverbScMono reverb = new ReverbScMono(48000.0);

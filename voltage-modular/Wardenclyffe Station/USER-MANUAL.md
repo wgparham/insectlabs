@@ -24,8 +24,9 @@ Wardenclyffe Station is a mono-first electronic-music laboratory built from imag
 | SW2 Switch / Distributer | 2.0.0 | [SW2 Switch / Distributer](sw2/versions/2.0.0/USER-MANUAL.md) |
 | Type 9414 Frequency Analyzer | 2.0.0 | [Type 9414 Frequency Analyzer](type-9414/versions/2.0.0/USER-MANUAL.md) |
 | Type 23 Signal Processor | 2.0.0 | [Type 23 Signal Processor](type-23/versions/2.0.0/USER-MANUAL.md) |
-| LM-21 Mk III Matrix Mixer | 1.0.1 | [LM-21 manual](mixer/versions/1.0.1/USER-MANUAL.md) |
-| RM1010 Mixing Amplifier | 1.0.0 | [RM1010 manual](minimixer/versions/1.0.0/USER-MANUAL.md) |
+| LM-21 Mk III Matrix Mixer | 1.0.1 | [LM-21 manual](lm-21/versions/1.0.1/USER-MANUAL.md) |
+| RM1010 Mixing Amplifier | 1.0.0 | [RM1010 manual](rm1010/versions/1.0.0/USER-MANUAL.md) |
+| Model 62 Wire Player Recorder | 1.0.0 | [Model 62 manual](model-62/versions/1.0.0/USER-MANUAL.md) |
 
 
 ## Shared operating conventions
@@ -37,4 +38,4 @@ Wardenclyffe Station is a mono-first electronic-music laboratory built from imag
 - Courtesy outputs follow their own manual. They can remain active when the main function is stopped; host BYPASS silences them.
 - Module character varies by instrument. Reference oscillators and measurement paths are clean; drive and relay voicing appear only where the individual design calls for them.
 
-For exact ranges, defaults, power behavior and connection examples, use the linked module manual for the installed version. The final mono summing / mixing amplifier is still to be designed; an early Designer sketch is noted in [mixer development](mixer/README.md).
+For exact ranges, defaults, power behavior and connection examples, use the linked module manual for the installed version. The final mono summing amplifier concepts are now represented by canonical LM-21 and RM1010. Model 62 extends the collection with a wire-recording instrument.

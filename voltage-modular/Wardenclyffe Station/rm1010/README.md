@@ -6,4 +6,4 @@
 - [User manual](USER-MANUAL.md) / [developer notes](DEVELOPER-NOTES.md)
 - [Reusable half-band filter](../../../dsp-primitives/README.md)
 
-The immutable release is under versions/1.0.0. The minimixer folder remains the project location for RM1010. Future edits must use a separate working copy; archived releases are not overwritten. Host CPU profiling remains unmeasured.
+The immutable release is under versions/1.0.0. The `rm1010/` folder is the project location for this module. Future edits must use a separate working copy; archived releases are not overwritten. Host CPU profiling remains unmeasured.

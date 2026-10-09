@@ -1,6 +1,6 @@
 {
   "collection": "InsectLabs Audio Test Bench",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "seed": 19710510,
   "generator": "generate.py",
   "numpy_version": "2.3.5",
@@ -1732,6 +1732,42 @@
       "numpy_version": "2.3.5",
       "license": "CC0-1.0 (generated audio)",
       "sha256": "f4664f7913824c04d87cbeae070d05c70209f9dd13497b52fafeb3ea431f9587"
+    },
+    {
+      "file": "02-dynamics/model62_head_spacing_impulses_150Hz_minus18dBFS.wav",
+      "frames": 297864,
+      "seconds": 6.2055,
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits": 24,
+      "kind": "analytic stereo impulse-pair fixture",
+      "loop": "one-shot sequence with two seconds of digital silence between pairs",
+      "peak_dbfs": [
+        -18.0,
+        -18.0
+      ],
+      "rms_dbfs": [
+        -48.43459,
+        -48.43459
+      ],
+      "dc_mean": [
+        -5.20466e-05,
+        -5.20466e-05
+      ],
+      "correlation": null,
+      "boundary_step": [
+        0.0,
+        0.0
+      ],
+      "purpose": "Check playback-head spacing, short echo timing, stereo offset, transient response, and transport-speed relationships on Model 62 and other delay or recorder modules.",
+      "notes": "Three 150 Hz, 10 ms Hann-windowed pulse pairs. Left pulse leads right by 54 ms (33 mm at 1x), 108 ms (1/2x), then 13.5 ms (4x); two seconds of digital silence separates pairs. Fixed -18 dBFS peak per channel. One-shot, not a seamless loop.",
+      "source": "Analytic construction based on the supplied impulses_sequence.wav and generate_impulses_sequence.py; test-bench/tools/add_model62_head_impulses.py",
+      "source_wav_sha256": "7a9959da5f32e18ef81061a6512548dad8673635d7e8d909445f6e84c291680c",
+      "source_generator_sha256": "edb10a6204cc44ec6464e602505a070dd777ee26d83a0989b9c462f99752738a",
+      "license": "CC0-1.0",
+      "sha256": "9549cce4e5fcf872eeb9939671e227eea7a51390b98efbfd705e3e959f7b2734",
+      "generator_sha256": "5a72578e47e799979cb330828962c2510f78722c89e580643adb01731eb825c1",
+      "numpy_version": "2.3.5"
     }
   ],
   "sources": [

@@ -36,6 +36,10 @@ This is both the audible bypass contract and the CPU-relief contract. Tests shou
 - Test boundary control values, DC behavior, polarity, channel independence, bypass, resume, mode changes, and nonlinearity at ordinary and driven levels.
 - Use the shared TestBench collection for repeatable listening and measurement. Add broadly useful new fixtures to TestBench with catalog notes, generation or source provenance, license information, and checksums.
 
+## Developer notes
+
+Developer notes are a required artifact for every canonized build, including maintenance releases. Generate or revise them from the exact approved `.vmod`/`.java` pair using [Developer notes standard](Developer-Notes-Standard.md). Keep a current copy beside the module README, link it there, and archive the version-specific snapshot with that release. Notes supplement the user manual: document implementation and maintenance details, and never substitute for user-facing operating guidance.
+
 ## Release gate
 
 Use [Module release checklist](Module-Release-Checklist.md) for every release. Keep the module-specific

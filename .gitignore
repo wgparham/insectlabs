@@ -4,3 +4,8 @@ voltage-modular/colorbox/build/
 voltage-modular/laboratory/build/
 .local-archive/
 *.bak
+
+# Legacy Dropbox placeholders may remain locally while Windows releases handles.
+/voltage-modular/Wardenclyffe Station/mixer/
+/voltage-modular/Wardenclyffe Station/minimixer/
+/voltage-modular/Wardenclyffe Station/wire_recorder/

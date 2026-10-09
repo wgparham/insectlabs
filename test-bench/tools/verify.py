@@ -45,6 +45,23 @@ if 'selectivity_1k_neighbours_8s' in signals:
     check(np.ptp(components)<1e-8,'Selectivity probe: five equal-amplitude component levels')
     residual=spectrum.copy();residual[bins]=0
     check(np.sum(residual**2)<1e-10*np.sum(components**2),'Selectivity probe: residual spectral energy below -100 dB')
+if 'model62_head_spacing_impulses_150Hz_minus18dBFS' in signals:
+    probe=signals['model62_head_spacing_impulses_150Hz_minus18dBFS']
+    pulse_frames=round(0.010*48000)
+    starts=(0, 99072, 200736)
+    gaps=(2592, 5184, 648)
+    occupied=np.zeros(len(probe),dtype=bool)
+    for start,gap in zip(starts,gaps):
+        check(np.max(np.abs(probe[start:start+pulse_frames,0]))>0,
+              f'Model 62 impulse pair at {start}: left lead pulse present')
+        right_start=start+gap
+        check(np.max(np.abs(probe[right_start:right_start+pulse_frames,1]))>0,
+              f'Model 62 impulse pair at {start}: right pulse at expected head gap')
+        occupied[start:start+pulse_frames]=True
+        occupied[right_start:right_start+pulse_frames]=True
+    check(np.all(probe[~occupied]==0),'Model 62 impulse fixture: silence outside six pulse windows')
+    check(np.allclose(np.max(np.abs(probe),axis=0)/8388608,10**(-18/20),atol=1e-6),
+          'Model 62 impulse fixture: fixed -18 dBFS peak in both channels')
 check(len(list(a.folder.rglob('*.wav')))==len(m['files']),'No uncatalogued WAV files')
 report={'result':'PASS','files':len(m['files']),'checks':len(checks),'details':checks,
         'scope':'File integrity and numerical audio checks. No host playback or subjective listening validation performed.'}

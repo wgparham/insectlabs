@@ -8,4 +8,4 @@ Power has a 13.6-second warmup and 2.1-second cooldown. MULT stays live. Host by
 - [User manual](USER-MANUAL.md) and [developer notes](DEVELOPER-NOTES.md)
 - [Canonical Designer project](versions/1.0.1/lm-21_mk3.vmod) and [Java export](versions/1.0.1/lm-21_mk3.java)
 
-The historical prototype remains in the immutable release. Reusable DSP is extracted into [reverb-primitives](../../../reverb-primitives/README.md). The separate [minimixer](../minimixer/README.md) has its own development folder. The retired LM-21 development folder has been removed; make a new working copy from the archive when a future revision is needed.
+The historical prototype remains in the immutable release. Reusable DSP is extracted into [reverb-primitives](../../../reverb-primitives/README.md). The separate [minimixer](../rm1010/README.md) has its own development folder. The retired LM-21 development folder has been removed; make a new working copy from the archive when a future revision is needed.

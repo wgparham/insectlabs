@@ -53,3 +53,11 @@ The `sn16u_` sweeps and noise files are generated audio dedicated under CC0-1.0.
 generated for InsectLabs by `test-bench/tools/add_selectivity_fixture.py`. No third-party samples.
 Dedicated under CC0 1.0, matching the collection's other generated calibration fixtures.
 The manifest records the generator hash, NumPy version, frequencies, component levels and WAV hash.
+
+## 1.4.0 — Model 62 head-spacing impulses
+
+`02-dynamics/model62_head_spacing_impulses_150Hz_minus18dBFS.wav` is original analytic audio,
+derived from the impulse pair and generator supplied by the project creator. Its reproducible,
+cleaned generator is `test-bench/tools/add_model62_head_impulses.py`; the manifest records both
+supplied source hashes and the delivered file/generator hashes. No third-party samples are used.
+The generated fixture is dedicated under CC0 1.0, matching the other procedural calibration audio.
