@@ -181,15 +181,23 @@
     "name": "Model 62 Wire Player Recorder"
   },
   "xl-35h": {
-    "version": "1.0.0",
-    "path": "xl-35h/versions/1.0.0",
+    "version": "1.0.1",
+    "path": "xl-35h/versions/1.0.1",
     "module": "XL35h",
-    "name": "XL-35h High-Pass Filters"
+    "name": "XL-35h High-Pass Filters",
+    "archived_version": "1.0.0",
+    "archived_versions": [
+      "1.0.0"
+    ]
   },
   "xl-35c": {
-    "version": "1.0.0",
-    "path": "xl-35c/versions/1.0.0",
+    "version": "1.0.1",
+    "path": "xl-35c/versions/1.0.1",
     "module": "XL35c",
-    "name": "XL-35c Low-Pass Filters"
+    "name": "XL-35c Low-Pass Filters",
+    "archived_version": "1.0.0",
+    "archived_versions": [
+      "1.0.0"
+    ]
   }
 }

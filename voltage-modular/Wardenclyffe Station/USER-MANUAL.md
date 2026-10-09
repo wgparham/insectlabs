@@ -27,8 +27,8 @@ Wardenclyffe Station is a mono-first electronic-music laboratory built from imag
 | LM-21 Mk III Matrix Mixer | 1.0.1 | [LM-21 manual](lm-21/versions/1.0.1/USER-MANUAL.md) |
 | RM1010 Mixing Amplifier | 1.0.0 | [RM1010 manual](rm1010/versions/1.0.0/USER-MANUAL.md) |
 | Model 62 Wire Player Recorder | 1.0.0 | [Model 62 manual](model-62/versions/1.0.0/USER-MANUAL.md) |
-| XL-35h High-Pass Filters | 1.0.0 | [XL-35h manual](xl-35h/versions/1.0.0/USER-MANUAL.md) |
-| XL-35c Low-Pass Filters | 1.0.0 | [XL-35c manual](xl-35c/versions/1.0.0/USER-MANUAL.md) |
+| XL-35h High-Pass Filters | 1.0.1 | [XL-35h manual](xl-35h/versions/1.0.1/USER-MANUAL.md) |
+| XL-35c Low-Pass Filters | 1.0.1 | [XL-35c manual](xl-35c/versions/1.0.1/USER-MANUAL.md) |
 
 
 ## Shared operating conventions

@@ -1,5 +1,12 @@
 # Wardenclyffe Station changelog
 
+## XL-35h / XL-35c v1.0.1 · 9 October 2026
+
+- Integrated the updated Java implementations into both Designer projects.
+- Added filter-history resets after initialization, preset and variation loading, explicit reset, and bypass resume.
+- Clarified that typed frequency values snap to the nearest labeled cutoff step.
+- Retained the v1.0.0 archives; these updates do not change the approved cutoff banks or filter voicing.
+
 ## XL-35h / XL-35c v1.0.0 · 9 October 2026
 
 - Canonized the matched high-pass and low-pass filter pair with independent upper and lower cutoff banks.
