@@ -28,11 +28,18 @@ public class nineteenfortyseven extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "13514d8c7b744817a558437b18515a86" );
+        SetSkin( "0a0076ef75e748579bf63c14c90a9071" );
     }
 
 void InitializeControls()
 {
+
+        image1 = new VoltageImage( "image1", "image1", this, false );
+        AddComponent( image1 );
+        image1.SetWantsMouseNotifications( false );
+        image1.SetPosition( 175, 245 );
+        image1.SetSize( 110, 110 );
+        image1.SetCurrentImage( "wireframe_globe_E8E8E8.svg" );
 
         brandLabel = new VoltageLabel( "brandLabel", "Model Name", this, "SIN/RND generator – filter" );
         AddComponent( brandLabel );
@@ -577,7 +584,7 @@ void InitializeControls()
         manufacturerLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         manufacturerLabel.SetFont( "Courier New", 13, true, false );
 
-        manufacturerNameLabel = new VoltageLabel( "manufacturerNameLabel", "Manufacturer Name Label", this, "INSECT LABORATORIES" );
+        manufacturerNameLabel = new VoltageLabel( "manufacturerNameLabel", "Manufacturer Name", this, "INSECT LABORATORIES" );
         AddComponent( manufacturerNameLabel );
         manufacturerNameLabel.SetWantsMouseNotifications( false );
         manufacturerNameLabel.SetPosition( 31, 139 );
@@ -598,7 +605,7 @@ void InitializeControls()
         manufacturerNameLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         manufacturerNameLabel.SetFont( "Arial Black", 9, false, false );
 
-        manufacturerCityLabel = new VoltageLabel( "manufacturerCityLabel", "Manufacturer City Label", this, "PITTSBURGH" );
+        manufacturerCityLabel = new VoltageLabel( "manufacturerCityLabel", "Manufacturer City", this, "PITTSBURGH" );
         AddComponent( manufacturerCityLabel );
         manufacturerCityLabel.SetWantsMouseNotifications( false );
         manufacturerCityLabel.SetPosition( 31, 147 );
@@ -619,7 +626,7 @@ void InitializeControls()
         manufacturerCityLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         manufacturerCityLabel.SetFont( "Arial Black", 9, false, false );
 
-        manufacturerCountryLabel = new VoltageLabel( "manufacturerCountryLabel", "Manufacturer Country Label", this, "UNITED STATES OF AMERICA" );
+        manufacturerCountryLabel = new VoltageLabel( "manufacturerCountryLabel", "Manufacturer Country", this, "UNITED STATES OF AMERICA" );
         AddComponent( manufacturerCountryLabel );
         manufacturerCountryLabel.SetWantsMouseNotifications( false );
         manufacturerCountryLabel.SetPosition( 31, 155 );
@@ -640,7 +647,7 @@ void InitializeControls()
         manufacturerCountryLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         manufacturerCountryLabel.SetFont( "Arial Black", 9, false, false );
 
-        modelNumberLabel = new VoltageLabel( "modelNumberLabel", "Model Number Label", this, "MODEL 1947B Mk II" );
+        modelNumberLabel = new VoltageLabel( "modelNumberLabel", "Model Number", this, "MODEL 1947B Mk II" );
         AddComponent( modelNumberLabel );
         modelNumberLabel.SetWantsMouseNotifications( false );
         modelNumberLabel.SetPosition( 370, 63 );
@@ -661,7 +668,7 @@ void InitializeControls()
         modelNumberLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         modelNumberLabel.SetFont( "Arial Black", 9, false, false );
 
-        moduleDescriptionLabel = new VoltageLabel( "moduleDescriptionLabel", "Module Description Label", this, "SIN/RND GENERATOR - FILTER" );
+        moduleDescriptionLabel = new VoltageLabel( "moduleDescriptionLabel", "Module Description", this, "SIN/RND GENERATOR - FILTER" );
         AddComponent( moduleDescriptionLabel );
         moduleDescriptionLabel.SetWantsMouseNotifications( false );
         moduleDescriptionLabel.SetPosition( 370, 70 );
@@ -681,6 +688,27 @@ void InitializeControls()
         moduleDescriptionLabel.SetHasCustomTextHoverColor( false );
         moduleDescriptionLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         moduleDescriptionLabel.SetFont( "Arial Black", 9, false, false );
+
+        colophon = new VoltageLabel( "colophon", "colophon", this, "insect laboratories pittsburgh, PA        united states & beyond" );
+        AddComponent( colophon );
+        colophon.SetWantsMouseNotifications( false );
+        colophon.SetPosition( 24, 337 );
+        colophon.SetSize( 60, 20 );
+        colophon.SetEditable( false, false );
+        colophon.SetJustificationFlags( VoltageLabel.Justification.Left );
+        colophon.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        colophon.SetColor( new Color( 19, 19, 19, 85 ) );
+        colophon.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        colophon.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        colophon.SetBorderSize( 1 );
+        colophon.SetMultiLineEdit( true );
+        colophon.SetIsNumberEditor( false );
+        colophon.SetNumberEditorRange( 0, 100 );
+        colophon.SetNumberEditorInterval( 1 );
+        colophon.SetNumberEditorUsesMouseWheel( false );
+        colophon.SetHasCustomTextHoverColor( false );
+        colophon.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        colophon.SetFont( "Arial Black", 6, true, false );
 }
 
 
@@ -1084,6 +1112,7 @@ return super.GetTooltipText(component);
 
 
     // Auto-generated variables
+    private VoltageLabel colophon;
     private VoltageLabel moduleDescriptionLabel;
     private VoltageLabel modelNumberLabel;
     private VoltageLabel manufacturerCountryLabel;
@@ -1101,8 +1130,8 @@ return super.GetTooltipText(component);
     private VoltageLabel tenthVoltRangeLabel;
     private VoltageLabel millivoltRangeLabel;
     private VoltageLabel filteredModeLabel;
-    private VoltageLabel modulationModeLabel;
     private VoltageLabel rd2ModeLabel;
+    private VoltageLabel modulationModeLabel;
     private VoltageLabel noiseModeLabel;
     private VoltageLabel sineModeLabel;
     private VoltageLabel filterLabel;
@@ -1122,6 +1151,7 @@ return super.GetTooltipText(component);
     private VoltageAnalogVUMeter outputMeter;
     private VoltageLabel numberLabel;
     private VoltageLabel brandLabel;
+    private VoltageImage image1;
 
 
     //[user-code-and-variables]    Add your own variables and functions here

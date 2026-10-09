@@ -28,7 +28,7 @@ public class type9414 extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "31826a384c784d809ae66d5d83a47353" );
+        SetSkin( "64e506f75ad3485a872fa21cbde3f95c" );
     }
 
 void InitializeControls()

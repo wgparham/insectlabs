@@ -28,13 +28,13 @@ public class nineteenfiftyeight extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "c819983baa294baeac1d848205dfd1a5" );
+        SetSkin( "b04d6f62590a477db590bffb27688b79" );
     }
 
 void InitializeControls()
 {
 
-        manufacturerNameLabel = new VoltageLabel( "manufacturerNameLabel", "Manufacturer Name Label", this, "INSECT LABORATORIES" );
+        manufacturerNameLabel = new VoltageLabel( "manufacturerNameLabel", "Manufacturer Name", this, "INSECT LABORATORIES" );
         AddComponent( manufacturerNameLabel );
         manufacturerNameLabel.SetWantsMouseNotifications( false );
         manufacturerNameLabel.SetPosition( 25, 77 );
@@ -55,7 +55,7 @@ void InitializeControls()
         manufacturerNameLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         manufacturerNameLabel.SetFont( "Arial Black", 7, false, false );
 
-        manufacturerLocationLabel = new VoltageLabel( "manufacturerLocationLabel", "Manufacturer Location Label", this, "PITTSBURGH PENNSYLVANIA" );
+        manufacturerLocationLabel = new VoltageLabel( "manufacturerLocationLabel", "Manufacturer Location", this, "PITTSBURGH PENNSYLVANIA" );
         AddComponent( manufacturerLocationLabel );
         manufacturerLocationLabel.SetWantsMouseNotifications( false );
         manufacturerLocationLabel.SetPosition( 15, 84 );
@@ -76,7 +76,7 @@ void InitializeControls()
         manufacturerLocationLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         manufacturerLocationLabel.SetFont( "Arial Black", 7, false, false );
 
-        manufacturerCountryLabel = new VoltageLabel( "manufacturerCountryLabel", "Manufacturer Country Label", this, "UNITED STATES AND BEYOND" );
+        manufacturerCountryLabel = new VoltageLabel( "manufacturerCountryLabel", "Manufacturer Country", this, "UNITED STATES AND BEYOND" );
         AddComponent( manufacturerCountryLabel );
         manufacturerCountryLabel.SetWantsMouseNotifications( false );
         manufacturerCountryLabel.SetPosition( 15, 91 );
@@ -97,7 +97,7 @@ void InitializeControls()
         manufacturerCountryLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         manufacturerCountryLabel.SetFont( "Arial Black", 7, false, false );
 
-        modelNumberLabel = new VoltageLabel( "modelNumberLabel", "Model Number Label", this, "Model 1958" );
+        modelNumberLabel = new VoltageLabel( "modelNumberLabel", "Model Number", this, "Model 1958" );
         AddComponent( modelNumberLabel );
         modelNumberLabel.SetWantsMouseNotifications( false );
         modelNumberLabel.SetPosition( 335, 154 );
@@ -118,7 +118,7 @@ void InitializeControls()
         modelNumberLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         modelNumberLabel.SetFont( "Arial Black", 9, false, false );
 
-        moduleDescriptionLabel = new VoltageLabel( "moduleDescriptionLabel", "Module Description Label", this, "Dual Waveform Generator" );
+        moduleDescriptionLabel = new VoltageLabel( "moduleDescriptionLabel", "Module Description", this, "Dual Waveform Generator" );
         AddComponent( moduleDescriptionLabel );
         moduleDescriptionLabel.SetWantsMouseNotifications( false );
         moduleDescriptionLabel.SetPosition( 335, 163 );
@@ -139,7 +139,7 @@ void InitializeControls()
         moduleDescriptionLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         moduleDescriptionLabel.SetFont( "Arial Black", 9, false, false );
 
-        revisionLabel = new VoltageLabel( "revisionLabel", "Revision Label", this, "revision 2" );
+        revisionLabel = new VoltageLabel( "revisionLabel", "Revision", this, "revision 2" );
         AddComponent( revisionLabel );
         revisionLabel.SetWantsMouseNotifications( false );
         revisionLabel.SetPosition( 335, 172 );

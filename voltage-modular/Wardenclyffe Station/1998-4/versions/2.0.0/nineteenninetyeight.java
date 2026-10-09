@@ -28,7 +28,7 @@ public class nineteenninetyeight extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "76a8b4645d70488683aa869c15cfdb1d" );
+        SetSkin( "fd7d52b81865486692b28d5a5c516437" );
     }
 
 void InitializeControls()

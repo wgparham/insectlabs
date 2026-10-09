@@ -28,7 +28,7 @@ public class n01 extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "7c5dd340f06f460781ce40efc18a8a11" );
+        SetSkin( "705987a3ef7142d0a9ca5e6a03b69a29" );
     }
 
 void InitializeControls()
@@ -437,6 +437,27 @@ void InitializeControls()
         steppedOutput.SetPosition( 70, 256 );
         steppedOutput.SetSize( 25, 25 );
         steppedOutput.SetSkin( "Rotated Half" );
+
+        colophon = new VoltageLabel( "colophon", "colophon", this, "insect laboratories pittsburgh, PA        united states & beyond" );
+        AddComponent( colophon );
+        colophon.SetWantsMouseNotifications( false );
+        colophon.SetPosition( 26, 337 );
+        colophon.SetSize( 60, 20 );
+        colophon.SetEditable( false, false );
+        colophon.SetJustificationFlags( VoltageLabel.Justification.Left );
+        colophon.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        colophon.SetColor( new Color( 232, 232, 232, 147 ) );
+        colophon.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        colophon.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        colophon.SetBorderSize( 1 );
+        colophon.SetMultiLineEdit( true );
+        colophon.SetIsNumberEditor( false );
+        colophon.SetNumberEditorRange( 0, 100 );
+        colophon.SetNumberEditorInterval( 1 );
+        colophon.SetNumberEditorUsesMouseWheel( false );
+        colophon.SetHasCustomTextHoverColor( false );
+        colophon.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        colophon.SetFont( "Arial Black", 6, true, false );
 }
 
 
@@ -814,6 +835,7 @@ steppedOutput.SetValue(0.0);
 
 
     // Auto-generated variables
+    private VoltageLabel colophon;
     private VoltageAudioJack steppedOutput;
     private VoltageAudioJack triggerInput;
     private VoltageLabel manufacturerLabel;

@@ -28,7 +28,7 @@ public class type23 extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "fb8ea6e86e9243848f3f681fa7776b38" );
+        SetSkin( "306ef848181c4a4ab64044909513a24c" );
     }
 
 void InitializeControls()

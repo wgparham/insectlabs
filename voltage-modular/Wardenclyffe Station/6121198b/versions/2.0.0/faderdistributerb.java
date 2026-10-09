@@ -28,7 +28,7 @@ public class faderdistributerb extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "4f5104b256bb4912974e03b994135dda" );
+        SetSkin( "6236b3699d604e2daa41011aca1c25f1" );
     }
 
 void InitializeControls()
@@ -381,7 +381,7 @@ void InitializeControls()
         manufacturerLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         manufacturerLabel.SetFont( "Courier New", 13, true, false );
 
-        faderLawLabel = new VoltageLabel( "faderLawLabel", "Fader Law Label", this, "EQUAL POWER" );
+        faderLawLabel = new VoltageLabel( "faderLawLabel", "Fader Law", this, "EQUAL POWER" );
         AddComponent( faderLawLabel );
         faderLawLabel.SetWantsMouseNotifications( false );
         faderLawLabel.SetPosition( 38, 120 );

@@ -19,7 +19,7 @@ public class model62 extends VoltageModule
 //[/user-inheritance]
 {
 
-    @SuppressWarnings("this-escape")
+    @SuppressWarnings("this-escape") 
     public model62( long moduleID, VoltageObjects voltageObjects )
     {
         super( moduleID, voltageObjects, "Model 62 - Wire Player Recorder", ModuleType.ModuleType_Utility, 6.4 );
@@ -28,7 +28,7 @@ public class model62 extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "0c3eb34774e544cfa158bc94ea600d7c" );
+        SetSkin( "43d49cb375ab4a3488a0f4e86e3cd411" );
     }
 
 void InitializeControls()
@@ -39,7 +39,7 @@ void InitializeControls()
         wireframeSpoolImage.SetWantsMouseNotifications( false );
         wireframeSpoolImage.SetPosition( 218, 266 );
         wireframeSpoolImage.SetSize( 61, 61 );
-        wireframeSpoolImage.SetCurrentImage( "image image.svg" );
+        wireframeSpoolImage.SetCurrentImage( "image image(2).svg" );
 
         modelNumberLabel = new VoltageLabel( "modelNumberLabel", "Model Number", this, "model 62" );
         AddComponent( modelNumberLabel );
@@ -703,7 +703,7 @@ void InitializeControls()
         burroughsMarkImage.SetWantsMouseNotifications( false );
         burroughsMarkImage.SetPosition( 313, 299 );
         burroughsMarkImage.SetSize( 147, 49 );
-        burroughsMarkImage.SetCurrentImage( "image image.png" );
+        burroughsMarkImage.SetCurrentImage( "image image(2).png" );
 
         studioColophonLabel = new VoltageLabel( "studioColophonLabel", "Insect Laboratories Colophon", this, "insect laboratories pittsburgh, PA        united states & beyond" );
         AddComponent( studioColophonLabel );
@@ -1771,3 +1771,5 @@ void InitializeControls()
     }
     //[/user-code-and-variables]
 }
+
+ 

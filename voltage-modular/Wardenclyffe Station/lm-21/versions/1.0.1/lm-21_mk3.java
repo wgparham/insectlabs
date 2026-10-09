@@ -28,7 +28,7 @@ public class lm21mark3 extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "dfac4ec431fb4e418da04917908dfaa2" );
+        SetSkin( "9e08581a8f0e4f72adf2d7a3788c536c" );
     }
 
 void InitializeControls()

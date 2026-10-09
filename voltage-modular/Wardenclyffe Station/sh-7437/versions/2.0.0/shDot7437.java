@@ -28,7 +28,7 @@ public class shDot7437 extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "04a606fdb96945b2bfb48f23091e36eb" );
+        SetSkin( "e4d9d193d5554d04839cba2852f95e39" );
     }
 
 void InitializeControls()

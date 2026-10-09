@@ -2,7 +2,7 @@
 
 **Voltage Modular · Insect Laboratories · 9 October 2026**
 
-Wardenclyffe Station is a mono-first electronic-music laboratory built from imagined postwar test equipment. The twenty-one current instruments span tone and noise sources, reference standards, signal conditioning, switching, modulation, slew shaping, and selectable high-pass and low-pass filtering. Individual manuals describe each front panel and its exact release behavior.
+Wardenclyffe Station is a mono-first electronic-music laboratory built from imagined postwar test equipment. The twenty-two canonized instruments span tone and noise sources, reference standards, signal conditioning, switching, modulation, slew shaping, selectable filtering, and passive-voiced frequency correction. Individual manuals describe each front panel and its exact release behavior.
 
 ## Module directory
 
@@ -29,6 +29,7 @@ Wardenclyffe Station is a mono-first electronic-music laboratory built from imag
 | Model 62 Wire Player Recorder | 1.0.0 | [Model 62 manual](model-62/versions/1.0.0/USER-MANUAL.md) |
 | XL-35h High-Pass Filters | 1.0.1 | [XL-35h manual](xl-35h/versions/1.0.1/USER-MANUAL.md) |
 | XL-35c Low-Pass Filters | 1.0.1 | [XL-35c manual](xl-35c/versions/1.0.1/USER-MANUAL.md) |
+| 21-24eq Frequency Corrector | 1.0.1 | [21-24eq manual](baxendall/versions/1.0.1/USER-MANUAL.md) |
 
 
 ## Shared operating conventions
@@ -40,4 +41,4 @@ Wardenclyffe Station is a mono-first electronic-music laboratory built from imag
 - Courtesy outputs follow their own manual. They can remain active when the main function is stopped; host BYPASS silences them.
 - Module character varies by instrument. Reference oscillators and measurement paths are clean; drive and relay voicing appear only where the individual design calls for them.
 
-For exact ranges, defaults, power behavior and connection examples, use the linked module manual for the installed version. The final mono summing amplifier concepts are now represented by canonical LM-21 and RM1010. Model 62 extends the collection with a wire-recording instrument.
+For exact ranges, defaults, power behavior and connection examples, use the linked module manual for the installed version. The final mono summing amplifier concepts are represented by canonical LM-21 and RM1010. Model 62 extends the collection with a wire recorder; 21-24eq adds three progressively darker passive-voiced EQ profiles. SN-46 remains the final planned Wardenclyffe module in development.

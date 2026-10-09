@@ -1,10 +1,10 @@
 # Wardenclyffe Station roadmap
 
-Wardenclyffe Station is the completed first collection in Insect Laboratories’ Voltage Modular line. Canonical release means the repository’s authoritative source pair, panel and documentation; it does not imply store publication. This roadmap tracks the XL-35h / XL-35c matched filter pair at canonical v1.0.1; each retains its v1.0.0 archive. The update integrates the current Java sources into the Designer projects and clears stale filter history on initialization, reset, preset/variation load, and bypass resume. Strict compilation, source-pair integrity, metadata, and headless response checks are recorded in the release reviews.
+Wardenclyffe Station is the first mono-first collection in Insect Laboratories’ Voltage Modular line. Canonical release means the repository’s authoritative source pair, panel and documentation; it does not imply store publication. The current collection has twenty-two canonized products, including the 21-24eq Frequency Corrector at v1.0.1. SN-46 remains the final planned instrument in development. The XL-35h / XL-35c matched filter pair is also at canonical v1.0.1, with each v1.0.0 archive retained.
 
 ## Current collection
 
-Twenty-one current products are canonized in [Wardenclyffe Station](../Wardenclyffe%20Station/README.md). Earlier products retain active 2.x releases and their prior 1.x archives; LM-21 is canonical at v1.0.1.
+Twenty-two current products are canonized in [Wardenclyffe Station](../Wardenclyffe%20Station/README.md). Earlier products retain active 2.x releases and their prior 1.x archives; LM-21 is canonical at v1.0.1.
 
 | Product | Current | 1.x archives | Role | Manual |
 | --- | ---: | ---: | --- | --- |
@@ -26,6 +26,7 @@ Twenty-one current products are canonized in [Wardenclyffe Station](../Wardencly
 | [Type 23 Signal Processor](../Wardenclyffe%20Station/type-23/versions/2.0.0/) | 2.0.0 | 1.0.0, 1.0.1 | Dual mono processor/VCA with independent stages | [Manual](../Wardenclyffe%20Station/type-23/versions/2.0.0/USER-MANUAL.md) |
 | [XL-35h High-Pass Filters](../Wardenclyffe%20Station/xl-35h/versions/1.0.1/) | 1.0.1 | 1.0.0 | Independent stepped one-pole HPFs; warmer upper, cleaner lower | [Manual](../Wardenclyffe%20Station/xl-35h/versions/1.0.1/USER-MANUAL.md) |
 | [XL-35c Low-Pass Filters](../Wardenclyffe%20Station/xl-35c/versions/1.0.1/) | 1.0.1 | 1.0.0 | Independent stepped one-pole LPFs; warmer upper, cleaner lower | [Manual](../Wardenclyffe%20Station/xl-35c/versions/1.0.1/USER-MANUAL.md) |
+| [21-24eq Frequency Corrector](../Wardenclyffe%20Station/baxendall/versions/1.0.1/) | 1.0.1 | — | Passive-voiced bass/treble correction with three frequency profiles | [Manual](../Wardenclyffe%20Station/baxendall/versions/1.0.1/USER-MANUAL.md) |
 | [Model 62 Wire Player Recorder](../Wardenclyffe%20Station/model-62/versions/1.0.0/) | 1.0.0 | — | 24 kHz varispeed wire recorder with LOCKED/ELASTIC recording and persistent splices | [Manual](../Wardenclyffe%20Station/model-62/versions/1.0.0/USER-MANUAL.md) |
 
 ## Shared design and engineering decisions

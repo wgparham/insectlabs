@@ -28,13 +28,13 @@ public class ac1d extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "942f9ce7b50a47c0932a0cf37021e6e0" );
+        SetSkin( "b4ee41880b104629a857235acda54abb" );
     }
 
 void InitializeControls()
 {
 
-        functionTypeLabel = new VoltageLabel( "functionTypeLabel", "Function Type Label", this, "SQR/SIN GENERATOR" );
+        functionTypeLabel = new VoltageLabel( "functionTypeLabel", "Function Type", this, "SQR/SIN GENERATOR" );
         AddComponent( functionTypeLabel );
         functionTypeLabel.SetWantsMouseNotifications( false );
         functionTypeLabel.SetPosition( 156, 178 );
@@ -55,7 +55,7 @@ void InitializeControls()
         functionTypeLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         functionTypeLabel.SetFont( "Arial Black", 7, false, false );
 
-        modelNumberLabel = new VoltageLabel( "modelNumberLabel", "Model Number Label", this, "MODEL AC/1D" );
+        modelNumberLabel = new VoltageLabel( "modelNumberLabel", "Model Number", this, "MODEL AC/1D" );
         AddComponent( modelNumberLabel );
         modelNumberLabel.SetWantsMouseNotifications( false );
         modelNumberLabel.SetPosition( 156, 186 );
@@ -76,7 +76,7 @@ void InitializeControls()
         modelNumberLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         modelNumberLabel.SetFont( "Arial Black", 7, false, false );
 
-        revisionLabel = new VoltageLabel( "revisionLabel", "Revision Label", this, "REVISION 2" );
+        revisionLabel = new VoltageLabel( "revisionLabel", "Revision", this, "REVISION 2" );
         AddComponent( revisionLabel );
         revisionLabel.SetWantsMouseNotifications( false );
         revisionLabel.SetPosition( 156, 194 );
@@ -97,7 +97,7 @@ void InitializeControls()
         revisionLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         revisionLabel.SetFont( "Arial Black", 7, false, false );
 
-        kitBrandLabel = new VoltageLabel( "kitBrandLabel", "Kit Brand Label", this, "REFUGE KITS" );
+        kitBrandLabel = new VoltageLabel( "kitBrandLabel", "Kit Brand", this, "REFUGE KITS" );
         AddComponent( kitBrandLabel );
         kitBrandLabel.SetWantsMouseNotifications( false );
         kitBrandLabel.SetPosition( 0, 40 );
@@ -118,7 +118,7 @@ void InitializeControls()
         kitBrandLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         kitBrandLabel.SetFont( "Arial Black", 10, false, false );
 
-        subsidiaryLabel = new VoltageLabel( "subsidiaryLabel", "Subsidiary Label", this, "A SUBSIDIARY OF" );
+        subsidiaryLabel = new VoltageLabel( "subsidiaryLabel", "Subsidiary", this, "A SUBSIDIARY OF" );
         AddComponent( subsidiaryLabel );
         subsidiaryLabel.SetWantsMouseNotifications( false );
         subsidiaryLabel.SetPosition( 0, 51 );
@@ -139,7 +139,7 @@ void InitializeControls()
         subsidiaryLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         subsidiaryLabel.SetFont( "Arial Black", 7, false, false );
 
-        manufacturerNameLabel = new VoltageLabel( "manufacturerNameLabel", "Manufacturer Name Label", this, "insect laboratories" );
+        manufacturerNameLabel = new VoltageLabel( "manufacturerNameLabel", "Manufacturer Name", this, "insect laboratories" );
         AddComponent( manufacturerNameLabel );
         manufacturerNameLabel.SetWantsMouseNotifications( false );
         manufacturerNameLabel.SetPosition( 0, 58 );
@@ -714,7 +714,7 @@ void InitializeControls()
         squareRangeLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         squareRangeLabel.SetFont( "Arial Black", 10, true, false );
 
-        revisionMarkLabel = new VoltageLabel( "revisionMarkLabel", "Revision Mark Label", this, "r." );
+        revisionMarkLabel = new VoltageLabel( "revisionMarkLabel", "Revision Mark", this, "r." );
         AddComponent( revisionMarkLabel );
         revisionMarkLabel.SetWantsMouseNotifications( false );
         revisionMarkLabel.SetPosition( 3, 338 );
@@ -734,6 +734,27 @@ void InitializeControls()
         revisionMarkLabel.SetHasCustomTextHoverColor( false );
         revisionMarkLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         revisionMarkLabel.SetFont( "<Sans-Serif>", 14, true, false );
+
+        colophon = new VoltageLabel( "colophon", "colophon", this, "we have      always been here" );
+        AddComponent( colophon );
+        colophon.SetWantsMouseNotifications( false );
+        colophon.SetPosition( 26, 337 );
+        colophon.SetSize( 67, 21 );
+        colophon.SetEditable( false, false );
+        colophon.SetJustificationFlags( VoltageLabel.Justification.Left );
+        colophon.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        colophon.SetColor( new Color( 19, 19, 19, 85 ) );
+        colophon.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        colophon.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        colophon.SetBorderSize( 1 );
+        colophon.SetMultiLineEdit( true );
+        colophon.SetIsNumberEditor( false );
+        colophon.SetNumberEditorRange( 0, 100 );
+        colophon.SetNumberEditorInterval( 1 );
+        colophon.SetNumberEditorUsesMouseWheel( false );
+        colophon.SetHasCustomTextHoverColor( false );
+        colophon.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        colophon.SetFont( "Arial Black", 9, true, false );
 }
 
 
@@ -1031,6 +1052,7 @@ void InitializeControls()
 
 
     // Auto-generated variables
+    private VoltageLabel colophon;
     private VoltageLabel revisionMarkLabel;
     private VoltageLabel squareRangeLabel;
     private VoltageLabel pulseWidthLabel;

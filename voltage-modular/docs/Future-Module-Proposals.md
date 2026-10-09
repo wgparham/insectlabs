@@ -1,6 +1,6 @@
 # Optional gap-fillers and later-series ideas
 
-Proposal review: 9 October 2026. The LM-21 Mk III and simpler RM1010 minimixer are canonized. XL-35h and XL-35c add the matched high-pass / low-pass filter pair. Other additions below remain optional proposals. All twenty-one Wardenclyffe products are canonized. These suggestions come from comparing current capabilities and the completed briefs; they are not historical user decisions.
+Proposal review: 9 October 2026. The LM-21 Mk III and simpler RM1010 minimixer are canonized. XL-35h and XL-35c add the matched high-pass / low-pass filter pair, and 21-24eq adds passive-voiced frequency correction. Twenty-two Wardenclyffe products are canonized; SN-46 is the final planned instrument in development. Other additions below remain optional proposals. These suggestions come from comparing current capabilities and the completed briefs; they are not historical user decisions.
 
 ## Completed Wardenclyffe module and optional gap-fillers
 

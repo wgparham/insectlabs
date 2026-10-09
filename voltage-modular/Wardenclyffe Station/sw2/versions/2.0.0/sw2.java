@@ -28,7 +28,7 @@ public class sw2 extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "e5f136ffa6b14539a46a668c0a466c93" );
+        SetSkin( "949bb16ca6524fe2818718b30dbca527" );
     }
 
 void InitializeControls()
@@ -437,7 +437,7 @@ void InitializeControls()
         manufacturerLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         manufacturerLabel.SetFont( "Courier New", 13, true, false );
 
-        colophon = new VoltageLabel( "colophon", "Colophon", this, "insect laboratories pittsburgh, PA               –– 1939 ––" );
+        colophon = new VoltageLabel( "colophon", "Colophon", this, "insect laboratories pittsburgh, PA               –– 1938 ––" );
         AddComponent( colophon );
         colophon.SetWantsMouseNotifications( false );
         colophon.SetPosition( 42, 335 );

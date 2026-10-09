@@ -28,7 +28,7 @@ public class c234 extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "7d14eacf7aca4437a806e02ee5c652d5" );
+        SetSkin( "45cf8f46ac21461f9e12504acd7f1553" );
     }
 
 void InitializeControls()
@@ -297,7 +297,7 @@ void InitializeControls()
         locationLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         locationLabel.SetFont( "Arial Black", 7, true, false );
 
-        yearLabel = new VoltageLabel( "yearLabel", "Year", this, "— 1955 —" );
+        yearLabel = new VoltageLabel( "yearLabel", "Year", this, "— 1935 —" );
         AddComponent( yearLabel );
         yearLabel.SetWantsMouseNotifications( false );
         yearLabel.SetPosition( 29, 227 );
@@ -328,6 +328,13 @@ void InitializeControls()
         amplitudeKnob.SetKnobParams( 215, 145 );
         amplitudeKnob.DisplayValueInPercent( false );
         amplitudeKnob.SetKnobAdjustsRing( true );
+
+        image1 = new VoltageImage( "image1", "image1", this, false );
+        AddComponent( image1 );
+        image1.SetWantsMouseNotifications( false );
+        image1.SetPosition( 41, 236 );
+        image1.SetSize( 32, 32 );
+        image1.SetCurrentImage( "image image.svg" );
 }
 
 
@@ -577,6 +584,7 @@ if (component == modeKnob ||
 
 
     // Auto-generated variables
+    private VoltageImage image1;
     private VoltageKnob amplitudeKnob;
     private VoltageLabel yearLabel;
     private VoltageLabel locationLabel;

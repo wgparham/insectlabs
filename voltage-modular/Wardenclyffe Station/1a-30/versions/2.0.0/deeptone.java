@@ -29,7 +29,7 @@ public class deeptone extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "858e01aead1944fab5bf3c1c67c9a075" );
+        SetSkin( "07f9c6a8b9874834b2afa60a3454d1df" );
     }
 
 void InitializeControls()
@@ -1465,7 +1465,7 @@ void InitializeControls2()
         colophon.SetEditable( false, false );
         colophon.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         colophon.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        colophon.SetColor( new Color( 19, 19, 19, 85 ) );
+        colophon.SetColor( new Color( 19, 19, 19, 255 ) );
         colophon.SetBkColor( new Color( 65, 65, 65, 0 ) );
         colophon.SetBorderColor( new Color( 0, 0, 0, 0 ) );
         colophon.SetBorderSize( 1 );
@@ -1477,6 +1477,13 @@ void InitializeControls2()
         colophon.SetHasCustomTextHoverColor( false );
         colophon.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         colophon.SetFont( "Arial Black", 6, true, false );
+
+        image2 = new VoltageImage( "image2", "image2", this, false );
+        AddComponent( image2 );
+        image2.SetWantsMouseNotifications( false );
+        image2.SetPosition( 85, 280 );
+        image2.SetSize( 60, 60 );
+        image2.SetCurrentImage( "wireframe_globe_E8E8E8.svg" );
 }
 
 
@@ -1826,6 +1833,7 @@ void InitializeControls2()
 
 
     // Auto-generated variables
+    private VoltageImage image2;
     private VoltageLabel colophon;
     private VoltageLabel descriptionLabel;
     private VoltageLabel manufacturerLabel;

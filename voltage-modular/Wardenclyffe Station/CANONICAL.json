@@ -199,5 +199,11 @@
     "archived_versions": [
       "1.0.0"
     ]
+  },
+  "frequency-corrector": {
+    "version": "1.0.1",
+    "path": "baxendall/versions/1.0.1",
+    "module": "twentyonetwentyfour",
+    "name": "21-24eq Frequency Corrector"
   }
 }

@@ -19,7 +19,7 @@ public class XL35h extends VoltageModule
 //[/user-inheritance]
 {
 
-    @SuppressWarnings("this-escape")
+    @SuppressWarnings("this-escape") 
     public XL35h( long moduleID, VoltageObjects voltageObjects )
     {
         super( moduleID, voltageObjects, "XL-35h - High Pass Filters", ModuleType.ModuleType_Filters, 1.6 );
@@ -28,7 +28,7 @@ public class XL35h extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "a0d552138e724bd594f3cb166d9acf39" );
+        SetSkin( "b3f8ed8998bb4eae801ec4aa745aa2fd" );
     }
 
 void InitializeControls()
@@ -1098,3 +1098,5 @@ void InitializeControls()
     }
     //[/user-code-and-variables]
 }
+
+ 

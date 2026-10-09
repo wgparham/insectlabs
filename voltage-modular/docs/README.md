@@ -2,7 +2,7 @@
 
 ## Current project
 
-**Wardenclyffe Station has twenty-one canonized products.** LM-21 Mk III and RM1010 are complete; the XL-35h / XL-35c matched filter pair is canonized at v1.0.1. Earlier archives remain preserved where applicable.
+**Wardenclyffe Station has twenty-two canonized products.** LM-21 Mk III, RM1010, Model 62, the XL-35h / XL-35c filter pair, and 21-24eq are canonical. SN-46 remains the final planned instrument in development. Earlier archives remain preserved where applicable.
 
 | Document | Purpose |
 | --- | --- |

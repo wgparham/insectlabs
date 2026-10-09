@@ -28,7 +28,7 @@ public class rm1010 extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "b66af66781144db4bcb4257732b7b451" );
+        SetSkin( "1a5f6d36bf97421886b9d20d36225c92" );
     }
 
 void InitializeControls()
@@ -866,7 +866,7 @@ void InitializeControls()
         brandLogoImage.SetWantsMouseNotifications( false );
         brandLogoImage.SetPosition( 83, 211 );
         brandLogoImage.SetSize( 98, 74 );
-        brandLogoImage.SetCurrentImage( "image image.png" );
+        brandLogoImage.SetCurrentImage( "image image(3).png" );
 }
 
 

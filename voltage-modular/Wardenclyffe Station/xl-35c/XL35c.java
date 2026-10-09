@@ -19,7 +19,7 @@ public class XL35c extends VoltageModule
 //[/user-inheritance]
 {
 
-    @SuppressWarnings("this-escape")
+    @SuppressWarnings("this-escape") 
     public XL35c( long moduleID, VoltageObjects voltageObjects )
     {
         super( moduleID, voltageObjects, "XL-35c - Low Pass Filters", ModuleType.ModuleType_Filters, 1.6 );
@@ -28,7 +28,7 @@ public class XL35c extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "2fbdbf6adb8b4ec7944751446fcd7f7b" );
+        SetSkin( "d51b1753287e4ef588e9a58c3714fc28" );
     }
 
 void InitializeControls()
@@ -546,12 +546,12 @@ void InitializeControls()
         manufacturerCreditLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         manufacturerCreditLabel.SetFont( "Arial Black", 6, true, false );
 
-        refugeEmblemImage = new VoltageImage( "refugeEmblemImage", "Refuge Emblem", this, false );
-        AddComponent( refugeEmblemImage );
-        refugeEmblemImage.SetWantsMouseNotifications( false );
-        refugeEmblemImage.SetPosition( 40, 297 );
-        refugeEmblemImage.SetSize( 35, 35 );
-        refugeEmblemImage.SetCurrentImage( "image image.png" );
+        image2 = new VoltageImage( "image2", "image2", this, false );
+        AddComponent( image2 );
+        image2.SetWantsMouseNotifications( false );
+        image2.SetPosition( 40, 300 );
+        image2.SetSize( 35, 35 );
+        image2.SetCurrentImage( "wireframe_globe_E8E8E8.svg" );
 }
 
 
@@ -1000,7 +1000,7 @@ void InitializeControls()
 
 
     // Auto-generated variables
-    private VoltageImage refugeEmblemImage;
+    private VoltageImage image2;
     private VoltageLabel manufacturerCreditLabel;
     private VoltageAudioJack inputJackUpper;
     private VoltageLabel lowerFrequencyStep1Label;
@@ -1106,3 +1106,5 @@ void InitializeControls()
     }
     //[/user-code-and-variables]
 }
+
+ 

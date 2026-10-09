@@ -28,7 +28,7 @@ public class sw1 extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "7499124217d647ad9c0e40f370852df6" );
+        SetSkin( "1c6adca0e5d1477c80be6b7a7a958c87" );
     }
 
 void InitializeControls()
