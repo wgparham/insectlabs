@@ -2,16 +2,16 @@
 
 ## Current project
 
-**Wardenclyffe Station has sixteen canonized 2.x products.** The final planned module is a mono summing/mixing amplifier. Previous 1.x releases are preserved in each product folder.
+**Wardenclyffe Station has twenty-one canonized products.** LM-21 Mk III and RM1010 are complete; the XL-35h / XL-35c matched filter pair is canonized at v1.0.0. Earlier archives remain preserved where applicable.
 
 | Document | Purpose |
 | --- | --- |
 | [Wardenclyffe Station](../Wardenclyffe%20Station/README.md) | Current product index and version map |
 | [Collection user manual](../Wardenclyffe%20Station/USER-MANUAL.md) | Shared conventions and links to all current manuals |
-| [Collection roadmap](Collection-Roadmap.md) | Current status, final mixer brief boundary and later-series directions |
+| [Collection roadmap](Collection-Roadmap.md) | Current collection status and later-series directions |
 | [Completed Series One briefs](Series-One-Completed-Briefs.md) | Accepted design history for the early equipment modules |
 | [Series One utilities](Series-One-Utilities.md) | Detailed utility roles and patching ideas |
-| [Future module proposals](Future-Module-Proposals.md) | The planned mixer plus separate optional gap-fillers and later-series ideas |
+| [Future module proposals](Future-Module-Proposals.md) | Completed mixer status, optional gap-fillers and later-series ideas |
 | [Development decisions](Development-Decisions.md) | Decisions, superseded approaches and clarifications |
 | [Module infrastructure standards](Module-Infrastructure-Standards.md) | Naming, bypass, DSP, source pairs and Courtesy behavior |
 | [Module release checklist](Module-Release-Checklist.md) | Required review, validation, canonization and cleanup checks |

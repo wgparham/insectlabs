@@ -1,10 +1,10 @@
 # Wardenclyffe Station roadmap
 
-Wardenclyffe Station is the completed first collection in Insect Laboratories’ Voltage Modular line. Canonical release means the repository’s authoritative source pair, panel and documentation; it does not imply store publication. The user confirmed the current 2.x candidates were built and auditioned and authorized promotion after this standards and packaging review. The exact user-host test was on the predecessor candidate; this pass preserves approved DSP and records its validation separately.
+Wardenclyffe Station is the completed first collection in Insect Laboratories’ Voltage Modular line. Canonical release means the repository’s authoritative source pair, panel and documentation; it does not imply store publication. This roadmap includes the newly canonized XL-35h / XL-35c matched filter pair at v1.0.0. The user designated these submitted versions canonized; strict compilation, source-pair integrity, metadata, and headless response checks are recorded in their release reviews.
 
 ## Current collection
 
-Nineteen current products are canonized in [Wardenclyffe Station](../Wardenclyffe%20Station/README.md). Earlier products retain active 2.x releases and their prior 1.x archives; LM-21 is canonical at v1.0.1.
+Twenty-one current products are canonized in [Wardenclyffe Station](../Wardenclyffe%20Station/README.md). Earlier products retain active 2.x releases and their prior 1.x archives; LM-21 is canonical at v1.0.1.
 
 | Product | Current | 1.x archives | Role | Manual |
 | --- | ---: | ---: | --- | --- |
@@ -24,6 +24,8 @@ Nineteen current products are canonized in [Wardenclyffe Station](../Wardenclyff
 | [SW2 Switch / Distributer](../Wardenclyffe%20Station/sw2/versions/2.0.0/) | 2.0.0 | 1.0.0 | Manual input selector and output distributor | [Manual](../Wardenclyffe%20Station/sw2/versions/2.0.0/USER-MANUAL.md) |
 | [Type 9414 Frequency Analyzer](../Wardenclyffe%20Station/type-9414/versions/2.0.0/) | 2.0.0 | 1.0.0 | Selective band-pass and matched band-reject instrument | [Manual](../Wardenclyffe%20Station/type-9414/versions/2.0.0/USER-MANUAL.md) |
 | [Type 23 Signal Processor](../Wardenclyffe%20Station/type-23/versions/2.0.0/) | 2.0.0 | 1.0.0, 1.0.1 | Dual mono processor/VCA with independent stages | [Manual](../Wardenclyffe%20Station/type-23/versions/2.0.0/USER-MANUAL.md) |
+| [XL-35h High-Pass Filters](../Wardenclyffe%20Station/xl-35h/versions/1.0.0/) | 1.0.0 | — | Independent stepped one-pole HPFs; warmer upper, cleaner lower | [Manual](../Wardenclyffe%20Station/xl-35h/versions/1.0.0/USER-MANUAL.md) |
+| [XL-35c Low-Pass Filters](../Wardenclyffe%20Station/xl-35c/versions/1.0.0/) | 1.0.0 | — | Independent stepped one-pole LPFs; warmer upper, cleaner lower | [Manual](../Wardenclyffe%20Station/xl-35c/versions/1.0.0/USER-MANUAL.md) |
 | [Model 62 Wire Player Recorder](../Wardenclyffe%20Station/model-62/versions/1.0.0/) | 1.0.0 | — | 24 kHz varispeed wire recorder with LOCKED/ELASTIC recording and persistent splices | [Manual](../Wardenclyffe%20Station/model-62/versions/1.0.0/USER-MANUAL.md) |
 
 ## Shared design and engineering decisions
@@ -34,9 +36,9 @@ Nineteen current products are canonized in [Wardenclyffe Station](../Wardenclyff
 - +5 V remains the general modulation reference. Consider +10 V only for a control whose intended instrument behavior warrants it. Restore +5 V for the Radiophonic series.
 - Add useful audio fixtures to the independent [TestBench project](../../test-bench/README.md) in its published format.
 
-## Final planned Wardenclyffe instrument
+## Completed Wardenclyffe mixer work
 
-The final planned Wardenclyffe instrument, **LM-21 Mk III Matrix Mixer — Artificial Acoustic Distance Generator**, is canonical at **v1.0.1**, approved after native-host testing on 2026-10-08. Its 4×4 bipolar mono matrix feeds independent 984-inspired row tone/character stages and independent additive reverb. MIX provides pre-character drive up to +12 dB; PERSPECTIVE spans 0.5–30 seconds with 5.5 seconds at 60% travel. FULL MIX averages A–D before saturation. Power has a 13.6-second warmup and 2.1-second cooldown; MULT remains live. Direct host bypass freezes DSP and power histories. The archive, manuals, developer notes and tests are in `Wardenclyffe Station/lm-21/versions/1.0.1`.
+The **LM-21 Mk III Matrix Mixer — Artificial Acoustic Distance Generator** completed the planned mixer role and is canonical at **v1.0.1**, approved after native-host testing on 2026-10-08. Its 4×4 bipolar mono matrix feeds independent 984-inspired row tone/character stages and independent additive reverb. MIX provides pre-character drive up to +12 dB; PERSPECTIVE spans 0.5–30 seconds with 5.5 seconds at 60% travel. FULL MIX averages A–D before saturation. Power has a 13.6-second warmup and 2.1-second cooldown; MULT remains live. Direct host bypass freezes DSP and power histories. The archive, manuals, developer notes and tests are in `Wardenclyffe Station/lm-21/versions/1.0.1`.
 
 The compact **RM1010 Mixing Amplifier** (minimixer) is now canonical v1.0.0, with independent channel drive, 900 Hz tilt, pair outputs 3/7, summed PROCESS loop and final output 10. Its manual, developer notes, baseline-parity tests and archive are in `Wardenclyffe Station/rm1010/versions/1.0.0`. Host CPU profiling remains unmeasured.
 

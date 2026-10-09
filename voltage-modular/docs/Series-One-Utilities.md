@@ -13,7 +13,7 @@ This document records utility capabilities in the completed collection. Module r
 | [Type 9414 Frequency Analyzer](../Wardenclyffe%20Station/type-9414/versions/2.0.0/README.md) | 2.0.0 | Selective band-pass, matched band-reject and exact splitter bypass |
 | [c2-34 Balanced Modulator](../Wardenclyffe%20Station/c2-34/versions/2.0.0/README.md) | 2.0.0 | Carrier-suppressed four-quadrant modulation and unipolar VCA region |
 
-These eight functions remain mono-first and manually oriented. Later Radiophonic plans add more CV-controlled switching and performance routing. The final planned Wardenclyffe instrument is a mono summing/mixing amplifier; see [future module proposals](Future-Module-Proposals.md) for its open brief boundary.
+These eight functions remain mono-first and manually oriented. Later Radiophonic plans add more CV-controlled switching and performance routing. The mono summing/mixing amplifier is complete: LM-21 Mk III and RM1010 are canonical. See [future module proposals](Future-Module-Proposals.md) for optional gap-fillers and later-series ideas.
 
 ## Shared operating conventions
 

@@ -2,9 +2,9 @@
 
 Wardenclyffe Station is Insect Laboratories’ mono-first collection of postwar test instruments adapted for electronic music. The panels and behavior emphasize manual operation, visible signal flow, useful voltage standards, and distinct hardware character.
 
-The collection contains nineteen canonized product modules. Earlier products retain their 1.x archives alongside their 2.x releases; LM-21 is released as v1.0.1. Use [CANONICAL.json](CANONICAL.json) for the exact active releases and [USER-MANUAL.md](USER-MANUAL.md) for operating guidance.
+The collection contains twenty-one canonized product modules. Earlier products retain their 1.x archives alongside their 2.x releases where applicable; LM-21 is v1.0.1, RM1010 is v1.0.0, Model 62 is v1.0.0, and the XL-35 filter pair is v1.0.0. Use [CANONICAL.json](CANONICAL.json) for the exact active releases and [USER-MANUAL.md](USER-MANUAL.md) for operating guidance.
 
-Earlier archives remain unchanged. The final planned matrix mixer, LM-21 Mk III, is now canonical. The compact RM1010 Mixing Amplifier is also canonical.
+Earlier archives remain unchanged. The LM-21 Mk III and compact RM1010 Mixing Amplifier are canonical, and the XL-35h / XL-35c matched filters add separately selectable high-pass and low-pass instruments.
 
 ## Canonical modules
 
@@ -29,3 +29,5 @@ Earlier archives remain unchanged. The final planned matrix mixer, LM-21 Mk III,
 | [Model 62 Wire Player Recorder](model-62/versions/1.0.0/) | — | 1.0.0 | [User manual](model-62/versions/1.0.0/USER-MANUAL.md) |
 | [LM-21 Mk III Matrix Mixer](lm-21/versions/1.0.1/) | — | 1.0.1 | [User manual](lm-21/versions/1.0.1/USER-MANUAL.md) |
 | [RM1010 Mixing Amplifier](rm1010/versions/1.0.0/) | — | 1.0.0 | [User manual](rm1010/versions/1.0.0/USER-MANUAL.md) |
+| [XL-35h High-Pass Filters](xl-35h/versions/1.0.0/) | — | 1.0.0 | [User manual](xl-35h/versions/1.0.0/USER-MANUAL.md) |
+| [XL-35c Low-Pass Filters](xl-35c/versions/1.0.0/) | — | 1.0.0 | [User manual](xl-35c/versions/1.0.0/USER-MANUAL.md) |
