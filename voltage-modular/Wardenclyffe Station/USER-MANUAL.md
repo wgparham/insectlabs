@@ -10,7 +10,7 @@ Wardenclyffe Station is a mono-first electronic-music laboratory built from imag
 | --- | ---: | --- |
 | 1919/ln Tone Burst Generator | 2.0.1 | [1919/ln Tone Burst Generator](1919-ln/versions/2.0.1/USER-MANUAL.md) |
 | 1947B SIN/RND Generator / Filter | 2.0.0 | [1947B SIN/RND Generator / Filter](1947b/versions/2.0.0/USER-MANUAL.md) |
-| 1958 Dual Waveform Generator | 2.0.0 | [1958 Dual Waveform Generator](1958/versions/2.0.0/USER-MANUAL.md) |
+| 1958 Dual Waveform Generator | 2.0.1 | [1958 Dual Waveform Generator](1958/versions/2.0.1/USER-MANUAL.md) |
 | 1998/4 Dynamic Modulator | 2.0.0 | [1998/4 Dynamic Modulator](1998-4/versions/2.0.0/USER-MANUAL.md) |
 | 1A-30 Deep Tone Generator / Modulator | 2.0.0 | [1A-30 Deep Tone Generator / Modulator](1a-30/versions/2.0.0/USER-MANUAL.md) |
 | 6121198a Fader / Distributer A — Linear | 2.0.0 | [6121198a Fader / Distributer A — Linear](6121198a/versions/2.0.0/USER-MANUAL.md) |

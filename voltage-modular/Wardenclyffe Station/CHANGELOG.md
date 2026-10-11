@@ -1,5 +1,12 @@
 # Wardenclyffe Station changelog
 
+## 1958 Dual Waveform Generator v2.0.1 · 11 October 2026
+
+- Extended internal FM from 0.05–50 Hz to 0.05–100 Hz.
+- Reduced the 1 kHz reference in mixed mode and moved it before AMPLITUDE so the knob scales both signals.
+- Updated the panel artwork and release documentation; preserved the 2.0.0 and earlier archives.
+- User confirmed the exact candidate builds, runs, and sounds as intended. SDK compile and Designer source-pair integrity checks passed.
+
 ## XL-35h / XL-35c v1.0.1 · 9 October 2026
 
 - Integrated the updated Java implementations into both Designer projects.

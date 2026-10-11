@@ -20,8 +20,8 @@
     ]
   },
   "generator": {
-    "version": "2.0.0",
-    "path": "1958/versions/2.0.0",
+    "version": "2.0.1",
+    "path": "1958/versions/2.0.1",
     "module": "nineteenfiftyeight",
     "name": "1958 Dual Waveform Generator",
     "archived_version": "1.0.2",

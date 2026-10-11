@@ -1,6 +1,6 @@
 # Developer notes — 1958 Dual Waveform Generator
 
-**Canonical version:** `2.0.0`<br>
+**Canonical version:** `2.0.1`<br>
 **Collection:** Wardenclyffe Station<br>
 **Designer export:** `nineteenfiftyeight.java`<br>
 **Designer project:** `nineteenfiftyeight.vmod`<br>
@@ -14,8 +14,8 @@ Treat the current manual and this version's `.vmod`/`.java` pair as the behavior
 
 ## Source map
 
-- Canonical source folder: `1958/versions/2.0.0`.
-- User manual: [`USER-MANUAL.md`](versions/2.0.0/USER-MANUAL.md).
+- Canonical source folder: `1958/versions/2.0.1`.
+- User manual: [`USER-MANUAL.md`](versions/2.0.1/USER-MANUAL.md).
 - Release review and integrity files remain in the canonical version folder. Do not edit archived `.vmod`, `.java`, panel image, or checksum files in place.
 - Designer component inventory: AnalogVUMeter: 1, AudioJack: 3, Knob: 7, LED: 1, Label: 27, Switch: 2. Use stable component IDs in the `.vmod` as the UI-to-code contract; display text is user-facing and may be edited independently.
 
@@ -23,22 +23,9 @@ Treat the current manual and this version's `.vmod`/`.java` pair as the behavior
 
 The active per-sample callback is `ProcessSample()` in `nineteenfiftyeight.java`. It delegates module-specific work to: smoothMainFrequency, smoothDutyCycle, updatePowerGain, internalDepthScale, internalModulation, internalModulationRateHz, updateOutputMeter, resetGenerator, isPowered, mainFrequencyHz, scaleMultiplier, selectedWaveformMode, selectedModulationMode, selectedReferenceDestination, selectedWaveform, sine, triangle, variableTriangle, advancePhase, outputStage, frequencyScaleText, dutyLabel, modulationLabel, formatFrequency, formatOneDecimal, controlValueFromDisplay, readInput, clamp.
 
-The source declares `SAMPLE_RATE = 48000.0`. Rate-sensitive coefficients and buffers are derived from this value unless the relevant helper explicitly states otherwise. Confirm host-rate behavior before changing it.
+The DSP uses a 48 kHz internal rate. Main frequency, amplitude, and duty cycle use 10 ms smoothing. The internal triangle modulator spans 0.05–100 Hz in INT mode; INT/4 attenuates modulation depth. The dedicated REF TONE output is a fixed 3 V peak 1 kHz sine. In mixed-reference mode, a 0.02 reference coefficient is added before AMPLITUDE, so the main level control scales the reference too.
 
-Implementation notes present in the DSP source:
-
-- Control smoothing
-- Vintage vacuum-tube / thermal emulation
-- Mechanical VU meter ballistics
-- Oscillator state
-- Control smoothing
-- Power / simulated filament
-- Panel lamp follows the simulated filament state.
-- Control interpretation
-- As the simulated circuitry heats up, the cold oscillator begins slightly flat and settles toward its calibrated frequency.
-- Output-stage saturation/compression
-- Display helpers
-- Typed-value conversion
+The simulated power state warms up over about 1.8 seconds and fades down over about 0.4 seconds. The output stage compresses hot signals toward a 10 V peak ceiling. The VU meter uses smoothed ballistics and a 10 Hz display update.
 
 ## Key DSP constants
 
@@ -52,7 +39,7 @@ These are read directly from the canonical source; edit the Java and embedded De
 | `MAXIMUM_FREQUENCY_HZ` | `18000.0` |
 | `REFERENCE_FREQUENCY_HZ` | `1000.0` |
 | `REFERENCE_OUTPUT_VOLTS` | `3.0` |
-| `REFERENCE_MIX_VOLTS` | `1.0` |
+| `REFERENCE_MIX_LEVEL` | `0.02` |
 | `MAXIMUM_OUTPUT_VOLTS` | `10.0` |
 | `FM_INPUT_REFERENCE_VOLTS` | `5.0` |
 | `INTERNAL_FM_DEPTH` | `0.18` |
@@ -106,4 +93,4 @@ Check bypass after any DSP edit: direct-signal modules should retain the establi
 
 ## Validation provenance
 
-This note documents the canonical `2.0.0` source archive. The validation record and `SHA256.json` are the release-time references for test history and file integrity. This documentation pass does not rebuild or retest the canonized DSP and does not alter source files.
+This note documents the canonical `2.0.1` source archive. The validation record and `SHA256.json` are the release-time references for test history and file integrity. The user confirmed native-host build, runtime, and listening checks for this exact release candidate. The automated release validator recompiles both source forms and checks the serialized pair and release markers.

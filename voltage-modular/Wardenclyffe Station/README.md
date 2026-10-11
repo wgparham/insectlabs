@@ -12,7 +12,7 @@ Earlier archives remain unchanged. The LM-21 Mk III and compact RM1010 Mixing Am
 | --- | --- | ---: | --- |
 | [1919/ln Tone Burst Generator](1919-ln/versions/2.0.1/) | 1.0.0 | 2.0.1 | [User manual](1919-ln/versions/2.0.1/USER-MANUAL.md) |
 | [1947B SIN/RND Generator / Filter](1947b/versions/2.0.0/) | 1.1.0 | 2.0.0 | [User manual](1947b/versions/2.0.0/USER-MANUAL.md) |
-| [1958 Dual Waveform Generator](1958/versions/2.0.0/) | 1.0.0, 1.0.1, 1.0.2 | 2.0.0 | [User manual](1958/versions/2.0.0/USER-MANUAL.md) |
+| [1958 Dual Waveform Generator](1958/versions/2.0.1/) | 1.0.0, 1.0.1, 1.0.2 | 2.0.1 | [User manual](1958/versions/2.0.1/USER-MANUAL.md) |
 | [1998/4 Dynamic Modulator](1998-4/versions/2.0.0/) | 1.0.0 | 2.0.0 | [User manual](1998-4/versions/2.0.0/USER-MANUAL.md) |
 | [1A-30 Deep Tone Generator / Modulator](1a-30/versions/2.0.0/) | 1.0.0 | 2.0.0 | [User manual](1a-30/versions/2.0.0/USER-MANUAL.md) |
 | [6121198a Fader / Distributer A — Linear](6121198a/versions/2.0.0/) | 1.0.0 | 2.0.0 | [User manual](6121198a/versions/2.0.0/USER-MANUAL.md) |

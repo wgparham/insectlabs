@@ -1,0 +1,15 @@
+{
+  "source_pair": [
+    "1958.java",
+    "1958.vmod"
+  ],
+  "candidate_notes_version": "v2.0.1rc",
+  "candidate_sha256": {
+    "1958.java": "30407fe49abdc0255c4480a6475345eb0b1cae7632bec28f2f28eb8fd7716755",
+    "1958.vmod": "773b972abc4b1ff244ec6e66a0c3a266c93fa76f0fda2945facef23f1d178a47",
+    "1958_hero.png": "2e53d991971b8824dc9272f6282fb69045c3e75cfd63553ffdf36c373cce8802"
+  },
+  "approved_by_user": true,
+  "approval_date": "2026-10-11",
+  "approval_basis": "User confirmed the 2.0.1 release candidate compiles, runs, and sounds great before canonization checks."
+}
