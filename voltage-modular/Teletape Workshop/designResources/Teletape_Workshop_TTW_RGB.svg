@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="370" viewBox="0 0 1000 370" role="img" aria-label="Teletape Workshop RGB TTW monogram">
+ <defs>
+  <filter id="phosphor" x="-8%" y="-15%" width="116%" height="130%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="8"/></filter>
+ </defs>
+ <g fill-rule="evenodd" stroke="none">
+  <g opacity=".30" filter="url(#phosphor)">
+   <path d="M47.0,1466.0 L1424.0,1466.0 L1424.0,1104.0 L962.0,1104.0 L962.0,0.0 L509.0,0.0 L509.0,1104.0 L47.0,1104.0 L47.0,1466.0 Z" transform="translate(24.000 338) scale(0.20507812 -0.20507812)" fill="#F43D36"/><path d="M47.0,1466.0 L1424.0,1466.0 L1424.0,1104.0 L962.0,1104.0 L962.0,0.0 L509.0,0.0 L509.0,1104.0 L47.0,1104.0 L47.0,1466.0 Z" transform="translate(289.311 338) scale(0.20507812 -0.20507812)" fill="#26DB6B"/><path d="M-1.0,1466.0 L429.0,1466.0 L584.0,647.0 L810.0,1466.0 L1239.0,1466.0 L1466.0,647.0 L1621.0,1466.0 L2049.0,1466.0 L1726.0,0.0 L1282.0,0.0 L1025.0,923.0 L769.0,0.0 L325.0,0.0 L-1.0,1466.0 Z" transform="translate(550.621 338) scale(0.20507812 -0.20507812)" fill="#3669FF"/>
+  </g>
+  <g style="mix-blend-mode:screen" opacity=".84">
+   <path d="M47.0,1466.0 L1424.0,1466.0 L1424.0,1104.0 L962.0,1104.0 L962.0,0.0 L509.0,0.0 L509.0,1104.0 L47.0,1104.0 L47.0,1466.0 Z" transform="translate(24.000 338) scale(0.20507812 -0.20507812)" fill="#F43D36"/><path d="M47.0,1466.0 L1424.0,1466.0 L1424.0,1104.0 L962.0,1104.0 L962.0,0.0 L509.0,0.0 L509.0,1104.0 L47.0,1104.0 L47.0,1466.0 Z" transform="translate(289.311 338) scale(0.20507812 -0.20507812)" fill="#26DB6B"/><path d="M-1.0,1466.0 L429.0,1466.0 L584.0,647.0 L810.0,1466.0 L1239.0,1466.0 L1466.0,647.0 L1621.0,1466.0 L2049.0,1466.0 L1726.0,0.0 L1282.0,0.0 L1025.0,923.0 L769.0,0.0 L325.0,0.0 L-1.0,1466.0 Z" transform="translate(550.621 338) scale(0.20507812 -0.20507812)" fill="#3669FF"/>
+  </g>
+ </g>
+</svg>

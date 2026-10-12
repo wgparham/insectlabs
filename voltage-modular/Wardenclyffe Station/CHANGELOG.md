@@ -4,6 +4,12 @@ Promoted the user-tested pair to canonical. DELAY now reaches five seconds and m
 
 # Wardenclyffe Station changelog
 
+## 2026-10-12 — b16 v2.0.0
+
+- Canonized the user-tested and Cherry Audio-published 16 HP blanking panel, replacing the retired b08 panel in the active collection index.
+- Preserved the user-uploaded Designer/Java pair unchanged, archived the exact pair, added the blank-panel manual, developer notes, test record and checksums.
+- Identified the duplicate retired b08 v1.0.0 copy in the b16 working folder; it remains as a cleanup follow-up, with the original preserved in Git history.
+
 ## 2026-10-11 — Mixer roadmap correction
 
 RM1010 v1.0.0 fully supersedes the earlier minimixer concept. There is no separate minimixer module or active minimixer development folder.

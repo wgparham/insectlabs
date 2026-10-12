@@ -2,7 +2,7 @@
 
 Wardenclyffe Station is Insect Laboratories’ mono-first collection of postwar test instruments adapted for electronic music. The panels and behavior emphasize manual operation, visible signal flow, useful voltage standards, and distinct hardware character.
 
-The collection contains twenty-four canonized product modules. Earlier products retain their 1.x archives alongside their 2.x releases where applicable; 1998/4 is v2.0.1, LM-21 is v1.1.0, RM1010 is v1.0.0, Model 62 is v2.0.0, the XL-35 filter pair is v1.0.1, and 21-24eq is v1.0.1. sn46 Standards is canonical v1.0.0. The collection also includes the b08 Blanking Panel. Use [CANONICAL.json](CANONICAL.json) for the exact active releases and [USER-MANUAL.md](USER-MANUAL.md) for operating guidance.
+The collection contains twenty-four canonized product modules. Earlier products retain their 1.x archives alongside their 2.x releases where applicable; 1998/4 is v2.0.1, LM-21 is v1.1.0, RM1010 is v1.0.0, Model 62 is v2.0.0, the XL-35 filter pair is v1.0.1, and 21-24eq is v1.0.1. sn46 Standards is canonical v1.0.0. The collection includes the b16 16 HP Blanking Panel, which replaces the retired b08 panel. Use [CANONICAL.json](CANONICAL.json) for the exact active releases and [USER-MANUAL.md](USER-MANUAL.md) for operating guidance.
 
 Earlier archives remain unchanged. The LM-21 Mk III and compact RM1010 Mixing Amplifier are canonical. The XL-35h / XL-35c matched filters add separately selectable high-pass and low-pass instruments, while the 21-24eq Frequency Corrector provides passive-voiced bass and treble shaping with three frequency profiles.
 
@@ -15,7 +15,7 @@ Earlier archives remain unchanged. The LM-21 Mk III and compact RM1010 Mixing Am
 | [1958 Dual Waveform Generator](1958/versions/2.0.1/) | 1.0.0, 1.0.1, 1.0.2, 2.0.0 | 2.0.1 | [User manual](1958/versions/2.0.1/USER-MANUAL.md) |
 | [1998/4 Dynamic Modulator](1998-4/versions/2.0.1/) | 1.0.0, 2.0.0 | 2.0.1 | [User manual](1998-4/versions/2.0.1/USER-MANUAL.md) |
 | [1A-30 Deep Tone Generator / Modulator](1a-30/versions/2.0.0/) | 1.0.0 | 2.0.0 | [User manual](1a-30/versions/2.0.0/USER-MANUAL.md) |
-| [b08 Blanking Panel](b08/1.0.0/) | — | 1.0.0 | — |
+| [b16 Blanking Panel](b16/versions/2.0.0/) | — | 2.0.0 | [User manual](b16/versions/2.0.0/USER-MANUAL.md) |
 | [6121198a Fader / Distributer A — Linear](612-1-198a/versions/2.0.0/) | 1.0.0 | 2.0.0 | [User manual](612-1-198a/versions/2.0.0/USER-MANUAL.md) |
 | [6121198b Fader / Distributer B — Equal Power](612-1-198b/versions/2.0.0/) | 1.0.0 | 2.0.0 | [User manual](612-1-198b/versions/2.0.0/USER-MANUAL.md) |
 | [AC/1D SQR/SIN Function Generator](ac-1d/versions/2.1.2/) | 1.0.0 | 2.1.2 | [User manual](ac-1d/versions/2.1.2/USER-MANUAL.md) |

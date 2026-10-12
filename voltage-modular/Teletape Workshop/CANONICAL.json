@@ -4,5 +4,11 @@
     "path": "RVG/versions/1.8.0",
     "module": "rvg",
     "name": "RVG Random Voltage Generator"
+  },
+  "b08": {
+    "version": "1.0.0",
+    "path": "b08/versions/1.0.0",
+    "module": "b08",
+    "name": "b08 Blanking Panel"
   }
 }

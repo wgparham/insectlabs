@@ -2,9 +2,9 @@
 
 Short module descriptions for the Cherry Audio Notes fields. Versions and names below follow the current Wardenclyffe Station canonical list.
 
-## b08 Blanking Panel — 1.0.0
+## b16 Blanking Panel — 2.0.0
 
-b08 is a 1.6-inch visual blanking panel for filling unused rack space. Its artwork combines the Wardenclyffe W insignia, a phi mark, and a wireframe globe.
+b16 is a 16 HP visual blanking panel for filling unused rack space. Its artwork combines the Wardenclyffe stencil, a phi mark, a wireframe globe and the UMMO footer. It has no custom DSP or functional controls.
 
 
 ## 1919/ln Tone Burst Generator — 2.0.1
