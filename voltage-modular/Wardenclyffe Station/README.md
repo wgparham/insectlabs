@@ -33,3 +33,6 @@ Earlier archives remain unchanged. The LM-21 Mk III and compact RM1010 Mixing Am
 | [XL-35c Low-Pass Filters](xl-35c/versions/1.0.1/) | 1.0.0 | 1.0.1 | [User manual](xl-35c/versions/1.0.1/USER-MANUAL.md) |
 | [21-24eq Frequency Corrector](21-24eq/versions/1.0.1/) | — | 1.0.1 | [User manual](21-24eq/versions/1.0.1/USER-MANUAL.md) |
 | [sn46 Standards](sn46/versions/1.0.0/) | — | 1.0.0 | [User manual](sn46/versions/1.0.0/USER-MANUAL.md) |
+
+Series-specific circuit research and source references are preserved in the [research archive](research/README.md).
+

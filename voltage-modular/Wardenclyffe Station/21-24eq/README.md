@@ -9,4 +9,5 @@
 - [Canonical Designer project](versions/1.0.1/twentyonetwentyfour.vmod) and [Java source](versions/1.0.1/twentyonetwentyfour.java)
 - [Panel artwork](versions/1.0.1/21-24eq_hero.png)
 
-The `versions/1.0.1/` archive is the sole canonical project, source, and panel-art set. Superseded working copies have been removed; the development folder retains design and response-analysis materials.
+The `versions/1.0.1/` archive is the sole canonical project, source, and panel-art set. Superseded working copies have been removed. Circuit analysis and source references are preserved in the [Wardenclyffe research archive](../research/21-24eq/README.md).
+

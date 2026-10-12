@@ -42,7 +42,7 @@ Modeling assumption: 1 kΩ source impedance and 100 kΩ load. A series 220 nF in
 
 ## Response preview
 
-`response-ranges.png` is a first-pass nodal simulation of the supplied passive topology at 1 kΩ source impedance and 100 kΩ output load. It compares the three switch positions at the knob midpoint and four control extremes. The plotted response excludes the optional input coupling, nonlinear drive stage, component tolerance, and host-level behavior, so it is a circuit model rather than a measurement. `input-coupling.png` compares the reference midpoint response with no added coupling, 220 nF, and 100 nF. `model_passive_network.py` defines all three switch profiles. `response-candidates.png` is the earlier qualitative redraw and has been superseded. The idealized unity-centered digital shelf preview is also superseded.
+`response-ranges.png` is a first-pass nodal simulation of the supplied passive topology at 1 kΩ source impedance and 100 kΩ output load. It compares the three switch positions at the knob midpoint and four control extremes. The plotted response excludes the optional input coupling, nonlinear drive stage, component tolerance, and host-level behavior, so it is a circuit model rather than a measurement. `input-coupling.png` compares the reference midpoint response with no added coupling, 220 nF, and 100 nF. [`model_passive_network.py`](../../../research/21-24eq/model_passive_network.py) defines all three switch profiles. The earlier qualitative redraw is retained as superseded research in [the research archive](../../../research/21-24eq/superseded/response-candidates.png); it is not a measurement or a release response. The idealized unity-centered digital shelf preview is also superseded.
 
 ## First DSP draft
 
@@ -61,3 +61,4 @@ This is a first approximation of the circuit-derived response, not a component-e
 ## Current state
 
 The supplied Designer project and Java export establish the 1.6-wide control layout. The Designer project is synchronized with the Java export, and the pair passes source-parity, project-round-trip, and Java 17 SDK compilation checks. Headless tests cover routing, switch profiles, bypass, and recovery behavior. Listening and native Designer/host checks remain outstanding; see `REVIEW.md` for the precise validation status.
+
