@@ -1,6 +1,6 @@
 # b16 Blanking Panel
 
-**Canonical release: v2.0.0.** A 16 HP Wardenclyffe Station visual blanking panel. This is an artwork-only visualizer with no custom DSP, jacks or functional controls. It supersedes the retired 8 HP b08 blanking panel.
+**Canonical release: v2.0.0.** A 16 HP Wardenclyffe Station visual blanking panel. This is an artwork-only visualizer with no custom DSP, jacks or functional controls. It fully replaces the retired 8 HP Wardenclyffe b08 blanking panel. The b08 v1.0.0 archive is retained under this module for archival continuity; it documents the predecessor and is not an earlier 16 HP b16 build.
 
 - [User manual](versions/2.0.0/USER-MANUAL.md)
 - [Developer notes](DEVELOPER-NOTES.md)
@@ -9,4 +9,4 @@
 - [Designer project](versions/2.0.0/b16.vmod) and [Java export](versions/2.0.0/b16.java)
 - [Release review](versions/2.0.0/REVIEW.md)
 
-The user-supplied 2.0.0 pair remains at `2.0.0/` and is byte-identical to the archived pair. The legacy `1.0.0/` directory is an exact copy of the retired Wardenclyffe b08 archive, not an earlier b16 build; it remains in the working tree as an unresolved cleanup item. Its original is also preserved in Git history.
+The user-supplied 2.0.0 pair remains at `2.0.0/` and is byte-identical to the archived pair. The `1.0.0/` directory retains the exact retired 8 HP Wardenclyffe b08 v1.0.0 source pair and hero image as the predecessor archive. Wardenclyffe’s 8 HP blank is fully replaced by this 16 HP module; the archived predecessor is retained for continuity, not as an earlier 16 HP build.
