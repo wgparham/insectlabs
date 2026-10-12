@@ -4,9 +4,9 @@
   "lm21mark3.java": "d2c111a68c60e51b587d9bdcfa72252591882c228002fcbaf0928d58d3b4958e",
   "lm21mark3.vmod": "c7c7da177f5c9fa93db13ef3c9549bd2a276f7bfb0b1094a71557029183e6f8a",
   "README.md": "58c9227e64e122987b0e35117cd31816f79aca51ba8d0a4bdeb436afbd78309b",
-  "REVIEW.md": "94d0239df7ae6d5d77b561a3d17e34daeb4b8f6fc750f114a6ac3f092c2ebd3e",
-  "USER-MANUAL.md": "c03765329de1741813fed96242a820559724b806d7ea576baac52e14195235c7",
   "references/lm-21_mk3_reverbsc_prototype.java.txt": "00c66098b8ff9c5bb2b4b22de0a48d5a29628305ad881da232bc0e45382e4625",
+  "REVIEW.md": "94d0239df7ae6d5d77b561a3d17e34daeb4b8f6fc750f114a6ac3f092c2ebd3e",
+  "tests/baseline/pre-cleanup.java.txt": "daebf9c1d3aa799621a50ef730c3f0f61a68c4e3222992013cf7059bd2f4b6e5",
   "tests/validate.py": "2b7e8a8312a064c733c17bb62065e8e5a7ad3f398d15003e7cb81539cfb92a45",
-  "tests/baseline/pre-cleanup.java.txt": "daebf9c1d3aa799621a50ef730c3f0f61a68c4e3222992013cf7059bd2f4b6e5"
+  "USER-MANUAL.md": "c03765329de1741813fed96242a820559724b806d7ea576baac52e14195235c7"
 }

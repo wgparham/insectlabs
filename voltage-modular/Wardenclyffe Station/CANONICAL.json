@@ -28,7 +28,8 @@
     "archived_versions": [
       "1.0.0",
       "1.0.1",
-      "1.0.2"
+      "1.0.2",
+      "2.0.0"
     ]
   },
   "following": {
@@ -38,7 +39,8 @@
     "name": "1998/4 Dynamic Modulator",
     "archived_version": "1.0.0",
     "archived_versions": [
-      "1.0.0"
+      "1.0.0",
+      "2.0.0"
     ]
   },
   "deeptone": {

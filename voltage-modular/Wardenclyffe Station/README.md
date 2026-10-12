@@ -8,11 +8,11 @@ Earlier archives remain unchanged. The LM-21 Mk III and compact RM1010 Mixing Am
 
 ## Canonical modules
 
-| Product | 1.x archives | Current version | Manual |
+| Product | Earlier releases | Current version | Manual |
 | --- | --- | ---: | --- |
 | [1919/ln Tone Burst Generator](1919-ln/versions/2.0.1/) | 1.0.0 | 2.0.1 | [User manual](1919-ln/versions/2.0.1/USER-MANUAL.md) |
 | [1947B SIN/RND Generator / Filter](1947b/versions/2.0.0/) | 1.1.0 | 2.0.0 | [User manual](1947b/versions/2.0.0/USER-MANUAL.md) |
-| [1958 Dual Waveform Generator](1958/versions/2.0.1/) | 1.0.0, 1.0.1, 1.0.2 | 2.0.1 | [User manual](1958/versions/2.0.1/USER-MANUAL.md) |
+| [1958 Dual Waveform Generator](1958/versions/2.0.1/) | 1.0.0, 1.0.1, 1.0.2, 2.0.0 | 2.0.1 | [User manual](1958/versions/2.0.1/USER-MANUAL.md) |
 | [1998/4 Dynamic Modulator](1998-4/versions/2.0.1/) | 1.0.0, 2.0.0 | 2.0.1 | [User manual](1998-4/versions/2.0.1/USER-MANUAL.md) |
 | [1A-30 Deep Tone Generator / Modulator](1a-30/versions/2.0.0/) | 1.0.0 | 2.0.0 | [User manual](1a-30/versions/2.0.0/USER-MANUAL.md) |
 | [6121198a Fader / Distributer A — Linear](612-1-198a/versions/2.0.0/) | 1.0.0 | 2.0.0 | [User manual](612-1-198a/versions/2.0.0/USER-MANUAL.md) |
@@ -26,7 +26,7 @@ Earlier archives remain unchanged. The LM-21 Mk III and compact RM1010 Mixing Am
 | [SW2 Switch / Distributer](sw2/versions/2.0.0/) | 1.0.0 | 2.0.0 | [User manual](sw2/versions/2.0.0/USER-MANUAL.md) |
 | [Type 9414 Frequency Analyzer](type-9414/versions/2.0.0/) | 1.0.0 | 2.0.0 | [User manual](type-9414/versions/2.0.0/USER-MANUAL.md) |
 | [Type 23 Signal Processor](type-23/versions/2.0.0/) | 1.0.0, 1.0.1 | 2.0.0 | [User manual](type-23/versions/2.0.0/USER-MANUAL.md) |
-| [Model 62 Wire Player Recorder](model-62/versions/2.0.0/) | — | 1.1.0 | [User manual](model-62/versions/2.0.0/USER-MANUAL.md) |
+| [Model 62 Wire Player Recorder](model-62/versions/2.0.0/) | 1.0.0, 1.1.0 | 2.0.0 | [User manual](model-62/versions/2.0.0/USER-MANUAL.md) |
 | [LM-21 Mk III Matrix Mixer](lm-21/versions/1.1.0/) | 1.0.1 | 1.1.0 | [User manual](lm-21/versions/1.1.0/USER-MANUAL.md) |
 | [RM1010 Mixing Amplifier](rm1010/versions/1.0.0/) | — | 1.0.0 | [User manual](rm1010/versions/1.0.0/USER-MANUAL.md) |
 | [XL-35h High-Pass Filters](xl-35h/versions/1.0.1/) | 1.0.0 | 1.0.1 | [User manual](xl-35h/versions/1.0.1/USER-MANUAL.md) |

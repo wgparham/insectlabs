@@ -5,7 +5,7 @@
   "rm1010.java": "1e798d241a08af056f037e45d7262eb19f58cf7e08e19998c443d6ef353b6598",
   "rm1010.vmod": "3e53f08da732f4d3ff1c8a3290b7feb3235fc66c00a643e5182379adf8a9eda0",
   "rm1010_hero.png": "76d0621b2ed0a69c16b13c662cb90d0543f015db67075ea540eb63eb27f6cd30",
-  "USER-MANUAL.md": "a8d2ff83d79ac8a7aa12f1664bae7da0e864cb03a81225cce1e4cb56059864de",
+  "tests/baseline/pre-cleanup.java.txt": "7dbd1668a6a0a7e83858ec9c722564f45bd8f585114c6540b62bd639af081688",
   "tests/validate.py": "0e6a39497ec803ba96a116d539c4bfe44ff2bf83bec49f4741653a99c642d63e",
-  "tests/baseline/pre-cleanup.java.txt": "7dbd1668a6a0a7e83858ec9c722564f45bd8f585114c6540b62bd639af081688"
+  "USER-MANUAL.md": "a8d2ff83d79ac8a7aa12f1664bae7da0e864cb03a81225cce1e4cb56059864de"
 }

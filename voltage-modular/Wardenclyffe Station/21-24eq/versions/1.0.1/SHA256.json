@@ -1,7 +1,5 @@
 {
   "21-24eq_hero.png": "55778e7340a7f7baa796146ba4216c389d1ac9c0913acbec1a4d8c27c59f38ef",
-  "twentyonetwentyfour.java": "264c133d5fb878dc178f9204851181fc76f8badc7571fa54a22688d44204e5a5",
-  "twentyonetwentyfour.vmod": "49f863c09553325c15ed2bf75cb6fbededa4fb7561821f46ced7e929abd5bb39",
   "DESIGN.md": "1bfbf5d8d3d6ffd060757ff5d3a7eda81e0fea2d71d45be23a279a81b33f1e26",
   "DEVELOPER-NOTES.md": "465b16ea4ff1906af2a4296e30e352e1d6d0ca04fc310d28ff77be1b9f394553",
   "input-coupling.png": "7b968a68d3fc102382ddedc6ad6c1fd582a445e3575515de6fbc80eba257720c",
@@ -10,5 +8,7 @@
   "response-ranges.png": "171c4048b1007c252f709e350cd0e4b875030a01cc508d74bedc63965d650fe9",
   "REVIEW.md": "0dc7e1dab8184f61908872dd34619a13517d206cd3c08e4503b3577062e4a409",
   "tests/validate.py": "240a05620877a8606414ec83a1808c67ee9282739c15b31b108f6cba9fe4cbf5",
+  "twentyonetwentyfour.java": "264c133d5fb878dc178f9204851181fc76f8badc7571fa54a22688d44204e5a5",
+  "twentyonetwentyfour.vmod": "49f863c09553325c15ed2bf75cb6fbededa4fb7561821f46ced7e929abd5bb39",
   "USER-MANUAL.md": "9698b92dac02a589c32e6e1863d7f058b18235778e493a6298a65b7f328768b6"
 }
