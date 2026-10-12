@@ -6,8 +6,8 @@
 - [Developer notes](DEVELOPER-NOTES.md)
 - [Release review](REVIEW.md)
 - [Canonical archive](versions/1.0.1/README.md)
-- [Canonical Designer project](versions/1.0.1/twentyonetwentyfour.vmod) and [Java source](versions/1.0.1/twentyonetwentyfour.java)
-- [Panel artwork](versions/1.0.1/21-24eq_hero.png)
+- [Canonical Designer project](versions/1.0.1/tttf.vmod) and [Java source](versions/1.0.1/tttf.java)
+- [Panel artwork](versions/1.0.1/tttf_hero.png)
 
-The `versions/1.0.1/` archive is the sole canonical project, source, and panel-art set. Superseded working copies have been removed. Circuit analysis and source references are preserved in the [Wardenclyffe research archive](../research/21-24eq/README.md).
+The `versions/1.0.1/` archive is the sole canonical project, source, and panel-art set. Its published Java class and package are `tttf` and `com.insectlabs.tttf`; Cherry Audio required this class rename during publication. The user has rechecked this set and confirmed it is the correct current v1.0.1 release, tested and published. Superseded source and artwork copies have been removed. Circuit analysis and source references are preserved in the [Wardenclyffe research archive](../research/21-24eq/README.md).
 

@@ -140,8 +140,8 @@ public static void main(String[] args) {
 """
 
 
-java_path = DEVELOPMENT / "twentyonetwentyfour.java"
-vmod_path = DEVELOPMENT / "twentyonetwentyfour.vmod"
+java_path = DEVELOPMENT / "tttf.java"
+vmod_path = DEVELOPMENT / "tttf.vmod"
 java_source = java_path.read_text(encoding="utf-8-sig")
 raw_project = vmod_path.read_bytes()
 reader = Reader(raw_project)
@@ -149,6 +149,8 @@ tree = reader.tree()
 assert reader.p == len(raw_project), "Unexpected trailing bytes in Designer project"
 assert encode(tree) == raw_project, "Designer project does not round-trip"
 metadata = props(tree)
+assert metadata["class name"] == "tttf", "Published Java class identity"
+assert metadata["package name"] == "com.insectlabs.tttf", "Published Java package identity"
 assert metadata["notes"].splitlines()[0] in {"v1.0.1rc", "v1.0.1"}, (
     "Module Notes must identify the 1.0.1 candidate or release"
 )

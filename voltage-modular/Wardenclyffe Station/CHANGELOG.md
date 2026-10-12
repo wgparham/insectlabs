@@ -4,11 +4,15 @@ Promoted the user-tested pair to canonical. DELAY now reaches five seconds and m
 
 # Wardenclyffe Station changelog
 
+## 2026-10-12 — 21-24eq v1.0.1 published identity correction
+
+Updated the canonical source pair, artwork, archive links, validation paths, hashes and collection record to the user-tested and Cherry Audio-published `tttf` set. Cherry Audio required a Java class rename after a server-side publication error; the user confirms the set otherwise matches the originally canonized build. Removed superseded duplicate source/artwork files and generated `.bak` files.
+
 ## 2026-10-12 — b16 v2.0.0
 
 - Canonized the user-tested and Cherry Audio-published 16 HP blanking panel, replacing the retired b08 panel in the active collection index.
 - Preserved the user-uploaded Designer/Java pair unchanged, archived the exact pair, added the blank-panel manual, developer notes, test record and checksums.
-- Identified the duplicate retired b08 v1.0.0 copy in the b16 working folder; it remains as a cleanup follow-up, with the original preserved in Git history.
+- Retained the retired 8 HP Wardenclyffe b08 v1.0.0 files under `b16/1.0.0/` as the predecessor archive for continuity. The 16 HP b16 fully replaces that 8 HP blank in the active lineup.
 
 ## 2026-10-11 — Mixer roadmap correction
 

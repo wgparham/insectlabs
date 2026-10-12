@@ -63,7 +63,7 @@
     "version": "2.0.0",
     "path": "612-1-198a/versions/2.0.0",
     "module": "faderdistributera",
-    "name": "6121198a Fader / Distributer — Linear",
+    "name": "6121198a Fader / Distributer \u2014 Linear",
     "archived_version": "1.0.0",
     "archived_versions": [
       "1.0.0"
@@ -73,7 +73,7 @@
     "version": "2.0.0",
     "path": "612-1-198b/versions/2.0.0",
     "module": "faderdistributerb",
-    "name": "6121198b Fader / Distributer — Equal Power",
+    "name": "6121198b Fader / Distributer \u2014 Equal Power",
     "archived_version": "1.0.0",
     "archived_versions": [
       "1.0.0"
@@ -166,7 +166,7 @@
     "version": "1.1.0",
     "path": "lm-21/versions/1.1.0",
     "module": "lm21mark3",
-    "name": "LM-21 Mk III Matrix Mixer — Artificial Acoustic Distance Generator",
+    "name": "LM-21 Mk III Matrix Mixer \u2014 Artificial Acoustic Distance Generator",
     "archived_version": "1.0.1",
     "archived_versions": [
       "1.0.1"
@@ -212,7 +212,7 @@
   "frequency-corrector": {
     "version": "1.0.1",
     "path": "21-24eq/versions/1.0.1",
-    "module": "twentyonetwentyfour",
+    "module": "tttf",
     "name": "21-24eq Frequency Corrector"
   },
   "sn46": {

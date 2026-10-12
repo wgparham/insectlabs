@@ -1,7 +1,9 @@
 # 21-24eq v1.0.1 Developer Notes
 
+**Published Java identity:** class `tttf`, package `com.insectlabs.tttf`. Cherry Audio required the class rename during publication; the user confirms this is the correct active published identity.
+
 **Collection:** Wardenclyffe Station
-**Sources:** `twentyonetwentyfour.vmod` and `twentyonetwentyfour.java` in this archive
+**Sources:** `tttf.vmod` and `tttf.java` in this archive
 **User documentation:** [USER-MANUAL.md](USER-MANUAL.md)
 **Validation record:** [REVIEW.md](REVIEW.md)
 

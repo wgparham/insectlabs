@@ -2,6 +2,10 @@
 
 Date: 2026-10-09. User instruction: integrate the updated Java source into the Designer project, test it, and bump to v1.0.1 if it passes. The updated source and project passed the repeatable automated checks described below and were archived as v1.0.1. This is the first canonized archive; the earlier 1.0.0 candidate remained development-only.
 
+## Published identity update
+
+The active canonical pair is `tttf.vmod` and `tttf.java`, with Java class `tttf` in package `com.insectlabs.tttf`. Cherry Audio required the class rename because of a server-side publication error. The user rechecked this set and confirmed it is the correct current v1.0.1 release, tested and published.
+
 ## Passed checks
 
 - Passed: Designer `.vmod` parser/encoder round-trip and embedded/exported source agreement after synchronization.
@@ -18,4 +22,4 @@ Date: 2026-10-09. User instruction: integrate the updated Java source into the D
 
 ## Release contents
 
-The immutable v1.0.1 folder contains the exact synchronized project/source pair, hero artwork, manual, developer notes, review, design record, release notes, repeatable validation, and SHA-256 manifest. No prior 1.0.0 release was canonized or overwritten.
+The v1.0.1 folder contains the active synchronized published project/source pair, hero artwork, manual, developer notes, review, design record, release notes, repeatable validation, and SHA-256 manifest. No prior 1.0.0 release was canonized or overwritten.
