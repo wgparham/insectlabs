@@ -2,8 +2,8 @@
 
 **Canonical version:** `2.1.0`<br>
 **Collection:** Wardenclyffe Station<br>
-**Designer export:** `sn16u.java`<br>
-**Designer project:** `sn16u.vmod`<br>
+**Canonical Designer export:** `versions/2.1.0/sn16u.java`<br>
+**Canonical Designer project:** `versions/2.1.0/sn16u.vmod`<br>
 **Validation record:** REVIEW.md<br>
 
 ## Role and design contract
@@ -21,7 +21,7 @@ Treat the current manual and this version's `.vmod`/`.java` pair as the behavior
 
 ## DSP architecture
 
-The active per-sample callback is `ProcessSample()` in `sn16u.java`. It delegates module-specific work to: finite, clamp, readInput, nextPhase, fineCents, cutoffHz, convertPitch, pitchHz, updateControls, beginSweep, processSweep, resetMeasurements, silenceSources, refreshDisplays.
+The active per-sample callback is `ProcessSample()` in `versions/2.1.0/sn16u.java`. It delegates module-specific work to: finite, clamp, readInput, nextPhase, fineCents, cutoffHz, convertPitch, pitchHz, updateControls, beginSweep, processSweep, resetMeasurements, silenceSources, refreshDisplays.
 
 Persistent DSP helper/state classes: `OnePole`, `WindowMeter`, `FrequencyMeter`, `NoiseSource`.
 

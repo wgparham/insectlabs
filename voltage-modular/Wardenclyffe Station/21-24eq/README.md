@@ -6,7 +6,7 @@
 - [Developer notes](DEVELOPER-NOTES.md)
 - [Release review](REVIEW.md)
 - [Canonical archive](versions/1.0.1/README.md)
-- [Development project](development/twentyonetwentyfour.vmod) and [Java source](development/twentyonetwentyfour.java)
-- [Panel artwork](21-24eq_hero.png)
+- [Canonical Designer project](versions/1.0.1/twentyonetwentyfour.vmod) and [Java source](versions/1.0.1/twentyonetwentyfour.java)
+- [Panel artwork](versions/1.0.1/21-24eq_hero.png)
 
-The immutable release snapshot is in `versions/1.0.1/`. Earlier 1.0.0 files remained a development candidate and were not canonized.
+The `versions/1.0.1/` archive is the sole canonical project, source, and panel-art set. Superseded working copies have been removed; the development folder retains design and response-analysis materials.

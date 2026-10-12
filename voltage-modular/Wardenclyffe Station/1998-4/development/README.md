@@ -1,5 +1,3 @@
-# 1998/4 current working pair
+# 1998/4 v2.0.1 Supporting Material
 
-The active pair is `nineteenninetyeight.vmod` and `nineteenninetyeight.java`. Version 2.0.1 is canonized in [`../versions/2.0.1/`](../versions/2.0.1/).
-
-Start future development from this synchronized pair, update the Notes version, and preserve the versioned release folder as the immutable canonical record.
+The authoritative Java source, Designer project, and panel artwork are in the [canonical v2.0.1 archive](../versions/2.0.1/README.md). Duplicate development copies were removed. This folder retains the release status note and local recovery snapshots.

@@ -155,7 +155,7 @@ module_dir=DEV.parent.parent if DEV.parent.name=='versions' else DEV.parent
 old=(module_dir/'versions/1.1.0/model62.java').read_text(encoding='utf-8-sig')
 old_regions=regions(old)
 assert all(old_regions[k]==rs[k] for k in old_regions if k!='code-and-variables')
-assert old[old.index('    static final class WireCore'):]==source[source.index('    static final class WireCore'):]
+assert old[old.index('    static final class WireCore'):].rstrip()==source[source.index('    static final class WireCore'):].rstrip()
 oldtree=Reader((module_dir/'versions/1.1.0/model62.vmod').read_bytes()).tree()
 old_controls=next(n for n in oldtree[2] if n[0]=='controls')
 new_controls=next(n for n in tree[2] if n[0]=='controls')

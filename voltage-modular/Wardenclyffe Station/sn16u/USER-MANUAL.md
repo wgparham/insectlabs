@@ -2,7 +2,7 @@
 
 **Version 2.1.0 · Voltage Modular · Wardenclyffe Station**
 
-![sn16u Universal Test Bench panel](sn16u_hero.png)
+![sn16u Universal Test Bench panel](versions/2.1.0/sn16u_hero.png)
 
 sn16u is a manual laboratory test instrument for checking and calibrating pitch voltage, reference frequencies, audio level, frequency, and simple filtering. Reference signals are clean and stable; the instrument does not add the vintage coloration used by other Laboratory modules.
 

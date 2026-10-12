@@ -11,4 +11,4 @@
 - [Previous v1.1.0 archive](versions/1.1.0/README.md)
 - [Original v1.0.0 archive](versions/1.0.0/README.md)
 
-Future changes belong in `development/` and should start from the canonical v2.0.0 pair.
+The v2.0.0 archive is the authoritative project, source, and panel-art set. Superseded development copies were removed; future work should start from this archive.
