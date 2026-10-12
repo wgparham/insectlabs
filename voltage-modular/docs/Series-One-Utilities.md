@@ -5,15 +5,15 @@ This document records utility capabilities in the completed collection. Module r
 | Product | Current version | Role |
 | --- | ---: | --- |
 | [Type 23 Signal Processor](../Wardenclyffe%20Station/type-23/versions/2.0.0/README.md) | 2.0.0 | Two independent mono PROC/VCA stages with bipolar gain, post-character offset and external control input |
-| [6121198a Fader / Distributer A](../Wardenclyffe%20Station/6121198a/versions/2.0.0/README.md) | 2.0.0 | Linear X/Y-to-Z crossfade and S-to-1/2 distribution |
-| [6121198b Fader / Distributer B](../Wardenclyffe%20Station/6121198b/versions/2.0.0/README.md) | 2.0.0 | Equal-power variant with a related, distinct relay voice |
-| [SW1 Relay Switch](../Wardenclyffe%20Station/sw1/versions/2.0.0/README.md) | 2.0.0 | Patch-programmable relay switching with optional CLK contact filter |
+| [6121198a Fader / Distributer A](../Wardenclyffe%20Station/612-1-198a/versions/2.0.0/README.md) | 2.0.0 | Linear X/Y-to-Z crossfade and S-to-1/2 distribution |
+| [6121198b Fader / Distributer B](../Wardenclyffe%20Station/612-1-198b/versions/2.0.0/README.md) | 2.0.0 | Equal-power variant with a related, distinct relay voice |
+| [SW1 Relay Switch](../Wardenclyffe%20Station/sw1/versions/2.0.1/README.md) | 2.0.1 | Patch-programmable relay switching with optional CLK contact filter |
 | [SW2 Switch / Distributer](../Wardenclyffe%20Station/sw2/versions/2.0.0/README.md) | 2.0.0 | Manual source selector and output distributor with optional CLK treatment |
 | [1919/ln Tone Burst Generator](../Wardenclyffe%20Station/1919-ln/versions/2.0.1/README.md) | 2.0.1 | Two counted audio gates, external/internal clocking and independent Courtesy clocks |
 | [Type 9414 Frequency Analyzer](../Wardenclyffe%20Station/type-9414/versions/2.0.0/README.md) | 2.0.0 | Selective band-pass, matched band-reject and exact splitter bypass |
 | [c2-34 Balanced Modulator](../Wardenclyffe%20Station/c2-34/versions/2.0.0/README.md) | 2.0.0 | Carrier-suppressed four-quadrant modulation and unipolar VCA region |
 
-These eight functions remain mono-first and manually oriented. Later Radiophonic plans add more CV-controlled switching and performance routing. The mono summing/mixing amplifier is complete: LM-21 Mk III and RM1010 are canonical. See [future module proposals](Future-Module-Proposals.md) for optional gap-fillers and later-series ideas.
+These eight functions remain mono-first and manually oriented. Later Teletape Workshop plans add more CV-controlled switching and performance routing. The mono summing/mixing amplifier is complete: LM-21 Mk III and RM1010 are canonical. See [future module proposals](Future-Module-Proposals.md) for optional gap-fillers and later-series ideas.
 
 ## Shared operating conventions
 

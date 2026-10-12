@@ -28,7 +28,7 @@ public class rm1010 extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "1a5f6d36bf97421886b9d20d36225c92" );
+        SetSkin( "1d01eb30148a49ab9a1544c87918c5ad" );
     }
 
 void InitializeControls()
@@ -139,37 +139,16 @@ void InitializeControls()
         linkInput.SetSize( 25, 25 );
         linkInput.SetSkin( "Dark Jack Straight" );
 
-        manufacturerLabel = new VoltageLabel( "manufacturerLabel", "Manufacturer Label", this, "r." );
-        AddComponent( manufacturerLabel );
-        manufacturerLabel.SetWantsMouseNotifications( false );
-        manufacturerLabel.SetPosition( 3, 337 );
-        manufacturerLabel.SetSize( 20, 20 );
-        manufacturerLabel.SetEditable( false, false );
-        manufacturerLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        manufacturerLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        manufacturerLabel.SetColor( new Color( 147, 0, 0, 255 ) );
-        manufacturerLabel.SetBkColor( new Color( 51, 51, 51, 255 ) );
-        manufacturerLabel.SetBorderColor( new Color( 85, 0, 0, 255 ) );
-        manufacturerLabel.SetBorderSize( 2 );
-        manufacturerLabel.SetMultiLineEdit( false );
-        manufacturerLabel.SetIsNumberEditor( false );
-        manufacturerLabel.SetNumberEditorRange( 0, 100 );
-        manufacturerLabel.SetNumberEditorInterval( 1 );
-        manufacturerLabel.SetNumberEditorUsesMouseWheel( false );
-        manufacturerLabel.SetHasCustomTextHoverColor( false );
-        manufacturerLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        manufacturerLabel.SetFont( "Courier New", 13, true, false );
-
         descriptionLabel = new VoltageLabel( "descriptionLabel", "Description Label", this, "mixing amplifier" );
         AddComponent( descriptionLabel );
         descriptionLabel.SetWantsMouseNotifications( false );
-        descriptionLabel.SetPosition( 3, 0 );
+        descriptionLabel.SetPosition( 3, 3 );
         descriptionLabel.SetSize( 224, 23 );
         descriptionLabel.SetEditable( false, false );
         descriptionLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         descriptionLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
         descriptionLabel.SetColor( new Color( 232, 232, 232, 255 ) );
-        descriptionLabel.SetBkColor( new Color( 19, 19, 19, 0 ) );
+        descriptionLabel.SetBkColor( new Color( 35, 35, 35, 0 ) );
         descriptionLabel.SetBorderColor( new Color( 85, 0, 0, 255 ) );
         descriptionLabel.SetBorderSize( 4 );
         descriptionLabel.SetMultiLineEdit( false );
@@ -184,12 +163,12 @@ void InitializeControls()
         numberLabel = new VoltageLabel( "numberLabel", "Number Label", this, "rm1010" );
         AddComponent( numberLabel );
         numberLabel.SetWantsMouseNotifications( false );
-        numberLabel.SetPosition( 177, 335 );
-        numberLabel.SetSize( 50, 13 );
+        numberLabel.SetPosition( 185, 335 );
+        numberLabel.SetSize( 42, 13 );
         numberLabel.SetEditable( false, false );
         numberLabel.SetJustificationFlags( VoltageLabel.Justification.Right );
         numberLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        numberLabel.SetColor( new Color( 232, 232, 232, 255 ) );
+        numberLabel.SetColor( new Color( 232, 232, 232, 51 ) );
         numberLabel.SetBkColor( new Color( 85, 85, 85, 0 ) );
         numberLabel.SetBorderColor( new Color( 85, 85, 85, 0 ) );
         numberLabel.SetBorderSize( 0 );
@@ -572,7 +551,7 @@ void InitializeControls()
         output7.SetSize( 37, 37 );
         output7.SetSkin( "Rotated Half" );
 
-        switchRange2 = new VoltageSwitch( "switchRange2", "Switch Range 2", this, 0 );
+        switchRange2 = new VoltageSwitch( "switchRange2", "Switch Range 2", this, 2 );
         AddComponent( switchRange2 );
         switchRange2.SetWantsMouseNotifications( false );
         switchRange2.SetPosition( 102, 93 );
@@ -600,7 +579,7 @@ void InitializeControls()
         labelRange2.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelRange2.SetFont( "Courier New", 6, true, false );
 
-        switchRange3 = new VoltageSwitch( "switchRange3", "Switch Range 3", this, 2 );
+        switchRange3 = new VoltageSwitch( "switchRange3", "Switch Range 3", this, 1 );
         AddComponent( switchRange3 );
         switchRange3.SetWantsMouseNotifications( false );
         switchRange3.SetPosition( 102, 138 );
@@ -628,7 +607,7 @@ void InitializeControls()
         labelRange3.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelRange3.SetFont( "Courier New", 6, true, false );
 
-        switchRange4 = new VoltageSwitch( "switchRange4", "Switch Range 4", this, 0 );
+        switchRange4 = new VoltageSwitch( "switchRange4", "Switch Range 4", this, 3 );
         AddComponent( switchRange4 );
         switchRange4.SetWantsMouseNotifications( false );
         switchRange4.SetPosition( 102, 178 );
@@ -861,12 +840,19 @@ void InitializeControls()
         mainOutputLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         mainOutputLabel.SetFont( "Times New Roman", 13, true, false );
 
-        brandLogoImage = new VoltageImage( "brandLogoImage", "Brand Logo Image", this, false );
-        AddComponent( brandLogoImage );
-        brandLogoImage.SetWantsMouseNotifications( false );
-        brandLogoImage.SetPosition( 83, 211 );
-        brandLogoImage.SetSize( 98, 74 );
-        brandLogoImage.SetCurrentImage( "image image(3).png" );
+        image9 = new VoltageImage( "image9", "image9", this, false );
+        AddComponent( image9 );
+        image9.SetWantsMouseNotifications( false );
+        image9.SetPosition( 26, 331 );
+        image9.SetSize( 178, 24 );
+        image9.SetCurrentImage( "image image.svg" );
+
+        image4 = new VoltageImage( "image4", "image4", this, false );
+        AddComponent( image4 );
+        image4.SetWantsMouseNotifications( false );
+        image4.SetPosition( 3, 327 );
+        image4.SetSize( 30, 30 );
+        image4.SetCurrentImage( "image image(2).svg" );
 }
 
 
@@ -1201,7 +1187,8 @@ void InitializeControls()
 
 
     // Auto-generated variables
-    private VoltageImage brandLogoImage;
+    private VoltageImage image4;
+    private VoltageImage image9;
     private VoltageLabel mainOutputLabel;
     private VoltageAudioJack output10;
     private VoltageLED inputLevel4Led;
@@ -1253,7 +1240,6 @@ void InitializeControls()
     private VoltageKnob gain1;
     private VoltageLabel numberLabel;
     private VoltageLabel descriptionLabel;
-    private VoltageLabel manufacturerLabel;
     private VoltageAudioJack linkInput;
     private VoltageAudioJack input4;
     private VoltageAudioJack output3;

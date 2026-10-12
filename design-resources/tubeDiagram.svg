@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="380" viewBox="0 0 200 380"><title>Upright vacuum tube</title><desc>Original detailed valve drawing, with glass tip at top and nine pins at bottom. Transparent vector artwork.</desc><g transform="matrix(-1 0 0 -1 600 815)" stroke="#20241f" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<g stroke-width="2.5">
+
+<path d="M442 478 L442 462 Q444 458 446 462 L446 478"/>
+<path d="M456 478 L456 462 Q458 458 460 462 L460 478"/>
+<path d="M470 478 L470 462 Q472 458 474 462 L474 478"/>
+<path d="M484 478 L484 462 Q486 458 488 462 L488 478"/>
+<path d="M498 478 L498 462 Q500 458 502 462 L502 478"/>
+<path d="M512 478 L512 462 Q514 458 516 462 L516 478"/>
+<path d="M526 478 L526 462 Q528 458 530 462 L530 478"/>
+<path d="M540 478 L540 462 Q542 458 544 462 L544 478"/>
+<path d="M554 478 L554 462 Q556 458 558 462 L558 478"/>
+</g>
+<path d="M430 481 Q500 468 570 481 L570 507 Q500 523 430 507 Z" stroke-width="3.5"/>
+<path d="M431 488 Q500 501 569 488 M431 499 Q500 512 569 499" stroke-width="1.5"/>
+<!-- Glass envelope, rounded shoulder and evacuation tip. -->
+<path d="M434 511 C426 528 425 545 425 564 L425 704 C425 745 449 769 489 773 L492 788 Q500 797 508 788 L511 773 C551 769 575 745 575 704 L575 564 C575 545 574 528 566 511" stroke-width="3.8"/>
+<path d="M441 522 C434 539 434 553 434 576 L434 700 C434 735 451 755 482 762 M559 522 C566 539 566 553 566 576 L566 700 C566 735 549 755 518 762" stroke-width="1.3"/>
+<!-- Twin plate assemblies, grid wires, support rods and mica spacers. -->
+<g stroke-width="1.8">
+<path d="M452 526 L452 730 M548 526 L548 730 M474 518 L474 538 M526 518 L526 538"/>
+<path d="M443 538 Q500 529 557 538 L557 545 Q500 553 443 545 Z M443 704 Q500 695 557 704 L557 711 Q500 720 443 711 Z"/>
+<path d="M448 550 L477 547 L486 554 L486 695 L477 702 L448 699 Z M552 550 L523 547 L514 554 L514 695 L523 702 L552 699 Z"/>
+<path d="M477 548 L477 701 M523 548 L523 701 M492 555 L492 696 M508 555 L508 696"/>
+<path d="M498 552 L498 689 Q500 700 502 689 L502 552" stroke-width="1.2"/>
+<path d="M460 715 L460 731 Q500 747 540 731 L540 715 M475 719 L475 738 M525 719 L525 738"/>
+</g>
+<g stroke-width="1.1">
+
+<path d="M451 561 l23 -2 M549 561 l-23 -2 M478 562 l6 -5 M522 562 l-6 -5 M490 565 L510 560"/>
+<path d="M451 574 l23 -2 M549 574 l-23 -2 M478 575 l6 -5 M522 575 l-6 -5 M490 578 L510 573"/>
+<path d="M451 587 l23 -2 M549 587 l-23 -2 M478 588 l6 -5 M522 588 l-6 -5 M490 591 L510 586"/>
+<path d="M451 600 l23 -2 M549 600 l-23 -2 M478 601 l6 -5 M522 601 l-6 -5 M490 604 L510 599"/>
+<path d="M451 613 l23 -2 M549 613 l-23 -2 M478 614 l6 -5 M522 614 l-6 -5 M490 617 L510 612"/>
+<path d="M451 626 l23 -2 M549 626 l-23 -2 M478 627 l6 -5 M522 627 l-6 -5 M490 630 L510 625"/>
+<path d="M451 639 l23 -2 M549 639 l-23 -2 M478 640 l6 -5 M522 640 l-6 -5 M490 643 L510 638"/>
+<path d="M451 652 l23 -2 M549 652 l-23 -2 M478 653 l6 -5 M522 653 l-6 -5 M490 656 L510 651"/>
+<path d="M451 665 l23 -2 M549 665 l-23 -2 M478 666 l6 -5 M522 666 l-6 -5 M490 669 L510 664"/>
+<path d="M451 678 l23 -2 M549 678 l-23 -2 M478 679 l6 -5 M522 679 l-6 -5 M490 682 L510 677"/>
+<path d="M451 691 l23 -2 M549 691 l-23 -2 M478 692 l6 -5 M522 692 l-6 -5 M490 695 L510 690"/>
+</g>
+<!-- Small glass glints and the bulb's lower contour. -->
+<g stroke-width="1.2"><path d="M440 568 L440 618 M440 630 L440 648 M560 568 L560 595 M478 755 Q500 762 522 755 M496 779 L496 786"/></g>
+</g></svg>

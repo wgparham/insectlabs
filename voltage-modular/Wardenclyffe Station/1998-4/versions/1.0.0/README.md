@@ -6,7 +6,7 @@ Mono envelope/gate extraction with a shared driven input amplifier, post-gain au
 detector-only 20–200 Hz high-pass, AUTO/MANUAL attack, program-dependent two-stage release,
 true 0–3 s envelope delay, linear BALANCE, positive/inverted CV and independent gate lamps.
 
-- [Designer project](following_2.vmod) and [Java export](following_2.java)
+- [Designer project](following.vmod) and [Java export](following.java)
 - [Comprehensive user manual](USER-MANUAL.md)
 - [Release review and validation](REVIEW.md)
 - [Control identity map](CONTROL-MAP.md)

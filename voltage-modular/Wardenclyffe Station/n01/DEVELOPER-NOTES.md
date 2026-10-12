@@ -1,6 +1,6 @@
 # Developer notes — n01 Noise Generator
 
-**Canonical version:** `2.0.0`<br>
+**Canonical version:** `2.0.1`<br>
 **Collection:** Wardenclyffe Station<br>
 **Designer export:** `n01.java`<br>
 **Designer project:** `n01.vmod`<br>
@@ -14,8 +14,8 @@ Treat the current manual and this version's `.vmod`/`.java` pair as the behavior
 
 ## Source map
 
-- Canonical source folder: `n01/versions/2.0.0`.
-- User manual: [`USER-MANUAL.md`](versions/2.0.0/USER-MANUAL.md).
+- Canonical source folder: `n01/versions/2.0.1`.
+- User manual: [`USER-MANUAL.md`](versions/2.0.1/USER-MANUAL.md).
 - Release review and integrity files remain in the canonical version folder. Do not edit archived `.vmod`, `.java`, panel image, or checksum files in place.
 - Designer component inventory: AudioJack: 6, Button: 1, Knob: 4, LED: 2, Label: 14. Use stable component IDs in the `.vmod` as the UI-to-code contract; display text is user-facing and may be edited independently.
 
@@ -91,4 +91,18 @@ Check bypass after any DSP edit: direct-signal modules should retain the establi
 
 ## Validation provenance
 
-This note documents the canonical `2.0.0` source archive. The validation record and `SHA256.json` are the release-time references for test history and file integrity. This documentation pass does not rebuild or retest the canonized DSP and does not alter source files.
+This note documents the canonical `2.0.1` source archive. The validation record and `SHA256.json` are the release-time references for test history and file integrity. This documentation pass does not rebuild or retest the canonized DSP and does not alter source files.
+
+## 2.0.1 trigger indicator and manual button
+
+The existing accepted S&H `fire` event sets `triggerFlashSamples` to 4800 (100 ms at 48 kHz). Idle audio samples decrement this volatile countdown; GUI callbacks draw its state on the existing 25 ms timer using `SetValueNoNotification(value, true)`. No GUI calls or per-sample objects were added to the audio callback. External held gates do not retrigger; rapid accepted edges renew the flash. Bypass, reset and recall clear it.
+
+Manual triggering accepts every press notification while active. AutoRepeat is disabled in Designer, so holding the button does not repeat. A separate manual-down latch is deliberately absent: illumination can interfere with release notifications, which previously caused rapid-press lockout. Release notifications only refresh the indicator. Non-notifying GUI writes do not enqueue manual samples.
+
+Source pair retains class/package identity, control UUIDs and the user-tested panel. Noise coefficients, ramp timing, output routing, hysteresis, held-state persistence and bypass signal behavior are unchanged. Tests include 500 consecutive press notifications without releases, external edges, flash expiry, hysteresis, bypass/resume, invalid input and reset. Native button behavior was confirmed by the user on 2026-10-11, then v2.0.1 was approved for canonization. Native-host CPU was not benchmarked.
+
+### Working Notes retained from Designer
+
+**colophon**
+
+manufacturer colophon

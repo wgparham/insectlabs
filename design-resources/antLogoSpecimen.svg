@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="720" viewBox="50 30 700 720">
+<title>Insect Laboratories — chassis emblem</title>
+<desc>Original single-color vector emblem. An ant with distinct head and body, six articulated legs, and a rounded vacuum tube abdomen. Transparent background.</desc>
+<g fill="#171b19">
+<!-- Three independently articulated leg pairs, tapered through each joint. -->
+<path d="M360 306 C346 296 325 280 307 263 L270 185 Q268 180 269 175 L281 122 L268 103 L271 100 L287 120 Q289 122 288 126 L279 179 L316 256 C335 273 353 286 367 294 Z"/>
+<path d="M440 306 C454 296 475 280 493 263 L530 185 Q532 180 531 175 L519 122 L532 103 L529 100 L513 120 Q511 122 512 126 L521 179 L484 256 C465 273 447 286 433 294 Z"/>
+<path d="M367 335 L290 320 Q286 319 283 322 L206 399 L160 418 L151 432 L154 434 L165 423 L212 406 L291 329 L371 345 Z"/>
+<path d="M433 335 L510 320 Q514 319 517 322 L594 399 L640 418 L649 432 L646 434 L635 423 L588 406 L509 329 L429 345 Z"/>
+<path d="M370 373 C347 388 323 407 302 429 Q299 432 298 437 L277 545 L233 592 L213 594 L213 598 L235 598 Q238 598 240 595 L284 550 Q286 548 286 545 L307 440 C330 417 352 398 375 384 Z"/>
+<path d="M430 373 C453 388 477 407 498 429 Q501 432 502 437 L523 545 L567 592 L587 594 L587 598 L565 598 Q562 598 560 595 L516 550 Q514 548 514 545 L493 440 C470 417 448 398 425 384 Z"/>
+<!-- Long, elbowed antennae: lighter than the legs. -->
+<path d="M351 190 L325 149 L317 103 Q317 99 313 97 L263 76 L261 80 L311 105 L318 151 Q318 154 320 156 L347 198 Z"/>
+<path d="M449 190 L475 149 L483 103 Q483 99 487 97 L537 76 L539 80 L489 105 L482 151 Q482 154 480 156 L453 198 Z"/>
+</g>
+<g stroke="#171b19" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none">
+<!-- Broad head, defined shoulders and a narrowed body; no diagrammatic divisions. -->
+<path d="M400 181 C369 172 348 186 344 210 C339 233 350 254 377 268 Q400 276 423 268 C450 254 461 233 456 210 C452 186 431 172 400 181 Z"/>
+<path d="M382 179 L383 163 L394 169 M418 179 L417 163 L406 169" stroke-width="4"/>
+<path d="M350 216 L353 229 M450 216 L447 229" stroke-width="6"/>
+<path d="M387 274 L387 286 M413 274 L413 286" stroke-width="5"/>
+<path d="M400 284 C375 280 359 298 360 318 C361 337 371 343 369 357 C366 377 376 395 389 405 L389 427 M400 284 C425 280 441 298 440 318 C439 337 429 343 431 357 C434 377 424 395 411 405 L411 427"/>
+<!-- A short collar joins the body directly to the valve abdomen. -->
+<path d="M352 430 Q400 422 448 430 L448 450 Q400 458 352 450 Z"/>
+<!-- Rounded glass bulb and characteristic evacuation tip. -->
+<path d="M355 452 C329 471 319 500 319 538 C319 596 344 628 388 635 L392 649 Q400 656 408 649 L412 635 C456 628 481 596 481 538 C481 500 471 471 445 452"/>
+<!-- Spare twin-plate symbol. All interior spaces remain transparent. -->
+<path d="M351 484 L383 480 V599 L351 595 Z M449 484 L417 480 V599 L449 595 Z" stroke-width="4.5"/>
+<path d="M343 471 Q400 465 457 471 M346 609 Q400 618 454 609" stroke-width="3.5"/>
+<path d="M397 489 V591 Q400 600 403 591 V489" stroke-width="3"/>
+<path d="M359 509 L376 507 M359 540 L376 538 M359 571 L376 569 M441 509 L424 507 M441 540 L424 538 M441 571 L424 569" stroke-width="3"/>
+</g></svg>

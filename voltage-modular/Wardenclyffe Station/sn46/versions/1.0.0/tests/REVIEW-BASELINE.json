@@ -1,0 +1,345 @@
+{
+  "input_hashes": {
+    "sn46.java": "71790e573ad5a2221e34bf26c83eac1db4ca67285d3fa9be0f5bc641dc7282b5",
+    "sn46.vmod": "ab55b6ef4dc2232f277bbb5e09c6015164b93eab4f56a465473bc659be39ab2b",
+    "sn46_hero.png": "7e3bc662c2b50c59f52c51ca4013bed4abd82c179e29baafce5d4afcd86a14a0"
+  },
+  "art": {
+    "3:skin names": "50630e588c48aab7ed91722ad1e0815ed128ccfdecddff7fdc4406b4efb53403",
+    "5:skin names": "50630e588c48aab7ed91722ad1e0815ed128ccfdecddff7fdc4406b4efb53403",
+    "7:skin names": "50630e588c48aab7ed91722ad1e0815ed128ccfdecddff7fdc4406b4efb53403",
+    "9:skin names": "932136f43c1ecae80b777875eaeab8b1812a9d3aa4972a446965a188a8a2248a",
+    "11:skin names": "932136f43c1ecae80b777875eaeab8b1812a9d3aa4972a446965a188a8a2248a",
+    "13:test mode parent": "90b14b8bf092cfef3a3aed3ea1b8cc235c96b4e4eeed6157850cef813c67513d",
+    "14:art resources": "b9c0aa63bb1a8b7242426b66fa58a03dd97b598c0a5a6d35888ac9aa8377d542",
+    "15:resource names": "61f1185fb0cc686a02fe8437f3651e17f7d6191b138484f102f36ca1a08c3207",
+    "16:skin names": "932136f43c1ecae80b777875eaeab8b1812a9d3aa4972a446965a188a8a2248a"
+  },
+  "geometry": {
+    "fbeffb2b45784e87a58a73384ec68bf8": {
+      "left": 3,
+      "top": 3,
+      "width": "109",
+      "height": "23"
+    },
+    "4420dd6fce464c8ebda9779c6294dba8": {
+      "left": 33,
+      "top": 335,
+      "width": "79",
+      "height": "13"
+    },
+    "948eadc6e6d84569826ccd3c3ccef829": {
+      "left": 3,
+      "top": 337,
+      "width": "20",
+      "height": "20"
+    },
+    "4ff20ebcbe68491d97b8fcff5b079776": {
+      "left": 20,
+      "top": 101,
+      "width": 76,
+      "height": 76
+    },
+    "acfddae9060747a9be73379a3f42b807": {
+      "left": 16,
+      "top": 40,
+      "width": "50",
+      "height": 50
+    },
+    "2df8812f7c07497e9813381813650940": {
+      "left": 26,
+      "top": 336,
+      "width": "61",
+      "height": 22
+    },
+    "ee5cd3a4ed0f4241abe95c3a20dc3086": {
+      "left": 5,
+      "top": 166,
+      "width": 25,
+      "height": 25
+    },
+    "465e97114d904573982c0013ce3dcc21": {
+      "left": 45,
+      "top": 165,
+      "width": 25,
+      "height": 25
+    },
+    "242ea5c9e1c64ad6a9a918a4bdb444fc": {
+      "left": 78,
+      "top": 84,
+      "width": 25,
+      "height": 25
+    },
+    "d0721d98d89e46dbbd926b2420cca394": {
+      "left": 5,
+      "top": 294,
+      "width": 25,
+      "height": 25
+    },
+    "73a85e936b244c99b3cefe29363b581e": {
+      "left": 27,
+      "top": 84,
+      "width": "30",
+      "height": "30"
+    },
+    "27eac0a482b641cfaba90155ed2de47d": {
+      "left": 76,
+      "top": 102,
+      "width": "30",
+      "height": "30"
+    },
+    "203c291bd4dd416a881df5d20d6db19b": {
+      "left": 47,
+      "top": 188,
+      "width": "20",
+      "height": "20"
+    },
+    "c16f606c8a024856b335f847c8edbe97": {
+      "left": 7,
+      "top": 186,
+      "width": "20",
+      "height": "20"
+    },
+    "3128fbc167904778b8d16e7c255eef79": {
+      "left": 85,
+      "top": 294,
+      "width": 25,
+      "height": 25
+    },
+    "63516ca2fe1d4142b13fb2c64c065832": {
+      "left": 5,
+      "top": 254,
+      "width": 25,
+      "height": 25
+    },
+    "bc27ca343c7d41f2973b250098303b4f": {
+      "left": 87,
+      "top": 315,
+      "width": "20",
+      "height": "20"
+    },
+    "43ffd37af66345fa90cb6910fe72e6bd": {
+      "left": 8,
+      "top": 275,
+      "width": "20",
+      "height": "20"
+    },
+    "33f343f9de5e49d8bbe81e14e3d852d2": {
+      "left": 45,
+      "top": 254,
+      "width": 25,
+      "height": 25
+    },
+    "864c35ac3bd447b09f508f19be9431e2": {
+      "left": 85,
+      "top": 254,
+      "width": 25,
+      "height": 25
+    },
+    "135f27cf687547039c55da9efe50ba9f": {
+      "left": 46,
+      "top": 275,
+      "width": "20",
+      "height": "20"
+    },
+    "366aa5516f6b43978654b7f74eb1c4ac": {
+      "left": 88,
+      "top": 275,
+      "width": "20",
+      "height": "20"
+    },
+    "41fd701c074d42d49f4dc302100a50b8": {
+      "left": 45,
+      "top": 294,
+      "width": 25,
+      "height": 25
+    },
+    "2d46f9d4dc27485ab94db3d3507263ca": {
+      "left": 8,
+      "top": 315,
+      "width": "20",
+      "height": "20"
+    },
+    "df1f1ee791b0431baef9b822bdeb7435": {
+      "left": 47,
+      "top": 315,
+      "width": "20",
+      "height": "20"
+    },
+    "045e4b45bd154d5ab5c1f077ed4c8c61": {
+      "left": 5,
+      "top": 205,
+      "width": 25,
+      "height": 25
+    },
+    "632eb2b9588b4c0e925724f3765b8af8": {
+      "left": 8,
+      "top": 227,
+      "width": "20",
+      "height": "20"
+    },
+    "d47c31e4634d402482264933fb4c2b20": {
+      "left": 45,
+      "top": 205,
+      "width": 25,
+      "height": 25
+    },
+    "75165585a3b243b7a53d8abcbf5c8960": {
+      "left": 48,
+      "top": 227,
+      "width": "20",
+      "height": "20"
+    },
+    "1953d0e673f94bd6aa29522a167c189a": {
+      "left": 85,
+      "top": 205,
+      "width": 25,
+      "height": 25
+    },
+    "1141f70fc13a46e3ba0317b47650bbd6": {
+      "left": 88,
+      "top": 227,
+      "width": "20",
+      "height": "20"
+    },
+    "4bffd4ab8a2c4dfc8ce0bb832abdc59f": {
+      "left": 85,
+      "top": 165,
+      "width": 25,
+      "height": 25
+    },
+    "b2a6fdfef0674a1e8ccbf84bac510c6d": {
+      "left": 87,
+      "top": 188,
+      "width": "20",
+      "height": "20"
+    },
+    "4aa4e9706c644d67bbd86206a1e3c146": {
+      "left": 17,
+      "top": 86,
+      "width": "10",
+      "height": 10
+    },
+    "2704226b728b499f8fe59546e7c5d8fc": {
+      "left": 9,
+      "top": 76,
+      "width": "10",
+      "height": 10
+    },
+    "658988096d8847fab7905b40ac002c97": {
+      "left": 5,
+      "top": 64,
+      "width": "10",
+      "height": 10
+    },
+    "bdfebbc65ad143f5a726ac5a5d54ef4e": {
+      "left": 6,
+      "top": 51,
+      "width": "10",
+      "height": 10
+    },
+    "c52ad177c0c34bc6b24d9eeda54140dc": {
+      "left": 11,
+      "top": 39,
+      "width": "10",
+      "height": 10
+    },
+    "b5b8380641494761b37d2d4439171191": {
+      "left": 23,
+      "top": 31,
+      "width": "10",
+      "height": 10
+    },
+    "c82b215893044b13b9e1c9e8e5808ee7": {
+      "left": 36,
+      "top": 28,
+      "width": "10",
+      "height": 10
+    },
+    "48b95f4e08b94fee9e1904a5b7f4bc96": {
+      "left": 49,
+      "top": 31,
+      "width": "10",
+      "height": 10
+    },
+    "4052e6a2caf546fb8c0c82fa0bba1752": {
+      "left": 61,
+      "top": 39,
+      "width": "10",
+      "height": 10
+    },
+    "3df87cb195d444cebec0e4ee5eee79ce": {
+      "left": 66,
+      "top": 51,
+      "width": "10",
+      "height": 10
+    },
+    "32a12c23a21c4849a489ac3b38ec2e25": {
+      "left": 67,
+      "top": 64,
+      "width": "10",
+      "height": 10
+    },
+    "562ee843105a4563ac86e10ec32cfa8e": {
+      "left": 63,
+      "top": 76,
+      "width": "10",
+      "height": 10
+    },
+    "caef998874e340c980ac0e24ef0f6bc5": {
+      "left": 55,
+      "top": 86,
+      "width": "10",
+      "height": 10
+    },
+    "4fd4ed5840d54d1e9e07a827fa9a4ed8": {
+      "left": 69,
+      "top": 101,
+      "width": "10",
+      "height": "10"
+    },
+    "b224b7b1e4944c50b5c712da61e1d86e": {
+      "left": 101,
+      "top": 101,
+      "width": "10",
+      "height": "10"
+    },
+    "07085d60c9944327a5d9449e260d9586": {
+      "left": 85,
+      "top": 71,
+      "width": "10",
+      "height": "10"
+    },
+    "c95cd3ae37d447c7b16b96639e2decd1": {
+      "left": 31,
+      "top": 127,
+      "width": "54",
+      "height": "25"
+    },
+    "c90ac881f74f4206afb1df73b912f72e": {
+      "left": 104,
+      "top": 86,
+      "width": "10",
+      "height": "10"
+    },
+    "5009e457700b4e67905c3094acac35ea": {
+      "left": 67,
+      "top": 86,
+      "width": "10",
+      "height": "10"
+    },
+    "45e500c98a8b4ae8830dc238fd6c3841": {
+      "left": 32,
+      "top": 311,
+      "width": "11",
+      "height": 11
+    },
+    "6fbfa962ec5f4697a2d0254cfc9a0bd8": {
+      "left": 55,
+      "top": 146,
+      "width": 4,
+      "height": 4
+    }
+  },
+  "approval": "Latest user-approved Designer export and hero, 2026-10-11; previous baseline retained separately."
+}

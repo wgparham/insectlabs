@@ -584,6 +584,7 @@ void InitializeControls()
     @Override
     public void Destroy()
     {
+        StopGuiUpdateTimer();
         super.Destroy();
         //[user-Destroy]   Add your own module-getting-deleted code here
 

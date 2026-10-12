@@ -8,7 +8,7 @@ The c2-34 is a mono amplitude/ring modulator inspired by primitive postwar test 
 
 
 
-Open `c234.vmod` in Voltage Module Designer to build the module. The matching exported source is `c234.java`.
+Open c234.vmod in Voltage Module Designer to build the module. The matching source export is c234.java; its public Java class remains c234 for Cherry Audio publisher identity.
 
 ## Signal path
 
@@ -52,4 +52,4 @@ Voltage Modular host BYPASS is a direct patch-through: X passes to Z exactly, wh
 
 The processor is mono and runs at native sample rate. It allocates no objects in the audio callback and uses basic multiplication, smoothing, and control-shaping arithmetic. No 2× or higher oversampling is used; this keeps CPU use low and leaves any high-frequency multiplication products subject to the host's sample-rate limits.
 
-Release 1.0.0 is the first canonical release. Its BAL/UNBAL behavior and dirty-zone level were approved after listening tests. See [REVIEW.md](REVIEW.md) for source-pair, SDK, and DSP checks.
+Version 2.0.0 is the current canonical release. Its BAL/UNBAL behavior and dirty-zone level were approved after listening tests. See [REVIEW.md](REVIEW.md) for source-pair, SDK, and DSP checks.

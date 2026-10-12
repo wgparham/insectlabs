@@ -4,7 +4,7 @@ sys.dont_write_bytecode = True
 
 work=Path(__file__).resolve().parent
 repo=next((p for p in work.parents if (p/'voltage-modular/colorbox/tools').is_dir()),Path(r'C:\Users\wgparham\Dropbox\git\insectlabs'))
-pair=Path(sys.argv[1]) if len(sys.argv)>1 else (work.parent if (work.parent/'following_2.vmod').is_file() else work/'candidate')
+pair=Path(sys.argv[1]) if len(sys.argv)>1 else (work.parent if (work.parent/'following.vmod').is_file() else work/'candidate')
 build=Path(r'C:\InsectLabs-Build\following\first-dsp')
 build.mkdir(parents=True,exist_ok=True)
 sdk=Path(r'C:\ProgramData\Voltage\voltage.jar')
@@ -12,10 +12,10 @@ sys.path.insert(0,str(repo/'voltage-modular/colorbox/tools'))
 from value_tree import Reader,encode,props
 from support import normalized
 
-raw=(pair/'following_2.vmod').read_bytes(); r=Reader(raw); tree=r.tree()
+raw=(pair/'following.vmod').read_bytes(); r=Reader(raw); tree=r.tree()
 assert r.p==len(raw) and encode(tree)==raw
 embedded=props(next(n for n in tree[2] if n[0]=='module code'))['MODULE.SOURCE']
-exported=(pair/'following_2.java').read_text(encoding='utf-8-sig')
+exported=(pair/'following.java').read_text(encoding='utf-8-sig')
 assert normalized(embedded)==normalized(exported),'source mismatch'
 assert props(tree)['notes'] == 'v1.0.0'
 def verify_notes(node):
@@ -46,4 +46,4 @@ for label,source in [('exported',exported),('embedded',embedded)]:
 import routing_checks
 routing_checks.run(exported, build/'exported', sdk, flags)
 print('PASS: both Java forms compile against the SDK; source agreement and DSP checks pass.')
-print(json.dumps({name:hashlib.sha256((pair/name).read_bytes()).hexdigest() for name in ('following_2.java','following_2.vmod')},indent=2))
+print(json.dumps({name:hashlib.sha256((pair/name).read_bytes()).hexdigest() for name in ('following.java','following.vmod')},indent=2))

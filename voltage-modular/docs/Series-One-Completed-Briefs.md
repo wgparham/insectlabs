@@ -5,9 +5,9 @@ All accepted briefs in this archive are complete. The 1.x labels below describe 
 
 Updated 6 October 2026. All sixteen accepted Laboratory modules are now canonical. This document retains the design and release notes for the five utility roles added after the original Series One plan; optional proposals remain separate from the accepted inventory. The [roadmap](Collection-Roadmap.md) owns current status. Manual-first, mono-first operation and current infrastructure standards apply.
 
-## SN-16u / Reference / Standards — completed, canonical 1.0.0
+## sn16u / Reference / Standards — completed, current canonical 2.1.0 (original release 1.0.0)
 
-The expanded test bench combines precision fixed/manual voltages, tuning references, standards conversion, two measurement meters, frequency counting, RMS measurement, pink/blue noise, impulse sources, separate clean HPF/LPF paths, and a retriggerable 42-second sine sweep. The user approved the comprehensive manual and confirmed the final build and behavior. See the [canonical release](../Wardenclyffe%20Station/sn-16u/versions/2.0.0/README.md).
+The expanded test bench combines precision fixed/manual voltages, tuning references, standards conversion, two measurement meters, frequency counting, RMS measurement, pink/blue noise, impulse sources, separate clean HPF/LPF paths, and a retriggerable 42-second sine sweep. The user approved the comprehensive manual and confirmed the final build and behavior. See the [canonical release](../Wardenclyffe%20Station/sn16u/versions/2.1.0/README.md).
 
 ## Burstgen Tone Burst Generator — completed, canonical 1.0.0
 

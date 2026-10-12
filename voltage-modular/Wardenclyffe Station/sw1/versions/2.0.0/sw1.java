@@ -22,13 +22,13 @@ public class sw1 extends VoltageModule
     @SuppressWarnings("this-escape") 
     public sw1( long moduleID, VoltageObjects voltageObjects )
     {
-        super( moduleID, voltageObjects, "Switch1", ModuleType.ModuleType_Utility, 0.8 );
+        super( moduleID, voltageObjects, "switch1 - relay switch", ModuleType.ModuleType_Utility, 0.8 );
 
         InitializeControls();
 
 
         canBeBypassed = true;
-        SetSkin( "1c6adca0e5d1477c80be6b7a7a958c87" );
+        SetSkin( "2501ca5298e040ce91589b171203932a" );
     }
 
 void InitializeControls()
@@ -110,8 +110,12 @@ void InitializeControls()
         relayButton.SetPosition( 8, 34 );
         relayButton.SetSize( 40, 40 );
         relayButton.SetSkin( "2500 Square Big On-On" );
-        relayButton.ShowOverlay( false );
-        relayButton.SetOverlayText( "" );
+        relayButton.ShowOverlay( true );
+        relayButton.SetOverlayText( "ENGAGE" );
+        relayButton.SetOverlayTextFont( "Arial Black", 8, true, false );
+        relayButton.SetOverlayTextColor( new Color( 0, 0, 0 ) );
+        relayButton.SetOverlayArea( 0, 0, 0, 0 );
+        relayButton.SetOverlayTextJustification( VoltageButton.Justification.Centered );
         relayButton.SetAutoRepeat( false );
 
         clickFilterSwitch = new VoltageSwitch( "clickFilterSwitch", "Click Filter Switch", this, 1 );
@@ -133,7 +137,7 @@ void InitializeControls()
         inputAlternateLed.SetWantsMouseNotifications( false );
         inputAlternateLed.SetPosition( 4, 174 );
         inputAlternateLed.SetSize( 8, 8 );
-        inputAlternateLed.SetSkin( "2500 Lamp Green" );
+        inputAlternateLed.SetSkin( "2500 Lamp Red" );
 
         outputNormalLed = new VoltageLED( "outputNormalLed", "Output Normal LED", this );
         AddComponent( outputNormalLed );
@@ -147,7 +151,7 @@ void InitializeControls()
         outputAlternateLed.SetWantsMouseNotifications( false );
         outputAlternateLed.SetPosition( 43, 270 );
         outputAlternateLed.SetSize( 8, 8 );
-        outputAlternateLed.SetSkin( "2500 Lamp Green" );
+        outputAlternateLed.SetSkin( "2500 Lamp Red" );
 
         modeKnob = new VoltageKnob( "modeKnob", "Mode Knob", this, 0, 1, 1 );
         AddComponent( modeKnob );
@@ -274,7 +278,7 @@ void InitializeControls()
         manufacturerLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         manufacturerLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
         manufacturerLabel.SetColor( new Color( 147, 0, 0, 255 ) );
-        manufacturerLabel.SetBkColor( new Color( 51, 51, 51, 255 ) );
+        manufacturerLabel.SetBkColor( new Color( 0, 0, 0, 255 ) );
         manufacturerLabel.SetBorderColor( new Color( 85, 0, 0, 255 ) );
         manufacturerLabel.SetBorderSize( 2 );
         manufacturerLabel.SetMultiLineEdit( false );

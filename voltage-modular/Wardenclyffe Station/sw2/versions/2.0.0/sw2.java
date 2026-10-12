@@ -22,17 +22,24 @@ public class sw2 extends VoltageModule
     @SuppressWarnings("this-escape") 
     public sw2( long moduleID, VoltageObjects voltageObjects )
     {
-        super( moduleID, voltageObjects, "sw2 - Switcher – Distributer", ModuleType.ModuleType_Switches, 2.0 );
+        super( moduleID, voltageObjects, "switch2 - switcher – distributer", ModuleType.ModuleType_Switches, 2.0 );
 
         InitializeControls();
 
 
         canBeBypassed = true;
-        SetSkin( "949bb16ca6524fe2818718b30dbca527" );
+        SetSkin( "0e65d518cfbe429ab644bdb458c1faad" );
     }
 
 void InitializeControls()
 {
+
+        image2 = new VoltageImage( "image2", "image2", this, false );
+        AddComponent( image2 );
+        image2.SetWantsMouseNotifications( false );
+        image2.SetPosition( 19, 31 );
+        image2.SetSize( 107, 107 );
+        image2.SetCurrentImage( "image image(2).svg" );
 
         sourceInput1 = new VoltageAudioJack( "sourceInput1", "Source Input 1", this, JackType.JackType_AudioInput );
         AddComponent( sourceInput1 );
@@ -101,48 +108,6 @@ void InitializeControls()
         routeKnob.DisplayValueInPercent( false );
         routeKnob.SetKnobAdjustsRing( true );
 
-        offLabel = new VoltageLabel( "offLabel", "Off Label", this, "O" );
-        AddComponent( offLabel );
-        offLabel.SetWantsMouseNotifications( false );
-        offLabel.SetPosition( 18, 61 );
-        offLabel.SetSize( 15, 15 );
-        offLabel.SetEditable( false, false );
-        offLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        offLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        offLabel.SetColor( new Color( 232, 232, 232, 255 ) );
-        offLabel.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        offLabel.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        offLabel.SetBorderSize( 1 );
-        offLabel.SetMultiLineEdit( false );
-        offLabel.SetIsNumberEditor( false );
-        offLabel.SetNumberEditorRange( 0, 100 );
-        offLabel.SetNumberEditorInterval( 1 );
-        offLabel.SetNumberEditorUsesMouseWheel( false );
-        offLabel.SetHasCustomTextHoverColor( false );
-        offLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        offLabel.SetFont( "Arial", 13, true, false );
-
-        route1Label = new VoltageLabel( "route1Label", "Route 1 Label", this, "1" );
-        AddComponent( route1Label );
-        route1Label.SetWantsMouseNotifications( false );
-        route1Label.SetPosition( 34, 40 );
-        route1Label.SetSize( 15, 15 );
-        route1Label.SetEditable( false, false );
-        route1Label.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        route1Label.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        route1Label.SetColor( new Color( 232, 232, 232, 255 ) );
-        route1Label.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        route1Label.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        route1Label.SetBorderSize( 1 );
-        route1Label.SetMultiLineEdit( false );
-        route1Label.SetIsNumberEditor( false );
-        route1Label.SetNumberEditorRange( 0, 100 );
-        route1Label.SetNumberEditorInterval( 1 );
-        route1Label.SetNumberEditorUsesMouseWheel( false );
-        route1Label.SetHasCustomTextHoverColor( false );
-        route1Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        route1Label.SetFont( "Arial", 13, true, false );
-
         destination1Label = new VoltageLabel( "destination1Label", "Destination 1 Label", this, "1" );
         AddComponent( destination1Label );
         destination1Label.SetWantsMouseNotifications( false );
@@ -163,27 +128,6 @@ void InitializeControls()
         destination1Label.SetHasCustomTextHoverColor( false );
         destination1Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         destination1Label.SetFont( "Arial", 13, true, false );
-
-        route2Label = new VoltageLabel( "route2Label", "Route 2 Label", this, "2" );
-        AddComponent( route2Label );
-        route2Label.SetWantsMouseNotifications( false );
-        route2Label.SetPosition( 65, 31 );
-        route2Label.SetSize( 15, 15 );
-        route2Label.SetEditable( false, false );
-        route2Label.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        route2Label.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        route2Label.SetColor( new Color( 232, 232, 232, 255 ) );
-        route2Label.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        route2Label.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        route2Label.SetBorderSize( 1 );
-        route2Label.SetMultiLineEdit( false );
-        route2Label.SetIsNumberEditor( false );
-        route2Label.SetNumberEditorRange( 0, 100 );
-        route2Label.SetNumberEditorInterval( 1 );
-        route2Label.SetNumberEditorUsesMouseWheel( false );
-        route2Label.SetHasCustomTextHoverColor( false );
-        route2Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        route2Label.SetFont( "Arial", 13, true, false );
 
         destination2Label = new VoltageLabel( "destination2Label", "Destination 2 Label", this, "2" );
         AddComponent( destination2Label );
@@ -206,27 +150,6 @@ void InitializeControls()
         destination2Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         destination2Label.SetFont( "Arial", 13, true, false );
 
-        route3Label = new VoltageLabel( "route3Label", "Route 3 Label", this, "3" );
-        AddComponent( route3Label );
-        route3Label.SetWantsMouseNotifications( false );
-        route3Label.SetPosition( 95, 40 );
-        route3Label.SetSize( 15, 15 );
-        route3Label.SetEditable( false, false );
-        route3Label.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        route3Label.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        route3Label.SetColor( new Color( 232, 232, 232, 255 ) );
-        route3Label.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        route3Label.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        route3Label.SetBorderSize( 1 );
-        route3Label.SetMultiLineEdit( false );
-        route3Label.SetIsNumberEditor( false );
-        route3Label.SetNumberEditorRange( 0, 100 );
-        route3Label.SetNumberEditorInterval( 1 );
-        route3Label.SetNumberEditorUsesMouseWheel( false );
-        route3Label.SetHasCustomTextHoverColor( false );
-        route3Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        route3Label.SetFont( "Arial", 13, true, false );
-
         destination3Label = new VoltageLabel( "destination3Label", "Destination 3 Label", this, "3" );
         AddComponent( destination3Label );
         destination3Label.SetWantsMouseNotifications( false );
@@ -247,27 +170,6 @@ void InitializeControls()
         destination3Label.SetHasCustomTextHoverColor( false );
         destination3Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         destination3Label.SetFont( "Arial", 13, true, false );
-
-        route4Label = new VoltageLabel( "route4Label", "Route 4 Label", this, "4" );
-        AddComponent( route4Label );
-        route4Label.SetWantsMouseNotifications( false );
-        route4Label.SetPosition( 110, 61 );
-        route4Label.SetSize( 15, 15 );
-        route4Label.SetEditable( false, false );
-        route4Label.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        route4Label.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        route4Label.SetColor( new Color( 232, 232, 232, 255 ) );
-        route4Label.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        route4Label.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        route4Label.SetBorderSize( 1 );
-        route4Label.SetMultiLineEdit( false );
-        route4Label.SetIsNumberEditor( false );
-        route4Label.SetNumberEditorRange( 0, 100 );
-        route4Label.SetNumberEditorInterval( 1 );
-        route4Label.SetNumberEditorUsesMouseWheel( false );
-        route4Label.SetHasCustomTextHoverColor( false );
-        route4Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        route4Label.SetFont( "Arial", 13, true, false );
 
         destination4Label = new VoltageLabel( "destination4Label", "Destination 4 Label", this, "4" );
         AddComponent( destination4Label );
@@ -425,7 +327,7 @@ void InitializeControls()
         manufacturerLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         manufacturerLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
         manufacturerLabel.SetColor( new Color( 147, 0, 0, 255 ) );
-        manufacturerLabel.SetBkColor( new Color( 51, 51, 51, 255 ) );
+        manufacturerLabel.SetBkColor( new Color( 0, 0, 0, 255 ) );
         manufacturerLabel.SetBorderColor( new Color( 85, 0, 0, 255 ) );
         manufacturerLabel.SetBorderSize( 2 );
         manufacturerLabel.SetMultiLineEdit( false );
@@ -437,11 +339,11 @@ void InitializeControls()
         manufacturerLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         manufacturerLabel.SetFont( "Courier New", 13, true, false );
 
-        colophon = new VoltageLabel( "colophon", "Colophon", this, "insect laboratories pittsburgh, PA               –– 1938 ––" );
+        colophon = new VoltageLabel( "colophon", "Colophon", this, "pittsburgh, PA               –– 1938 ––" );
         AddComponent( colophon );
         colophon.SetWantsMouseNotifications( false );
-        colophon.SetPosition( 42, 335 );
-        colophon.SetSize( 60, 20 );
+        colophon.SetPosition( 42, 339 );
+        colophon.SetSize( 60, 15 );
         colophon.SetEditable( false, false );
         colophon.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         colophon.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
@@ -457,6 +359,118 @@ void InitializeControls()
         colophon.SetHasCustomTextHoverColor( false );
         colophon.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         colophon.SetFont( "Arial Black", 6, true, false );
+
+        image1 = new VoltageImage( "image1", "image1", this, false );
+        AddComponent( image1 );
+        image1.SetWantsMouseNotifications( false );
+        image1.SetPosition( 34, 329 );
+        image1.SetSize( 76, 11 );
+        image1.SetCurrentImage( "image image.svg" );
+
+        route2Label = new VoltageLabel( "route2Label", "Route 2 Label", this, "2" );
+        AddComponent( route2Label );
+        route2Label.SetWantsMouseNotifications( false );
+        route2Label.SetPosition( 65, 25 );
+        route2Label.SetSize( 15, 15 );
+        route2Label.SetEditable( false, false );
+        route2Label.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        route2Label.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        route2Label.SetColor( new Color( 147, 0, 0, 255 ) );
+        route2Label.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        route2Label.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        route2Label.SetBorderSize( 1 );
+        route2Label.SetMultiLineEdit( false );
+        route2Label.SetIsNumberEditor( false );
+        route2Label.SetNumberEditorRange( 0, 100 );
+        route2Label.SetNumberEditorInterval( 1 );
+        route2Label.SetNumberEditorUsesMouseWheel( false );
+        route2Label.SetHasCustomTextHoverColor( false );
+        route2Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        route2Label.SetFont( "Arial", 13, true, false );
+
+        route1Label = new VoltageLabel( "route1Label", "Route 1 Label", this, "1" );
+        AddComponent( route1Label );
+        route1Label.SetWantsMouseNotifications( false );
+        route1Label.SetPosition( 31, 37 );
+        route1Label.SetSize( 15, 15 );
+        route1Label.SetEditable( false, false );
+        route1Label.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        route1Label.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        route1Label.SetColor( new Color( 147, 0, 0, 255 ) );
+        route1Label.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        route1Label.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        route1Label.SetBorderSize( 1 );
+        route1Label.SetMultiLineEdit( false );
+        route1Label.SetIsNumberEditor( false );
+        route1Label.SetNumberEditorRange( 0, 100 );
+        route1Label.SetNumberEditorInterval( 1 );
+        route1Label.SetNumberEditorUsesMouseWheel( false );
+        route1Label.SetHasCustomTextHoverColor( false );
+        route1Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        route1Label.SetFont( "Arial", 13, true, false );
+
+        offLabel = new VoltageLabel( "offLabel", "Off Label", this, "O" );
+        AddComponent( offLabel );
+        offLabel.SetWantsMouseNotifications( false );
+        offLabel.SetPosition( 16, 59 );
+        offLabel.SetSize( 15, 15 );
+        offLabel.SetEditable( false, false );
+        offLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        offLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        offLabel.SetColor( new Color( 147, 0, 0, 255 ) );
+        offLabel.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        offLabel.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        offLabel.SetBorderSize( 1 );
+        offLabel.SetMultiLineEdit( false );
+        offLabel.SetIsNumberEditor( false );
+        offLabel.SetNumberEditorRange( 0, 100 );
+        offLabel.SetNumberEditorInterval( 1 );
+        offLabel.SetNumberEditorUsesMouseWheel( false );
+        offLabel.SetHasCustomTextHoverColor( false );
+        offLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        offLabel.SetFont( "Arial", 13, true, false );
+
+        route3Label = new VoltageLabel( "route3Label", "Route 3 Label", this, "3" );
+        AddComponent( route3Label );
+        route3Label.SetWantsMouseNotifications( false );
+        route3Label.SetPosition( 98, 37 );
+        route3Label.SetSize( 15, 15 );
+        route3Label.SetEditable( false, false );
+        route3Label.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        route3Label.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        route3Label.SetColor( new Color( 147, 0, 0, 255 ) );
+        route3Label.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        route3Label.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        route3Label.SetBorderSize( 1 );
+        route3Label.SetMultiLineEdit( false );
+        route3Label.SetIsNumberEditor( false );
+        route3Label.SetNumberEditorRange( 0, 100 );
+        route3Label.SetNumberEditorInterval( 1 );
+        route3Label.SetNumberEditorUsesMouseWheel( false );
+        route3Label.SetHasCustomTextHoverColor( false );
+        route3Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        route3Label.SetFont( "Arial", 13, true, false );
+
+        route4Label = new VoltageLabel( "route4Label", "Route 4 Label", this, "4" );
+        AddComponent( route4Label );
+        route4Label.SetWantsMouseNotifications( false );
+        route4Label.SetPosition( 115, 59 );
+        route4Label.SetSize( 15, 15 );
+        route4Label.SetEditable( false, false );
+        route4Label.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        route4Label.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        route4Label.SetColor( new Color( 147, 0, 0, 255 ) );
+        route4Label.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        route4Label.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        route4Label.SetBorderSize( 1 );
+        route4Label.SetMultiLineEdit( false );
+        route4Label.SetIsNumberEditor( false );
+        route4Label.SetNumberEditorRange( 0, 100 );
+        route4Label.SetNumberEditorInterval( 1 );
+        route4Label.SetNumberEditorUsesMouseWheel( false );
+        route4Label.SetHasCustomTextHoverColor( false );
+        route4Label.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        route4Label.SetFont( "Arial", 13, true, false );
 }
 
 
@@ -723,6 +737,12 @@ void InitializeControls()
 
 
     // Auto-generated variables
+    private VoltageLabel route4Label;
+    private VoltageLabel route3Label;
+    private VoltageLabel offLabel;
+    private VoltageLabel route1Label;
+    private VoltageLabel route2Label;
+    private VoltageImage image1;
     private VoltageLabel colophon;
     private VoltageLabel manufacturerLabel;
     private VoltageLabel commonInputLabel;
@@ -738,19 +758,15 @@ void InitializeControls()
     private VoltageAudioJack sourceInput2;
     private VoltageLabel clickFilterLabel;
     private VoltageLabel destination4Label;
-    private VoltageLabel route4Label;
     private VoltageLabel destination3Label;
-    private VoltageLabel route3Label;
     private VoltageLabel destination2Label;
-    private VoltageLabel route2Label;
     private VoltageLabel destination1Label;
-    private VoltageLabel route1Label;
-    private VoltageLabel offLabel;
     private VoltageKnob routeKnob;
     private VoltageLabel numberLabel;
     private VoltageLabel descriptionLabel;
     private VoltageAudioJack selectedOutputJack;
     private VoltageAudioJack sourceInput1;
+    private VoltageImage image2;
 
 
     //[user-code-and-variables]    Add your own variables and functions here

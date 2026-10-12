@@ -28,7 +28,7 @@ public class c234 extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "45cf8f46ac21461f9e12504acd7f1553" );
+        SetSkin( "dcf40ace7d0741fbb7cfca587d13cf81" );
     }
 
 void InitializeControls()
@@ -64,7 +64,7 @@ void InitializeControls()
         manufacturerLogoLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         manufacturerLogoLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
         manufacturerLogoLabel.SetColor( new Color( 147, 0, 0, 255 ) );
-        manufacturerLogoLabel.SetBkColor( new Color( 51, 51, 51, 255 ) );
+        manufacturerLogoLabel.SetBkColor( new Color( 0, 0, 0, 255 ) );
         manufacturerLogoLabel.SetBorderColor( new Color( 85, 0, 0, 255 ) );
         manufacturerLogoLabel.SetBorderSize( 2 );
         manufacturerLogoLabel.SetMultiLineEdit( false );
@@ -237,8 +237,8 @@ void InitializeControls()
         manufacturerNameLabel = new VoltageLabel( "manufacturerNameLabel", "Manufacturer Name", this, "insect" );
         AddComponent( manufacturerNameLabel );
         manufacturerNameLabel.SetWantsMouseNotifications( false );
-        manufacturerNameLabel.SetPosition( 29, 212 );
-        manufacturerNameLabel.SetSize( 56, 10 );
+        manufacturerNameLabel.SetPosition( 24, 206 );
+        manufacturerNameLabel.SetSize( 66, 15 );
         manufacturerNameLabel.SetEditable( false, false );
         manufacturerNameLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         manufacturerNameLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
@@ -253,13 +253,13 @@ void InitializeControls()
         manufacturerNameLabel.SetNumberEditorUsesMouseWheel( false );
         manufacturerNameLabel.SetHasCustomTextHoverColor( false );
         manufacturerNameLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        manufacturerNameLabel.SetFont( "Arial Black", 7, true, false );
+        manufacturerNameLabel.SetFont( "Arial Black", 10, true, false );
 
         manufacturerLineLabel = new VoltageLabel( "manufacturerLineLabel", "Manufacturer Line", this, "laboratories" );
         AddComponent( manufacturerLineLabel );
         manufacturerLineLabel.SetWantsMouseNotifications( false );
-        manufacturerLineLabel.SetPosition( 29, 217 );
-        manufacturerLineLabel.SetSize( 56, 10 );
+        manufacturerLineLabel.SetPosition( 24, 212 );
+        manufacturerLineLabel.SetSize( 66, 15 );
         manufacturerLineLabel.SetEditable( false, false );
         manufacturerLineLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         manufacturerLineLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
@@ -274,13 +274,13 @@ void InitializeControls()
         manufacturerLineLabel.SetNumberEditorUsesMouseWheel( false );
         manufacturerLineLabel.SetHasCustomTextHoverColor( false );
         manufacturerLineLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        manufacturerLineLabel.SetFont( "Arial Black", 7, true, false );
+        manufacturerLineLabel.SetFont( "Arial Black", 10, true, false );
 
         locationLabel = new VoltageLabel( "locationLabel", "Location", this, "allegheny city, pa" );
         AddComponent( locationLabel );
         locationLabel.SetWantsMouseNotifications( false );
-        locationLabel.SetPosition( 29, 222 );
-        locationLabel.SetSize( 56, 10 );
+        locationLabel.SetPosition( 25, 219 );
+        locationLabel.SetSize( 66, 15 );
         locationLabel.SetEditable( false, false );
         locationLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         locationLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
@@ -295,13 +295,13 @@ void InitializeControls()
         locationLabel.SetNumberEditorUsesMouseWheel( false );
         locationLabel.SetHasCustomTextHoverColor( false );
         locationLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        locationLabel.SetFont( "Arial Black", 7, true, false );
+        locationLabel.SetFont( "Arial Black", 10, true, false );
 
         yearLabel = new VoltageLabel( "yearLabel", "Year", this, "— 1935 —" );
         AddComponent( yearLabel );
         yearLabel.SetWantsMouseNotifications( false );
-        yearLabel.SetPosition( 29, 227 );
-        yearLabel.SetSize( 56, 10 );
+        yearLabel.SetPosition( 24, 226 );
+        yearLabel.SetSize( 66, 15 );
         yearLabel.SetEditable( false, false );
         yearLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         yearLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
@@ -316,7 +316,7 @@ void InitializeControls()
         yearLabel.SetNumberEditorUsesMouseWheel( false );
         yearLabel.SetHasCustomTextHoverColor( false );
         yearLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        yearLabel.SetFont( "Arial Black", 7, true, false );
+        yearLabel.SetFont( "Arial Black", 10, true, false );
 
         amplitudeKnob = new VoltageKnob( "amplitudeKnob", "Amplitude", this, 0.0, 1.0, 1.0 );
         AddComponent( amplitudeKnob );
@@ -335,6 +335,13 @@ void InitializeControls()
         image1.SetPosition( 41, 236 );
         image1.SetSize( 32, 32 );
         image1.SetCurrentImage( "image image.svg" );
+
+        image2 = new VoltageImage( "image2", "image2", this, false );
+        AddComponent( image2 );
+        image2.SetWantsMouseNotifications( false );
+        image2.SetPosition( 21, 335 );
+        image2.SetSize( 19, 23 );
+        image2.SetCurrentImage( "image image(2).svg" );
 }
 
 
@@ -584,6 +591,7 @@ if (component == modeKnob ||
 
 
     // Auto-generated variables
+    private VoltageImage image2;
     private VoltageImage image1;
     private VoltageKnob amplitudeKnob;
     private VoltageLabel yearLabel;

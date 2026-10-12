@@ -28,7 +28,7 @@ public class nineteenfortyseven extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "0a0076ef75e748579bf63c14c90a9071" );
+        SetSkin( "5035af068e50402f8e0f049ad22e7766" );
     }
 
 void InitializeControls()
@@ -37,9 +37,9 @@ void InitializeControls()
         image1 = new VoltageImage( "image1", "image1", this, false );
         AddComponent( image1 );
         image1.SetWantsMouseNotifications( false );
-        image1.SetPosition( 175, 245 );
-        image1.SetSize( 110, 110 );
-        image1.SetCurrentImage( "wireframe_globe_E8E8E8.svg" );
+        image1.SetPosition( 185, 265 );
+        image1.SetSize( 90, 90 );
+        image1.SetCurrentImage( "image image(5).svg" );
 
         brandLabel = new VoltageLabel( "brandLabel", "Model Name", this, "SIN/RND generator – filter" );
         AddComponent( brandLabel );
@@ -50,7 +50,7 @@ void InitializeControls()
         brandLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         brandLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
         brandLabel.SetColor( new Color( 232, 232, 232, 147 ) );
-        brandLabel.SetBkColor( new Color( 51, 51, 51, 147 ) );
+        brandLabel.SetBkColor( new Color( 35, 35, 0, 255 ) );
         brandLabel.SetBorderColor( new Color( 51, 51, 0, 255 ) );
         brandLabel.SetBorderSize( 4 );
         brandLabel.SetMultiLineEdit( false );
@@ -62,11 +62,11 @@ void InitializeControls()
         brandLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         brandLabel.SetFont( "Courier New", 13, true, false );
 
-        numberLabel = new VoltageLabel( "numberLabel", "Model Number Label", this, "1947B" );
+        numberLabel = new VoltageLabel( "numberLabel", "Model Number Label", this, "I-72-1947B" );
         AddComponent( numberLabel );
         numberLabel.SetWantsMouseNotifications( false );
-        numberLabel.SetPosition( 33, 335 );
-        numberLabel.SetSize( 424, 13 );
+        numberLabel.SetPosition( 383, 335 );
+        numberLabel.SetSize( 74, 13 );
         numberLabel.SetEditable( false, false );
         numberLabel.SetJustificationFlags( VoltageLabel.Justification.Right );
         numberLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
@@ -104,13 +104,13 @@ void InitializeControls()
         mainOutput.SetSize( 37, 37 );
         mainOutput.SetSkin( "Rotated Half" );
 
-        amplitudeKnob = new VoltageKnob( "amplitudeKnob", "Amplitude", this, 0.0, 1.0, 0.0 );
+        amplitudeKnob = new VoltageKnob( "amplitudeKnob", "Amplitude", this, 0.0, 1.0, 0.21 );
         AddComponent( amplitudeKnob );
         amplitudeKnob.SetWantsMouseNotifications( false );
         amplitudeKnob.SetPosition( 315, 240 );
         amplitudeKnob.SetSize( 50, 50 );
         amplitudeKnob.SetSkin( "Cosmo v2 Large" );
-        amplitudeKnob.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        amplitudeKnob.SetRange( 0.0, 1.0, 0.21, false, 0 );
         amplitudeKnob.SetKnobParams( 215, 145 );
         amplitudeKnob.DisplayValueInPercent( true );
         amplitudeKnob.SetKnobAdjustsRing( true );
@@ -144,25 +144,14 @@ void InitializeControls()
         externalFmLevelKnob.DisplayValueInPercent( false );
         externalFmLevelKnob.SetKnobAdjustsRing( true );
 
-        frequencyKnob = new VoltageKnob( "frequencyKnob", "Frequency", this, 0.0, 1.0, 0.281152240467025 );
-        AddComponent( frequencyKnob );
-        frequencyKnob.SetWantsMouseNotifications( false );
-        frequencyKnob.SetPosition( 170, 110 );
-        frequencyKnob.SetSize( 120, 120 );
-        frequencyKnob.SetSkin( "Cosmo v2 Large" );
-        frequencyKnob.SetRange( 0.0, 1.0, 0.281152240467025, false, 0 );
-        frequencyKnob.SetKnobParams( 215, 145 );
-        frequencyKnob.DisplayValueInPercent( false );
-        frequencyKnob.SetKnobAdjustsRing( true );
-
-        fineFrequencyKnob = new VoltageKnob( "fineFrequencyKnob", "Fine Frequency", this, -1.0, 1.0, 0.0 );
+        fineFrequencyKnob = new VoltageKnob( "fineFrequencyKnob", "Fine Frequency", this, -1.0, 1.0, 0.28115 );
         AddComponent( fineFrequencyKnob );
         fineFrequencyKnob.SetWantsMouseNotifications( false );
         fineFrequencyKnob.SetPosition( 150, 190 );
         fineFrequencyKnob.SetSize( 20, 20 );
         fineFrequencyKnob.SetSkin( "Cosmo Small" );
-        fineFrequencyKnob.SetRange( -1.0, 1.0, 0.0, false, 0 );
-        fineFrequencyKnob.SetKnobParams( 215, 145 );
+        fineFrequencyKnob.SetRange( -1.0, 1.0, 0.28115, false, 0 );
+        fineFrequencyKnob.SetKnobParams( 225, 135 );
         fineFrequencyKnob.DisplayValueInPercent( false );
         fineFrequencyKnob.SetKnobAdjustsRing( true );
 
@@ -202,7 +191,7 @@ void InitializeControls()
         powerLed = new VoltageLED( "powerLed", "Power Indicator", this );
         AddComponent( powerLed );
         powerLed.SetWantsMouseNotifications( false );
-        powerLed.SetPosition( 402, 45 );
+        powerLed.SetPosition( 367, 39 );
         powerLed.SetSize( 15, 15 );
         powerLed.SetSkin( "2500 Lamp Red" );
 
@@ -545,7 +534,7 @@ void InitializeControls()
         amplitudeLabel = new VoltageLabel( "amplitudeLabel", "Amplitude Label", this, "AMPLITUDE" );
         AddComponent( amplitudeLabel );
         amplitudeLabel.SetWantsMouseNotifications( false );
-        amplitudeLabel.SetPosition( 309, 220 );
+        amplitudeLabel.SetPosition( 310, 220 );
         amplitudeLabel.SetSize( 60, 23 );
         amplitudeLabel.SetEditable( false, false );
         amplitudeLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
@@ -572,8 +561,8 @@ void InitializeControls()
         manufacturerLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         manufacturerLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
         manufacturerLabel.SetColor( new Color( 147, 0, 0, 147 ) );
-        manufacturerLabel.SetBkColor( new Color( 51, 51, 51, 255 ) );
-        manufacturerLabel.SetBorderColor( new Color( 51, 51, 0, 147 ) );
+        manufacturerLabel.SetBkColor( new Color( 35, 35, 0, 255 ) );
+        manufacturerLabel.SetBorderColor( new Color( 51, 51, 0, 255 ) );
         manufacturerLabel.SetBorderSize( 2 );
         manufacturerLabel.SetMultiLineEdit( false );
         manufacturerLabel.SetIsNumberEditor( false );
@@ -584,32 +573,11 @@ void InitializeControls()
         manufacturerLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         manufacturerLabel.SetFont( "Courier New", 13, true, false );
 
-        manufacturerNameLabel = new VoltageLabel( "manufacturerNameLabel", "Manufacturer Name", this, "INSECT LABORATORIES" );
-        AddComponent( manufacturerNameLabel );
-        manufacturerNameLabel.SetWantsMouseNotifications( false );
-        manufacturerNameLabel.SetPosition( 31, 139 );
-        manufacturerNameLabel.SetSize( 80, 10 );
-        manufacturerNameLabel.SetEditable( false, false );
-        manufacturerNameLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        manufacturerNameLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        manufacturerNameLabel.SetColor( new Color( 51, 51, 0, 255 ) );
-        manufacturerNameLabel.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        manufacturerNameLabel.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        manufacturerNameLabel.SetBorderSize( 1 );
-        manufacturerNameLabel.SetMultiLineEdit( false );
-        manufacturerNameLabel.SetIsNumberEditor( false );
-        manufacturerNameLabel.SetNumberEditorRange( 0, 100 );
-        manufacturerNameLabel.SetNumberEditorInterval( 1 );
-        manufacturerNameLabel.SetNumberEditorUsesMouseWheel( false );
-        manufacturerNameLabel.SetHasCustomTextHoverColor( false );
-        manufacturerNameLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        manufacturerNameLabel.SetFont( "Arial Black", 9, false, false );
-
         manufacturerCityLabel = new VoltageLabel( "manufacturerCityLabel", "Manufacturer City", this, "PITTSBURGH" );
         AddComponent( manufacturerCityLabel );
         manufacturerCityLabel.SetWantsMouseNotifications( false );
-        manufacturerCityLabel.SetPosition( 31, 147 );
-        manufacturerCityLabel.SetSize( 80, 10 );
+        manufacturerCityLabel.SetPosition( 189, 309 );
+        manufacturerCityLabel.SetSize( 80, 15 );
         manufacturerCityLabel.SetEditable( false, false );
         manufacturerCityLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         manufacturerCityLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
@@ -624,13 +592,13 @@ void InitializeControls()
         manufacturerCityLabel.SetNumberEditorUsesMouseWheel( false );
         manufacturerCityLabel.SetHasCustomTextHoverColor( false );
         manufacturerCityLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        manufacturerCityLabel.SetFont( "Arial Black", 9, false, false );
+        manufacturerCityLabel.SetFont( "Arial Black", 13, false, false );
 
         manufacturerCountryLabel = new VoltageLabel( "manufacturerCountryLabel", "Manufacturer Country", this, "UNITED STATES OF AMERICA" );
         AddComponent( manufacturerCountryLabel );
         manufacturerCountryLabel.SetWantsMouseNotifications( false );
-        manufacturerCountryLabel.SetPosition( 31, 155 );
-        manufacturerCountryLabel.SetSize( 80, 10 );
+        manufacturerCountryLabel.SetPosition( 169, 320 );
+        manufacturerCountryLabel.SetSize( 120, 15 );
         manufacturerCountryLabel.SetEditable( false, false );
         manufacturerCountryLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         manufacturerCountryLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
@@ -645,13 +613,13 @@ void InitializeControls()
         manufacturerCountryLabel.SetNumberEditorUsesMouseWheel( false );
         manufacturerCountryLabel.SetHasCustomTextHoverColor( false );
         manufacturerCountryLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        manufacturerCountryLabel.SetFont( "Arial Black", 9, false, false );
+        manufacturerCountryLabel.SetFont( "Arial Black", 13, false, false );
 
         modelNumberLabel = new VoltageLabel( "modelNumberLabel", "Model Number", this, "MODEL 1947B Mk II" );
         AddComponent( modelNumberLabel );
         modelNumberLabel.SetWantsMouseNotifications( false );
-        modelNumberLabel.SetPosition( 370, 63 );
-        modelNumberLabel.SetSize( 80, 10 );
+        modelNumberLabel.SetPosition( 324, 57 );
+        modelNumberLabel.SetSize( 100, 13 );
         modelNumberLabel.SetEditable( false, false );
         modelNumberLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         modelNumberLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
@@ -666,13 +634,13 @@ void InitializeControls()
         modelNumberLabel.SetNumberEditorUsesMouseWheel( false );
         modelNumberLabel.SetHasCustomTextHoverColor( false );
         modelNumberLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        modelNumberLabel.SetFont( "Arial Black", 9, false, false );
+        modelNumberLabel.SetFont( "Arial Black", 13, false, false );
 
         moduleDescriptionLabel = new VoltageLabel( "moduleDescriptionLabel", "Module Description", this, "SIN/RND GENERATOR - FILTER" );
         AddComponent( moduleDescriptionLabel );
         moduleDescriptionLabel.SetWantsMouseNotifications( false );
-        moduleDescriptionLabel.SetPosition( 370, 70 );
-        moduleDescriptionLabel.SetSize( 80, 10 );
+        moduleDescriptionLabel.SetPosition( 324, 69 );
+        moduleDescriptionLabel.SetSize( 100, 13 );
         moduleDescriptionLabel.SetEditable( false, false );
         moduleDescriptionLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         moduleDescriptionLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
@@ -687,28 +655,74 @@ void InitializeControls()
         moduleDescriptionLabel.SetNumberEditorUsesMouseWheel( false );
         moduleDescriptionLabel.SetHasCustomTextHoverColor( false );
         moduleDescriptionLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        moduleDescriptionLabel.SetFont( "Arial Black", 9, false, false );
+        moduleDescriptionLabel.SetFont( "Arial Black", 11, false, false );
 
-        colophon = new VoltageLabel( "colophon", "colophon", this, "insect laboratories pittsburgh, PA        united states & beyond" );
-        AddComponent( colophon );
-        colophon.SetWantsMouseNotifications( false );
-        colophon.SetPosition( 24, 337 );
-        colophon.SetSize( 60, 20 );
-        colophon.SetEditable( false, false );
-        colophon.SetJustificationFlags( VoltageLabel.Justification.Left );
-        colophon.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        colophon.SetColor( new Color( 19, 19, 19, 85 ) );
-        colophon.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        colophon.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        colophon.SetBorderSize( 1 );
-        colophon.SetMultiLineEdit( true );
-        colophon.SetIsNumberEditor( false );
-        colophon.SetNumberEditorRange( 0, 100 );
-        colophon.SetNumberEditorInterval( 1 );
-        colophon.SetNumberEditorUsesMouseWheel( false );
-        colophon.SetHasCustomTextHoverColor( false );
-        colophon.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        colophon.SetFont( "Arial Black", 6, true, false );
+        image2 = new VoltageImage( "image2", "image2", this, false );
+        AddComponent( image2 );
+        image2.SetWantsMouseNotifications( false );
+        image2.SetPosition( 170, 292 );
+        image2.SetSize( 120, 18 );
+        image2.SetCurrentImage( "image image(6).svg" );
+
+        frequencyKnob = new VoltageKnob( "frequencyKnob", "Frequency", this, 0.0, 1.0, 0.28115 );
+        AddComponent( frequencyKnob );
+        frequencyKnob.SetWantsMouseNotifications( false );
+        frequencyKnob.SetPosition( 170, 110 );
+        frequencyKnob.SetSize( 120, 120 );
+        frequencyKnob.SetSkin( "Cosmo v2 Large" );
+        frequencyKnob.SetRange( 0.0, 1.0, 0.28115, false, 0 );
+        frequencyKnob.SetKnobParams( 225, 135 );
+        frequencyKnob.DisplayValueInPercent( false );
+        frequencyKnob.SetKnobAdjustsRing( true );
+
+        image5 = new VoltageImage( "image5", "image5", this, false );
+        AddComponent( image5 );
+        image5.SetWantsMouseNotifications( false );
+        image5.SetPosition( 24, 336 );
+        image5.SetSize( 25, 22 );
+        image5.SetCurrentImage( "image image(7).svg" );
+
+        filteredModeLabel_1 = new VoltageLabel( "filteredModeLabel_1", "Filtered Mode Label_1", this, "50" );
+        AddComponent( filteredModeLabel_1 );
+        filteredModeLabel_1.SetWantsMouseNotifications( false );
+        filteredModeLabel_1.SetPosition( 166, 207 );
+        filteredModeLabel_1.SetSize( 32, 16 );
+        filteredModeLabel_1.SetEditable( false, false );
+        filteredModeLabel_1.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        filteredModeLabel_1.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        filteredModeLabel_1.SetColor( new Color( 232, 232, 232, 147 ) );
+        filteredModeLabel_1.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        filteredModeLabel_1.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        filteredModeLabel_1.SetBorderSize( 1 );
+        filteredModeLabel_1.SetMultiLineEdit( false );
+        filteredModeLabel_1.SetIsNumberEditor( false );
+        filteredModeLabel_1.SetNumberEditorRange( 0, 100 );
+        filteredModeLabel_1.SetNumberEditorInterval( 1 );
+        filteredModeLabel_1.SetNumberEditorUsesMouseWheel( false );
+        filteredModeLabel_1.SetHasCustomTextHoverColor( false );
+        filteredModeLabel_1.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        filteredModeLabel_1.SetFont( "Arial Black", 13, true, false );
+
+        filteredModeLabel_2 = new VoltageLabel( "filteredModeLabel_2", "Filtered Mode Label_2", this, "18k" );
+        AddComponent( filteredModeLabel_2 );
+        filteredModeLabel_2.SetWantsMouseNotifications( false );
+        filteredModeLabel_2.SetPosition( 266, 207 );
+        filteredModeLabel_2.SetSize( 32, 16 );
+        filteredModeLabel_2.SetEditable( false, false );
+        filteredModeLabel_2.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        filteredModeLabel_2.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        filteredModeLabel_2.SetColor( new Color( 232, 232, 232, 147 ) );
+        filteredModeLabel_2.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        filteredModeLabel_2.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        filteredModeLabel_2.SetBorderSize( 1 );
+        filteredModeLabel_2.SetMultiLineEdit( false );
+        filteredModeLabel_2.SetIsNumberEditor( false );
+        filteredModeLabel_2.SetNumberEditorRange( 0, 100 );
+        filteredModeLabel_2.SetNumberEditorInterval( 1 );
+        filteredModeLabel_2.SetNumberEditorUsesMouseWheel( false );
+        filteredModeLabel_2.SetHasCustomTextHoverColor( false );
+        filteredModeLabel_2.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        filteredModeLabel_2.SetFont( "Arial Black", 13, true, false );
 }
 
 
@@ -738,6 +752,7 @@ void InitializeControls()
     @Override
     public void Destroy()
     {
+                StopGuiUpdateTimer();
         super.Destroy();
         //[user-Destroy]   Add your own module-getting-deleted code here
 
@@ -1112,12 +1127,15 @@ return super.GetTooltipText(component);
 
 
     // Auto-generated variables
-    private VoltageLabel colophon;
+    private VoltageLabel filteredModeLabel_2;
+    private VoltageLabel filteredModeLabel_1;
+    private VoltageImage image5;
+    private VoltageKnob frequencyKnob;
+    private VoltageImage image2;
     private VoltageLabel moduleDescriptionLabel;
     private VoltageLabel modelNumberLabel;
     private VoltageLabel manufacturerCountryLabel;
     private VoltageLabel manufacturerCityLabel;
-    private VoltageLabel manufacturerNameLabel;
     private VoltageLabel manufacturerLabel;
     private VoltageLabel amplitudeLabel;
     private VoltageLabel outputLabel;
@@ -1141,7 +1159,6 @@ return super.GetTooltipText(component);
     private VoltageKnob modeKnob;
     private VoltageKnob randomModulationKnob;
     private VoltageKnob fineFrequencyKnob;
-    private VoltageKnob frequencyKnob;
     private VoltageKnob externalFmLevelKnob;
     private VoltageAudioJack externalFmInput;
     private VoltageKnob amplitudeRangeKnob;

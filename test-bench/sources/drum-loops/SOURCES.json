@@ -1,0 +1,43 @@
+[
+  {
+    "id": "hiphop_drums_loopdilla_stereo",
+    "title": "Hip Hop Drum Loop 17",
+    "author": "LoopDilla",
+    "url": "https://freesound.org/people/LoopDilla/sounds/195177/",
+    "download_url": "https://freesound.org/people/LoopDilla/sounds/195177/download/195177__loopdilla__hip-hop-drum-loop-17.wav",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "checked": "2026-10-11",
+    "filename": "195177__loopdilla__hip-hop-drum-loop-17.wav",
+    "sha256": "2c7b769c249c2af614254afb86df0855baabbb33ee8afe4d90c6f4a96ab34719",
+    "delivery": "07-recordings/hiphop_drums_loopdilla_stereo.wav",
+    "purpose": "Hip-Hop kick/snare/hat loop for envelope following, gate timing, EQ and saturation tests.",
+    "source_format": "Original stereo 44.1 kHz 16-bit PCM WAV",
+    "previous_preview_sha256": "52bfaa4f1975af8714a31ef5806b80a54d42f5c9f71c29ddcd4b5947ed28b021"
+  },
+  {
+    "id": "extreme_metal_drums_erich94_stereo",
+    "title": "Death Metal Drums",
+    "author": "erich94",
+    "url": "https://freesound.org/people/erich94/sounds/187757/",
+    "download_url": "https://freesound.org/people/erich94/sounds/187757/download/187757__erich94__death-metal-drums.mp3",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "checked": "2026-10-11",
+    "filename": "187757__erich94__death-metal-drums.mp3",
+    "sha256": "2180bc5a843cc5f06ba52e4f02fda994c8a230af9a170a5cbec368b456b6eaa0",
+    "delivery": "07-recordings/extreme_metal_drums_erich94_stereo.wav",
+    "purpose": "Extreme-metal drum loop for fast transient density, cymbal energy, gate response and compression tests.",
+    "source_format": "Original stereo 44.1 kHz 320 kbps MP3",
+    "previous_preview_sha256": "98ee45c1e4876e098a0d65dcf89465fe3c1e22aca51abad4f1ea14d29c29c5b7",
+    "loop_edit": {
+      "start_frame": 153544,
+      "frames": 307200,
+      "wrap_crossfade_frames": 480,
+      "sample_rate": 48000,
+      "bpm": 300,
+      "bars_4_4": 8,
+      "method": "Sample-aligned cut near the 3.2-second phrase boundary. Last 10 ms blended into the original 10 ms immediately preceding the start; duration unchanged."
+    }
+  }
+]

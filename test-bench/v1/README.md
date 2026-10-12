@@ -1,6 +1,6 @@
-# InsectLabs Audio Test Bench — v1.4
+# InsectLabs Audio Test Bench — v1.5.1
 
-60 listening and measurement files for the InsectLabs Voltage Modular collections. All delivery files are **48 kHz, 24-bit PCM WAV**, with mono sources prioritized and explicit stereo routing fixtures. Typical lengths are 4–24 seconds, plus two 42-second sn-16u sweeps, with one complete original experimental-music mix for extended audition. No Voltage Modular patch or special player is required.
+62 listening and measurement files for the InsectLabs Voltage Modular collections. All delivery files are **48 kHz, 24-bit PCM WAV**, with mono sources prioritized and explicit stereo routing fixtures. Typical lengths are 4–24 seconds, plus two 42-second sn-16u sweeps, with one complete original experimental-music mix for extended audition. No Voltage Modular patch or special player is required.
 
 ## Start here
 
@@ -23,7 +23,7 @@
 | 04-stereo | 7 | Left/right identification, correlated dual mono, opposite polarity, alternating channels, independent noise |
 | 05-musical | 7 | Original synthesized guitar-like and piano-like performances, split-channel pairs, duo, full instrumental mix and complete user-owned experimental-music mix |
 | 06-ambience | 2 | Synthesized garden and stream textures |
-| 07-recordings | 8 | Sourced guitar and piano, birds and rain, mono instrument versions and split-channel pairs |
+| 07-recordings | 10 | Sourced guitar and piano, birds and rain, mono instrument versions, split-channel pairs, Hip-Hop and extreme-metal drum loops |
 
 ## Playback and level conventions
 
@@ -77,3 +77,11 @@ the left-channel pulse leads the right by 54, 108 and 13.5 ms, corresponding to 
 It is a one-shot, not a seamless loop. Use it to check short echo/head timing, transient response,
 stereo offset and transport-speed relationships. Numerical format, level and pulse placement checks
 pass; native host playback is pending. Rebuild with `python test-bench/tools/add_model62_head_impulses.py --output test-bench/v1`.
+
+## Drum-loop recordings (1.5.0)
+
+Use `07-recordings/hiphop_drums_loopdilla_stereo.wav` for spacious kick/snare/hat transients and `07-recordings/extreme_metal_drums_erich94_stereo.wav` for dense fast drum transients and cymbal energy. These are complete CC0 third-party recordings converted from the original Freesound downloads (Hip-Hop: 16-bit PCM WAV; Metal: 320 kbps MP3), at -9 dBFS linked stereo peak. Dynamics and stereo balance are preserved; no compression is added. Endpoint fades are 3 ms, not the 50 ms used on older recording excerpts. They restart safely but the musical seam has not been listening-verified. The original downloads replaced the initial preview-based delivery files. See `ATTRIBUTION.md`.
+
+## Metal loop edit (1.5.1)
+
+The extreme-metal WAV is now an exact 6.4-second musical cycle, taken from 3.198833–9.598833 seconds of the decoded source. Its repeated pattern supports eight 4/4 bars at 300 BPM, or four at 150 BPM half-time. A 10 ms wrap-tail blend preserves the duration and cymbal sustain across the join; no endpoint fade or silence is inserted. The original source recording is preserved. This replaces the earlier full-length metal delivery, which included a long decay tail.

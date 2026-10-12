@@ -22,13 +22,13 @@ public class type9414 extends VoltageModule
     @SuppressWarnings("this-escape") 
     public type9414( long moduleID, VoltageObjects voltageObjects )
     {
-        super( moduleID, voltageObjects, "type 9414 - Frequency Analyzer", ModuleType.ModuleType_Filters, 1.6 );
+        super( moduleID, voltageObjects, "type 9414 - frequency analyzer", ModuleType.ModuleType_Filters, 1.6 );
 
         InitializeControls();
 
 
         canBeBypassed = true;
-        SetSkin( "64e506f75ad3485a872fa21cbde3f95c" );
+        SetSkin( "1f199f71ae2b4303a932c1c0d35e99d7" );
     }
 
 void InitializeControls()
@@ -419,7 +419,7 @@ void InitializeControls()
         manufacturerMarkLabel = new VoltageLabel( "manufacturerMarkLabel", "Manufacturer Label_1", this, "r." );
         AddComponent( manufacturerMarkLabel );
         manufacturerMarkLabel.SetWantsMouseNotifications( false );
-        manufacturerMarkLabel.SetPosition( 10, 335 );
+        manufacturerMarkLabel.SetPosition( 3, 337 );
         manufacturerMarkLabel.SetSize( 20, 20 );
         manufacturerMarkLabel.SetEditable( false, false );
         manufacturerMarkLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
@@ -440,7 +440,7 @@ void InitializeControls()
         colophon = new VoltageLabel( "colophon", "Colophon", this, "type 9414 frequency analyzer  refuge kits                            oklahoma city, ok                             –– 1958 ––" );
         AddComponent( colophon );
         colophon.SetWantsMouseNotifications( false );
-        colophon.SetPosition( 25, 335 );
+        colophon.SetPosition( 20, 335 );
         colophon.SetSize( 80, 23 );
         colophon.SetEditable( false, false );
         colophon.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );

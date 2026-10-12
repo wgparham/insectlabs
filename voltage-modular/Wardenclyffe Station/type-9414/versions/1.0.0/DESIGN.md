@@ -1,7 +1,7 @@
 # Selective Service — canonical v1.0.0
 
 Status: **Canonical v1.0.0**, approved by the user after successful build and testing.
-The working pair is `development/selective_service.vmod` and `development/selective_service.java`.
+The working pair is `development/selectiveService.vmod` and `development/selectiveService.java`.
 Class/package identity and control UUIDs are preserved. The visible panel remains the supplied mockup;
 the C jack is restored to the requested 22 x 22 size. Internal names are descriptive lowerCamelCase,
 Display Names are human readable, and Designer Notes contain only `v1.0.0`.

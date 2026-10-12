@@ -28,7 +28,7 @@ public class ac1d extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "b4ee41880b104629a857235acda54abb" );
+        SetSkin( "1ee100d8a4ad48a59995541466bff000" );
     }
 
 void InitializeControls()
@@ -37,7 +37,7 @@ void InitializeControls()
         functionTypeLabel = new VoltageLabel( "functionTypeLabel", "Function Type", this, "SQR/SIN GENERATOR" );
         AddComponent( functionTypeLabel );
         functionTypeLabel.SetWantsMouseNotifications( false );
-        functionTypeLabel.SetPosition( 156, 178 );
+        functionTypeLabel.SetPosition( 8, 94 );
         functionTypeLabel.SetSize( 74, 10 );
         functionTypeLabel.SetEditable( false, false );
         functionTypeLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
@@ -58,7 +58,7 @@ void InitializeControls()
         modelNumberLabel = new VoltageLabel( "modelNumberLabel", "Model Number", this, "MODEL AC/1D" );
         AddComponent( modelNumberLabel );
         modelNumberLabel.SetWantsMouseNotifications( false );
-        modelNumberLabel.SetPosition( 156, 186 );
+        modelNumberLabel.SetPosition( 8, 102 );
         modelNumberLabel.SetSize( 74, 10 );
         modelNumberLabel.SetEditable( false, false );
         modelNumberLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
@@ -79,7 +79,7 @@ void InitializeControls()
         revisionLabel = new VoltageLabel( "revisionLabel", "Revision", this, "REVISION 2" );
         AddComponent( revisionLabel );
         revisionLabel.SetWantsMouseNotifications( false );
-        revisionLabel.SetPosition( 156, 194 );
+        revisionLabel.SetPosition( 8, 110 );
         revisionLabel.SetSize( 74, 10 );
         revisionLabel.SetEditable( false, false );
         revisionLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
@@ -100,8 +100,8 @@ void InitializeControls()
         kitBrandLabel = new VoltageLabel( "kitBrandLabel", "Kit Brand", this, "REFUGE KITS" );
         AddComponent( kitBrandLabel );
         kitBrandLabel.SetWantsMouseNotifications( false );
-        kitBrandLabel.SetPosition( 0, 40 );
-        kitBrandLabel.SetSize( 64, 15 );
+        kitBrandLabel.SetPosition( 170, 343 );
+        kitBrandLabel.SetSize( 56, 15 );
         kitBrandLabel.SetEditable( false, false );
         kitBrandLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         kitBrandLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
@@ -117,48 +117,6 @@ void InitializeControls()
         kitBrandLabel.SetHasCustomTextHoverColor( false );
         kitBrandLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         kitBrandLabel.SetFont( "Arial Black", 10, false, false );
-
-        subsidiaryLabel = new VoltageLabel( "subsidiaryLabel", "Subsidiary", this, "A SUBSIDIARY OF" );
-        AddComponent( subsidiaryLabel );
-        subsidiaryLabel.SetWantsMouseNotifications( false );
-        subsidiaryLabel.SetPosition( 0, 51 );
-        subsidiaryLabel.SetSize( 64, 10 );
-        subsidiaryLabel.SetEditable( false, false );
-        subsidiaryLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        subsidiaryLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        subsidiaryLabel.SetColor( new Color( 232, 232, 232, 147 ) );
-        subsidiaryLabel.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        subsidiaryLabel.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        subsidiaryLabel.SetBorderSize( 1 );
-        subsidiaryLabel.SetMultiLineEdit( false );
-        subsidiaryLabel.SetIsNumberEditor( false );
-        subsidiaryLabel.SetNumberEditorRange( 0, 100 );
-        subsidiaryLabel.SetNumberEditorInterval( 1 );
-        subsidiaryLabel.SetNumberEditorUsesMouseWheel( false );
-        subsidiaryLabel.SetHasCustomTextHoverColor( false );
-        subsidiaryLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        subsidiaryLabel.SetFont( "Arial Black", 7, false, false );
-
-        manufacturerNameLabel = new VoltageLabel( "manufacturerNameLabel", "Manufacturer Name", this, "insect laboratories" );
-        AddComponent( manufacturerNameLabel );
-        manufacturerNameLabel.SetWantsMouseNotifications( false );
-        manufacturerNameLabel.SetPosition( 0, 58 );
-        manufacturerNameLabel.SetSize( 64, 10 );
-        manufacturerNameLabel.SetEditable( false, false );
-        manufacturerNameLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        manufacturerNameLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        manufacturerNameLabel.SetColor( new Color( 232, 232, 232, 147 ) );
-        manufacturerNameLabel.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        manufacturerNameLabel.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        manufacturerNameLabel.SetBorderSize( 1 );
-        manufacturerNameLabel.SetMultiLineEdit( false );
-        manufacturerNameLabel.SetIsNumberEditor( false );
-        manufacturerNameLabel.SetNumberEditorRange( 0, 100 );
-        manufacturerNameLabel.SetNumberEditorInterval( 1 );
-        manufacturerNameLabel.SetNumberEditorUsesMouseWheel( false );
-        manufacturerNameLabel.SetHasCustomTextHoverColor( false );
-        manufacturerNameLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        manufacturerNameLabel.SetFont( "Arial Black", 7, false, false );
 
         sineAmplitudeKnob = new VoltageKnob( "sineAmplitudeKnob", "Sine Amplitude", this, 0.0, 1.0, 0.0 );
         AddComponent( sineAmplitudeKnob );
@@ -192,7 +150,7 @@ void InitializeControls()
         brandLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         brandLabel.SetFont( "Courier New", 13, true, false );
 
-        titleLabel = new VoltageLabel( "titleLabel", "Title Label", this, "AC/1D" );
+        titleLabel = new VoltageLabel( "titleLabel", "Title Label", this, "I-72-AC/1D" );
         AddComponent( titleLabel );
         titleLabel.SetWantsMouseNotifications( false );
         titleLabel.SetPosition( 33, 335 );
@@ -723,7 +681,7 @@ void InitializeControls()
         revisionMarkLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         revisionMarkLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
         revisionMarkLabel.SetColor( new Color( 147, 0, 0, 255 ) );
-        revisionMarkLabel.SetBkColor( new Color( 51, 51, 51, 255 ) );
+        revisionMarkLabel.SetBkColor( new Color( 0, 0, 0, 255 ) );
         revisionMarkLabel.SetBorderColor( new Color( 147, 147, 51, 255 ) );
         revisionMarkLabel.SetBorderSize( 2 );
         revisionMarkLabel.SetMultiLineEdit( false );
@@ -743,7 +701,7 @@ void InitializeControls()
         colophon.SetEditable( false, false );
         colophon.SetJustificationFlags( VoltageLabel.Justification.Left );
         colophon.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        colophon.SetColor( new Color( 19, 19, 19, 85 ) );
+        colophon.SetColor( new Color( 147, 147, 147, 147 ) );
         colophon.SetBkColor( new Color( 65, 65, 65, 0 ) );
         colophon.SetBorderColor( new Color( 0, 0, 0, 0 ) );
         colophon.SetBorderSize( 1 );
@@ -755,6 +713,13 @@ void InitializeControls()
         colophon.SetHasCustomTextHoverColor( false );
         colophon.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         colophon.SetFont( "Arial Black", 9, true, false );
+
+        image1 = new VoltageImage( "image1", "image1", this, false );
+        AddComponent( image1 );
+        image1.SetWantsMouseNotifications( false );
+        image1.SetPosition( 0, 83 );
+        image1.SetSize( 90, 15 );
+        image1.SetCurrentImage( "refuge_acoustical_research_wordmark_ultraEcru.svg" );
 }
 
 
@@ -1052,6 +1017,7 @@ void InitializeControls()
 
 
     // Auto-generated variables
+    private VoltageImage image1;
     private VoltageLabel colophon;
     private VoltageLabel revisionMarkLabel;
     private VoltageLabel squareRangeLabel;
@@ -1087,8 +1053,6 @@ void InitializeControls()
     private VoltageLabel titleLabel;
     private VoltageLabel brandLabel;
     private VoltageKnob sineAmplitudeKnob;
-    private VoltageLabel manufacturerNameLabel;
-    private VoltageLabel subsidiaryLabel;
     private VoltageLabel kitBrandLabel;
     private VoltageLabel revisionLabel;
     private VoltageLabel modelNumberLabel;

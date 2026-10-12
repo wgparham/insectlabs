@@ -5,7 +5,7 @@ sys.path.insert(0,str(ROOT/'voltage-modular/colorbox/tools'))
 from value_tree import Reader,encode,props
 from support import normalized,regions
 parser=argparse.ArgumentParser();parser.add_argument('--module',type=Path,default=Path(__file__).resolve().parents[1]);parser.add_argument('--baseline',type=Path);args=parser.parse_args()
-module=args.module;dev=module if (module/'lm-21_mk3.java').exists() else module/'development';java=dev/'lm-21_mk3.java';vmod=dev/'lm-21_mk3.vmod';source=java.read_text(encoding='utf-8-sig');raw=vmod.read_bytes();reader=Reader(raw);tree=reader.tree();assert reader.p==len(raw) and encode(tree)==raw
+module=args.module;dev=module if (module/'lm21mark3.java').exists() else module/'development';java=dev/'lm21mark3.java';vmod=dev/'lm21mark3.vmod';source=java.read_text(encoding='utf-8-sig');raw=vmod.read_bytes();reader=Reader(raw);tree=reader.tree();assert reader.p==len(raw) and encode(tree)==raw
 embedded=props(next(n for n in tree[2] if n[0]=='module code'))['MODULE.SOURCE'];assert normalized(source)==normalized(embedded)
 
 controls=next(n for n in tree[2] if n[0]=='controls')[2]

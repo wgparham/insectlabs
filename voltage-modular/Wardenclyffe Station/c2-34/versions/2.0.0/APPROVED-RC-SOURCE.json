@@ -1,9 +1,16 @@
 {
-  "source_pair": [
+  "approved_rc_pair_filenames": [
     "c234.java",
     "c234.vmod"
   ],
+  "canonical_release_pair": [
+    "c234.java",
+    "c234.vmod"
+  ],
+  "visible_module_name": "c2-34",
+  "java_class_and_publisher_identity": "c234",
   "candidate_notes_version": "v2.0.0rc",
+  "release_version": "v2.0.0",
   "approved_by_user": true,
-  "approval_basis": "User confirmed the current Wardenclyffe release candidate had been built, auditioned, and approved before code and metadata cleanup."
+  "approval_basis": "User confirmed the 2.x candidate had been built, run, and audio tested successfully. The published Java class name c234 is intentionally retained."
 }

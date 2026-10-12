@@ -28,16 +28,30 @@ public class nineteenninetyeight extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "fd7d52b81865486692b28d5a5c516437" );
+        SetSkin( "3fa5ae27a056460f8f5198f25cce6d16" );
     }
 
 void InitializeControls()
 {
 
-        colophon = new VoltageLabel( "colophon", "Colophon", this, "insect laboratories pittsburgh, PA        united states & beyond" );
+        image4 = new VoltageImage( "image4", "image4", this, false );
+        AddComponent( image4 );
+        image4.SetWantsMouseNotifications( false );
+        image4.SetPosition( 60, 184 );
+        image4.SetSize( 71, 71 );
+        image4.SetCurrentImage( "wireframe_globe_E8E8E8.svg" );
+
+        image1 = new VoltageImage( "image1", "image1", this, false );
+        AddComponent( image1 );
+        image1.SetWantsMouseNotifications( false );
+        image1.SetPosition( 165, 50 );
+        image1.SetSize( 60, 10 );
+        image1.SetCurrentImage( "insect_laboratories_wordmark.svg" );
+
+        colophon = new VoltageLabel( "colophon", "Colophon", this, "pittsburgh, PA        united states & beyond" );
         AddComponent( colophon );
         colophon.SetWantsMouseNotifications( false );
-        colophon.SetPosition( 168, 49 );
+        colophon.SetPosition( 167, 56 );
         colophon.SetSize( 60, 20 );
         colophon.SetEditable( false, false );
         colophon.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
@@ -201,7 +215,7 @@ void InitializeControls()
         amplitudeLabel = new VoltageLabel( "amplitudeLabel", "Amplitude label", this, "AMPLITUDE" );
         AddComponent( amplitudeLabel );
         amplitudeLabel.SetWantsMouseNotifications( false );
-        amplitudeLabel.SetPosition( 0, 96 );
+        amplitudeLabel.SetPosition( 0, 100 );
         amplitudeLabel.SetSize( 80, 20 );
         amplitudeLabel.SetEditable( false, false );
         amplitudeLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
@@ -264,8 +278,8 @@ void InitializeControls()
         signalInputLabel = new VoltageLabel( "signalInputLabel", "Signal input label", this, "S" );
         AddComponent( signalInputLabel );
         signalInputLabel.SetWantsMouseNotifications( false );
-        signalInputLabel.SetPosition( 0, 145 );
-        signalInputLabel.SetSize( 80, 20 );
+        signalInputLabel.SetPosition( 9, 147 );
+        signalInputLabel.SetSize( 60, 20 );
         signalInputLabel.SetEditable( false, false );
         signalInputLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         signalInputLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
@@ -285,7 +299,7 @@ void InitializeControls()
         attackLabel = new VoltageLabel( "attackLabel", "Attack label", this, "ATTACK" );
         AddComponent( attackLabel );
         attackLabel.SetWantsMouseNotifications( false );
-        attackLabel.SetPosition( 54, 239 );
+        attackLabel.SetPosition( 54, 248 );
         attackLabel.SetSize( 80, 20 );
         attackLabel.SetEditable( false, false );
         attackLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
@@ -306,7 +320,7 @@ void InitializeControls()
         delayLabel = new VoltageLabel( "delayLabel", "Delay label", this, "DELAY" );
         AddComponent( delayLabel );
         delayLabel.SetWantsMouseNotifications( false );
-        delayLabel.SetPosition( 10, 307 );
+        delayLabel.SetPosition( 10, 309 );
         delayLabel.SetSize( 60, 20 );
         delayLabel.SetEditable( false, false );
         delayLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
@@ -327,7 +341,7 @@ void InitializeControls()
         balanceLabel = new VoltageLabel( "balanceLabel", "Balance label", this, "BALANCE" );
         AddComponent( balanceLabel );
         balanceLabel.SetWantsMouseNotifications( false );
-        balanceLabel.SetPosition( 99, 299 );
+        balanceLabel.SetPosition( 99, 301 );
         balanceLabel.SetSize( 80, 20 );
         balanceLabel.SetEditable( false, false );
         balanceLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
@@ -508,7 +522,7 @@ void InitializeControls()
         manufacturerLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         manufacturerLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
         manufacturerLabel.SetColor( new Color( 147, 0, 0, 255 ) );
-        manufacturerLabel.SetBkColor( new Color( 51, 51, 51, 255 ) );
+        manufacturerLabel.SetBkColor( new Color( 0, 0, 0, 255 ) );
         manufacturerLabel.SetBorderColor( new Color( 85, 0, 0, 255 ) );
         manufacturerLabel.SetBorderSize( 2 );
         manufacturerLabel.SetMultiLineEdit( false );
@@ -519,6 +533,13 @@ void InitializeControls()
         manufacturerLabel.SetHasCustomTextHoverColor( false );
         manufacturerLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         manufacturerLabel.SetFont( "Courier New", 13, true, false );
+
+        image3 = new VoltageImage( "image3", "image3", this, false );
+        AddComponent( image3 );
+        image3.SetWantsMouseNotifications( false );
+        image3.SetPosition( 26, 336 );
+        image3.SetSize( 24, 21 );
+        image3.SetCurrentImage( "antLogoSpecimenHorz.svg" );
 }
 
 
@@ -824,6 +845,7 @@ void InitializeControls()
 
 
     // Auto-generated variables
+    private VoltageImage image3;
     private VoltageLabel manufacturerLabel;
     private VoltageLED delayedGateLed;
     private VoltageLED gateLed;
@@ -858,6 +880,8 @@ void InitializeControls()
     private VoltageLabel numberLabel;
     private VoltageLabel descriptionLabel;
     private VoltageLabel colophon;
+    private VoltageImage image1;
+    private VoltageImage image4;
 
 
     //[user-code-and-variables]    Add your own variables and functions here

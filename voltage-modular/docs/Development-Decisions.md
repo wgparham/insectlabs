@@ -5,7 +5,7 @@ Reviewed against the supplied conversation and repository on 1 October 2026. Thi
 ## Collection-wide decisions
 
 - Platform is Voltage Modular. Colorbox supplies infrastructure conventions; the three following series develop their own sound and interface roles.
-- Laboratory is mono-first and manual-first: WWI/WWII equipment repurposed in early electronic and German film studios. Multiple paths do not imply stereo. Functional modulation inputs are allowed; widespread CV control belongs to Radiophonic.
+- Laboratory is mono-first and manual-first: WWI/WWII equipment repurposed in early electronic and German film studios. Multiple paths do not imply stereo. Functional modulation inputs are allowed; widespread CV control belongs to Teletape Workshop.
 - Global +10 V modulation scaling was deferred. The default working reference remains +5 V, separately from audio amplitude, DC ranges, gates and pitch.
 - Family resemblance does not require identical coloration. Fader|Distr A/B and sw1/sw2 deliberately differ. Faders have more audible weight than typical Laboratory utilities, below Colorbox intensity. Do not impose one generic aging stage on all modules.
 - Host bypass retains the Colorbox low-work contract. Physical power declicking is a separate feature; Generator's approved power fade does not change hard host bypass.
@@ -32,7 +32,7 @@ n01's RATE describes continuous random-motion bandwidth, not a clock for STEPPED
 
 n01 uses a different random core/amplitude distribution from SIN/RND, plus deliberate bandwidth voicing. Changing a PRNG alone does not guarantee that listeners can distinguish two white-noise sources; the approved spectral treatment is part of the audible identity. A broad distribution of sampled voltages is not the same property as a 1/f spectrum. WHITE here is a musical broadband source, not a precision flat calibration signal.
 
-The EMS random-voltage reference is retained for later Radiophonic exploration. Dual random channels and variable event timing are not pending fixes to the completed n01.
+The EMS random-voltage reference is retained for later Teletape Workshop exploration. Dual random channels and variable event timing are not pending fixes to the completed n01.
 
 ## Source and historical-document clarifications
 

@@ -22,13 +22,13 @@ public class XL35h extends VoltageModule
     @SuppressWarnings("this-escape")
     public XL35h( long moduleID, VoltageObjects voltageObjects )
     {
-        super( moduleID, voltageObjects, "XL-35h - High Pass Filters", ModuleType.ModuleType_Filters, 1.6 );
+        super( moduleID, voltageObjects, "XL-35h - high pass filters", ModuleType.ModuleType_Filters, 1.6 );
 
         InitializeControls();
 
 
         canBeBypassed = true;
-        SetSkin( "a0d552138e724bd594f3cb166d9acf39" );
+        SetSkin( "05b28a5b2315490dab48cc44694a87b5" );
     }
 
 void InitializeControls()
@@ -58,8 +58,8 @@ void InitializeControls()
         modelIdentifierLabel = new VoltageLabel( "modelIdentifierLabel", "Model Number", this, "XL-35h" );
         AddComponent( modelIdentifierLabel );
         modelIdentifierLabel.SetWantsMouseNotifications( false );
-        modelIdentifierLabel.SetPosition( 33, 335 );
-        modelIdentifierLabel.SetSize( 79, 13 );
+        modelIdentifierLabel.SetPosition( 76, 335 );
+        modelIdentifierLabel.SetSize( 36, 13 );
         modelIdentifierLabel.SetEditable( false, false );
         modelIdentifierLabel.SetJustificationFlags( VoltageLabel.Justification.Right );
         modelIdentifierLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
@@ -74,7 +74,7 @@ void InitializeControls()
         modelIdentifierLabel.SetNumberEditorUsesMouseWheel( false );
         modelIdentifierLabel.SetHasCustomTextHoverColor( false );
         modelIdentifierLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        modelIdentifierLabel.SetFont( "Courier New", 13, true, false );
+        modelIdentifierLabel.SetFont( "Courier New", 10, true, false );
 
         makerMarkLabel = new VoltageLabel( "makerMarkLabel", "Insect Laboratories Mark", this, "iL" );
         AddComponent( makerMarkLabel );
@@ -85,7 +85,7 @@ void InitializeControls()
         makerMarkLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         makerMarkLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
         makerMarkLabel.SetColor( new Color( 147, 0, 0, 255 ) );
-        makerMarkLabel.SetBkColor( new Color( 51, 51, 51, 255 ) );
+        makerMarkLabel.SetBkColor( new Color( 0, 0, 0, 255 ) );
         makerMarkLabel.SetBorderColor( new Color( 85, 0, 0, 255 ) );
         makerMarkLabel.SetBorderSize( 2 );
         makerMarkLabel.SetMultiLineEdit( false );

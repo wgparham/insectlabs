@@ -1,10 +1,10 @@
 # Release review — c2-34 Balanced Modulator 2.0.0
 
-- Prior archive: 1.0.0 (retained unchanged).
-- Candidate source pair: approved 2.x RC, promoted to 2.0.0 after user confirmation that the candidate had been built and auditioned.
-- Scope: release packaging, pair filenames matched to the public Java class, descriptive internal identifiers where the panel had generated placeholders, human-readable Display Names, module Notes set to `v2.0.0`, useful missing tooltips added, and user manual refreshed.
-- Audible DSP and tested panel behavior: preserved from the approved candidate.
-- SDK compilation: passed: 16/16 Java source files compile against Voltage SDK using Java 17 target.
-- Designer round trip and embedded-source parity: passed: all 16 `.vmod` files round-trip and embedded Java matches the standalone source.
-- Native host test after metadata cleanup: not repeated; user approved the exact candidate behavior before this behavior-preserving cleanup.
-- Release files and hashes: passed: SHA-256 manifest generated for all release files.
+- Canonical release: 2.0.0; previous 1.x release retained unchanged.
+- Active project pair: c234.vmod and c234.java.
+- Visible module name: c2-34. Public Java class and Cherry Audio publisher identity: c234, retained intentionally because the module is already published.
+- User verification: the current pair was compiled, run, and audio tested successfully.
+- Read-only package review: confirmed the VMOD contains version Notes v2.0.0, the visible module name, Java class c234, active DSP processing, and host bypass handling.
+- No DSP behavior was changed during this release-package cleanup.
+- Voltage SDK was not available in the installed Designer directory for an independent local rebuild during this review.
+- Stale backup and duplicate older source files were removed. SHA-256 manifest regenerated for the remaining release files.

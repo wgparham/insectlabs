@@ -24,8 +24,19 @@ for r in m['files']:
         freq=int(tone[1]);t=np.arange(len(x))/48000
         check(np.max(np.abs(x[:,0]-10**(-12/20)*np.sin(2*np.pi*freq*t)))<=.51/8388608,r['file']+': calibrated sine within half a quantization step')
         check(abs(np.fft.rfftfreq(len(x),1/48000)[np.argmax(np.abs(np.fft.rfft(x[:,0])))]-freq)<.01,r['file']+': frequency')
-    if r['file'].startswith('07-recordings/'):
+    if r['file'].startswith('07-recordings/') and not r.get('loop_edit'):
         check(np.all(q[[0,-1]]==0),r['file']+': faded endpoints')
+for r in m['files']:
+    if r.get('loop_edit'):
+        q=signals[Path(r['file']).stem]
+        edit=r['loop_edit']
+        check(len(q)==edit['frames'],'Edited drum loop: exact musical-cycle length')
+        check(edit['frames']==round(8*4*60/300*48000),'Edited drum loop: eight bars at 300 BPM')
+        check(np.max(np.abs(q[0].astype(float)-q[-1]))/8388608 < 0.02,
+              'Edited drum loop: wrap sample step below -34 dBFS')
+        check(np.sqrt(np.mean((q[:480]/8388608)**2))>0.005,
+              'Edited drum loop: no silence inserted at wrap')
+
 def find(fragment):
     return next(v for k,v in signals.items() if fragment in k)
 check(np.all(find('silence')==0),'Digital silence is exact')

@@ -2,7 +2,7 @@
 
 **Canonical version:** `2.0.0`<br>
 **Collection:** Wardenclyffe Station<br>
-**Designer export:** `c234.java`<br>
+**Designer export:** `c234.java` (public class `c234`)<br>
 **Designer project:** `c234.vmod`<br>
 **Validation record:** REVIEW.md<br>
 
@@ -21,7 +21,7 @@ Treat the current manual and this version's `.vmod`/`.java` pair as the behavior
 
 ## DSP architecture
 
-The active per-sample callback is `ProcessSample()` in `c234.java`. It delegates module-specific work to: readInput, finiteOrZero, clamp, smoothstep, setControls, process, getOutput, onBypassed, setTarget, next, snap.
+The active per-sample callback is `ProcessSample()` in `c234.java` (public class `c234`). It delegates module-specific work to: readInput, finiteOrZero, clamp, smoothstep, setControls, process, getOutput, onBypassed, setTarget, next, snap.
 
 Persistent DSP helper/state classes: `BalancedModulatorDsp`, `ControlRamp`.
 
@@ -75,4 +75,4 @@ Check bypass after any DSP edit: direct-signal modules should retain the establi
 
 ## Validation provenance
 
-This note documents the canonical `2.0.0` source archive. The validation record and `SHA256.json` are the release-time references for test history and file integrity. This documentation pass does not rebuild or retest the canonized DSP and does not alter source files.
+This note documents the canonical `2.0.0` source archive. The user confirmed that the active pair compiled, ran, and passed audio testing. The release review and `SHA256.json` record package checks and file integrity; no DSP behavior was changed during cleanup.

@@ -14,9 +14,9 @@ Short module descriptions for the Cherry Audio Notes fields. Versions and names 
 
 The 1958 is a precision-minded dual waveform test oscillator with sine and variable triangle/ramp/saw outputs, internal or external FM up to 100 Hz, and a separate 1 kHz reference tone. Its mixed reference follows the AMPLITUDE control, while restrained drift and gentle compression add a trace of vintage test-equipment character.
 
-## 1998/4 Dynamic Modulator — 2.0.0
+## 1998/4 Dynamic Modulator — 2.0.1
 
-1998/4 follows the level of an audio signal and produces envelopes and gates for controlling other modules. Its shared input stage can add driven compression, available both to the detector and at SIGNAL THROUGH, while DELAY and BALANCE create a later envelope copy.
+1998/4 follows the level of an audio signal and produces envelopes and gates for controlling other modules. Its shared input stage can add driven compression, available both to the detector and at SIGNAL THROUGH, while DELAY shifts the envelope by up to five seconds and BALANCE blends immediate and delayed copies. Its 16× input gain can bring very quiet sources into useful detector range.
 
 ## 1A-30 Deep Tone Generator / Modulator — 2.0.0
 
@@ -38,41 +38,41 @@ AC/1D is a deliberately imperfect dual oscillator inspired by postwar service eq
 
 The c2-34 is a simple two-input balanced modulator with a continuous BALANCED / UNBALANCED control. Move from carrier-suppressed ring modulation toward unbalanced VCA operation, with a deliberately imperfect transition zone and adjustable output level.
 
-## n01 Noise Generator — 2.0.0
+## n01 Noise Generator — 2.0.1
 
-n01 provides distinct white noise, continuously colored SPECTRA noise, slow random voltage, a moving ramp source, and triggered sample-and-hold output. Its sound and modulation rates respond to hands-on controls without relying on a hidden clock.
+n01 provides distinct white noise, continuously colored SPECTRA noise, slow random voltage, a moving ramp source, and triggered sample-and-hold output. Its sound and modulation rates respond to hands-on controls without relying on a hidden clock. The trigger button flashes for manual and external sample-and-hold events.
 
 ## sh.7437 Dual Slew Processor — 2.0.0
 
 sh.7437 contains independent positive and negative slew limiters for audio or control voltages. Two selectable time ranges span fast shaping through very slow drift, and patch feedback can turn either section into a repeating contour source.
 
-## sn-16u Universal Test Bench — 2.0.0
+## sn16u Universal Test Bench — 2.1.0
 
-sn-16u is a manual test and calibration instrument for pitch standards, reference tones, voltage, frequency, amplitude, and filtering. Its precision references and measurement tools are designed to remain clean and stable.
+sn16u is a manual test and calibration instrument for pitch standards, reference tones, voltage, frequency, amplitude, and filtering. Six coordinated readouts show decimals, signed values, units and mode changes clearly, while its precision references and measurement tools remain clean and stable.
 
-## SW1 Relay Switch — 2.0.0
+## sw1 Relay Switch — 2.0.1
 
-SW1 is a manual two-input, two-output relay router that switches between straight-through and swapped connections. Its toggle/gate behavior also provides complementary logic outputs when no audio inputs are connected, with an optional click-filter mode for switching character.
+switch1 is a manual two-input, two-output relay router that switches between straight-through and swapped connections. Its toggle/gate behavior also provides complementary logic outputs when no audio inputs are connected, with an optional click-filter mode for switching character.
 
-## SW2 Switch / Distributer — 2.0.0
+## sw2 Switch / Distributer — 2.0.0
 
-SW2 has two independent routing banks controlled by one manual five-position selector. Choose one of four sources for X and route a common Y input to one of four destinations, with position 0 serving as the off state.
+switch2 has two independent routing banks controlled by one manual five-position selector. Choose one of four sources for X and route a common Y input to one of four destinations, with position 0 serving as the off state.
 
-## Type 9414 Frequency Analyzer — 2.0.0
+## type 9414 Frequency Analyzer — 2.0.0
 
-Type 9414 is a tunable selective amplifier with a narrow band-pass MAIN output and a matched band-reject C output. Its input gain drives both paths, while the output control affects MAIN only; use it to isolate partials or remove a specific band.
+type 9414 is a tunable selective amplifier with a narrow band-pass MAIN output and a matched band-reject C output. Its input gain drives both paths, while the output control affects MAIN only; use it to isolate partials or remove a specific frequency band.
 
-## Type 23 Signal Processor — 2.0.0
+## type 23 Signal Processor — 2.0.0
 
-Type 23 is a dual mono processor with independent gain, offset, external control, and PROC/VCA operation on each side. Its character stage adds driven saturation in positive gain, while negative gain provides a cleaner inverted response.
+type 23 is a dual mono processor with independent gain, offset, external control, and PROC/VCA operation on each side. Its character stage adds driven saturation in positive gain, while negative gain provides a cleaner inverted response.
 
-## Model 62 Wire Player Recorder — 1.0.0
+## model 62 Wire Player – Recorder — 2.0.0
 
-Model 62 records and plays a short virtual wire with varispeed, overdubbing, and a live input monitor. Transport inertia, bandwidth loss, accumulated noise, wow and flutter, and repairable splice marks give each recording the changing character of a physical medium.
+model 62 records and plays a short virtual wire with varispeed, overdubbing, and a live input monitor. Transport inertia, bandwidth loss, accumulated noise, wow and flutter, and repairable splice marks give each recording the changing character of a physical medium. Select High Fidelity for the cleaner voice or War-Worn for stronger playback character and extra noise and saturation that become part of new recordings. Its transport and magic-eye displays show loop position and total duration at the current varispeed, helping you plan exact loop lengths while composing or performing.
 
-## LM-21 Mk III Matrix Mixer — 1.0.1
+## LM-21 Mk III Matrix Mixer — 1.1.0
 
-LM-21 Mk III is a four-input, four-output matrix mixer with independent crosspoints, tone shaping, drive, and reverb on every output row. Its FULL MIX output combines the rows, while a separate mult section distributes an input to three outputs.
+LM-21 Mk III is a four-input, four-output matrix mixer with independent crosspoints, tone shaping, drive, and reverb on every output row. Its FULL MIX output combines the processed rows with a separate LINK submix input, while a mult section distributes an input to three outputs. The 2D switch can also send LINK through the shared channel D reverb, adding the wet return to D and FULL MIX.
 
 ## RM1010 Mixing Amplifier — 1.0.0
 
@@ -89,3 +89,8 @@ XL-35c pairs two independent, stepped one-pole low-pass filters with distinct fr
 ## 21-24eq Frequency Corrector — 1.0.1
 
 21-24eq is a mono bass-and-treble tone corrector with three selectable frequency profiles. Its passive-voiced response retains insertion loss and a characteristic non-flat contour at the control midpoint.
+
+
+## sn46 Standards — 1.0.0
+
+sn46 is a compact reference source with paired positive and negative adjustable voltages, fixed voltage standards, clean A and lower F Sharp tuning tones, and independent 1 Hz and 100 Hz sine outputs. A 432Hz mode, brief pulse output, pink noise and a precise voltage display make it useful for tuning, patch setup and everyday studio checks.

@@ -28,7 +28,7 @@ public class shDot7437 extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "e4d9d193d5554d04839cba2852f95e39" );
+        SetSkin( "a36c73b2be5e45a0a75be09a37dfd9be" );
     }
 
 void InitializeControls()
@@ -169,7 +169,7 @@ void InitializeControls()
         logoLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         logoLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
         logoLabel.SetColor( new Color( 147, 0, 0, 255 ) );
-        logoLabel.SetBkColor( new Color( 51, 51, 51, 0 ) );
+        logoLabel.SetBkColor( new Color( 0, 0, 0, 255 ) );
         logoLabel.SetBorderColor( new Color( 85, 0, 0, 255 ) );
         logoLabel.SetBorderSize( 2 );
         logoLabel.SetMultiLineEdit( false );
@@ -721,6 +721,13 @@ void InitializeControls()
         colophon.SetHasCustomTextHoverColor( false );
         colophon.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         colophon.SetFont( "Arial Black", 6, true, false );
+
+        image1 = new VoltageImage( "image1", "image1", this, false );
+        AddComponent( image1 );
+        image1.SetWantsMouseNotifications( false );
+        image1.SetPosition( 26, 336 );
+        image1.SetSize( 25, 22 );
+        image1.SetCurrentImage( "antLogoSpecimenHorz.svg" );
 }
 
 
@@ -1006,6 +1013,7 @@ void InitializeControls()
 
 
     // Auto-generated variables
+    private VoltageImage image1;
     private VoltageLabel colophon;
     private VoltageAudioJack positiveLowOutput;
     private VoltageAudioJack positiveHighOutput;

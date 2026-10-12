@@ -22,7 +22,7 @@ Date: 2026-10-08. Candidate: **v1.0.1rc**, promoted from the user working Notes 
 
 Native-host testing of this exact cleaned pair, saved-patch/automation/undo verification, skin rendering and host CPU profiling remain pending. Earlier user reports approve the sound, but are not represented as a native-host test of this RC. The repeatable tests mock SDK controls and execute the actual extracted source bodies. Native-rate saturation, fixed 48 kHz operation, throttled lamp updates from the audio callback and retained generated notification scaffolding are documented exceptions.
 
-Developer notes and manual updated. No canonical archive, commit or push is part of this RC-only task. Unrelated minimixer work and the historical prototype remain untouched. Candidate artifact hashes are recorded in SHA256.json. The exact pre-cleanup source is retained in tests/baseline/pre-cleanup.java.txt for repeatable parity comparisons.
+Developer notes and manual updated. No canonical archive, commit or push is part of this RC-only task. At the time of this review, a separate minimixer workstream was treated as unrelated; the concept has since been superseded by canonical RM1010 v1.0.0. Candidate artifact hashes are recorded in SHA256.json. The exact pre-cleanup source is retained in tests/baseline/pre-cleanup.java.txt for repeatable parity comparisons.
 
 ## Canonical approval — 2026-10-08
 

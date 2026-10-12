@@ -1,6 +1,6 @@
 # Optional gap-fillers and later-series ideas
 
-Proposal review: 9 October 2026. The LM-21 Mk III and simpler RM1010 minimixer are canonized. XL-35h and XL-35c add the matched high-pass / low-pass filter pair, and 21-24eq adds passive-voiced frequency correction. Twenty-two Wardenclyffe products are canonized; SN-46 is the final planned instrument in development. Other additions below remain optional proposals. These suggestions come from comparing current capabilities and the completed briefs; they are not historical user decisions.
+Proposal review: 11 October 2026. LM-21 Mk III and RM1010 are canonized; RM1010 supersedes the earlier minimixer concept, and no separate minimixer module is planned. XL-35h and XL-35c add the matched high-pass / low-pass filter pair, and 21-24eq adds passive-voiced frequency correction. Twenty-three Wardenclyffe products are canonized; sn46 Standards is canonical v1.0.0, completing the planned Wardenclyffe Station lineup. Other additions below remain optional proposals. These suggestions come from comparing current capabilities and the completed briefs; they are not historical user decisions.
 
 ## Completed Wardenclyffe module and optional gap-fillers
 
@@ -10,9 +10,9 @@ Proposal review: 9 October 2026. The LM-21 Mk III and simpler RM1010 minimixer a
 | 2 | Measuring Amplifier / Level and Polarity Meter | An instrument for checking audio level, DC offset and polarity. Start with a large slow meter, manual ranges and AC/DC selection. Decide RMS/peak/average behavior explicitly and label it honestly. A unity through path or a monitoring-only input would avoid unintended coloration. |
 | 3 | Band-Limiting Amplifier | Manual low and high cut for preparing audio, noise and feedback paths. Consider a broad mode in the canonical Type 9414 Frequency Analyzer first; add a separate box only if independent high/low limits justify it. |
 
-LM-21 Mk III is canonical at v1.0.1, and RM1010 is canonical at v1.0.0. The minimixer remains a separate, simpler and more period-faithful design; it does not inherit LM-21 features by default.
+LM-21 Mk III is canonical at v1.1.0, and RM1010 is canonical at v1.0.0. RM1010 is Wardenclyffe Station’s compact, period-faithful mixing amplifier; it replaced the earlier minimixer proposal. It does not inherit LM-21 features by default.
 
-sn-16u 1.0.0 provides DC/Vpp, CV pitch, audio Hz and RMS measurement, along with independent clean HPF/LPF paths. The meter and band-limiting proposals above are substantially covered by that release, not separate approved modules. Revisit only if native testing exposes a remaining need. Avoid promising laboratory measurement accuracy beyond tested limits.
+sn16u 2.1.0 provides DC/Vpp, CV pitch, audio Hz and RMS measurement, along with independent clean HPF/LPF paths. The meter and band-limiting proposals above are substantially covered by that release, not separate approved modules. Revisit only if native testing exposes a remaining need. Avoid promising laboratory measurement accuracy beyond tested limits.
 
 ## Fill these gaps within accepted concepts first
 
@@ -22,15 +22,15 @@ sn-16u 1.0.0 provides DC/Vpp, CV pitch, audio Hz and RMS measurement, along with
 - **Narrow spectral isolation:** Type 9414 Frequency Analyzer already fills this gap. A broad option may also cover much of the band-limiting proposal.
 - **Multiplication:** c2-34 Balanced Modulator already has a place; avoid adding another ring modulator under a different name.
 
-## Radiophonic possibilities
+## Teletape Workshop possibilities (formerly Radiophonic)
 
-**EMS-inspired Random Voltage Generator:** explore two random-voltage channels, held or gliding motion, mean rate and timing variance, with an event output and manual reselection/inhibit if the panel supports them. The [user-provided EMS reference](https://amsynths.co.uk/2026/08/11/ems-random-voltage-generator/) combines sampled voltages with variable timing. Its exact circuitry, channel numbering and ranges are not requirements. This would develop the user's late n01 inspiration as purpose-built studio equipment.
+**Dual Random Voltage Generator (RVG) — early WIP.** A starter folder exists at `Teletape Workshop/RVG/development` with working files and reference material. It is not yet a designed or locked module: the current Designer export still identifies itself as `My Module` and has no version Notes. The user’s EMS reference points toward two random-voltage channels, held or gliding motion, mean rate and timing variance, with event outputs and manual reselection/inhibit as options to discuss. The exact circuitry, channel numbering, range, controls and behavior remain open. Treat the existing pair as a mockup/scaffold and inspect it with the user before DSP work.
 
 **External sample-and-hold / track-and-hold:** n01 STEPPED samples its own ramp only. Sampling arbitrary patched audio/CV is a real capability gap, and fits the accepted Series Two S&H direction. Decide whether this belongs in the random-voltage instrument or a small independent sampler.
 
 **Studio noise processor:** CV-controlled spectral movement, bands and perhaps bursts could take the multiple-voice EMW and noise references further. Keep n01's approved manual noise voice intact; this is a later processor proposal rather than a revision to n01.
 
-Frequency shifting with separate UP/DOWN outputs, voltage-controlled switches, modern manual routers, studio contour/filter tools and tape/delay/reverb remain the existing Radiophonic direction. These ideas do not commit the whole list or a development order.
+Frequency shifting with separate UP/DOWN outputs, voltage-controlled switches, modern manual routers, studio contour/filter tools and tape/delay/reverb remain possible Teletape Workshop directions. These ideas do not commit the whole list or a development order.
 
 ## Computing boundary
 
@@ -38,4 +38,4 @@ Keep arithmetic, logic, accumulators, explicit state and coordinated event proce
 
 ## Status
 
-LM-21 Mk III and RM1010 are completed Wardenclyffe modules. The XL-35 filter pair is canonized. No optional gap-filler below is a locked brief. The meter and band-limiting ideas remain optional: sn-16u already covers much of that territory. The Radiophonic and computation ideas remain flexible later-series references, not a locked inventory.
+LM-21 Mk III and RM1010 are completed Wardenclyffe modules. The XL-35 filter pair is canonized. No optional gap-filler below is a locked brief. The meter and band-limiting ideas remain optional: sn-16u already covers much of that territory. The Teletape Workshop and computation ideas remain flexible later-series references, not a locked inventory.

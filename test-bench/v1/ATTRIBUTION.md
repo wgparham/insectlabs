@@ -61,3 +61,11 @@ derived from the impulse pair and generator supplied by the project creator. Its
 cleaned generator is `test-bench/tools/add_model62_head_impulses.py`; the manifest records both
 supplied source hashes and the delivered file/generator hashes. No third-party samples are used.
 The generated fixture is dedicated under CC0 1.0, matching the other procedural calibration audio.
+
+## Drum loops added in 1.5.0
+
+[Hip Hop Drum Loop 17](https://freesound.org/people/LoopDilla/sounds/195177/) by **LoopDilla**, [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/). Source page and license checked 2026-10-11. [Original download](https://freesound.org/people/LoopDilla/sounds/195177/download/195177__loopdilla__hip-hop-drum-loop-17.wav); SHA-256 `2c7b769c249c2af614254afb86df0855baabbb33ee8afe4d90c6f4a96ab34719`.
+
+[Death Metal Drums](https://freesound.org/people/erich94/sounds/187757/) by **erich94**, [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/). Source page and license checked 2026-10-11. [Original download](https://freesound.org/people/erich94/sounds/187757/download/187757__erich94__death-metal-drums.mp3); SHA-256 `2180bc5a843cc5f06ba52e4f02fda994c8a230af9a170a5cbec368b456b6eaa0`.
+
+The complete original source is retained in sources/drum-loops with its source-page snapshot and metadata. Delivery files are converted and level adjusted as recorded in the catalog. Original Hip-Hop WAV is lossless 16-bit PCM; original Metal recording is 320 kbps MP3. Earlier HQ previews remain as provenance only. These are sourced recordings, not generated percussion or copies of commercial tracks. Metal delivery uses the 6.4-second cycle from the sample-aligned phrase boundary near 3.2 seconds, with a 10 ms wrap-tail blend; the original recording remains intact. No fair-use exception is relied upon.

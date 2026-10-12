@@ -1,6 +1,6 @@
 # Developer notes — SW1 Switch
 
-**Canonical version:** `2.0.0`<br>
+**Canonical version:** `2.0.1`<br>
 **Collection:** Wardenclyffe Station<br>
 **Designer export:** `sw1.java`<br>
 **Designer project:** `sw1.vmod`<br>
@@ -14,8 +14,8 @@ Treat the current manual and this version's `.vmod`/`.java` pair as the behavior
 
 ## Source map
 
-- Canonical source folder: `sw1/versions/2.0.0`.
-- User manual: [`USER-MANUAL.md`](versions/2.0.0/USER-MANUAL.md).
+- Canonical source folder: `sw1/versions/2.0.1`.
+- User manual: [`USER-MANUAL.md`](versions/2.0.1/USER-MANUAL.md).
 - Release review and integrity files remain in the canonical version folder. Do not edit archived `.vmod`, `.java`, panel image, or checksum files in place.
 - Designer component inventory: AudioJack: 4, Button: 1, Knob: 1, LED: 4, Label: 8, Switch: 1. Use stable component IDs in the `.vmod` as the UI-to-code contract; display text is user-facing and may be edited independently.
 
@@ -75,4 +75,8 @@ Check bypass after any DSP edit: direct-signal modules should retain the establi
 
 ## Validation provenance
 
-This note documents the canonical `2.0.0` source archive. The validation record and `SHA256.json` are the release-time references for test history and file integrity. This documentation pass does not rebuild or retest the canonized DSP and does not alter source files.
+This note documents the canonical `2.0.1` source archive. The validation record and `SHA256.json` are the release-time references for test history and file integrity. This documentation pass does not rebuild or retest the canonized DSP and does not alter source files.
+
+## Selection lamp (2.0.1)
+
+The 2500 ON/ON skin maps lamp value 0 to bright and 1 to dim. Upper/default routing is bright; lower/alternate routing is dim. SetValueNoNotification(value, true) synchronizes native rendering without firing an action. Explicit mouse down/up events preserve GATE press/release and TOGGLE edge detection independently of lamp values. A 25 ms GUI timer maintains the display. Avoid replacing this with UpdateGUIValue or relying solely on button-value release notifications; the native host tests exposed lockups with that approach.

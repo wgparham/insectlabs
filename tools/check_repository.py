@@ -18,8 +18,12 @@ from value_tree import Reader, props, encode
 from support import normalized
 
 tracked = subprocess.check_output(['git', '-c', f'safe.directory={repo.as_posix()}',
-    '-C', str(repo), 'ls-files', '-z'], text=True).split('\0')
-files = [repo / name for name in tracked if name]
+    '-C', str(repo), 'ls-files', '-z', '--cached', '--others', '--exclude-standard'],
+    text=True).split('\0')
+# Validate the working tree, including new files, while ignoring stale index entries
+# for intentional local renames until Git records them. Missing manifest entries are
+# still reported by the manifest checks below.
+files = [repo / name for name in tracked if name and (repo / name).is_file()]
 errors = []
 counts = {'manifests': 0, 'hashed_files': 0, 'pairs': 0, 'canonical_modules': 0, 'local_links': 0}
 

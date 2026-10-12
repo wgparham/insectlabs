@@ -11,9 +11,9 @@ sys.path.insert(0,str(repo/'voltage-modular/colorbox/tools'))
 from value_tree import Reader,props,encode
 from support import normalized,regions
 base=Path(sys.argv[1]) if len(sys.argv)>1 else Path(__file__).resolve().parent
-if not (base/'selective_service.java').exists(): base=base.parent/'development'
-source=(base/'selective_service.java').read_text(encoding='utf-8-sig')
-raw=(base/'selective_service.vmod').read_bytes();reader=Reader(raw);tree=reader.tree()
+if not (base/'selectiveService.java').exists(): base=base.parent/'development'
+source=(base/'selectiveService.java').read_text(encoding='utf-8-sig')
+raw=(base/'selectiveService.vmod').read_bytes();reader=Reader(raw);tree=reader.tree()
 assert reader.p==len(raw) and encode(tree)==raw
 embedded=props(next(n for n in tree[2] if n[0]=='module code'))['MODULE.SOURCE']
 assert normalized(source)==normalized(embedded)

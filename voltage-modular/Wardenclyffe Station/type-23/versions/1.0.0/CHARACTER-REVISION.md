@@ -2,8 +2,8 @@
 
 Working pair:
 
-- `signal_proc.vmod`
-- `signal_proc.java`
+- `SIGPROC.vmod`
+- `SIGPROC.java`
 - `SHA256.json`
 
 Both stages default to PROC and use matching selector orientation. Both Gain knobs cover -3 to +3. The Java source and the source embedded in the Designer project are synchronized.

@@ -5,7 +5,7 @@
 **Format:** Mono, audio-rate matrix mixer<br>
 **Panel width:** 6.4 inches
 
-The LM-21 Mk III is a four-input, four-output mono matrix mixer with a separate signal path and ambience engine on each output row. It is imagined as a custom studio instrument built at WDR or RAI from repaired and repurposed equipment: a central routing desk with broad tone controls, transistor-like overload, and an artificial acoustic-distance effect. It is deliberately more expansive than a period-faithful utility mixer. The separate **minimixer** is intended to fill that simpler role.
+The LM-21 Mk III is a four-input, four-output mono matrix mixer with a separate signal path and ambience engine on each output row. It is imagined as a custom studio instrument built at WDR or RAI from repaired and repurposed equipment: a central routing desk with broad tone controls, transistor-like overload, and an artificial acoustic-distance effect. It is deliberately more expansive than a period-faithful utility mixer. RM1010 fills the compact mixing role; the earlier minimixer proposal was superseded and is not a separate module.
 
 This manual describes the approved v1.0.1 signal behavior. Functional build and listening tests passed; native-host CPU profiling remains unmeasured.
 

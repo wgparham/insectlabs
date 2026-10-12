@@ -28,7 +28,7 @@ public class XL35c extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "d51b1753287e4ef588e9a58c3714fc28" );
+        SetSkin( "dc43b843f6b64d4e966645e72c040a2b" );
     }
 
 void InitializeControls()
@@ -58,8 +58,8 @@ void InitializeControls()
         modelIdentifierLabel = new VoltageLabel( "modelIdentifierLabel", "Model Number", this, "XL-35c" );
         AddComponent( modelIdentifierLabel );
         modelIdentifierLabel.SetWantsMouseNotifications( false );
-        modelIdentifierLabel.SetPosition( 33, 335 );
-        modelIdentifierLabel.SetSize( 79, 13 );
+        modelIdentifierLabel.SetPosition( 68, 335 );
+        modelIdentifierLabel.SetSize( 44, 13 );
         modelIdentifierLabel.SetEditable( false, false );
         modelIdentifierLabel.SetJustificationFlags( VoltageLabel.Justification.Right );
         modelIdentifierLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
@@ -74,7 +74,7 @@ void InitializeControls()
         modelIdentifierLabel.SetNumberEditorUsesMouseWheel( false );
         modelIdentifierLabel.SetHasCustomTextHoverColor( false );
         modelIdentifierLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        modelIdentifierLabel.SetFont( "Courier New", 13, true, false );
+        modelIdentifierLabel.SetFont( "Courier New", 10, true, false );
 
         makerMarkLabel = new VoltageLabel( "makerMarkLabel", "Insect Laboratories Mark", this, "iL" );
         AddComponent( makerMarkLabel );
@@ -85,7 +85,7 @@ void InitializeControls()
         makerMarkLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         makerMarkLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
         makerMarkLabel.SetColor( new Color( 147, 0, 0, 255 ) );
-        makerMarkLabel.SetBkColor( new Color( 51, 51, 51, 255 ) );
+        makerMarkLabel.SetBkColor( new Color( 0, 0, 0, 255 ) );
         makerMarkLabel.SetBorderColor( new Color( 85, 0, 0, 255 ) );
         makerMarkLabel.SetBorderSize( 2 );
         makerMarkLabel.SetMultiLineEdit( false );
@@ -551,7 +551,7 @@ void InitializeControls()
         image2.SetWantsMouseNotifications( false );
         image2.SetPosition( 40, 300 );
         image2.SetSize( 35, 35 );
-        image2.SetCurrentImage( "wireframe_globe_E8E8E8.svg" );
+        image2.SetCurrentImage( "image image.svg" );
 }
 
 

@@ -22,13 +22,13 @@ public class n01 extends VoltageModule
     @SuppressWarnings("this-escape") 
     public n01( long moduleID, VoltageObjects voltageObjects )
     {
-        super( moduleID, voltageObjects, "n01", ModuleType.ModuleType_Source, 1.6 );
+        super( moduleID, voltageObjects, "n01 - noise source", ModuleType.ModuleType_Source, 1.6 );
 
         InitializeControls();
 
 
         canBeBypassed = true;
-        SetSkin( "705987a3ef7142d0a9ca5e6a03b69a29" );
+        SetSkin( "e893ee28b845430cb8a56136c117f8a3" );
     }
 
 void InitializeControls()
@@ -412,7 +412,7 @@ void InitializeControls()
         manufacturerLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         manufacturerLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
         manufacturerLabel.SetColor( new Color( 147, 0, 0, 255 ) );
-        manufacturerLabel.SetBkColor( new Color( 51, 51, 51, 255 ) );
+        manufacturerLabel.SetBkColor( new Color( 0, 0, 0, 255 ) );
         manufacturerLabel.SetBorderColor( new Color( 85, 0, 0, 255 ) );
         manufacturerLabel.SetBorderSize( 2 );
         manufacturerLabel.SetMultiLineEdit( false );

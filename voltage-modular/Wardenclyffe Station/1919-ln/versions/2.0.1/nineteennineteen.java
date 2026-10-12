@@ -22,14 +22,14 @@ public class nineteennineteen extends VoltageModule
     @SuppressWarnings("this-escape") 
     public nineteennineteen( long moduleID, VoltageObjects voltageObjects )
     {
-        super( moduleID, voltageObjects, "1919/ln - tone burst generator", ModuleType.ModuleType_Utility, 3.2 );
+        super( moduleID, voltageObjects, "1919/ln - tone burst generator", ModuleType.ModuleType_Processor, 3.2 );
 
         InitializeControls();
         InitializeControls2();
 
 
         canBeBypassed = true;
-        SetSkin( "e4fa6c7248cd4e828592a78bed344152" );
+        SetSkin( "2c00b4eb7e1b44609ac04fd6b51317c6" );
     }
 
 void InitializeControls()
@@ -1299,6 +1299,13 @@ void InitializeControls2()
         manufacturerNameLabel.SetHasCustomTextHoverColor( false );
         manufacturerNameLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         manufacturerNameLabel.SetFont( "Courier New", 6, true, false );
+
+        image1 = new VoltageImage( "image1", "image1", this, false );
+        AddComponent( image1 );
+        image1.SetWantsMouseNotifications( false );
+        image1.SetPosition( 26, 336 );
+        image1.SetSize( 26, 23 );
+        image1.SetCurrentImage( "antLogoSpecimenHorzUltraEcru.svg" );
 }
 
 
@@ -1761,6 +1768,7 @@ if (component == internalClockKnob) {
 
 
     // Auto-generated variables
+    private VoltageImage image1;
     private VoltageLabel manufacturerNameLabel;
     private VoltageLabel badgeTitle;
     private VoltageSwitch yPassSwitch;

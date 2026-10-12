@@ -1,19 +1,19 @@
 # LM-21 Mk III — DSP and maintenance notes
 
 **Status:** `v1.0.1`, automated validation passed; the user recompiled, tested and approved the corrected panel on 2026-10-08.  
-**Pair:** `lm-21_mk3.java` and `lm-21_mk3.vmod`. The Java source is also embedded in the Designer file; keep them synchronized after every edit.  
+**Pair:** `lm21mark3.java` and `lm21mark3.vmod`. The Java source is also embedded in the Designer file; keep them synchronized after every edit.<br>
 **Prototype:** `references/lm-21_mk3_reverbsc_prototype.java.txt` is retained as historical DSP reference.
 
 ## Intent and boundaries
 
-LM-21 is a custom mono studio matrix mixer for personal use, imagined as an expansive WDR/RAI-style instrument assembled from repaired equipment. It is not meant to be a faithful 984 or CP3 clone. The 984 informs the matrix/EQ/output-row topology and residual noon coloration; the CP3 informs analog mixer character and practical studio utility. The simpler, period-faithful minimixer is a separate design.
+LM-21 is a custom mono studio matrix mixer for personal use, imagined as an expansive WDR/RAI-style instrument assembled from repaired equipment. It is not meant to be a faithful 984 or CP3 clone. The 984 informs the matrix/EQ/output-row topology and residual noon coloration; the CP3 informs analog mixer character and practical studio utility. RM1010 is Wardenclyffe Station’s compact, period-faithful mixing amplifier; it replaced the earlier minimixer proposal.
 
 Keep the module mono-first and audio-only. Do not add CV or stereo behavior unless the design brief changes. The four independent row reverbs are intentional. Retain the 4×4 bipolar matrix, intentional gain build-up, saturation interaction, additive ambience, and useful degradation at extreme PERSPECTIVE settings.
 
 ## File responsibilities
 
-- `lm-21_mk3.vmod`: Voltage Module Designer panel, control definitions, and embedded source. Notes must carry the active development version and current decisions.
-- `lm-21_mk3.java`: working Java export. Treat this and the embedded Java as a synchronized pair.
+- `lm21mark3.vmod`: Voltage Module Designer panel, control definitions, and embedded source. Notes must carry the active development version and current decisions.
+- `lm21mark3.java`: working Java export. Treat this and the embedded Java as a synchronized pair.
 - `references/lm-21_mk3_reverbsc_prototype.java.txt`: pre-integration experiment; compare only when investigating earlier behavior.
 - `README.md`: module scope and concise status.
 - `USER-MANUAL.md`: operator-facing reference; update whenever control behavior changes.

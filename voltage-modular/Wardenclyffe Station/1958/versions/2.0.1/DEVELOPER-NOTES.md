@@ -15,7 +15,7 @@ Treat the current manual and this version's `.vmod`/`.java` pair as the behavior
 ## Source map
 
 - Canonical source folder: `1958/versions/2.0.1`.
-- User manual: [`USER-MANUAL.md`](versions/2.0.1/USER-MANUAL.md).
+- User manual: [`USER-MANUAL.md`](USER-MANUAL.md).
 - Release review and integrity files remain in the canonical version folder. Do not edit archived `.vmod`, `.java`, panel image, or checksum files in place.
 - Designer component inventory: AnalogVUMeter: 1, AudioJack: 3, Knob: 7, LED: 1, Label: 27, Switch: 2. Use stable component IDs in the `.vmod` as the UI-to-code contract; display text is user-facing and may be edited independently.
 

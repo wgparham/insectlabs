@@ -8,7 +8,7 @@ Manual draft prepared 4 October 2026.
 
 The Signal Processor is a dual, mono-first utility. Its left and right stages are independent: each has its own audio input and output, gain, offset, external control input, external level control, and PROC/VCA selector. Use the stages as separate processors or as a dual-mono pair; there is no stereo link between them.
 
-This guide describes [release 1.0.1](), the canonical source pair. Open `signal_proc.vmod` in Voltage Module Designer to build the module.
+This guide describes [release 1.0.1](), the canonical source pair. Open `SIGPROC.vmod` in Voltage Module Designer to build the module.
 
 ## Signal path and controls
 

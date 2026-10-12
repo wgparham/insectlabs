@@ -32,8 +32,8 @@
     ]
   },
   "following": {
-    "version": "2.0.0",
-    "path": "1998-4/versions/2.0.0",
+    "version": "2.0.1",
+    "path": "1998-4/versions/2.0.1",
     "module": "nineteenninetyeight",
     "name": "1998/4 Dynamic Modulator",
     "archived_version": "1.0.0",
@@ -53,7 +53,7 @@
   },
   "faderdistr-a": {
     "version": "2.0.0",
-    "path": "6121198a/versions/2.0.0",
+    "path": "612-1-198a/versions/2.0.0",
     "module": "faderdistributera",
     "name": "6121198a Fader / Distributer — Linear",
     "archived_version": "1.0.0",
@@ -63,7 +63,7 @@
   },
   "faderdistr-b": {
     "version": "2.0.0",
-    "path": "6121198b/versions/2.0.0",
+    "path": "612-1-198b/versions/2.0.0",
     "module": "faderdistributerb",
     "name": "6121198b Fader / Distributer — Equal Power",
     "archived_version": "1.0.0",
@@ -92,13 +92,14 @@
     ]
   },
   "n01": {
-    "version": "2.0.0",
-    "path": "n01/versions/2.0.0",
+    "version": "2.0.1",
+    "path": "n01/versions/2.0.1",
     "module": "n01",
     "name": "n01 Noise Generator",
     "archived_version": "1.0.0",
     "archived_versions": [
-      "1.0.0"
+      "1.0.0",
+      "2.0.0"
     ]
   },
   "sherlock": {
@@ -111,24 +112,15 @@
       "1.0.0"
     ]
   },
-  "sn-16u": {
-    "version": "2.0.0",
-    "path": "sn-16u/versions/2.0.0",
-    "module": "sn16u",
-    "name": "sn-16u Universal Test Bench",
-    "archived_version": "1.0.0",
-    "archived_versions": [
-      "1.0.0"
-    ]
-  },
   "sw1": {
-    "version": "2.0.0",
-    "path": "sw1/versions/2.0.0",
+    "version": "2.0.1",
+    "path": "sw1/versions/2.0.1",
     "module": "sw1",
     "name": "SW1 Switch",
     "archived_version": "1.0.0",
     "archived_versions": [
-      "1.0.0"
+      "1.0.0",
+      "2.0.0"
     ]
   },
   "sw2": {
@@ -163,10 +155,14 @@
     ]
   },
   "lm-21": {
-    "version": "1.0.1",
-    "path": "lm-21/versions/1.0.1",
+    "version": "1.1.0",
+    "path": "lm-21/versions/1.1.0",
     "module": "lm21mark3",
-    "name": "LM-21 Mk III Matrix Mixer — Artificial Acoustic Distance Generator"
+    "name": "LM-21 Mk III Matrix Mixer — Artificial Acoustic Distance Generator",
+    "archived_version": "1.0.1",
+    "archived_versions": [
+      "1.0.1"
+    ]
   },
   "rm1010": {
     "version": "1.0.0",
@@ -175,10 +171,15 @@
     "name": "RM1010 Mixing Amplifier"
   },
   "model-62": {
-    "version": "1.0.0",
-    "path": "model-62/versions/1.0.0",
+    "version": "2.0.0",
+    "path": "model-62/versions/2.0.0",
     "module": "model62",
-    "name": "Model 62 Wire Player Recorder"
+    "name": "Model 62 Wire Player Recorder",
+    "archived_version": "1.1.0",
+    "archived_versions": [
+      "1.0.0",
+      "1.1.0"
+    ]
   },
   "xl-35h": {
     "version": "1.0.1",
@@ -202,8 +203,25 @@
   },
   "frequency-corrector": {
     "version": "1.0.1",
-    "path": "baxendall/versions/1.0.1",
+    "path": "21-24eq/versions/1.0.1",
     "module": "twentyonetwentyfour",
     "name": "21-24eq Frequency Corrector"
+  },
+  "sn46": {
+    "version": "1.0.0",
+    "path": "sn46/versions/1.0.0",
+    "module": "standards",
+    "name": "sn46 Standards"
+  },
+  "sn16u": {
+    "version": "2.1.0",
+    "path": "sn16u/versions/2.1.0",
+    "module": "sn16u",
+    "name": "sn16u Universal Test Bench",
+    "archived_version": "1.0.0",
+    "archived_versions": [
+      "1.0.0",
+      "2.0.0"
+    ]
   }
 }

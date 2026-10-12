@@ -2,7 +2,7 @@
 
 ## Current project
 
-**Wardenclyffe Station has twenty-two canonized products.** LM-21 Mk III, RM1010, Model 62, the XL-35h / XL-35c filter pair, and 21-24eq are canonical. SN-46 remains the final planned instrument in development. Earlier archives remain preserved where applicable.
+**Wardenclyffe Station has twenty-three canonized products, and its planned lineup is complete.** LM-21 Mk III, RM1010, Model 62, the XL-35h / XL-35c filter pair, and 21-24eq are canonical. sn46 Standards is canonical v1.0.0. Model 62 is now v2.0.0 with redesigned transport and varispeed-aware loop timing. Earlier archives remain preserved where applicable.
 
 | Document | Purpose |
 | --- | --- |
@@ -22,3 +22,5 @@
 | [TestBench project](../../test-bench/README.md) | Reusable audio fixtures and their format standard |
 
 Canonical means the repository’s authoritative source release, not store publication. Each module’s release record states what was compiled, auditioned, and reviewed.
+
+The next collection is [Teletape Workshop](../Teletape%20Workshop/README.md), formerly the Radiophonic series. Its broad direction is accepted; the current RVG files are an early scaffold rather than a locked design.

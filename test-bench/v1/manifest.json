@@ -1,6 +1,6 @@
 {
   "collection": "InsectLabs Audio Test Bench",
-  "version": "1.4.0",
+  "version": "1.5.1",
   "seed": 19710510,
   "generator": "generate.py",
   "numpy_version": "2.3.5",
@@ -1768,6 +1768,85 @@
       "sha256": "9549cce4e5fcf872eeb9939671e227eea7a51390b98efbfd705e3e959f7b2734",
       "generator_sha256": "5a72578e47e799979cb330828962c2510f78722c89e580643adb01731eb825c1",
       "numpy_version": "2.3.5"
+    },
+    {
+      "file": "07-recordings/hiphop_drums_loopdilla_stereo.wav",
+      "frames": 1059318,
+      "seconds": 22.069125,
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits": 24,
+      "kind": "third-party drum-loop recording",
+      "loop": "Complete source loop with 3 ms faded restart; musical seam not guaranteed seamless",
+      "peak_dbfs": [
+        -9.691206916699118,
+        -9.000001270704788
+      ],
+      "rms_dbfs": [
+        -30.611775558448457,
+        -29.60731814481357
+      ],
+      "dc_mean": [
+        -1.2189785054718333e-06,
+        -1.4224410989524578e-06
+      ],
+      "correlation": 0.989176903572534,
+      "boundary_step": [
+        0.0,
+        0.0
+      ],
+      "purpose": "Hip-Hop kick/snare/hat loop for envelope following, gate timing, EQ and saturation tests.",
+      "notes": "CC0 source: Original stereo 44.1 kHz 16-bit PCM WAV. Decoded/resampled to stereo 48 kHz, mean removed, 3 ms endpoint fades, linked peak adjusted to -9 dBFS, rounded to 24-bit PCM without dither. No compression or additional coloration. Conversion does not restore source precision or MP3 losses. See ATTRIBUTION.md.",
+      "sources": [
+        "hiphop_drums_loopdilla_stereo"
+      ],
+      "license": "CC0-1.0",
+      "source_sha256": "2c7b769c249c2af614254afb86df0855baabbb33ee8afe4d90c6f4a96ab34719",
+      "sha256": "38c40a4f4997d06e1939a84f9eecd5c492e1f6ca355dc0e2fc4a8d7216b325a8"
+    },
+    {
+      "file": "07-recordings/extreme_metal_drums_erich94_stereo.wav",
+      "frames": 307200,
+      "seconds": 6.4,
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits": 24,
+      "kind": "third-party drum-loop recording",
+      "loop": "6.4-second repeating musical cycle; 8 bars in 4/4 at 300 BPM (or 4 bars at half-time 150 BPM); 10 ms wrap-tail blend, no added silence",
+      "peak_dbfs": [
+        -9.000001270704788,
+        -9.025898570146051
+      ],
+      "rms_dbfs": [
+        -25.456325326323693,
+        -24.039823104057163
+      ],
+      "dc_mean": [
+        -2.2895013292630512e-11,
+        -4.423782229423523e-11
+      ],
+      "correlation": 0.2715182956951727,
+      "boundary_step": [
+        0.0033295154571533203,
+        0.0033414363861083984
+      ],
+      "purpose": "Extreme-metal drum loop for fast transient density, cymbal energy, gate response and compression tests.",
+      "notes": "CC0 source: Original stereo 44.1 kHz 320 kbps MP3. Decoded/resampled to stereo 48 kHz, mean removed, 10 ms wrap-tail blend, linked peak adjusted to -9 dBFS, rounded to 24-bit PCM without dither. No compression or additional coloration. Conversion does not restore source precision or MP3 losses. See ATTRIBUTION.md.",
+      "sources": [
+        "extreme_metal_drums_erich94_stereo"
+      ],
+      "license": "CC0-1.0",
+      "source_sha256": "2180bc5a843cc5f06ba52e4f02fda994c8a230af9a170a5cbec368b456b6eaa0",
+      "sha256": "3d4b7314ed0c97aabe9465c651fb955c712e0ca03ddf30ffc67e5b7be97b3ebd",
+      "loop_edit": {
+        "start_frame": 153544,
+        "frames": 307200,
+        "wrap_crossfade_frames": 480,
+        "sample_rate": 48000,
+        "bpm": 300,
+        "bars_4_4": 8,
+        "method": "Sample-aligned cut near the 3.2-second phrase boundary. Last 10 ms blended into the original 10 ms immediately preceding the start; duration unchanged."
+      }
     }
   ],
   "sources": [
@@ -1822,6 +1901,47 @@
       "url": "https://freesound.org/people/InspectorJ/sounds/401275/",
       "mirror": "https://raw.githubusercontent.com/IBM/MAX-Audio-Embedding-Generator/333258a3644677d8de12a30ff50982bcfe23138d/samples/demo_assets/rain.wav",
       "sha256": "d1a50a18aa56241134e6179f1108c3c87ab45678e9175eabe8d9a7fec4572804"
+    },
+    {
+      "id": "hiphop_drums_loopdilla_stereo",
+      "title": "Hip Hop Drum Loop 17",
+      "author": "LoopDilla",
+      "url": "https://freesound.org/people/LoopDilla/sounds/195177/",
+      "download_url": "https://freesound.org/people/LoopDilla/sounds/195177/download/195177__loopdilla__hip-hop-drum-loop-17.wav",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "checked": "2026-10-11",
+      "filename": "195177__loopdilla__hip-hop-drum-loop-17.wav",
+      "sha256": "2c7b769c249c2af614254afb86df0855baabbb33ee8afe4d90c6f4a96ab34719",
+      "delivery": "07-recordings/hiphop_drums_loopdilla_stereo.wav",
+      "purpose": "Hip-Hop kick/snare/hat loop for envelope following, gate timing, EQ and saturation tests.",
+      "source_format": "Original stereo 44.1 kHz 16-bit PCM WAV",
+      "previous_preview_sha256": "52bfaa4f1975af8714a31ef5806b80a54d42f5c9f71c29ddcd4b5947ed28b021"
+    },
+    {
+      "id": "extreme_metal_drums_erich94_stereo",
+      "title": "Death Metal Drums",
+      "author": "erich94",
+      "url": "https://freesound.org/people/erich94/sounds/187757/",
+      "download_url": "https://freesound.org/people/erich94/sounds/187757/download/187757__erich94__death-metal-drums.mp3",
+      "license": "CC0-1.0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "checked": "2026-10-11",
+      "filename": "187757__erich94__death-metal-drums.mp3",
+      "sha256": "2180bc5a843cc5f06ba52e4f02fda994c8a230af9a170a5cbec368b456b6eaa0",
+      "delivery": "07-recordings/extreme_metal_drums_erich94_stereo.wav",
+      "purpose": "Extreme-metal drum loop for fast transient density, cymbal energy, gate response and compression tests.",
+      "source_format": "Original stereo 44.1 kHz 320 kbps MP3",
+      "previous_preview_sha256": "98ee45c1e4876e098a0d65dcf89465fe3c1e22aca51abad4f1ea14d29c29c5b7",
+      "loop_edit": {
+        "start_frame": 153544,
+        "frames": 307200,
+        "wrap_crossfade_frames": 480,
+        "sample_rate": 48000,
+        "bpm": 300,
+        "bars_4_4": 8,
+        "method": "Sample-aligned cut near the 3.2-second phrase boundary. Last 10 ms blended into the original 10 ms immediately preceding the start; duration unchanged."
+      }
     }
   ]
 }

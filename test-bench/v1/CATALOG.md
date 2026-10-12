@@ -602,3 +602,23 @@ Check playback-head spacing, short echo timing, stereo offset, transient respons
 
 Three 150 Hz, 10 ms Hann-windowed pulse pairs. Left pulse leads right by 54 ms (33 mm at 1x), 108 ms (1/2x), then 13.5 ms (4x); two seconds of digital silence separates pairs. Fixed -18 dBFS peak per channel. One-shot, not a seamless loop.
 
+## 07-recordings/hiphop_drums_loopdilla_stereo.wav
+
+22.0691 seconds; 2 channel(s); third-party drum-loop recording.
+
+Loop: Complete source loop with 3 ms faded restart; musical seam not guaranteed seamless. Peak dBFS: [-9.691206916699118, -9.000001270704788]; RMS dBFS: [-30.611775558448457, -29.60731814481357].
+
+Hip-Hop kick/snare/hat loop for envelope following, gate timing, EQ and saturation tests.
+
+CC0 source: Original stereo 44.1 kHz 16-bit PCM WAV. Decoded/resampled to stereo 48 kHz, mean removed, 3 ms endpoint fades, linked peak adjusted to -9 dBFS, rounded to 24-bit PCM without dither. No compression or additional coloration. Conversion does not restore source precision or MP3 losses. See ATTRIBUTION.md.
+
+## 07-recordings/extreme_metal_drums_erich94_stereo.wav
+
+6.4 seconds; 2 channel(s); third-party drum-loop recording.
+
+Loop: 6.4-second repeating musical cycle; 8 bars in 4/4 at 300 BPM (or 4 bars at half-time 150 BPM); 10 ms wrap-tail blend, no added silence. Peak dBFS: [-9.000001270704788, -9.025898570146051]; RMS dBFS: [-25.456325326323693, -24.039823104057163].
+
+Extreme-metal drum loop for fast transient density, cymbal energy, gate response and compression tests.
+
+CC0 source: Original stereo 44.1 kHz 320 kbps MP3. Decoded/resampled to stereo 48 kHz, mean removed, 10 ms wrap-tail blend, linked peak adjusted to -9 dBFS, rounded to 24-bit PCM without dither. No compression or additional coloration. Conversion does not restore source precision or MP3 losses. See ATTRIBUTION.md.
+

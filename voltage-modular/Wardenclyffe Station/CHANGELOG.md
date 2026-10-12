@@ -1,4 +1,37 @@
+## 2026-10-11 — 1998/4 v2.0.1
+
+Promoted the user-tested pair to canonical. DELAY now reaches five seconds and maximum input gain is 16× for quiet sources. Updated the operating guide, developer notes, index, Cherry Audio description and release integrity manifest; preserved 2.0.0 and 1.0.0.
+
 # Wardenclyffe Station changelog
+
+## 2026-10-11 — Mixer roadmap correction
+
+RM1010 v1.0.0 fully supersedes the earlier minimixer concept. There is no separate minimixer module or active minimixer development folder.
+
+## 2026-10-11 — Model 62 v2.0.0
+
+Canonized the user-approved transport, reel and magic-eye canvas redesign. Added varispeed-adjusted loop-position and total-duration readouts; removed unnecessary supply/head/take-up labels. The audio/DSP engine, recording behavior, saved state, panel geometry and artwork are unchanged. Both source forms compile, the core/state/callback/button regression checks and canvas tests pass, and the exact candidate passed the user’s native build and visual test. Preserved v1.1.0 and v1.0.0.
+
+
+## 2026-10-11 — SW1 v2.0.1
+
+Canonized the user-tested ON/ON button lighting update: upper/default is bright, lower/alternate is dim. Fixed native button responsiveness while preserving held GATE and latched TOGGLE behavior. Routing, CLK voicing and bypass are unchanged. Updated manuals, developer notes, publishing version and integrity records; preserved v2.0.0.
+
+## 2026-10-11 — sn16u v2.1.0
+
+Canonized the user-tested six-canvas display update. Added working decimals, signs, mode-aware captions, hysteretic Hz/kHz and V/kV scaling, and explicit overrange/error feedback. Renamed the folder/public documentation to sn16u; preserved Java identity and earlier canonical archives. Updated manuals, developer notes, publishing Notes and regression checks.
+
+## 2026-10-11 — sn46 v1.0.0
+
+Canonized the compact Standards source with adjustable ±0–13 V, fixed 0/3.3/5/9 V references, A440/A432 and lower F Sharp, 1 Hz and 100 Hz sine outputs, slow impulses and pink noise. Refreshed sn46 artwork, manuals, developer notes, tests and publishing Notes are included. This completes the planned 23-module Wardenclyffe Station lineup.
+
+## 2026-10-11 — n01 v2.0.1
+
+Canonized the user-tested trigger indicator update: accepted external and manual triggers flash the button for 100 ms; rapid presses no longer depend on release notifications. Sound and sampling thresholds are unchanged. Updated manual, developer notes, publishing Notes, tests and canonical records; preserved v2.0.0 and v1.0.0.
+
+## 2026-10-11 — Model 62 v1.1.0
+
+Canonized the user-tested High Fidelity / War-Worn release. War-Worn adds playback character and records extra wear into the wire. Fixed regular 2500 button illumination and custom mode persistence; older recording state remains compatible. Preserved v1.0.0.
 
 ## 1958 Dual Waveform Generator v2.0.1 · 11 October 2026
 
@@ -6,6 +39,13 @@
 - Reduced the 1 kHz reference in mixed mode and moved it before AMPLITUDE so the knob scales both signals.
 - Updated the panel artwork and release documentation; preserved the 2.0.0 and earlier archives.
 - User confirmed the exact candidate builds, runs, and sounds as intended. SDK compile and Designer source-pair integrity checks passed.
+
+## LM-21 Mk III v1.1.0 · 10 October 2026
+
+- Added LINK as an AC-coupled dry submix into FULL MIX, outside the four-by-four matrix.
+- Added 2D mode to send LINK through the shared channel D reverb; wet return appears at D and FULL MIX. DIST. D scales both LINK send and shared return.
+- Updated panel, manual, developer notes, release review and validator.
+- Compiled both source forms with Java 17 target and warnings as errors; automated route, signal and project checks passed. Exact-pair native-host build/listening and CPU profiling are not recorded.
 
 ## XL-35h / XL-35c v1.0.1 · 9 October 2026
 
@@ -31,7 +71,7 @@
 
 - Canonized the user-tested 4×4 matrix mixer and independent acoustic-distance engines.
 - Retained the corrected panel, approved tone/power behavior, direct bypass, manuals, developer notes and repeatable validation.
-- Added the seventeenth canonical instrument; minimixer remains separate work.
+- Added the seventeenth canonical instrument; at the time, a separate minimixer was still planned. That plan was later superseded by RM1010 v1.0.0 (confirmed 2026-10-11).
 
 ## 2.x collection release · 7 October 2026
 

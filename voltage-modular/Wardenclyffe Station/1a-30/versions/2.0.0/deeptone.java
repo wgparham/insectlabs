@@ -29,7 +29,7 @@ public class deeptone extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "07f9c6a8b9874834b2afa60a3454d1df" );
+        SetSkin( "f82fcc6c756c46ea82aa3619d1d57144" );
     }
 
 void InitializeControls()
@@ -1457,11 +1457,11 @@ void InitializeControls2()
         descriptionLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         descriptionLabel.SetFont( "Courier New", 13, true, false );
 
-        colophon = new VoltageLabel( "colophon", "Colophon", this, "insect laboratories       — pittsburgh, PA —       united states & beyond" );
+        colophon = new VoltageLabel( "colophon", "Colophon", this, "Pittsburgh, PA" );
         AddComponent( colophon );
         colophon.SetWantsMouseNotifications( false );
-        colophon.SetPosition( 85, 335 );
-        colophon.SetSize( 60, 20 );
+        colophon.SetPosition( 85, 345 );
+        colophon.SetSize( 60, 15 );
         colophon.SetEditable( false, false );
         colophon.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         colophon.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
@@ -1481,9 +1481,16 @@ void InitializeControls2()
         image2 = new VoltageImage( "image2", "image2", this, false );
         AddComponent( image2 );
         image2.SetWantsMouseNotifications( false );
-        image2.SetPosition( 85, 280 );
-        image2.SetSize( 60, 60 );
-        image2.SetCurrentImage( "wireframe_globe_E8E8E8.svg" );
+        image2.SetPosition( 26, 335 );
+        image2.SetSize( 23, 23 );
+        image2.SetCurrentImage( "image image.svg" );
+
+        image3 = new VoltageImage( "image3", "image3", this, false );
+        AddComponent( image3 );
+        image3.SetWantsMouseNotifications( false );
+        image3.SetPosition( 70, 335 );
+        image3.SetSize( 90, 15 );
+        image3.SetCurrentImage( "image image(2).svg" );
 }
 
 
@@ -1833,6 +1840,7 @@ void InitializeControls2()
 
 
     // Auto-generated variables
+    private VoltageImage image3;
     private VoltageImage image2;
     private VoltageLabel colophon;
     private VoltageLabel descriptionLabel;

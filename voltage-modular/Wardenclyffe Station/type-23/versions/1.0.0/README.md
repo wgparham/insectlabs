@@ -1,7 +1,7 @@
 # Signal Processor 1.0.0
 
-Canonical source release, approved 2026-09-29. Open `signal_proc.vmod` in Voltage Module Designer.
-`signal_proc.java` is the matching source export; `sigproc_hero.png` is the panel image.
+Canonical source release, approved 2026-09-29. Open `SIGPROC.vmod` in Voltage Module Designer.
+`SIGPROC.java` is the matching source export; `sigproc_hero.png` is the panel image.
 `SHA256.json` records all three file hashes. The user confirmed the final Designer build and host run.
 
 ## Behavior

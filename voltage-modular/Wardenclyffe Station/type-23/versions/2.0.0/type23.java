@@ -28,11 +28,25 @@ public class type23 extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "306ef848181c4a4ab64044909513a24c" );
+        SetSkin( "a8b2372861224e1a9d28d83add3cfd5c" );
     }
 
 void InitializeControls()
 {
+
+        image2 = new VoltageImage( "image2", "image2", this, false );
+        AddComponent( image2 );
+        image2.SetWantsMouseNotifications( false );
+        image2.SetPosition( 136, 105 );
+        image2.SetSize( 69, 69 );
+        image2.SetCurrentImage( "image image(2).svg" );
+
+        image1 = new VoltageImage( "image1", "image1", this, false );
+        AddComponent( image1 );
+        image1.SetWantsMouseNotifications( false );
+        image1.SetPosition( 22, 40 );
+        image1.SetSize( 69, 69 );
+        image1.SetCurrentImage( "image image.svg" );
 
         leftGain = new VoltageKnob( "leftGain", "Left Gain", this, -3.0, 3.0, 0.0 );
         AddComponent( leftGain );
@@ -503,13 +517,13 @@ void InitializeControls()
         manufacturerLabel = new VoltageLabel( "manufacturerLabel", "Manufacturer Label", this, "iL" );
         AddComponent( manufacturerLabel );
         manufacturerLabel.SetWantsMouseNotifications( false );
-        manufacturerLabel.SetPosition( 3, 337 );
+        manufacturerLabel.SetPosition( 3, 323 );
         manufacturerLabel.SetSize( 20, 20 );
         manufacturerLabel.SetEditable( false, false );
         manufacturerLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         manufacturerLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
         manufacturerLabel.SetColor( new Color( 147, 0, 0, 255 ) );
-        manufacturerLabel.SetBkColor( new Color( 51, 51, 51, 255 ) );
+        manufacturerLabel.SetBkColor( new Color( 0, 0, 0, 255 ) );
         manufacturerLabel.SetBorderColor( new Color( 85, 0, 0, 255 ) );
         manufacturerLabel.SetBorderSize( 2 );
         manufacturerLabel.SetMultiLineEdit( false );
@@ -521,13 +535,13 @@ void InitializeControls()
         manufacturerLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         manufacturerLabel.SetFont( "Courier New", 13, true, false );
 
-        colophon = new VoltageLabel( "colophon", "Colophon", this, "insect laboratories       pittsburgh, PA                      united states & beyond" );
+        colophon = new VoltageLabel( "colophon", "Colophon", this, "pittsburgh, PA                      united states & beyond" );
         AddComponent( colophon );
         colophon.SetWantsMouseNotifications( false );
-        colophon.SetPosition( 75, 335 );
-        colophon.SetSize( 80, 20 );
+        colophon.SetPosition( 3, 343 );
+        colophon.SetSize( 59, 14 );
         colophon.SetEditable( false, false );
-        colophon.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        colophon.SetJustificationFlags( VoltageLabel.Justification.Left );
         colophon.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
         colophon.SetColor( new Color( 232, 232, 232, 105 ) );
         colophon.SetBkColor( new Color( 65, 65, 65, 0 ) );
@@ -1016,6 +1030,8 @@ void InitializeControls()
     private VoltageKnob leftExternalLevel;
     private VoltageKnob leftOffset;
     private VoltageKnob leftGain;
+    private VoltageImage image1;
+    private VoltageImage image2;
 
 
     //[user-code-and-variables]    Add your own variables and functions here

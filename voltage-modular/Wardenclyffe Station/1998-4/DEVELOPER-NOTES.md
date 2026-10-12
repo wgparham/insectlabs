@@ -1,6 +1,6 @@
 # Developer notes — 1998/4 Dynamic Modulator
 
-**Canonical version:** `2.0.0`<br>
+**Canonical version:** `2.0.1`<br>
 **Collection:** Wardenclyffe Station<br>
 **Designer export:** `nineteenninetyeight.java`<br>
 **Designer project:** `nineteenninetyeight.vmod`<br>
@@ -10,12 +10,12 @@
 
 1998/4 extracts the changing level of a mono audio signal and turns it into an envelope and gates. Its shared input amplifier can be driven into compression, and that character is available as audio at SIGNAL THROUGH. A true envelope delay and a linear BALANCE control let you combine immediate movement with a later copy.
 
-Treat the current manual and this version's `.vmod`/`.java` pair as the behavioral authority. The archive version is historical; make any new design changes in a separate development copy and promote only after the user's build and audition.
+Treat the current manual and this version's `.vmod`/`.java` pair as the behavioral authority. The archive versions are historical; make new design changes in a separate development copy and promote only after the user's build and audition.
 
 ## Source map
 
-- Canonical source folder: `1998-4/versions/2.0.0`.
-- User manual: [`USER-MANUAL.md`](versions/2.0.0/USER-MANUAL.md).
+- Canonical source folder: `1998-4/versions/2.0.1`.
+- User manual: [`USER-MANUAL.md`](versions/2.0.1/USER-MANUAL.md).
 - Release review and integrity files remain in the canonical version folder. Do not edit archived `.vmod`, `.java`, panel image, or checksum files in place.
 - Designer component inventory: AudioJack: 7, Knob: 6, LED: 3, Label: 16, Switch: 2. Use stable component IDs in the `.vmod` as the UI-to-code contract; display text is user-facing and may be edited independently.
 
@@ -69,4 +69,4 @@ Check bypass after any DSP edit: direct-signal modules should retain the establi
 
 ## Validation provenance
 
-This note documents the canonical `2.0.0` source archive. The validation record and `SHA256.json` are the release-time references for test history and file integrity. This documentation pass does not rebuild or retest the canonized DSP and does not alter source files.
+Version 2.0.1 extends DELAY to 5 seconds and raises maximum input gain to 16×; the remaining detector and output behavior was retained. The user confirmed this pair loaded, compiled, ran, and passed audio testing. A Java 17 SDK compile, Designer round-trip, embedded-source parity, current manual links, and release hashes were also checked during canonization. The version folder contains the release review and integrity manifest.
