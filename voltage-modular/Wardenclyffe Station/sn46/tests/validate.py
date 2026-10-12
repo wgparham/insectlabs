@@ -5,7 +5,8 @@ repo=next(p for p in Path(__file__).resolve().parents if (p/'voltage-modular/col
 from value_tree import Reader,props,encode
 from support import normalized,regions
 root=Path(__file__).resolve().parent.parent
-source=(root/'standards.java').read_text(encoding='utf-8-sig');raw=(root/'standards.vmod').read_bytes();reader=Reader(raw);tree=reader.tree();assert reader.p==len(raw) and encode(tree)==raw
+release=root/'versions'/'1.0.0'
+source=(release/'standards.java').read_text(encoding='utf-8-sig');raw=(release/'standards.vmod').read_bytes();reader=Reader(raw);tree=reader.tree();assert reader.p==len(raw) and encode(tree)==raw
 code=next(n for n in tree[2] if n[0]=='module code');embedded=props(code)['MODULE.SOURCE'];assert normalized(source)==normalized(embedded)
 assert props(tree)['CEditableModule.name']=='sn46 - standards' and props(tree)['notes']=='v1.0.0'
 assert props(tree)['class name']=='standards' and props(tree)['package name']=='com.insectlabs.standards'
