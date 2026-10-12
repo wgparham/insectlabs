@@ -7,6 +7,7 @@
 - [Cherry Audio Notes](../Cherry-Audio-Notes.md)
 - [Canonical archive](versions/2.0.0/README.md)
 - [Designer project](versions/2.0.0/b16.vmod) and [Java export](versions/2.0.0/b16.java)
+- [Panel artwork](versions/2.0.0/b16_hero.png)
 - [Release review](versions/2.0.0/REVIEW.md)
 
-The user-supplied 2.0.0 pair remains at `2.0.0/` and is byte-identical to the archived pair. The `1.0.0/` directory retains the exact retired 8 HP Wardenclyffe b08 v1.0.0 source pair and hero image as the predecessor archive. Wardenclyffe’s 8 HP blank is fully replaced by this 16 HP module; the archived predecessor is retained for continuity, not as an earlier 16 HP build.
+The user-supplied `2.0.0/` Designer pair and hero are the active tested and published set; the versioned archive mirrors those files byte-for-byte. The `1.0.0/` directory retains the exact retired 8 HP Wardenclyffe b08 v1.0.0 source pair and hero image as the predecessor archive. Wardenclyffe’s 8 HP blank is fully replaced by this 16 HP module; the archived predecessor is retained for continuity, not as an earlier 16 HP build.

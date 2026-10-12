@@ -28,7 +28,7 @@ public class b16 extends VoltageModule
 
 
         canBeBypassed = false;
-        SetSkin( "7a6f5a97a2af43ccadb6f792390f80b1" );
+        SetSkin( "bcbdf95799c34465982f1e77009089ee" );
     }
 
 void InitializeControls()

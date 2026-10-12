@@ -11,7 +11,7 @@ Updated the canonical source pair, artwork, archive links, validation paths, has
 ## 2026-10-12 — b16 v2.0.0
 
 - Canonized the user-tested and Cherry Audio-published 16 HP blanking panel, replacing the retired b08 panel in the active collection index.
-- Preserved the user-uploaded Designer/Java pair unchanged, archived the exact pair, added the blank-panel manual, developer notes, test record and checksums.
+- Synchronized the immutable archive to the user-checked, tested and Cherry Audio-published Designer/Java pair and added its matching hero image; retained the manual, developer notes, tests and checksums.
 - Retained the retired 8 HP Wardenclyffe b08 v1.0.0 files under `b16/1.0.0/` as the predecessor archive for continuity. The 16 HP b16 fully replaces that 8 HP blank in the active lineup.
 
 ## 2026-10-11 — Mixer roadmap correction
