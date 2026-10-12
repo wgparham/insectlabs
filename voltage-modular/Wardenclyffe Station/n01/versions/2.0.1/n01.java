@@ -19,7 +19,7 @@ public class n01 extends VoltageModule
 //[/user-inheritance]
 {
 
-    @SuppressWarnings("this-escape")
+    @SuppressWarnings("this-escape") 
     public n01( long moduleID, VoltageObjects voltageObjects )
     {
         super( moduleID, voltageObjects, "n01 - noise source", ModuleType.ModuleType_Source, 1.6 );
@@ -28,7 +28,7 @@ public class n01 extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "66e6f836259b458da66200234e4da059" );
+        SetSkin( "6c56612ff6ef4803a894a7fccacdd710" );
     }
 
 void InitializeControls()
@@ -964,3 +964,5 @@ steppedOutput.SetValue(0.0);
     }
     //[/user-code-and-variables]
 }
+
+ 

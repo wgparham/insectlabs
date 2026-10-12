@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1000 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Wardenclyffe Station W monogram</title>
+  <desc id="desc">A one-ink, stencil-friendly gothic monogram with flowing ornament and abstract wireless signal arcs.</desc>
+  <g fill="none" stroke="#F8F0E3" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Double circular frame -->
+    <circle cx="500" cy="500" r="456" stroke-width="18"/>
+    <circle cx="500" cy="500" r="427" stroke-width="6"/>
+
+    <!-- Restrained compass cuts in the roundel -->
+    <path d="M500 31v38 M500 931v38 M31 500h38 M931 500h38" stroke-width="12"/>
+    <path d="M167 167l28 28 M805 805l28 28 M833 167l-28 28 M195 805l-28 28" stroke-width="9"/>
+    <path d="M500 83l13 24-13 24-13-24z M500 869l13 24-13 24-13-24z" stroke-width="8"/>
+
+    <!-- Pointed arch, like a small Gothic vault -->
+    <path d="M278 718 C280 510 335 337 500 205 C665 337 720 510 722 718" stroke-width="16"/>
+    <path d="M322 697 C324 512 370 379 500 266 C630 379 676 512 678 697" stroke-width="7"/>
+    <path d="M278 718h72 M650 718h72" stroke-width="14"/>
+
+    <!-- Wireless mast and three simple signal waves -->
+    <path d="M500 205v130 M500 252v29 M480 252h40" stroke-width="12"/>
+    <path d="M474 310a27 27 0 0 1 52 0 M456 310a45 45 0 0 1 88 0 M438 310a63 63 0 0 1 124 0" stroke-width="8"/>
+    <path d="M500 178l12 21-12 21-12-21z" stroke-width="8"/>
+
+    <!-- The W: a single, bold engraved line with restrained serif terminals -->
+    <path d="M290 365h55 M655 365h55" stroke-width="15"/>
+    <path d="M315 366 C340 475 371 628 408 706 C444 644 475 527 500 455 C525 527 556 644 592 706 C629 628 660 475 685 366" stroke-width="30"/>
+    <path d="M376 681l32 25 32-25 M560 681l32 25 32-25" stroke-width="9"/>
+
+    <!-- Matched Art Nouveau scrolls, kept broad for paint or stencil work -->
+    <path d="M319 425 C264 452 246 505 268 542 C286 572 323 581 341 608 C355 629 346 656 322 668 C295 681 267 663 270 640 C272 623 289 615 302 624" stroke-width="12"/>
+    <path d="M681 425 C736 452 754 505 732 542 C714 572 677 581 659 608 C645 629 654 656 678 668 C705 681 733 663 730 640 C728 623 711 615 698 624" stroke-width="12"/>
+    <path d="M275 504 C244 482 229 453 238 426 C270 438 291 461 292 488 M725 504 C756 482 771 453 762 426 C730 438 709 461 708 488" stroke-width="9"/>
+    <path d="M280 594 C248 602 229 624 232 650 C259 649 280 636 294 614 M720 594 C752 602 771 624 768 650 C741 649 720 636 706 614" stroke-width="9"/>
+
+    <!-- Lower flourish grows from the feet of the W -->
+    <path d="M408 706 C384 742 357 760 326 764 C348 790 382 797 416 780 C448 797 477 807 500 832 C523 807 552 797 584 780 C618 797 652 790 674 764 C643 760 616 742 592 706" stroke-width="12"/>
+    <path d="M416 780 C439 752 466 747 486 762 C474 778 460 784 444 784 M584 780 C561 752 534 747 514 762 C526 778 540 784 556 784" stroke-width="8"/>
+    <path d="M500 832v37 M470 850c10 12 20 18 30 19 10-1 20-7 30-19" stroke-width="9"/>
+    <path d="M473 883h54" stroke-width="8"/>
+  </g>
+</svg>
+

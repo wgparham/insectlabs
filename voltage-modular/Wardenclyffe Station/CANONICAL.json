@@ -43,6 +43,12 @@
       "2.0.0"
     ]
   },
+  "b08": {
+    "version": "1.0.0",
+    "path": "b08/1.0.0",
+    "module": "blank08",
+    "name": "b08 Blanking Panel"
+  },
   "deeptone": {
     "version": "2.0.0",
     "path": "1a-30/versions/2.0.0",

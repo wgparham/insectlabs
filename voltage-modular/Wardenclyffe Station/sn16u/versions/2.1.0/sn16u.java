@@ -19,7 +19,7 @@ public class sn16u extends VoltageModule
 //[/user-inheritance]
 {
 
-    @SuppressWarnings("this-escape")
+    @SuppressWarnings("this-escape") 
     public sn16u( long moduleID, VoltageObjects voltageObjects )
     {
         super( moduleID, voltageObjects, "sn16u - universal test bench", ModuleType.ModuleType_Utility, 6.4 );
@@ -30,7 +30,7 @@ public class sn16u extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "d06a6c0a47dc430cb59a81b6de5117d8" );
+        SetSkin( "de2ccf497c9944388c4fa8e1b9d5a35f" );
     }
 
 void InitializeControls()
@@ -3543,3 +3543,5 @@ double valueB =
     }
     //[/user-code-and-variables]
 }
+
+ 
