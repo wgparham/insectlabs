@@ -24,7 +24,7 @@ sn16u 2.1.0 provides DC/Vpp, CV pitch, audio Hz and RMS measurement, along with 
 
 ## Teletape Workshop possibilities (formerly Radiophonic)
 
-**Dual Random Voltage Generator (RVG) — early WIP.** A starter folder exists at `Teletape Workshop/RVG/development` with working files and reference material. It is not yet a designed or locked module: the current Designer export still identifies itself as `My Module` and has no version Notes. The user’s EMS reference points toward two random-voltage channels, held or gliding motion, mean rate and timing variance, with event outputs and manual reselection/inhibit as options to discuss. The exact circuitry, channel numbering, range, controls and behavior remain open. Treat the existing pair as a mockup/scaffold and inspect it with the user before DSP work.
+**RVG Random Voltage Generator — canonical v1.8.0.** RVG provides two independent stepped random voltages, variable event timing, manual and external reselection, inhibit/free-run, a +4 V trigger, and compensated/factory/failure hold modes. The design models workflow and response rather than claiming a component-exact EMS circuit. The [module research notes](../Teletape%20Workshop/RVG/RESEARCH-NOTES.md) and [references](../Teletape%20Workshop/RVG/references/README.md) preserve the unresolved circuit questions. Remaining Teletape proposals below are still optional and unsequenced.
 
 **External sample-and-hold / track-and-hold:** n01 STEPPED samples its own ramp only. Sampling arbitrary patched audio/CV is a real capability gap, and fits the accepted Series Two S&H direction. Decide whether this belongs in the random-voltage instrument or a small independent sampler.
 

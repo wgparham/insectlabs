@@ -7,7 +7,8 @@ def regions(s): return {m['name']: m['body'] for m in REGION.finditer(s)}
 def tokens(s):
     return re.findall(r'"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\'|[A-Za-z_$][\w$]*|\d+(?:\.\d*)?(?:[eE][+-]?\d+)?|[^\s]', re.sub(r'//[^\n]*|/\*.*?\*/', '', s, flags=re.S))
 def normalized(s):
-    # Designer exports declarations in a different order. Their initialization is in the constructor.
+    # Designer and exported source can use different line endings and declaration order.
+    s = s.replace("\r\n", "\n").replace("\r", "\n")
     decl = re.compile(r'^[ \t]*private Voltage\w+ \w+;[ \t]*$', re.M)
     return tokens(decl.sub('', s)), sorted(line.strip() for line in decl.findall(s))
 def rename_rgb(s):

@@ -8,7 +8,7 @@
 - Voltage Module Designer SDK: `C:/ProgramData/Voltage/voltage.jar`
 - Compile output belongs outside Dropbox/Git, for example `C:/InsectLabs-Build/<module>`.
 
-Each product folder contains its current canonical release and any preserved older versions; versions vary by product. Open the pair named in [`CANONICAL.json`](../Wardenclyffe%20Station/CANONICAL.json) in Voltage Module Designer; its matching `.java` is the exported source. The next collection is [Teletape Workshop](../Teletape%20Workshop/README.md), whose module briefs remain in development.
+Each product folder contains its current canonical release and any preserved older versions; versions vary by product. Open the pair named in the collection's `CANONICAL.json` in Voltage Module Designer; its matching `.java` is the exported source. The next collection is [Teletape Workshop](../Teletape%20Workshop/README.md), whose first canonical instrument is RVG and whose remaining module briefs remain in development.
 
 ## Toolchain and validation
 

@@ -32,7 +32,7 @@ n01's RATE describes continuous random-motion bandwidth, not a clock for STEPPED
 
 n01 uses a different random core/amplitude distribution from SIN/RND, plus deliberate bandwidth voicing. Changing a PRNG alone does not guarantee that listeners can distinguish two white-noise sources; the approved spectral treatment is part of the audible identity. A broad distribution of sampled voltages is not the same property as a 1/f spectrum. WHITE here is a musical broadband source, not a precision flat calibration signal.
 
-The EMS random-voltage reference is retained for later Teletape Workshop exploration. Dual random channels and variable event timing are not pending fixes to the completed n01.
+The EMS-inspired RVG is canonical in Teletape Workshop. Its circuit interpretation remains explicitly hypothetical. Dual random channels and variable event timing are not pending fixes to the completed n01.
 
 ## Source and historical-document clarifications
 
