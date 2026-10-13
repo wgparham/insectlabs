@@ -6,13 +6,13 @@ Promoted the user-tested pair to canonical. DELAY now reaches five seconds and m
 
 ## 2026-10-12 — 21-24eq v1.0.1 published identity correction
 
-Updated the canonical source pair, artwork, archive links, validation paths, hashes and collection record to the user-tested and Cherry Audio-published `tttf` set. Cherry Audio required a Java class rename after a server-side publication error; the user confirms the set otherwise matches the originally canonized build. Removed superseded duplicate source/artwork files and generated `.bak` files.
+Updated the canonical source pair, artwork, archive links, validation paths, hashes and collection record to the user-tested and Cherry Audio-published `tttf` set. Cherry Audio required a Java class rename after a server-side publication error; the user confirms this is the correct current v1.0.1 release, tested and published. Removed superseded duplicate source/artwork files and generated `.bak` files.
 
 ## 2026-10-12 — b16 v2.0.0
 
 - Canonized the user-tested and Cherry Audio-published 16 HP blanking panel, replacing the retired b08 panel in the active collection index.
 - Synchronized the immutable archive to the user-checked, tested and Cherry Audio-published Designer/Java pair and added its matching hero image; retained the manual, developer notes, tests and checksums.
-- Retained the retired 8 HP Wardenclyffe b08 v1.0.0 files under `b16/1.0.0/` as the predecessor archive for continuity. The 16 HP b16 fully replaces that 8 HP blank in the active lineup.
+- Retained the retired 8 HP Wardenclyffe b08 v1.0.0 files under `b16/versions/1.0.0/` as the predecessor archive for continuity. The 16 HP b16 fully replaces that 8 HP blank in the active lineup. `b16/versions/2.0.0/` is the sole current canonical folder; the redundant `b16/2.0.0/` working copy was deleted.
 
 ## 2026-10-11 — Mixer roadmap correction
 
