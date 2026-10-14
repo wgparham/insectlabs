@@ -59,3 +59,5 @@ The detailed design records and optional gap analysis are indexed in [docs](READ
 
 
 **Model 62 Wire Player Recorder** is canonized at v2.0.0. Its transport/reel and magic-eye canvases are redesigned, and loop-position and duration displays account for varispeed. The approved audio engine, recording behavior, panel and saved-state format remain unchanged. Its release pair, artwork, manuals, review, checks and previews are in `Wardenclyffe Station/model-62/versions/2.0.0`; v1.1.0 and v1.0.0 are preserved.
+
+TSL Triple Slew Limiter is [canonical v1.0.0](../Teletape%20Workshop/TSL/README.md) as of 2026-10-14. OFB Octave Filter Bank is the user-planned next EMS module; its implementation has not started here.

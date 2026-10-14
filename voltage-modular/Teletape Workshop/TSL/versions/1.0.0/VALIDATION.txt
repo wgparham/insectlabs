@@ -1,0 +1,3 @@
+PASS: actual callback rate, polarity, settling, CV, T&H 3 V boundary, bypass/frozen histories/resume, input guard checks
+PASS: both source forms compile with warnings as errors; pair, round-trip, identity and hashes agree.
+PASS: exact approved Java bytes differ only by requested class rename and gate tooltip correction; all other VMOD metadata preserved; development pair/hero equal canon.

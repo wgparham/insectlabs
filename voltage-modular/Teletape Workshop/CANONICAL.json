@@ -10,5 +10,11 @@
     "path": "b08/versions/1.0.0",
     "module": "b08",
     "name": "b08 Blanking Panel"
+  },
+  "tsl": {
+    "version": "1.0.0",
+    "path": "TSL/versions/1.0.0",
+    "module": "tsl",
+    "name": "TSL Triple Slew Limiter"
   }
 }

@@ -1,0 +1,89 @@
+EMS Triple Slew Limiter
+
+The EMS Triple Slew Limiter is a historically significant, rare analog synthesizer processor released by Electronic Music Studios (EMS) in April 1971. Originally designed by Peter Zinovieff, David Cockerell, and their team, the module pack was part of EMS's premium standalone expansion lineup housed in beautiful, signature Afrormosia (African Teak) wooden cabinets.
+It was built alongside three other distinct 1U rack companion pieces—the Eight Octave Filter Bank, the Pitch to Voltage Converter, and the Random Voltage Generator—meant to expand the capabilities of EMS's landmark VCS3 and Synthi A synthesizers.
+
+Core Function & Architecture
+
+At its baseline, a slew limiter sets a speed limit on how fast a voltage waveform can transition from one value to another, smoothing out sharp edges.
+• The "Triple" Design: The module packages three identical, independent voltage-controlled slew limiters into one unit. In large-scale systems, these three sub-modules were directly integrated into the massive EMS Synthi 100 console.
+• Unity Gain Performance: Unlike standard filters or envelope generators, the EMS design is a unity gain amplifier. The steady-state output exactly tracks the input with high precision (boasting an impressive ~0.05% linearity for the era), meaning it does not alter the absolute voltage level—only the speed at which it gets there. Because of this, the front panel lacks output level controls.
+• Exponential Voltage Control: The slew rate can be manually adjusted or modulated externally using Control Voltage (CV). Crucially, the voltage response of the slew control is exponential, which mimics how humans naturally perceive changes in pitch and time.
+
+Technical Specifications
+
+• Slew Range: Highly versatile for its time, the module can smooth voltages from a lightning-fast 1 millisecond up to a massive 10 seconds.
+• Linearity: ~0.05% Best Straight Line (BSL) accuracy.
+• Gain: 1 (± ~1%).
+• Form Factor: Original standalone units were 1U rack-mountable, 110V/240V mains-powered, wrapped in wood.
+
+
+Attribute	Specification
+Manufacturer	Electronic Music Studios (EMS)
+Release Date	April 1971
+Enclosure Type	1U Rackmount, African Teak (Afrormosia) Wooden Sleeve
+Channel Count	3 Independent Channels
+Timing Range	1 ms to 10 seconds
+Control Curve	Exponential (Voltage Controlled)
+Gain Strategy	Unity Gain (No output level controls)
+
+
+The EMS Slew Limiter Topology
+
+The original EMS design bypasses the simple "resistor-capacitor" (RC) circuit found in basic portamento effects. To achieve exponential control voltage response and high-precision unity gain linearity (~0.05%), David Cockerell used a more complex approach:
+1. The Core Integrator: The circuit relies on a classic op-amp integrator utilizing a high-quality polystyrene or polycarbonate hold capacitor.
+2. Current-Source Charging: Instead of dumping voltage into a capacitor through a passive potentiometer, the charging current is strictly regulated by an integrated transistor network acting as a voltage-controlled current source.
+3. The Exponential Converter: EMS utilized a matched discrete transistor pair (such as a logging transistor configuration typical of their VCS3/Synthi 100 VCOs). This converts incoming control voltages exponentially into the exact charging/discharging current needed by the hold capacitor to smooth the signal.
+4. Input and Output Buffering: Precision operational amplifiers buffer the input and the output stages. The output buffer features extremely low input bias current (essential to stop the held voltages from introducing unwanted droop or offset errors during long, 10-second slew sweeps).
+
+
+Typical 1970s Slew Limiter Architecture
+
+
+Section	Vintage Component	Modern Equivalents / Fixes
+Input/Output Buffers	Early ICs / Discrete Buffers	Precision low-noise BiFET Op-Amps (e.g., TL072, OPA192)
+Slew Capacitor	Vintage Polystyrene	High-stability WIMA Polypropylene (PPS) or film capacitors
+Exponential Conversion	Matched Discrete Transistors	Matched transistor pairs (e.g., AS394 or MAT02)
+
+
+
+Links:
+
+https://www.midcentury-modular.com/blog/triple-slew-limiter (this one has schematics)
+
+1. Active Electronic Components
+
+The original EMS boards (both the standalone rack unit and the internal cards used in the Synthi 100) utilized standard components of the early 1970s British aerospace and audio industries:
+• Operational Amplifiers (The LM741 & MC1458): EMS heavily favored early operational amplifiers. For dual-amp configurations, they used the Motorola MC1458 (essentially two 741s in one package). These early op-amps had massive limitations compared to modern ones—most notably a very low slew rate (~0.5 V/µs) and significant input bias current.
+	• DSP Impact: The buffers themselves added a slight, natural low-pass filtering and rounding to high-speed edges independent of the slew circuit itself.
+• The Logarithmic/Exponential Transistors (BC169 / BC258 or Matched Pairs): To achieve the exponential CV tracking characteristic of EMS modules, the control voltage section utilized discrete silicon NPN/PNP transistors (typically BC169 and BC258, or custom-matched pairs) wired as a logging circuit.
+	• DSP Impact: Instead of a linear time coefficient (\(t\)), your software algorithm must map incoming CV using an exponential curve (\(e^{x}\)) to dictate the integration rate.
+• The Analog Switch/Current Source Gates: David Cockerell used a combination of discrete JFETs (like the 2N4391 or 2N3819) or early transistor arrays to act as the steering mechanism that poured current into the core integrator capacitor.
+
+2. Passive Components & Flavor Quirks
+
+• The Hold/Slew Capacitors (Polystyrene): The core integrator relied on premium Polystyrene capacitors. Polystyrene was chosen in the 1970s because it has incredibly low dielectric absorption (the "memory effect" where a capacitor remembers its previous voltage state) and minimal leakage.
+	• DSP Impact: Unlike a bad sample-and-hold circuit, an EMS slew limiter with polystyrene caps has almost zero natural voltage sag or "droop" when holding a steady-state flat voltage.
+• Carbon Film Resistors: 1970s EMS gear used standard carbon film resistors. These components have a high thermal coefficient—meaning as the inside of the rack warmed up, the resistance drifted.
+	• DSP Impact: To create an authentic vintage emulation, add a tiny amount of slow thermal "drift" or subtle instability to the maximum and minimum slew boundaries (1 ms to 10 seconds).
+
+3. DSP Mathematical Model for a Software Clone
+
+To accurately emulate the EMS module, you cannot simply use a digital One-Pole Low-Pass Filter (\(y[n] = y[n-1] + \alpha(x[n] - y[n-1])\)), because a standard filter changes its speed depending on how close the input is to the output. A Slew Limiter has a fixed maximum speed limit.
+
+Step 1: Calculate the Dynamic Speed Limit (Slew Rate)
+
+First, map the manual pot and the control voltage exponentially to get the current maximum rate of change per sample:
+\(\text{MaxChange}=\text{BaseRate}\times e^{(\text{ManualPot}+\text{CVInput})}\)
+Ensure your \(\text{MaxChange}\) coefficient is bounded to map precisely between 1 millisecond and 10 seconds across a full voltage sweep.
+
+Step 2: The Linear Accumulator Loop
+
+In every audio sample tick, calculate the raw difference between the current target input voltage (\(x[n]\)) and your current software output (\(y[n-1]\)).
+
+
+Emulating the Linear/Logarithmic Mode Switch
+
+Later EMS expander iterations added a switch to toggle between Linear and Logarithmic slew response curves.
+• Linear Mode: The implementation above represents linear mode. The voltage rises like a straight ramp regardless of how close it is to the target.
+• Logarithmic Mode: To emulate this mode, multiply \(\text{MaxChange}\) by a fraction of the absolute remaining difference. This causes the slew rate to start aggressively fast and flatten out exponentially as it approaches the target voltage—perfect for modeling smooth vintage portamento.

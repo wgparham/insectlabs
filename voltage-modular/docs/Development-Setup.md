@@ -19,3 +19,5 @@ Keep canonical folders immutable after release. Work in a module-specific develo
 Series One is mono-first and predominantly manual. +5 V is the common modulation reference; +10 V remains a module-specific possibility, not a series-wide standard. Add reusable audio fixtures to TestBench using its documented format, provenance, catalog and checksum rules.
 
 The Berna manuals, 1971 Moog catalog, Q125 data and other hardware/software references are maintained in the local Resources folder rather than duplicated in the repository. Collection decisions are summarized in the [roadmap](Collection-Roadmap.md).
+
+TSL Triple Slew Limiter is [canonical v1.0.0](../Teletape%20Workshop/TSL/README.md) as of 2026-10-14. OFB Octave Filter Bank is the user-planned next EMS module; its implementation has not started here.

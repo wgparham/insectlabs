@@ -1,0 +1,489 @@
+package com.insectlabs.tsl;
+
+import voltage.controllers.*;
+import voltage.core.*;
+import voltage.core.Jack.JackType;
+import voltage.sources.*;
+import voltage.utility.*;
+import voltage.processors.*;
+import voltage.effects.*;
+import java.awt.*;
+
+//[user-imports]   
+//[/user-imports]
+
+public class tslBlank extends VoltageModule
+//[user-inheritance]
+//[/user-inheritance]
+{
+    //[user-code-and-variables]    
+    // Persistent output states for each channel matching true hardware integrator caps
+    private double currentVolt1 = 0.0;
+    private double currentVolt2 = 0.0;
+    private double currentVolt3 = 0.0;
+
+    // Flag utilized to snap to initial voltages instantly on preset recall
+    private boolean resumePending = false;
+
+    // Persistent time variable to track the pulsing animation phase
+    private double pulseTime = 0.0;
+
+    // Constants derived from EMS Sequencer 256 physical constraints
+    private static final double MAX_SPEED = 1000.0; // 1000 V/s (fastest rate)
+    private static final double MIN_SPEED = 0.05;   // 0.05 V/s (slowest rate)
+    private static final double LOG2_MIN_SLEW = Math.log(MIN_SPEED) / Math.log(2.0);
+    private static final double LOG2_MAX_SLEW = Math.log(MAX_SPEED) / Math.log(2.0);
+    private static final double LOG2_SLEW_SPAN = LOG2_MAX_SLEW - LOG2_MIN_SLEW;
+    private static final double SAMPLE_PERIOD = 1.0 / 48000.0;
+
+    // Safe mathematical boundaries handler
+    private static double clamp(double value, double min, double max) {
+        return Math.min(max, Math.max(min, value));
+    }
+
+    // Input signal validation engine
+    private double readInput(VoltageAudioJack jack) {
+        if (jack.IsConnected()) {
+            double v = jack.GetValue();
+            return Double.isFinite(v) ? v : 0.0;
+        }
+        return 0.0;
+    }
+
+    // 1V/Octave Log-Exponential Translation Engine
+    private static double rateFor(double knobValue, double controlVoltage) {
+        double position = clamp(knobValue, 0.0, 1.0);
+        double baseLog2Rate = LOG2_MIN_SLEW + (position * LOG2_SLEW_SPAN);
+        double cv = Double.isFinite(controlVoltage) ? controlVoltage : 0.0;
+        double cvRateShift = cv * 1.0; // Precise 1 Volt per Octave scaling shift
+        double modulatedLog2Rate = clamp(baseLog2Rate + cvRateShift, LOG2_MIN_SLEW, LOG2_MAX_SLEW);
+        return Math.pow(2.0, modulatedLog2Rate);
+    }
+    //[/user-code-and-variables]
+
+    @SuppressWarnings("this-escape") 
+    public tslBlank( long moduleID, VoltageObjects voltageObjects )
+    {
+        super( moduleID, voltageObjects, "Triple Slew Limiter Blank", ModuleType.ModuleType_Source, 1.6 );
+
+        InitializeControls();
+
+        canBeBypassed = true;
+        SetSkin( "3d9d17c2d43147389fe2d1e06383a695" );
+    }
+
+    void InitializeControls()
+    {
+        labelBars = new VoltageLabel( "labelBars", "V.C. Bars Label", this, "—  V.C. INPUT  —" );
+        AddComponent( labelBars );
+        labelBars.SetPosition( 0, 245 );
+        labelBars.SetSize( 115, 18 );
+        labelBars.SetColor( new Color( 166, 36, 36, 255 ) );
+
+        labelV4 = new VoltageLabel( "labelV4", "V.C. Input Label", this, "V.C. INPUT" );
+        AddComponent( labelV4 );
+        labelV4.SetPosition( 0, 245 );
+        labelV4.SetSize( 115, 18 );
+
+        labelVbars = new VoltageLabel( "labelVbars", "Voltage Bars", this, "—  VOLTAGE  —" );
+        AddComponent( labelVbars );
+        labelVbars.SetPosition( 0, 40 );
+        labelVbars.SetSize( 115, 18 );
+        labelVbars.SetColor( new Color( 166, 36, 36, 255 ) );
+
+        labelVoltage = new VoltageLabel( "labelVoltage", "Voltage Label", this, "VOLTAGE" );
+        AddComponent( labelVoltage );
+        labelVoltage.SetPosition( 0, 40 );
+        labelVoltage.SetSize( 115, 18 );
+
+        knobV1 = new VoltageKnob( "knobV1", "Voltage 1", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobV1 );
+        knobV1.SetPosition( 42, 60 );
+        knobV1.SetSize( 31, 31 );
+        knobV1.SetSkin( "ARP2500 Sm Silver" );
+
+        knobV2 = new VoltageKnob( "knobV2", "Voltage 2", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobV2 );
+        knobV2.SetPosition( 42, 110 );
+        knobV2.SetSize( 31, 31 );
+        knobV2.SetSkin( "ARP2500 Sm Silver" );
+
+        lampPower = new VoltageLED( "lampPower", "Power Lamp", this );
+        AddComponent( lampPower );
+        lampPower.SetPosition( 49, 216 );
+        lampPower.SetSize( 16, 16 );
+        lampPower.SetSkin( "2500 Lamp Red" );
+
+        inputVC1 = new VoltageAudioJack( "inputVC1", "V.C. Input 1", this, JackType.JackType_AudioInput );
+        AddComponent( inputVC1 );
+        inputVC1.SetPosition( 10, 265 );
+        inputVC1.SetSize( 25, 25 );
+
+        inputVC2 = new VoltageAudioJack( "inputVC2", "V.C. Input 2", this, JackType.JackType_AudioInput );
+        AddComponent( inputVC2 );
+        inputVC2.SetPosition( 45, 265 );
+        inputVC2.SetSize( 25, 25 );
+
+        inputVC3 = new VoltageAudioJack( "inputVC3", "V.C. Input 3", this, JackType.JackType_AudioInput );
+        AddComponent( inputVC3 );
+        inputVC3.SetPosition( 80, 265 );
+        inputVC3.SetSize( 25, 25 );
+
+        labelFooter = new VoltageLabel( "labelFooter", "Footer", this, "TRIPLE SLEW LIMITER" );
+        AddComponent( labelFooter );
+        labelFooter.SetPosition( 3, 335 );
+        labelFooter.SetSize( 109, 23 );
+        labelFooter.SetColor( new Color( 166, 36, 36, 255 ) );
+
+        labelVCinput1 = new VoltageLabel( "labelVCinput1", "V.C. Input 1 Label", this, "1" );
+        AddComponent( labelVCinput1 );
+        labelVCinput1.SetPosition( 4, 288 );
+        labelVCinput1.SetSize( 37, 23 );
+
+        labelV1 = new VoltageLabel( "labelV1", "Voltage 1 Label", this, "VOLTAGE 1" );
+        AddComponent( labelV1 );
+        labelV1.SetPosition( 30, 90 );
+        labelV1.SetSize( 55, 13 );
+
+        labelVCinput2 = new VoltageLabel( "labelVCinput2", "V2 Output Label", this, "2" );
+        AddComponent( labelVCinput2 );
+        labelVCinput2.SetPosition( 40, 289 );
+        labelVCinput2.SetSize( 37, 23 );
+
+        labelVCinput3 = new VoltageLabel( "labelVCinput3", "Trigger Output", this, "3" );
+        AddComponent( labelVCinput3 );
+        labelVCinput3.SetPosition( 77, 289 );
+        labelVCinput3.SetSize( 32, 23 );
+
+        labelV2 = new VoltageLabel( "labelV2", "Voltage 2 Label", this, "VOLTAGE 2" );
+        AddComponent( labelV2 );
+        labelV2.SetPosition( 30, 140 );
+        labelV2.SetSize( 55, 13 );
+
+        imageTTW = new VoltageImage( "imageTTW", "TTW Imagemark", this, false );
+        AddComponent( imageTTW );
+        imageTTW.SetPosition( 5, 5 );
+        imageTTW.SetSize( 31, 10 );
+        imageTTW.SetCurrentImage( "image image.svg" );
+
+        labelNumber = new VoltageLabel( "labelNumber", "Model Number Label", this, "tsl" );
+        AddComponent( labelNumber );
+        labelNumber.SetPosition( 85, 5 );
+        labelNumber.SetSize( 25, 13 );
+
+        knobV3 = new VoltageKnob( "knobV3", "Voltage 3", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobV3 );
+        knobV3.SetPosition( 42, 160 );
+        knobV3.SetSize( 31, 31 );
+        knobV3.SetSkin( "ARP2500 Sm Silver" );
+
+        labelV3 = new VoltageLabel( "labelV3", "Voltage3 Label", this, "VOLTAGE 3" );
+        AddComponent( labelV3 );
+        labelV3.SetPosition( 30, 190 );
+        labelV3.SetSize( 55, 13 );
+
+        outputV1 = new VoltageAudioJack( "outputV1", "Voltage 1 Out", this, JackType.JackType_AudioOutput );
+        AddComponent( outputV1 );
+        outputV1.SetPosition( 80, 78 );
+        outputV1.SetSize( 25, 25 );
+
+        outputV2 = new VoltageAudioJack( "outputV2", "Voltage 2 Out", this, JackType.JackType_AudioOutput );
+        AddComponent( outputV2 );
+        outputV2.SetPosition( 80, 128 );
+        outputV2.SetSize( 25, 25 );
+
+        outputV3 = new VoltageAudioJack( "outputV3", "Voltage 3 Out", this, JackType.JackType_AudioOutput );
+        AddComponent( outputV3 );
+        outputV3.SetPosition( 80, 178 );
+        outputV3.SetSize( 25, 25 );
+
+        labelIn = new VoltageLabel( "labelIn", "In Label", this, "IN" );
+        AddComponent( labelIn );
+        labelIn.SetPosition( 4, 58 );
+        labelIn.SetSize( 37, 23 );
+
+        labelOut = new VoltageLabel( "labelOut", "Output Label", this, "OUT" );
+        AddComponent( labelOut );
+        labelOut.SetPosition( 77, 59 );
+        labelOut.SetSize( 32, 23 );
+
+        labelPower = new VoltageLabel( "labelPower", "Power Label", this, "POWER" );
+        AddComponent( labelPower );
+        labelPower.SetPosition( 30, 205 );
+        labelPower.SetSize( 55, 13 );
+
+        labelOn = new VoltageLabel( "labelOn", "On Label", this, "ON" );
+        AddComponent( labelOn );
+        labelOn.SetPosition( 30, 230 );
+        labelOn.SetSize( 55, 13 );
+
+        labelLocation = new VoltageLabel( "labelLocation", "Location Mark", this, "(Seattle) Ltd" );
+        AddComponent( labelLocation );
+        labelLocation.SetPosition( 0, 11 );
+        labelLocation.SetSize( 39, 13 );
+
+        inputV1 = new VoltageAudioJack( "inputV1", "Voltage 1 Input", this, JackType.JackType_AudioInput );
+        AddComponent( inputV1 );
+        inputV1.SetPosition( 10, 77 );
+        inputV1.SetSize( 25, 25 );
+
+        inputV2 = new VoltageAudioJack( "inputV2", "Voltage 2 Input", this, JackType.JackType_AudioInput );
+        AddComponent( inputV2 );
+        inputV2.SetPosition( 10, 127 );
+        inputV2.SetSize( 25, 25 );
+
+        inputV3 = new VoltageAudioJack( "inputV3", "Voltage Input 3", this, JackType.JackType_AudioInput );
+        AddComponent( inputV3 );
+        inputV3.SetPosition( 10, 177 );
+        inputV3.SetSize( 25, 25 );
+    }
+
+    @Override
+    public void Initialize()
+    {
+        // Start the continuous graphical clock frame loop
+        StartGUITimer();
+        lampPower.SetValue( 1.0 );
+
+        // --- Performance Testing Block ---
+        final int iterations = 10000000; 
+        double dummyAccumulator = 0.0;
+        long startTime = System.nanoTime();
+for( int i = 0; i < iterations; i++ )
+{
+double mockCV = ( i % 2 == 0 ) ? 1.5 : -0.5;
+double mockKnob = ( i % 100 ) / 100.0;
+double rateSample = rateFor( mockKnob, mockCV );
+dummyAccumulator += rateSample;
+}
+long endTime = System.nanoTime();
+long totalDurationNs = endTime - startTime;
+double totalDurationMs = totalDurationNs / 1000000.0;
+double averageTimePerSampleNs = (double) totalDurationNs / iterations;
+System.out.println( String.format( "Result: Processed %d cycles in %.2f ms", iterations, totalDurationMs ) );
+System.out.println( String.format( "Average Cost: %.2f nanoseconds per sample", averageTimePerSampleNs ) );
+if( dummyAccumulator == 42.42 ) {
+System.out.println( "Check: " + dummyAccumulator );
+}
+System.out.println( "=== TSL PERFORMANCE BENCHMARK COMPLETE ===" );
+}
+@Override
+public void Destroy()
+{
+super.Destroy();
+}
+@Override
+public boolean Notify( VoltageComponent component, ModuleNotifications notification, double doubleValue, long longValue, int x, int y, Object object )
+{
+switch( notification )
+{
+case GUI_Update_Timer:
+{
+pulseTime += 0.05;
+double variance = (Math.sin(pulseTime * 1.5) * 0.06)
++ (Math.sin(pulseTime * 8.2) * 0.02)
++ (Math.sin(pulseTime * 23.0) * 0.005);
+double targetBrightness = clamp(0.85 + variance, 0.0, 1.0);
+lampPower.SetValue(targetBrightness);
+}
+break;
+default:
+break;
+}
+return false;
+}
+@Override
+public void ProcessSample()
+{
+//[user-ProcessSample] Integrated EMS Slew / Track & Hold Engine
+double dt = SAMPLE_PERIOD;
+// If a preset was loaded, break out of standard integration math and synchronize immediately
+if ( resumePending )
+{
+currentVolt1 = readInput( inputV1 );
+currentVolt2 = readInput( inputV2 );
+currentVolt3 = readInput( inputV3 );
+resumePending = false;
+}
+// --- CHANNEL 1 (Standard EMS Slew) ---
+double input1 = readInput( inputV1 );
+double cv1 = inputVC1.IsConnected() ? inputVC1.GetValue() : 0.0;
+double maxRate1 = rateFor( knobV1.GetValue(), cv1 );
+double maxChange1 = maxRate1 * dt;
+double diff1 = input1 - currentVolt1;
+if (diff1 > maxChange1)       currentVolt1 += maxChange1;
+else if (diff1 < -maxChange1) currentVolt1 -= maxChange1;
+else                          currentVolt1 = input1;
+outputV1.SetValue( currentVolt1 );
+// --- CHANNEL 2 (Standard EMS Slew) ---
+double input2 = readInput( inputV2 );
+double cv2 = inputVC2.IsConnected() ? inputVC2.GetValue() : 0.0;
+double maxRate2 = rateFor( knobV2.GetValue(), cv2 );
+double maxChange2 = maxRate2 * dt;
+double diff2 = input2 - currentVolt2;
+if (diff2 > maxChange2)       currentVolt2 += maxChange2;
+else if (diff2 < -maxChange2) currentVolt2 -= maxChange2;
+else                          currentVolt2 = input2;
+outputV2.SetValue( currentVolt2 );
+// --- CHANNEL 3 (Dual Identity: Slew or Track & Hold) ---
+double input3 = readInput( inputV3 );
+// Dynamic Gate/Clock Connector Check
+boolean trackMode3 = !inputVC3.IsConnected() || (inputVC3.GetValue() > 1.0);
+if (trackMode3)
+{
+// Set CV parameter to zero during gated tracks to isolate knob motion limits
+double cvParam3 = 0.0;
+double maxRate3 = rateFor( knobV3.GetValue(), cvParam3 );
+double maxChange3 = maxRate3 * dt;
+double diff3 = input3 - currentVolt3;
+if (diff3 > maxChange3)       currentVolt3 += maxChange3;
+else if (diff3 < -maxChange3) currentVolt3 -= maxChange3;
+else                          currentVolt3 = input3;
+}
+else
+{
+// Integrator path is completely open. Hold last value.
+}
+outputV3.SetValue( currentVolt3 );
+//[/user-ProcessSample]
+}
+@Override
+public void ProcessBypassedSample()
+{
+//[user-ProcessBypassedSample] Continuous Tracking Bypass
+currentVolt1 = readInput( inputV1 );
+currentVolt2 = readInput( inputV2 );
+currentVolt3 = readInput( inputV3 );
+outputV1.SetValue( currentVolt1 );
+outputV2.SetValue( currentVolt2 );
+outputV3.SetValue( currentVolt3 );
+//[/user-ProcessBypassedSample]
+}
+@Override
+public String GetTooltipText( VoltageComponent component )
+{
+//[user-GetTooltipText] Real-time hardware rate calculation display
+if ( component == knobV1 || component == knobV2 || component == knobV3 )
+{
+VoltageKnob knob = (VoltageKnob) component;
+double currentRate = rateFor( knob.GetValue(), 0.0 );
+if ( currentRate >= 10.0 ) {
+return String.format( "Slew Rate: %.1f V/s", currentRate );
+} else {
+return String.format( "Slew Rate: %.3f V/s", currentRate );
+}
+}
+return super.GetTooltipText( component );
+//[/user-GetTooltipText]
+}
+@Override
+public void EditComponentValue( VoltageComponent component, double newValue, String newText )
+{
+//[user-EditComponentValue] Parse manual user text input overrides
+if ( component == knobV1 || component == knobV2 || component == knobV3 )
+{
+try
+{
+String cleanText = newText.replaceAll( "(?i)[a-z:/\s]", "" );
+double typedRate = Double.parseDouble( cleanText );
+typedRate = clamp( typedRate, MIN_SPEED, MAX_SPEED );
+double log2Typed = Math.log( typedRate ) / Math.log( 2.0 );
+double targetKnobPos = ( log2Typed - LOG2_MIN_SLEW ) / LOG2_SLEW_SPAN;
+targetKnobPos = clamp( targetKnobPos, 0.0, 1.0 );
+VoltageKnob knob = (VoltageKnob) component;
+knob.SetValue( targetKnobPos );
+Notify( knob, ModuleNotifications.Knob_Changed, targetKnobPos, 0, 0, 0, null );
+return;
+}
+catch ( Exception e ) {
+// Fallback on error
+}
+}
+super.EditComponentValue( component, newValue, newText );
+//[/user-EditComponentValue]
+}
+@Override
+public void OnUndoRedo( String undoType, double newValue, Object optionalObject )
+{
+}
+@Override
+public byte[] GetStateInformation()
+{
+//[user-GetStateInformation] Save current settings into preset files
+try
+{
+java.io.ByteArrayOutputStream bos = new java.io.ByteArrayOutputStream();
+java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(bos);
+oos.writeDouble(currentVolt1);
+oos.writeDouble(currentVolt2);
+oos.writeDouble(currentVolt3);
+oos.flush();
+return bos.toByteArray();
+}
+catch (Exception e) {
+return null;
+}
+//[/user-GetStateInformation]
+}
+@Override
+public void SetStateInformation(byte[] stateInfo)
+{
+//[user-SetStateInformation] Recall settings seamlessly when loading presets
+if (stateInfo == null || stateInfo.length == 0) return;
+try
+{
+java.io.ByteArrayInputStream bis = new java.io.ByteArrayInputStream(stateInfo);
+java.io.ObjectInputStream ois = new java.io.ObjectInputStream(bis);
+currentVolt1 = ois.readDouble();
+currentVolt2 = ois.readDouble();
+currentVolt3 = ois.readDouble();
+resumePending = true;
+}
+catch (Exception e) {
+// Keep current states on exception
+}
+//[/user-SetStateInformation]
+}
+@Override
+public byte[] GetStateInformationForVariations()
+{
+return GetStateInformation();
+}
+@Override
+public void SetStateInformationForVariations(byte[] stateInfo)
+{
+SetStateInformation(stateInfo);
+}
+// Auto-generated variables definitions
+private VoltageAudioJack inputV3;
+private VoltageAudioJack inputV2;
+private VoltageAudioJack inputV1;
+private VoltageLabel labelLocation;
+private VoltageLabel labelOn;
+private VoltageLabel labelPower;
+private VoltageLabel labelOut;
+private VoltageLabel labelIn;
+private VoltageAudioJack outputV3;
+private VoltageAudioJack outputV2;
+private VoltageAudioJack outputV1;
+private VoltageLabel labelV3;
+private VoltageKnob knobV3;
+private VoltageLabel labelNumber;
+private VoltageImage imageTTW;
+private VoltageLabel labelV2;
+private VoltageLabel labelVCinput3;
+private VoltageLabel labelVCinput2;
+private VoltageLabel labelV1;
+private VoltageLabel labelVCinput1;
+private VoltageLabel labelFooter;
+private VoltageAudioJack inputVC3;
+private VoltageAudioJack inputVC2;
+private VoltageAudioJack inputVC1;
+private VoltageLED lampPower;
+private VoltageKnob knobV2;
+private VoltageKnob knobV1;
+private VoltageLabel labelVoltage;
+private VoltageLabel labelVbars;
+private VoltageLabel labelV4;
+private VoltageLabel labelBars;
+}
