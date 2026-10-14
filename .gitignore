@@ -9,3 +9,6 @@ voltage-modular/laboratory/build/
 /voltage-modular/Wardenclyffe Station/mixer/
 /voltage-modular/Wardenclyffe Station/minimixer/
 /voltage-modular/Wardenclyffe Station/wire_recorder/
+
+# Disposable local review renders and validation scratch.
+/tmp/

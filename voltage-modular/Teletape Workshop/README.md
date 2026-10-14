@@ -17,12 +17,16 @@ These are design directions, not a committed product list. Keep the general CV r
 
 | Product | Current version | Role | Manual |
 | --- | ---: | --- | --- |
-| [RVG Random Voltage Generator](RVG/versions/1.8.0/) | 1.8.0 | Dual stepped random voltage with variable event timing, manual/external selection and selectable hold drift | [User manual](RVG/versions/1.8.0/USER-MANUAL.md) |
+| [RVG Random Voltage Generator](RVG/versions/2.0.0/) | 2.0.0 | Shaped dual stepped random voltage with variable event timing, manual/external selection and selectable hold drift | [User manual](RVG/versions/2.0.0/USER-MANUAL.md) |
 | [b08 Blanking Panel](b08/versions/1.0.0/) | 1.0.0 | 8 HP visual blanking panel; no custom DSP | [User manual](b08/versions/1.0.0/USER-MANUAL.md) |
 | [TSL Triple Slew Limiter](TSL/versions/1.0.0/) | 1.0.0 | Two CV slew channels and one slew/track-and-hold channel | [User manual](TSL/versions/1.0.0/USER-MANUAL.md) |
 
-The RVG's [developer notes](RVG/DEVELOPER-NOTES.md), [release review](RVG/versions/1.8.0/REVIEW.md), and [shared references](references/README.md) record implementation, validation and research. The RVG models EMS workflow and feel; it is not an exact circuit reconstruction. The b08's [developer notes](b08/DEVELOPER-NOTES.md) and [release review](b08/versions/1.0.0/REVIEW.md) document its artwork-only panel and validation.
+The RVG's [developer notes](RVG/DEVELOPER-NOTES.md), [release review](RVG/versions/2.0.0/REVIEW.md), and [shared references](references/README.md) record implementation, validation and research. The RVG models EMS workflow and feel; it is not an exact circuit reconstruction. The b08's [developer notes](b08/DEVELOPER-NOTES.md) and [release review](b08/versions/1.0.0/REVIEW.md) document its artwork-only panel and validation.
 
 Shared [design resources](designResources/README.md) inventory the series artwork and font license. EMS schematics, manuals and broader circuit references are catalogued in the [reference index](references/README.md).
 
 For current project decisions and optional ideas, see [Voltage Modular documentation](../docs/README.md), [Future Module Proposals](../docs/Future-Module-Proposals.md), and [Cherry Audio Notes](Cherry-Audio-Notes.md).
+
+## Publication plan
+
+Cherry Audio publication is deferred until the complete module list is locked and every module on that list is canonized. The user will publish the canonical collection in one session. Git synchronization continues during development. See [publication plan](PUBLICATION-PLAN.md).

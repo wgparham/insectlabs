@@ -53,3 +53,7 @@ The Dynamic Modulator role is realized as Following. SIGNAL THROUGH is tapped af
 ## Sherlock — canonical 1.0.0
 
 The Pulse Shaper role is realized as Sherlock: independent positive/negative linear slew sections, deliberately without internal normalization. External cables provide cascades and feedback. FAST is 100 us–4 s per 5 V; SLOW multiplies every setting by 1000 (100 ms–4000 s). Positive defaults FAST near C4, Negative SLOW near C−1, both VC amounts zero. The 5/10 V switch changes the positive generated peak, not slew rate or pulse-gate voltage. Busy START edges are ignored; SUSTAIN can start/hold the rise. Pulse LO and Negative PULSE are low-voltage comparators and stay high below zero. Host bypass is independent direct transfer, pulse outputs silent.
+
+## Teletape publication gate — 2026-10-14
+
+The user will publish all Teletape modules together after the full lineup is locked and each listed module is canonized. Canonization and Git pushes may happen beforehand; they do not authorize Cherry Audio publication. See [collection publication plan](../Teletape%20Workshop/PUBLICATION-PLAN.md).

@@ -1,0 +1,6 @@
+RVG 2.0.0 validation — 2026-10-14
+PASS: exported and embedded Java SDK compilation, --release 17 -Xlint:all -Werror.
+PASS: actual extracted callback checks: startup/Factory default, three hold modes and droop, startup/manual/external trigger paths, internal-clock 480-sample pulse, inhibit/reselect, gate hysteresis, bypass/resume, lifecycle.
+PASS: normalized shaping +/-2.5 V endpoints and post-shaping half-Level +/-1.25 V.
+PASS: project round-trip, class/package/control metadata, source agreement and manifests.
+User approved the auditioned normalized-tanh build; no independent native UI/CPU/automation test claimed.

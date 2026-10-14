@@ -1,34 +1,27 @@
-# RVG Random Voltage Generator — Developer Notes
+# RVG developer notes — 2.0.0
 
-Canonical v1.8.0. Public identity: RVG Random Voltage Generator. Java identity: class `rvg`, package `com.insectlabs.rvg`. The authoritative pair is [`versions/1.8.0/rvg.vmod`](versions/1.8.0/rvg.vmod) and [`versions/1.8.0/rvg.java`](versions/1.8.0/rvg.java). See the [user manual](USER-MANUAL.md), [release review](versions/1.8.0/REVIEW.md), [research notes](RESEARCH-NOTES.md), and [RVG references](references/README.md).
+Identity: class rvg, package com.insectlabs.rvg, Source category, Teletape Workshop. Canonical pair and hero: versions/2.0.0/rvg.java, rvg.vmod, rvg_hero.png. See the adjacent user manual, release review and tests/validate.py in the archive. Version 1.8.0 remains immutable historical canon.
 
-## Signal flow and behavior
+## Signal flow and source map
 
-`ProcessSample()` runs at the module's 48 kHz design assumption. A phase accumulator drives selections from 0.2 to 20 Hz. Mean Rate maps its normalized knob value exponentially across that range. Mean CV scales the base rate at two octaves per volt, then clamps it back to 0.2–20 Hz. Variance applies a normalized exponential random multiplier to the next event interval; at maximum setting, multipliers span a 128:1 ratio with an arithmetic mean of one. The final instantaneous rate is bounded to 0.01–200 Hz.
+sampleAndHold draws three independent xorshift64 uniform values: two bipolar +/-2.5 V held nodes and one 0–1 clock-control node. System.nanoTime seeds the generator; zero seed is replaced with a fixed nonzero value. ProcessSample handles safe gate rearm after bypass, manual/external reselection, linear internal droop, pulse/lamp counters, clock feedback and shaped/scaled outputs at 48 kHz.
 
-`sampleAndHold()` uses a xorshift64 generator with a `System.nanoTime()` seed. It captures three independent values at each selection: two uniform bipolar voltages up to ±2.5 V and one uniform value used by Variance. V1 and V2 Level scale their respective held voltages from 0 to full range; their saved defaults are zero. An initial selection occurs at startup. Re-Select and a re-armed Select input take an immediate new selection and reset the internal clock phase.
+Rate: .2 * 100^knob, multiplied by 2^(2*VC Mean), clamped .2–20 Hz. Variance multiplier: 10^((heldRateRandom-.5)*2*amount), spanning .1–10 at maximum. Final rate is bounded .05–500 Hz. It is not mean-normalized; a held rate's multiplier and interval statistics are distinct from an arithmetic rate average. Internal clock selection refreshes all three held values; manual/external selection also resets phase.
 
-The three-position switch reports discrete states 0–2: state 2/up is COMPENSATED (zero droop), state 1/middle is FACTORY, state 0/down is BLOWN CIRCUIT. The saved initial state is 1, so FACTORY is the startup mode. The user-approved rates are 0.015 V/s and 0.115 V/s toward zero. `droopTowardZero()` bounds the drift at zero and never crosses polarity. These are chosen musical rates, not measurements or component-level claims about EMS hardware. Droop continues during Inhibit and pauses during host bypass.
+shapedVoltage(v) = 2.5*tanh(v/2.5)/tanh(1). Normalization is cached as a static constant. Level is a linear multiplier after shaping. Output endpoints are +/-2.5 V; shaping compresses uniformly drawn source values without creating a center-heavy density within the final range. Internal droop is 0/.015/.115 V/s, bounded at zero. The nonlinear transfer changes the observed output droop. No oversampling: output shaping operates on held modulation values, not an audio-through processor.
 
-`switchInhibit` stops the internal clock and resets phase. Manual and external selections remain active while inhibited. Select triggers at or above 1 V and rearms at or below 0.1 V. Trig Out is +4 V for 480 samples (10 ms); the selection lamp is active for 4,800 samples (100 ms) and is presented by the 25 ms GUI timer.
+Initialize starts the 25 ms GUI timer, requests a selection and reads Factory switch default 1. Notify handles button selection via AtomicBoolean, volatile compensation mode, Reset and lamp presentation. Destroy stops the timer and calls the base callback exactly once. Native controls persist; no custom state payload or held-voltage restore. Reset requests a new selection; preset/variation custom setters are empty. Resume is audio-thread owned, not a UI-written flag.
 
-## Source map, lifecycle and bypass
+Bypass silences outputs; freezes held voltages, PRNG and phase; discards pending requests and clears trigger/lamp activity. This intentionally preserves the established RVG 1.8.0 bypass policy. It skips controls and CV. Return samples Select to avoid a phantom high-gate trigger.
 
-- `Initialize()` starts the GUI timer, queues the initial selection, and reads the saved hold-mode switch state.
-- `Notify()` handles Re-Select, compensation switch changes, GUI lamp updates and Reset. The switch value is rounded and clamped to state 0–2.
-- `ProcessSample()` handles gate detection, selection, held-voltage droop, clock/variance timing and the three outputs.
-- `ProcessBypassedSample()` silences all outputs, clears pending selection/trigger/light state and marks the gate for safe re-arming. It does not advance held voltages or clock phase.
-- On the first active sample after bypass, the Select input is sampled to establish its re-arm state. Held voltages and clock phase are preserved; queued manual selections are discarded during bypass.
-- `Destroy()` stops the GUI timer and calls the base implementation exactly once.
+## Interface and real-time limits
 
-This is a source module without a through path, so host bypass produces silence. Audio outputs resume from the preserved held values; leaky modes resume drifting. The source includes no custom saved state: Voltage Modular persists the ordinary controls, including the three-position switch.
+Select thresholds are >=1 V trigger / <=.1 V rearm. Manual/external pulses load 480 before current-sample decrement; automatic clock pulses load 479 after emitting their first sample, giving exactly 480 high samples on every path. Lamp counter is 4800 samples. Output levels default zero; Mean Rate .25, Variance zero, Free Run state 0, Factory state 1. Physical switch directions match the supplied panel/recorded mapping; not independently re-tested during packaging.
 
-## Real-time and validation notes
+No callback allocation or formatting. Exponentials and tanh remain per sample; CPU is unmeasured and coefficient caching is a future maintenance task. Control reads are not comprehensively sanitized for invalid native knob values; finite CV guards exist. Full jack tooltips are deferred. Immediate controls are retained as auditioned; no added smoothing. These are documented gaps, not a blanket standards-compliance claim.
 
-The sample callback allocates no objects. When Variance is active it evaluates exponentials and a hyperbolic sine per sample, and Mean Rate uses exponential scaling; CPU has not been benchmarked. No sample-rate adaptation is implemented, so clock, pulse and droop timing follow the 48 kHz constant rather than a queried host rate.
+## Evidence and future edits
 
-The release test compiles both source forms with the installed Voltage SDK and exercises switch-state mapping, hold rates, selection/gate behavior, triggers, output bounds, bypass/resume and tooltip content using headless SDK mocks. This does not replace a native Designer/Voltage host build. The user built and auditioned the DSP/settings before release packaging and approved the result; the final source-only additions are tooltips and notification/timer cleanup. Native save/reload and CPU measurement were not repeated for packaging.
+User auditioned the normalized-tanh working pair and approved 2.0.0 canonization on 2026-10-14. Packaging changes only the module Notes from v2.0.0rc to v2.0.0; code/art remain identical. Repeatable tests compile both source forms using Java 17 target/warnings as errors and run actual extracted callbacks with SDK substitutes. See VALIDATION.txt and REVIEW.md for results/limits. No independent native UI/undo/CPU measurement or publication claim.
 
-## Focused maintenance checklist
-
-For changes to switch encoding, repeat the three-position 0/1/2 mapping, initialization and notification checks. For DSP changes, repeat the controlled one-second droop checks in both polarities, independent channel sampling, rate/CV bounds, Variance limits, external gate thresholds, selection pulses and inhibit. For lifecycle changes, repeat bypass silence, frozen histories, rearm and one-time timer shutdown. Rebuild the Designer pair with the installed SDK, run `python versions/1.8.0/tests/validate.py`, and update the review and checksums. Never present the model as an RVG schematic reconstruction without new primary evidence.
+Future changes to sampling distribution, variance normalization, shaping/gain order, droop, clock limits, gates or bypass require a new candidate and renewed listening approval. Validate both polarity directions, event pulse paths, switch defaults, lifecycle, state and source-pair integrity. Preserve unique owner/research evidence with the series; extract a reusable primitive only when a separate need and interface emerge.

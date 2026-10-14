@@ -21,3 +21,5 @@ Series One is mono-first and predominantly manual. +5 V is the common modulation
 The Berna manuals, 1971 Moog catalog, Q125 data and other hardware/software references are maintained in the local Resources folder rather than duplicated in the repository. Collection decisions are summarized in the [roadmap](Collection-Roadmap.md).
 
 TSL Triple Slew Limiter is [canonical v1.0.0](../Teletape%20Workshop/TSL/README.md) as of 2026-10-14. OFB Octave Filter Bank is the user-planned next EMS module; its implementation has not started here.
+
+RVG current canon is [2.0.0](../Teletape%20Workshop/RVG/versions/2.0.0/README.md), approved 2026-10-14; the 1.8.0 archive remains preserved.

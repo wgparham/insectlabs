@@ -1,0 +1,522 @@
+package com.insectlabs.rvg;
+
+import voltage.controllers.*;
+import voltage.core.*;
+import voltage.core.Jack.JackType;
+import voltage.sources.*;
+import voltage.utility.*;
+import voltage.processors.*;
+import voltage.effects.*;
+import java.awt.*;
+
+//[user-imports]   Add your own imports here
+import java.util.concurrent.atomic.AtomicBoolean;
+//[/user-imports]
+
+public class rvg extends VoltageModule
+//[user-inheritance]
+//[/user-inheritance]
+{
+    //[user-code-and-variables]    Add your own variables and functions here
+    private static final double MIN_RATE_HZ = 0.2;
+    private static final double MAX_RATE_HZ = 20.0;
+    private static final double OUTPUT_PEAK_VOLTS = 2.5; // Locked to original EMS standard bounds
+    private static final double TRIGGER_VOLTS = 4.0;
+    
+    private static final int MODE_BLOWN_CIRCUIT = 0;
+    private static final int MODE_FACTORY = 1;
+    private static final int MODE_COMPENSATED = 2;
+    private static final double FACTORY_DROOP_VOLTS_PER_SECOND = 0.015;
+    private static final double BLOWN_DROOP_VOLTS_PER_SECOND = 0.115;
+    
+    private static final double SELECT_GATE_HIGH = 1.0;
+    private static final double SELECT_GATE_LOW = 0.1;
+    private static final int TRIGGER_PULSE_SAMPLES = 480;
+    private static final int SELECTION_LAMP_SAMPLES = 4800;
+
+    private final AtomicBoolean selectionPending = new AtomicBoolean(false);
+    private long randomState = System.nanoTime();
+    
+    // Internal hardware register nodes matching the three discrete cell buckets
+    private double heldV1;
+    private double heldV2;
+    private double heldRateRandom = 0.5; // S&H Node 3 dedicated to driving the internal clock period
+    
+    private double clockPhase;
+    private int triggerSamplesRemaining;
+    private int selectionLampSamplesRemaining;
+    private volatile double selectionLampLevel;
+    private volatile int compensationMode = MODE_COMPENSATED;
+    private boolean selectArmed = true;
+    private boolean hasSelection;
+    private boolean resumePending;
+
+    private double knobRateValue() {
+        return knobRate.GetValue();
+    }
+
+    // Hardware Step Event: All three storage nodes track and capture an isolated slice of noise in tandem
+    private void sampleAndHold() {
+        heldV1 = (2.0 * nextRandomUnit() - 1.0) * OUTPUT_PEAK_VOLTS;
+        heldV2 = (2.0 * nextRandomUnit() - 1.0) * OUTPUT_PEAK_VOLTS;
+        heldRateRandom = nextRandomUnit();
+        hasSelection = true;
+    }
+
+    // High-resolution Xorshift64 numeric noise source
+    private double nextRandomUnit() {
+        long value = randomState;
+        if (value == 0L) {
+            value = 0x9E3779B97F4A7C15L;
+        }
+        value ^= value << 13;
+        value ^= value >>> 7;
+        value ^= value << 17;
+        randomState = value;
+        return (value >>> 11) * 0x1.0p-53;
+    }
+
+    private static int normalizeCompensationMode(double value) {
+        return (int) Math.max(MODE_BLOWN_CIRCUIT, Math.min(MODE_COMPENSATED, Math.round(value)));
+    }
+
+    private static double compensationDroopRate(int mode) {
+        switch (mode) {
+            case MODE_FACTORY:
+                return FACTORY_DROOP_VOLTS_PER_SECOND;
+            case MODE_BLOWN_CIRCUIT:
+                return BLOWN_DROOP_VOLTS_PER_SECOND;
+            case MODE_COMPENSATED:
+            default:
+                return 0.0;
+        }
+    }
+
+    private static double droopTowardZero(double value, double step) {
+        if (value > 0.0) return Math.max(0.0, value - step);
+        if (value < 0.0) return Math.min(0.0, value + step);
+        return 0.0;
+    }
+
+    private static double finite(double value) {
+        return Double.isFinite(value) ? value : 0.0;
+    }
+
+    private static double clamp(double value, double minimum, double maximum) {
+        return Math.max(minimum, Math.min(maximum, value));
+    }
+    //[/user-code-and-variables]
+
+    @SuppressWarnings("this-escape")
+    public rvg( long moduleID, VoltageObjects voltageObjects )
+    {
+        super( moduleID, voltageObjects, "Random Voltage Generator", ModuleType.ModuleType_Source, 1.6 );
+
+        InitializeControls();
+
+        canBeBypassed = true;
+        SetSkin( "f477bfcd0e7a4f0cae7e06bf4fecf8d6" );
+    }
+
+    void InitializeControls()
+    {
+        labelComp = new VoltageLabel( "labelComp", "Compensate Label", this, "COMPENSATE" );
+        AddComponent( labelComp );
+        labelComp.SetPosition( 75, 283 );
+        labelComp.SetSize( 37, 13 );
+        labelComp.SetColor( new Color( 46, 46, 46, 255 ) );
+        labelComp.SetFont( "Arial", 7, true, false );
+
+        labelBlown = new VoltageLabel( "labelBlown", "Blown Circuit Label", this, "FAILURE" );
+        AddComponent( labelBlown );
+        labelBlown.SetPosition( 77, 313 );
+        labelBlown.SetSize( 32, 13 );
+        labelBlown.SetColor( new Color( 46, 46, 46, 255 ) );
+        labelBlown.SetFont( "Arial", 7, true, false );
+
+        labelRun = new VoltageLabel( "labelRun", "Free Run Label", this, "FREE RUN" );
+        AddComponent( labelRun );
+        labelRun.SetPosition( 0, 191 );
+        labelRun.SetSize( 115, 13 );
+        labelRun.SetColor( new Color( 46, 46, 46, 255 ) );
+        labelRun.SetFont( "Arial", 7, true, false );
+
+        labelNew = new VoltageLabel( "labelNew", "New Label", this, "NEW" );
+        AddComponent( labelNew );
+        labelNew.SetPosition( 0, 203 );
+        labelNew.SetSize( 115, 13 );
+        labelNew.SetColor( new Color( 46, 46, 46, 255 ) );
+        labelNew.SetFont( "Arial", 7, true, false );
+
+        labelSelection = new VoltageLabel( "labelSelection", "Selection Label", this, "SELECTION" );
+        AddComponent( labelSelection );
+        labelSelection.SetPosition( 0, 235 );
+        labelSelection.SetSize( 115, 13 );
+        labelSelection.SetColor( new Color( 46, 46, 46, 255 ) );
+        labelSelection.SetFont( "Arial", 7, true, false );
+
+        switchInhibit = new VoltageSwitch( "switchInhibit", "Inhibit / Free Run Switch", this, 0 );
+        AddComponent( switchInhibit );
+        switchInhibit.SetPosition( 40, 165 );
+        switchInhibit.SetSize( 35, 35 );
+        switchInhibit.SetSkin( "2-State Silver" );
+
+        knobRate = new VoltageKnob( "knobRate", "Mean Rate", this, 0.0, 1.0, 0.25 );
+        AddComponent( knobRate );
+        knobRate.SetPosition( 10, 40 );
+        knobRate.SetSize( 31, 31 );
+        knobRate.SetSkin( "ARP2500 Sm Blue" );
+        knobRate.SetRange( 0.0, 1.0, 0.25, false, 0 );
+        knobRate.SetKnobParams( 215, 145 );
+        knobRate.DisplayValueInPercent( true );
+        knobRate.SetKnobAdjustsRing( true );
+
+        knobVariance = new VoltageKnob( "knobVariance", "Variance", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobVariance );
+        knobVariance.SetPosition( 70, 40 );
+        knobVariance.SetSize( 31, 31 );
+        knobVariance.SetSkin( "ARP2500 Sm Blue" );
+        knobVariance.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobVariance.SetKnobParams( 215, 145 );
+        knobVariance.DisplayValueInPercent( true );
+        knobVariance.SetKnobAdjustsRing( true );
+
+        knobV1 = new VoltageKnob( "knobV1", "V1 Level", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobV1 );
+        knobV1.SetPosition( 10, 85 );
+        knobV1.SetSize( 31, 31 );
+        knobV1.SetSkin( "ARP2500 Sm Silver" );
+        knobV1.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobV1.SetKnobParams( 215, 145 );
+        knobV1.DisplayValueInPercent( true );
+        knobV1.SetKnobAdjustsRing( true );
+
+        knobV2 = new VoltageKnob( "knobV2", "V2 Level", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobV2 );
+        knobV2.SetPosition( 70, 85 );
+        knobV2.SetSize( 31, 31 );
+        knobV2.SetSkin( "ARP2500 Sm Silver" );
+        knobV2.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobV2.SetKnobParams( 215, 145 );
+        knobV2.DisplayValueInPercent( true );
+        knobV2.SetKnobAdjustsRing( true );
+
+        buttonSelect = new VoltageButton( "buttonSelect", "Re-Select Button", this );
+        AddComponent( buttonSelect );
+        buttonSelect.SetPosition( 49, 133 );
+        buttonSelect.SetSize( 16, 16 );
+        buttonSelect.SetSkin( "2500 Round Red" );
+
+        lampSelection = new VoltageLED( "lampSelection", "New Selection Lamp", this );
+        AddComponent( lampSelection );
+        lampSelection.SetPosition( 47, 215 );
+        lampSelection.SetSize( 20, 20 );
+        lampSelection.SetSkin( "2500 Lamp Red" );
+
+        outputV1 = new VoltageAudioJack( "outputV1", "V1 Output", this, JackType.JackType_AudioOutput );
+        AddComponent( outputV1 );
+        outputV1.SetPosition( 10, 250 );
+        outputV1.SetSize( 25, 25 );
+        outputV1.SetSkin( "Jack Round 25px" );
+
+        outputV2 = new VoltageAudioJack( "outputV2", "V2 Output", this, JackType.JackType_AudioOutput );
+        AddComponent( outputV2 );
+        outputV2.SetPosition( 45, 250 );
+        outputV2.SetSize( 25, 25 );
+        outputV2.SetSkin( "Jack Round 25px" );
+
+        outputTrig = new VoltageAudioJack( "outputTrig", "Trig Out", this, JackType.JackType_AudioOutput );
+        AddComponent( outputTrig );
+        outputTrig.SetPosition( 80, 250 );
+        outputTrig.SetSize( 25, 25 );
+        outputTrig.SetSkin( "Jack Round 25px" );
+
+        inputSelect = new VoltageAudioJack( "inputSelect", "Select Input", this, JackType.JackType_AudioInput );
+        AddComponent( inputSelect );
+        inputSelect.SetPosition( 45, 290 );
+        inputSelect.SetSize( 25, 25 );
+        inputSelect.SetSkin( "Jack Round White Ring" );
+
+        inputMean = new VoltageAudioJack( "inputMean", "Voltage Control Of Mean", this, JackType.JackType_AudioInput );
+        AddComponent( inputMean );
+        inputMean.SetPosition( 10, 290 );
+        inputMean.SetSize( 25, 25 );
+        inputMean.SetSkin( "Jack Round White Ring" );
+
+        scale1A30DeepToneGenModLabel2 = new VoltageLabel( "scale1A30DeepToneGenModLabel2", "1A-30 deep tone gen/mod Label", this, "RANDOM VOLTAGE          GENERATOR" );
+        AddComponent( scale1A30DeepToneGenModLabel2 );
+        scale1A30DeepToneGenModLabel2.SetPosition( 3, 335 );
+        scale1A30DeepToneGenModLabel2.SetSize( 109, 23 );
+        scale1A30DeepToneGenModLabel2.SetColor( new Color( 166, 36, 36, 255 ) );
+        scale1A30DeepToneGenModLabel2.SetFont( "Arial", 9, true, false );
+        labelRate = new VoltageLabel( "labelRate", "Mean Rate Label", this, "MEAN RATE" );
+        AddComponent( labelRate );
+        labelRate.SetPosition( 0, 71 );
+        labelRate.SetSize( 50, 13 );
+        labelRate.SetColor( new Color( 46, 46, 46, 255 ) );
+        labelRate.SetFont( "Arial", 7, true, false );
+        labelVariance = new VoltageLabel( "labelVariance", "Variance Label", this, "VARIANCE" );
+        AddComponent( labelVariance );
+        labelVariance.SetPosition( 57, 71 );
+        labelVariance.SetSize( 58, 13 );
+        labelVariance.SetColor( new Color( 46, 46, 46, 255 ) );
+        labelVariance.SetFont( "Arial", 7, true, false );
+        labelV1 = new VoltageLabel( "labelV1", "V1 Label", this, "V1 LEVEL" );
+        AddComponent( labelV1 );
+        labelV1.SetPosition( 0, 116 );
+        labelV1.SetSize( 52, 13 );
+        labelV1.SetColor( new Color( 46, 46, 46, 255 ) );
+        labelV1.SetFont( "Arial", 7, true, false );
+        labelV1Out = new VoltageLabel( "labelV1Out", "V1 Output Label", this, "V1" );
+        AddComponent( labelV1Out );
+        labelV1Out.SetPosition( 5, 273 );
+        labelV1Out.SetSize( 37, 13 );
+        labelV1Out.SetColor( new Color( 46, 46, 46, 255 ) );
+        labelV1Out.SetFont( "Arial", 7, true, false );
+        labelV2Out = new VoltageLabel( "labelV2Out", "V2 Output Label", this, "V2" );
+        AddComponent( labelV2Out );
+        labelV2Out.SetPosition( 40, 274 );
+        labelV2Out.SetSize( 37, 13 );
+        labelV2Out.SetColor( new Color( 46, 46, 46, 255 ) );
+        labelV2Out.SetFont( "Arial", 7, true, false );
+        labelTrigOut = new VoltageLabel( "labelTrigOut", "Trigger Output", this, "TRIG" );
+        AddComponent( labelTrigOut );
+        labelTrigOut.SetPosition( 77, 274 );
+        labelTrigOut.SetSize( 32, 13 );
+        labelTrigOut.SetColor( new Color( 46, 46, 46, 255 ) );
+        labelTrigOut.SetFont( "Arial", 7, true, false );
+        labelSelectInput = new VoltageLabel( "labelSelectInput", "Select Input Label", this, "SELECT" );
+        AddComponent( labelSelectInput );
+        labelSelectInput.SetPosition( 40, 313 );
+        labelSelectInput.SetSize( 37, 13 );
+        labelSelectInput.SetColor( new Color( 46, 46, 46, 255 ) );
+        labelSelectInput.SetFont( "Arial", 7, true, false );
+        labelMean = new VoltageLabel( "labelMean", "Voltage Control Of Mean Input Label", this, "VC MEAN" );
+        AddComponent( labelMean );
+        labelMean.SetPosition( 5, 314 );
+        labelMean.SetSize( 35, 13 );
+        labelMean.SetColor( new Color( 46, 46, 46, 255 ) );
+        labelMean.SetFont( "Arial", 7, true, false );
+        labelV2 = new VoltageLabel( "labelV2", "V2 Label", this, "V2 LEVEL" );
+        AddComponent( labelV2 );
+        labelV2.SetPosition( 57, 116 );
+        labelV2.SetSize( 58, 13 );
+        labelV2.SetColor( new Color( 46, 46, 46, 255 ) );
+        labelV2.SetFont( "Arial", 7, true, false );
+        labelSelect = new VoltageLabel( "labelSelect", "Re-Select Label", this, "RE-SELECT" );
+        AddComponent( labelSelect );
+        labelSelect.SetPosition( 0, 148 );
+        labelSelect.SetSize( 115, 13 );
+        labelSelect.SetColor( new Color( 46, 46, 46, 255 ) );
+        labelSelect.SetFont( "Arial", 7, true, false );
+        labelInhibit = new VoltageLabel( "labelInhibit", "Inhibit Label", this, "INHIBIT" );
+        AddComponent( labelInhibit );
+        labelInhibit.SetPosition( 0, 161 );
+        labelInhibit.SetSize( 115, 13 );
+        labelInhibit.SetColor( new Color( 46, 46, 46, 255 ) );
+        labelInhibit.SetFont( "Arial", 7, true, false );
+        imageTTW = new VoltageImage( "imageTTW", "TTW Imagemark", this, false );
+        AddComponent( imageTTW );
+        imageTTW.SetPosition( 5, 5 );
+        imageTTW.SetSize( 31, 10 );
+        imageTTW.SetCurrentImage( "image image.svg" );
+        labelNumber = new VoltageLabel( "labelNumber", "Model Number Label", this, "rvg" );
+        AddComponent( labelNumber );
+        labelNumber.SetPosition( 85, 5 );
+        labelNumber.SetSize( 25, 13 );
+        labelNumber.SetColor( new Color( 166, 36, 36, 255 ) );
+        labelNumber.SetFont( "Courier New", 13, true, false );
+        switchComp = new VoltageSwitch( "switchComp", "COMPENSATED MODE Switch", this, 1 );
+        AddComponent( switchComp );
+        switchComp.SetPosition( 75, 284 );
+        switchComp.SetSize( 35, 35 );
+        switchComp.SetSkin( "3-State Silver" );
+        }
+        @Override
+        public void Initialize()
+        {
+        StartGuiUpdateTimer(25);
+        selectionPending.set(true);
+        compensationMode = normalizeCompensationMode(switchComp.GetValue());
+        }
+        @Override
+        public void Destroy()
+        {
+        super.Destroy();
+        StopGuiUpdateTimer();
+        }
+        @Override
+        public boolean Notify( VoltageComponent component, ModuleNotifications notification, double doubleValue, long longValue, int x,         int y, Object object )
+        {
+        switch (notification) {
+        case Button_Changed:
+        if (component == buttonSelect && doubleValue >= 0.5) {
+selectionPending.set(true);
+}
+break;
+case Switch_Changed:
+if (component == switchComp) {
+compensationMode = normalizeCompensationMode(doubleValue);
+}
+break;
+case GUI_Update_Timer:
+lampSelection.SetValue(selectionLampLevel);
+break;
+case Reset:
+selectionPending.set(true);
+break;
+default:
+break;
+}
+return false;
+}
+@Override
+public void ProcessSample()
+{
+double dt = 1.0 / GetSampleRate();
+// --- 1. HANDLE EXTERNAL TERMINAL SELECT GATE INTERRUPT ---
+if (resumePending) {
+resumePending = false;
+double resumeGate = inputSelect.IsConnected() ? finite(inputSelect.GetValue()) : 0.0;
+selectArmed = resumeGate <= SELECT_GATE_LOW;
+}
+double selectVoltage = inputSelect.IsConnected() ? finite(inputSelect.GetValue()) : 0.0;
+boolean externalSelection = false;
+if (selectVoltage <= SELECT_GATE_LOW) {
+selectArmed = true;
+} else if (selectVoltage >= SELECT_GATE_HIGH && selectArmed) {
+externalSelection = true;
+selectArmed = false;
+}
+// --- 2. EVALUATE FORCE TRIGGER EVENTS ---
+boolean forceTrigger = selectionPending.getAndSet(false) || externalSelection;
+if (!hasSelection) {
+forceTrigger = true;
+}
+if (forceTrigger) {
+clockPhase = 0.0;
+sampleAndHold(); // Synchronized trigger: capture all three registers simultaneously
+triggerSamplesRemaining = TRIGGER_PULSE_SAMPLES;
+selectionLampSamplesRemaining = SELECTION_LAMP_SAMPLES;
+}
+// --- 3. ANALOG DRIFT COMPENSATOR ---
+double droopRate = compensationDroopRate(compensationMode);
+if (droopRate > 0.0) {
+double droopStep = droopRate * dt;
+heldV1 = droopTowardZero(heldV1, droopStep);
+heldV2 = droopTowardZero(heldV2, droopStep);
+}
+// --- 4. CLOCK ENGINE WITH ENTRAINED FEEDBACK MODULATION ---
+double trigger = triggerSamplesRemaining > 0 ? TRIGGER_VOLTS : 0.0;
+if (triggerSamplesRemaining > 0) {
+triggerSamplesRemaining--;
+}
+if (selectionLampSamplesRemaining > 0) {
+selectionLampSamplesRemaining--;
+selectionLampLevel = 1.0;
+} else {
+selectionLampLevel = 0.0;
+}
+boolean inhibited = switchInhibit.GetValue() >= 0.5;
+if (inhibited) {
+clockPhase = 0.0;
+} else {
+double knobRate = clamp(knobRateValue(), 0.0, 1.0);
+double baseRateHz = MIN_RATE_HZ * Math.pow(MAX_RATE_HZ / MIN_RATE_HZ, knobRate);
+if (inputMean.IsConnected()) {
+baseRateHz *= Math.pow(2.0, 2.0 * finite(inputMean.GetValue()));
+}
+baseRateHz = clamp(baseRateHz, MIN_RATE_HZ, MAX_RATE_HZ);
+// Variance pot sets depth of S&H Node 3 feedback modulation on clock scale
+double varianceAmt = clamp(knobVariance.GetValue(), 0.0, 1.0);
+double timeModulationFactor = Math.pow(10.0, (heldRateRandom - 0.5) * 2.0 * varianceAmt);
+double currentStepRate = clamp(baseRateHz * timeModulationFactor, 0.05, 500.0);
+clockPhase += currentStepRate * dt;
+if (clockPhase >= 1.0) {
+clockPhase -= 1.0;
+// Clock step milestone: refresh all three sample wells concurrently
+heldV1 = (2.0 * nextRandomUnit() - 1.0) * OUTPUT_PEAK_VOLTS;
+heldV2 = (2.0 * nextRandomUnit() - 1.0) * OUTPUT_PEAK_VOLTS;
+heldRateRandom = nextRandomUnit();
+triggerSamplesRemaining = TRIGGER_PULSE_SAMPLES;
+selectionLampSamplesRemaining = SELECTION_LAMP_SAMPLES;
+trigger = TRIGGER_VOLTS;
+}
+}
+// Apply gain level modifiers
+double dynamicV1 = heldV1 * clamp(knobV1.GetValue(), 0.0, 1.0);
+double dynamicV2 = heldV2 * clamp(knobV2.GetValue(), 0.0, 1.0);
+// EMS Hardware Transistor Soft-Clipping Saturation Curve Injection
+dynamicV1 = Math.tanh(dynamicV1 / OUTPUT_PEAK_VOLTS) * OUTPUT_PEAK_VOLTS;
+dynamicV2 = Math.tanh(dynamicV2 / OUTPUT_PEAK_VOLTS) * OUTPUT_PEAK_VOLTS;
+outputV1.SetValue(dynamicV1);
+outputV2.SetValue(dynamicV2);
+outputTrig.SetValue(trigger);
+}
+@Override
+public void ProcessBypassedSample()
+{
+outputV1.SetValue(0.0);
+outputV2.SetValue(0.0);
+outputTrig.SetValue(0.0);
+selectionPending.set(false);
+triggerSamplesRemaining = 0;
+selectionLampSamplesRemaining = 0;
+selectionLampLevel = 0.0;
+resumePending = true;
+}
+@Override
+public String GetTooltipText( VoltageComponent component )
+{
+if (component == knobRate) {
+return "Mean event rate: 0.2 to 20 selections per second. The Mean CV input scales rate at 0.5 V per octave.";
+}
+if (component == knobVariance) {
+return "Adds random step-length timing variation derived from S&H cell register 3 feedback loops.";
+}
+if (component == knobV1 || component == knobV2) {
+return "Scales the soft-clipped bipolar random output from 0 to its full +/-2.5 V scale.";
+}
+if (component == switchInhibit) {
+return "Up inhibits internal clock progression; down runs it freely.";
+}
+if (component == switchComp) {
+return "Up: compensated state. Middle: hardware factory drift (15 mV/s). Down: blown cell failure (115 mV/s).";
+}
+if (component == buttonSelect) {
+return "Manually fire a new random selection across all nodes immediately.";
+}
+if (component == lampSelection) {
+return "Lights up for 100 ms to confirm a new step transition.";
+}
+return super.GetTooltipText( component );
+}
+@Override
+public void EditComponentValue( VoltageComponent component, double newValue, String newText )
+{
+super.EditComponentValue( component, newValue, newText );
+}
+@Override
+public void OnUndoRedo( String undoType, double newValue, Object optionalObject )
+{
+}
+@Override
+public byte[] GetStateInformation()
+{
+return null;
+}
+@Override
+public void SetStateInformation(byte[] stateInfo)
+{
+}
+@Override
+public byte[] GetStateInformationForVariations()
+{
+return GetStateInformation();
+}
+@Override
+public void SetStateInformationForVariations(byte[] stateInfo)
+{
+SetStateInformation(stateInfo);
+}
+}

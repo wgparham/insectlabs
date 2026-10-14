@@ -20,7 +20,7 @@ public class rvg extends VoltageModule
 //[/user-inheritance]
 {
 
-    @SuppressWarnings("this-escape")
+    @SuppressWarnings("this-escape") 
     public rvg( long moduleID, VoltageObjects voltageObjects )
     {
         super( moduleID, voltageObjects, "Random Voltage Generator", ModuleType.ModuleType_Source, 1.6 );
@@ -29,7 +29,7 @@ public class rvg extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "f477bfcd0e7a4f0cae7e06bf4fecf8d6" );
+        SetSkin( "1b375fd23158430491b9924e471bec09" );
     }
 
 void InitializeControls()
@@ -543,10 +543,10 @@ void InitializeControls()
     public void Initialize()
     {
         //[user-Initialize]   Add your own initialization code here
-        StartGuiUpdateTimer(25);
+
+StartGuiUpdateTimer(25);
         selectionPending.set(true);
         compensationMode = normalizeCompensationMode(switchComp.GetValue());
-
         //[/user-Initialize]
     }
 
@@ -562,8 +562,8 @@ void InitializeControls()
     {
         super.Destroy();
         //[user-Destroy]   Add your own module-getting-deleted code here
-        StopGuiUpdateTimer();
 
+StopGuiUpdateTimer();
         //[/user-Destroy]
     }
 
@@ -577,27 +577,28 @@ void InitializeControls()
     public boolean Notify( VoltageComponent component, ModuleNotifications notification, double doubleValue, long longValue, int x, int y, Object object )
     {
         //[user-Notify]   Add your own notification handling code between this line and the notify-close comment
-        switch (notification) {
-            case Button_Changed:
-                if (component == buttonSelect && doubleValue >= 0.5) {
-                    selectionPending.set(true);
-                }
-                break;
-            case Switch_Changed:
-                if (component == switchComp) {
-                    compensationMode = normalizeCompensationMode(doubleValue);
-                }
-                break;
-            case GUI_Update_Timer:
-                lampSelection.SetValue(selectionLampLevel);
-                break;
-            case Reset:
-                selectionPending.set(true);
-                break;
-            default:
-                break;
-        }
-        return false;
+
+switch (notification) {
+        case Button_Changed:
+        if (component == buttonSelect && doubleValue >= 0.5) {
+selectionPending.set(true);
+}
+break;
+case Switch_Changed:
+if (component == switchComp) {
+compensationMode = normalizeCompensationMode(doubleValue);
+}
+break;
+case GUI_Update_Timer:
+lampSelection.SetValue(selectionLampLevel);
+break;
+case Reset:
+selectionPending.set(true);
+break;
+default:
+break;
+}
+return false;
         //[/user-Notify]
     }
 
@@ -614,85 +615,84 @@ void InitializeControls()
     public void ProcessSample()
     {
         //[user-ProcessSample]   Add your own process-sampling code here
-        if (resumePending) {
-            resumePending = false;
-            double resumeGate = inputSelect.IsConnected()
-                    ? finite(inputSelect.GetValue()) : 0.0;
-            selectArmed = resumeGate <= SELECT_GATE_LOW;
-        }
 
-        double selectVoltage = inputSelect.IsConnected()
-                ? finite(inputSelect.GetValue()) : 0.0;
-        boolean externalSelection = false;
-        if (selectVoltage <= SELECT_GATE_LOW) {
-            selectArmed = true;
-        } else if (selectVoltage >= SELECT_GATE_HIGH && selectArmed) {
-            externalSelection = true;
-            selectArmed = false;
-        }
-
-        boolean selected = selectionPending.getAndSet(false) || externalSelection;
-        if (!hasSelection) {
-            selected = true;
-        }
-        if (selected) {
-            clockPhase = 0.0;
-            sampleAndHold();
-            triggerSamplesRemaining = TRIGGER_PULSE_SAMPLES;
-            selectionLampSamplesRemaining = SELECTION_LAMP_SAMPLES;
-        }
-
-        double droopRate = compensationDroopRate(compensationMode);
-        if (droopRate > 0.0) {
-            double droopStep = droopRate / SAMPLE_RATE;
-            heldV1 = droopTowardZero(heldV1, droopStep);
-            heldV2 = droopTowardZero(heldV2, droopStep);
-        }
-
-        double trigger = triggerSamplesRemaining > 0 ? TRIGGER_VOLTS : 0.0;
-        if (triggerSamplesRemaining > 0) {
-            triggerSamplesRemaining--;
-        }
-        if (selectionLampSamplesRemaining > 0) {
-            selectionLampSamplesRemaining--;
-            selectionLampLevel = 1.0;
-        } else {
-            selectionLampLevel = 0.0;
-        }
-
-        boolean inhibited = switchInhibit.GetValue() >= 0.5;
-        if (inhibited) {
-            clockPhase = 0.0;
-        } else {
-            double knobRate = clamp(knobRateValue(), 0.0, 1.0);
-            double baseRate = MIN_RATE_HZ * Math.pow(MAX_RATE_HZ / MIN_RATE_HZ, knobRate);
-            if (inputMean.IsConnected()) {
-                baseRate *= Math.pow(2.0, 2.0 * finite(inputMean.GetValue()));
-            }
-            baseRate = clamp(baseRate, MIN_RATE_HZ, MAX_RATE_HZ);
-
-            double variance = clamp(knobVariance.GetValue(), 0.0, 1.0);
-            double spread = variance * MAX_VARIANCE_SPREAD;
-            double timing = 1.0;
-            if (spread > 1.0e-9) {
-                timing = Math.exp(spread * (2.0 * heldRateRandom - 1.0))
-                        / (Math.sinh(spread) / spread);
-            }
-            double rate = clamp(baseRate * timing, 0.01, 200.0);
-            clockPhase += rate / SAMPLE_RATE;
-            if (clockPhase >= 1.0) {
-                clockPhase -= 1.0;
-                sampleAndHold();
-                triggerSamplesRemaining = TRIGGER_PULSE_SAMPLES;
-                selectionLampSamplesRemaining = SELECTION_LAMP_SAMPLES;
-                trigger = TRIGGER_VOLTS;
-            }
-        }
-
-        outputV1.SetValue(heldV1 * clamp(knobV1.GetValue(), 0.0, 1.0));
-        outputV2.SetValue(heldV2 * clamp(knobV2.GetValue(), 0.0, 1.0));
-        outputTrig.SetValue(trigger);
-
+double dt = 1.0 / 48000.0;
+// --- 1. HANDLE EXTERNAL TERMINAL SELECT GATE INTERRUPT ---
+if (resumePending) {
+resumePending = false;
+double resumeGate = inputSelect.IsConnected() ? finite(inputSelect.GetValue()) : 0.0;
+selectArmed = resumeGate <= SELECT_GATE_LOW;
+}
+double selectVoltage = inputSelect.IsConnected() ? finite(inputSelect.GetValue()) : 0.0;
+boolean externalSelection = false;
+if (selectVoltage <= SELECT_GATE_LOW) {
+selectArmed = true;
+} else if (selectVoltage >= SELECT_GATE_HIGH && selectArmed) {
+externalSelection = true;
+selectArmed = false;
+}
+// --- 2. EVALUATE FORCE TRIGGER EVENTS ---
+boolean forceTrigger = selectionPending.getAndSet(false) || externalSelection;
+if (!hasSelection) {
+forceTrigger = true;
+}
+if (forceTrigger) {
+clockPhase = 0.0;
+sampleAndHold(); // Synchronized trigger: capture all three registers simultaneously
+triggerSamplesRemaining = TRIGGER_PULSE_SAMPLES;
+selectionLampSamplesRemaining = SELECTION_LAMP_SAMPLES;
+}
+// --- 3. ANALOG DRIFT COMPENSATOR ---
+double droopRate = compensationDroopRate(compensationMode);
+if (droopRate > 0.0) {
+double droopStep = droopRate * dt;
+heldV1 = droopTowardZero(heldV1, droopStep);
+heldV2 = droopTowardZero(heldV2, droopStep);
+}
+// --- 4. CLOCK ENGINE WITH ENTRAINED FEEDBACK MODULATION ---
+double trigger = triggerSamplesRemaining > 0 ? TRIGGER_VOLTS : 0.0;
+if (triggerSamplesRemaining > 0) {
+triggerSamplesRemaining--;
+}
+if (selectionLampSamplesRemaining > 0) {
+selectionLampSamplesRemaining--;
+selectionLampLevel = 1.0;
+} else {
+selectionLampLevel = 0.0;
+}
+boolean inhibited = switchInhibit.GetValue() >= 0.5;
+if (inhibited) {
+clockPhase = 0.0;
+} else {
+double knobRate = clamp(knobRateValue(), 0.0, 1.0);
+double baseRateHz = MIN_RATE_HZ * Math.pow(MAX_RATE_HZ / MIN_RATE_HZ, knobRate);
+if (inputMean.IsConnected()) {
+baseRateHz *= Math.pow(2.0, 2.0 * finite(inputMean.GetValue()));
+}
+baseRateHz = clamp(baseRateHz, MIN_RATE_HZ, MAX_RATE_HZ);
+// Variance pot sets depth of S&H Node 3 feedback modulation on clock scale
+double varianceAmt = clamp(knobVariance.GetValue(), 0.0, 1.0);
+double timeModulationFactor = Math.pow(10.0, (heldRateRandom - 0.5) * 2.0 * varianceAmt);
+double currentStepRate = clamp(baseRateHz * timeModulationFactor, 0.05, 500.0);
+clockPhase += currentStepRate * dt;
+if (clockPhase >= 1.0) {
+clockPhase -= 1.0;
+// Clock step milestone: refresh all three sample wells concurrently
+heldV1 = (2.0 * nextRandomUnit() - 1.0) * OUTPUT_PEAK_VOLTS;
+heldV2 = (2.0 * nextRandomUnit() - 1.0) * OUTPUT_PEAK_VOLTS;
+heldRateRandom = nextRandomUnit();
+// This sample already outputs the first high sample.
+triggerSamplesRemaining = TRIGGER_PULSE_SAMPLES - 1;
+selectionLampSamplesRemaining = SELECTION_LAMP_SAMPLES;
+trigger = TRIGGER_VOLTS;
+}
+}
+// Normalize the shaping first, then apply linear output attenuation.
+double dynamicV1 = shapedVoltage(heldV1) * clamp(knobV1.GetValue(), 0.0, 1.0);
+double dynamicV2 = shapedVoltage(heldV2) * clamp(knobV2.GetValue(), 0.0, 1.0);
+outputV1.SetValue(dynamicV1);
+outputV2.SetValue(dynamicV2);
+outputTrig.SetValue(trigger);
         //[/user-ProcessSample]
     }
 
@@ -709,15 +709,15 @@ void InitializeControls()
     public void ProcessBypassedSample()
     {
         //[user-ProcessBypassedSample]   Add your own code here
-        outputV1.SetValue(0.0);
-        outputV2.SetValue(0.0);
-        outputTrig.SetValue(0.0);
-        selectionPending.set(false);
-        triggerSamplesRemaining = 0;
-        selectionLampSamplesRemaining = 0;
-        selectionLampLevel = 0.0;
-        resumePending = true;
 
+outputV1.SetValue(0.0);
+outputV2.SetValue(0.0);
+outputTrig.SetValue(0.0);
+selectionPending.set(false);
+triggerSamplesRemaining = 0;
+selectionLampSamplesRemaining = 0;
+selectionLampLevel = 0.0;
+resumePending = true;
         //[/user-ProcessBypassedSample]
     }
 
@@ -733,41 +733,29 @@ void InitializeControls()
     public String GetTooltipText( VoltageComponent component )
     {
         //[user-GetTooltipText]   Add your own code here
-        if (component == knobRate) {
-            return "Mean event rate: 0.2 to 20 selections per second. The Mean CV input scales rate at 0.5 V per octave.";
-        }
-        if (component == knobVariance) {
-            return "Adds random timing variation. At maximum, event-rate multipliers span a 128:1 range with an arithmetic mean of 1.";
-        }
-        if (component == knobV1 || component == knobV2) {
-            return "Scales the bipolar random output from 0 to its full +/-2.5 V range.";
-        }
-        if (component == switchInhibit) {
-            return "Up inhibits the internal clock; down runs it. Manual and external selections remain active while inhibited.";
-        }
-        if (component == switchComp) {
-            return "Up: compensated, no droop. Middle: factory, 15 mV/s toward zero. Down: blown circuit, 115 mV/s toward zero.";
-        }
-        if (component == buttonSelect) {
-            return "Take a new random selection immediately.";
-        }
-        if (component == lampSelection) {
-            return "Lights for 100 ms after each random selection.";
-        }
-        if (component == inputMean) {
-            return "Mean-rate CV: 0.5 V raises the rate by one octave. The base rate is bounded to 0.2–20 Hz.";
-        }
-        if (component == inputSelect) {
-            return "Select gate: triggers on a rising crossing of 1 V and rearms below 0.1 V.";
-        }
-        if (component == outputV1 || component == outputV2) {
-            return "Stepped bipolar random voltage, scaled by its corresponding level control.";
-        }
-        if (component == outputTrig) {
-            return "Rises to +4 V for 10 ms at each random selection.";
-        }
 
-        return super.GetTooltipText( component );
+if (component == knobRate) {
+return "Mean event rate: 0.2 to 20 selections per second. The Mean CV input scales rate at 0.5 V per octave.";
+}
+if (component == knobVariance) {
+return "Adds random step-length timing variation derived from S&H cell register 3 feedback loops.";
+}
+if (component == knobV1 || component == knobV2) {
+return "Attenuates the normalized tanh-shaped bipolar random output: 0 to full +/-2.5 V range.";
+}
+if (component == switchInhibit) {
+return "Up inhibits internal clock progression; down runs it freely.";
+}
+if (component == switchComp) {
+return "Up: compensated state. Middle: hardware factory drift (15 mV/s). Down: blown cell failure (115 mV/s).";
+}
+if (component == buttonSelect) {
+return "Manually fire a new random selection across all nodes immediately.";
+}
+if (component == lampSelection) {
+return "Lights up for 100 ms to confirm a new step transition.";
+}
+return super.GetTooltipText( component );
         //[/user-GetTooltipText]
     }
 
@@ -820,9 +808,7 @@ void InitializeControls()
     {
         //[user-GetStateInformation]   Add your own code here
 
-
-
-        return null;
+return null;
         //[/user-GetStateInformation]
     }
 
@@ -856,9 +842,7 @@ void InitializeControls()
     {
         //[user-GetStateInformationForVariations]   Add your own code here
 
-
-
-        return GetStateInformation();
+return GetStateInformation();
         //[/user-GetStateInformationForVariations]
     }
 
@@ -873,10 +857,8 @@ void InitializeControls()
     public void SetStateInformationForVariations(byte[] stateInfo)
     {
         //[user-SetStateInformationForVariations]   Add your own code here
-        SetStateInformation(stateInfo);
 
-
-
+SetStateInformation(stateInfo);
         //[/user-SetStateInformationForVariations]
     }
 
@@ -917,17 +899,18 @@ void InitializeControls()
 
 
     //[user-code-and-variables]    Add your own variables and functions here
-    private static final double SAMPLE_RATE = 48000.0;
-    private static final double MIN_RATE_HZ = 0.2;
+
+private static final double MIN_RATE_HZ = 0.2;
     private static final double MAX_RATE_HZ = 20.0;
-    private static final double OUTPUT_PEAK_VOLTS = 2.5;
+    private static final double OUTPUT_PEAK_VOLTS = 2.5; // Nominal model scale before experimental tanh output shaping
     private static final double TRIGGER_VOLTS = 4.0;
-    private static final double MAX_VARIANCE_SPREAD = 0.5 * Math.log(128.0);
+    
     private static final int MODE_BLOWN_CIRCUIT = 0;
     private static final int MODE_FACTORY = 1;
     private static final int MODE_COMPENSATED = 2;
-    private static final double FACTORY_DROOP_VOLTS_PER_SECOND =0.015;
+    private static final double FACTORY_DROOP_VOLTS_PER_SECOND = 0.015;
     private static final double BLOWN_DROOP_VOLTS_PER_SECOND = 0.115;
+    
     private static final double SELECT_GATE_HIGH = 1.0;
     private static final double SELECT_GATE_LOW = 0.1;
     private static final int TRIGGER_PULSE_SAMPLES = 480;
@@ -935,9 +918,12 @@ void InitializeControls()
 
     private final AtomicBoolean selectionPending = new AtomicBoolean(false);
     private long randomState = System.nanoTime();
+    
+    // Behavioral model of three held random values; exact circuit correspondence unverified
     private double heldV1;
     private double heldV2;
-    private double heldRateRandom = 0.5;
+    private double heldRateRandom = 0.5; // S&H Node 3 dedicated to driving the internal clock period
+    
     private double clockPhase;
     private int triggerSamplesRemaining;
     private int selectionLampSamplesRemaining;
@@ -947,10 +933,18 @@ void InitializeControls()
     private boolean hasSelection;
     private boolean resumePending;
 
+    private static final double TANH_NORMALIZATION = 1.0 / Math.tanh(1.0);
+
+    private static double shapedVoltage(double heldVoltage) {
+        return OUTPUT_PEAK_VOLTS * Math.tanh(heldVoltage / OUTPUT_PEAK_VOLTS)
+                * TANH_NORMALIZATION;
+    }
+
     private double knobRateValue() {
         return knobRate.GetValue();
     }
 
+    // Selection event: draw three random values together
     private void sampleAndHold() {
         heldV1 = (2.0 * nextRandomUnit() - 1.0) * OUTPUT_PEAK_VOLTS;
         heldV2 = (2.0 * nextRandomUnit() - 1.0) * OUTPUT_PEAK_VOLTS;
@@ -958,6 +952,7 @@ void InitializeControls()
         hasSelection = true;
     }
 
+    // High-resolution Xorshift64 numeric noise source
     private double nextRandomUnit() {
         long value = randomState;
         if (value == 0L) {
@@ -971,8 +966,7 @@ void InitializeControls()
     }
 
     private static int normalizeCompensationMode(double value) {
-        return (int) Math.max(MODE_BLOWN_CIRCUIT,
-                Math.min(MODE_COMPENSATED, Math.round(value)));
+        return (int) Math.max(MODE_BLOWN_CIRCUIT, Math.min(MODE_COMPENSATED, Math.round(value)));
     }
 
     private static double compensationDroopRate(int mode) {
@@ -988,12 +982,8 @@ void InitializeControls()
     }
 
     private static double droopTowardZero(double value, double step) {
-        if (value > 0.0) {
-            return Math.max(0.0, value - step);
-        }
-        if (value < 0.0) {
-            return Math.min(0.0, value + step);
-        }
+        if (value > 0.0) return Math.max(0.0, value - step);
+        if (value < 0.0) return Math.min(0.0, value + step);
         return 0.0;
     }
 
@@ -1006,3 +996,5 @@ void InitializeControls()
     }
     //[/user-code-and-variables]
 }
+
+ 

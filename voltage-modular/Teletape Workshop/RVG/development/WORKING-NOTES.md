@@ -1,23 +1,22 @@
-# RVG Development Notes
+# RVG 2.0.0 development integration — 2026-10-14
 
-**Status:** Canonical RVG v1.8.0. Development source is paired with the immutable release archive at `../versions/1.8.0/`. Keep this note aligned with the current user-approved behavior.
+Candidate v2.0.0rc, not canonized. Canon remains 1.8.0. User-supplied Java was integrated into the working VMOD's complete generated scaffold, restoring control declarations and callback user regions. Originals are retained in integration-backup. Fixed unsupported GetSampleRate() to the 48 kHz host callback interval. Corrected automatic clock selections to reserve 479 remaining high samples after the first high sample is already emitted, so all trigger paths last 480 samples / 10 ms. Preserved supplied DSP otherwise, including tanh after the output level controls and third-held-value clock feedback. Updated the level tooltip to the actual tanh endpoint.
 
-## Evidence used
+The user reports discussing the rackmount RVG with a former owner, who observed fewer very low/high voltages and attributed this to circuit compression/clipping or transistor limits. This is owner testimony relayed by the user; the mechanism has not been verified by schematic or measurement. The user explicitly chose to retain tanh for now. This implementation draws uniform bipolar samples and applies tanh after gain. Full level yields +/-2.5*tanh(1), approximately +/-1.903985 V. Compression removes the original extremes but does not produce a center-heavy density within the compressed range; equal-width bins near its ends have higher density. Do not describe the distribution or saturation mechanism as established EMS hardware behavior.
 
-Published RVG descriptions support two independently varying stepped outputs, a nominal 0.2–20 selections-per-second mean-rate range, rate CV at 0.5 V/octave, a +4 V trigger per selection, inhibit and reselect controls, and a rectangular probability distribution. Secondary descriptions and the surviving board photo suggest a third sample-and-hold value influences the clock rate. No RVG schematic has been found, so the internal arrangement remains a hypothesis.
+Variance multiplies the base rate by 10^((heldRateRandom-.5)*2*variance). At full variance the multiplier spans 0.1–10. It is not mean-normalized: its arithmetic expectation is about 2.15, and clipping at 0.05–500 Hz further changes statistics. Mean Rate remains 0.2–20 Hz with 0.5 V/octave CV. Compensation rates remain 0, .015 and .115 V/s. The saved switch default remains Factory/state 1.
 
-## Current behavior hypothesis
+Validation: exported and embedded source compile against installed SDK using --release 17 -Xlint:all -Werror. Actual extracted callbacks with minimal jack/control substitutes passed startup/manual/external/internal-clock 480-sample pulses, held-high gate/rearm, factory drift, output bounds, bypass silence and frozen held/clock/random state. Source agreement, binary round-trip and all non-code metadata preservation passed, except the intended Notes update. SHA256.json verified. Rebuilt malformed pre-existing embedded line endings and callback/readonly editor records; named section/control identities retained. Native Designer editing/export and audition pending.
 
-- The free-running clock is a phase accumulator. The Mean Rate knob maps exponentially from 0.2 to 20 Hz; connected Mean CV multiplies that rate at two octaves per volt.
-- Every selection samples two independent uniform bipolar values, held at up to ±2.5 V and scaled by the V1 and V2 Level knobs.
-- A third uniform held value modulates the next clock rate through the Variance control. At maximum Variance, the rate multiplier spans a hypothesized 128:1 range, centered to preserve the Mean Rate as an arithmetic average over events.
-- The current panel switch mapping treats its initial value as RUN. Inhibit stops clock phase while preserving held outputs. Re-Select and a rising edge at Select Input immediately take a new selection; the input triggers above 1 V and re-arms below 0.1 V.
-- The three-position silver switch selects hold behavior and defaults to FACTORY (middle, state 1). COMPENSATED (up, state 2) has no droop. FACTORY applies a 15 mV/s linear leak toward zero. BLOWN CIRCUIT (down, state 0) applies a 115 mV/s leak toward zero. Both leak modes affect held outputs continuously, including while inhibited; compensation mode does not alter the clock or trigger behavior.
-- Each selection raises Trig Out to +4 V for 10 ms. The New Selection lamp follows a 100 ms pulse.
-- A selection occurs at startup so the module has useful held voltages before its first clock edge.
+Remaining standards review: control NaN sanitation, full functional-jack tooltips, rate coefficient caching, physical switch directions and recall policy. Bypass retains the supplied clear-pending-selection/trigger/lamp behavior. No publication/canonization/commit/push is claimed for this candidate.
 
-The third held value, exact timing distribution, startup selection, select-input edge thresholds, pulse widths, switch polarity, and both droop rates are implementation choices made in the absence of an RVG schematic or verified hardware behavior. The selected rates are the user-approved musical response; they are not measurements of an EMS RVG. The linear drift is intentionally bounded at zero and is a simplification of leakage, not a component-level model. The model does not add continuous noise or unrelated component-aging faults.
+## Normalized tanh comparison — 2026-10-14
 
-## Next review
+At user request, tanh shaping is now normalized by 1/tanh(1), restoring +/-2.5 V endpoints for nominal held inputs. It precedes the Level controls, which now apply linear attenuation after shaping. Normalization is a static constant; no per-sample division by tanh(1). Clock, selection, hold, drift and gate behavior remain unchanged. Candidate remains v2.0.0rc. Earlier compressed-range notes are superseded for this comparison; normalization still does not create a center-heavy distribution from uniform samples.
 
-Build and load the project in Voltage Modular, then check startup, inhibit/resume, manual and external selection, voltage range and independence, CV rate scaling, maximum Variance, trigger level/width, and behavior at the panel limits. Adjust the timing feel against the available demonstrations before treating this model as a specification.
+Both source forms compile with Java 17 target and warnings as errors. Reflection checks of the compiled shaping helper passed endpoint, zero, symmetry, monotonicity and bounds across 10,001 positions. At endpoint, half level gives 1.25 V. Embedded/exported source agreement and unchanged non-code VMOD metadata verified; manifest refreshed. Native audition pending.
+
+
+## Canonization — 2026-10-14
+
+User auditioned normalized tanh, liked the result, and approved 2.0.0. Code/hero unchanged after approval; module Notes finalized as v2.0.0. Canon is now versions/2.0.0, superseding the earlier pending statements. Publication unconfirmed; 1.8.0 preserved.

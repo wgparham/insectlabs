@@ -1,7 +1,7 @@
 {
   "rvg": {
-    "version": "1.8.0",
-    "path": "versions/1.8.0",
+    "version": "2.0.0",
+    "path": "versions/2.0.0",
     "module": "rvg",
     "name": "RVG Random Voltage Generator"
   }
