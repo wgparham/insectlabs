@@ -1,0 +1,9 @@
+SVF 1.0.1 validation — 2026-10-15
+
+PASS: exported and embedded Java compile against the installed Voltage SDK, --release 17 -Xlint:all -Werror.
+PASS: normalized source agreement, VMOD binary round-trip, Notes v1.0.1.
+PASS: existing analytic transfer, gain/polarity, route selection, self-oscillation, solver, stress, DC, bypass/resume, reset, invalid-state recovery, CV/taper/typed-entry and primitive parity tests.
+PASS: all 44 prior control UUIDs are preserved; new `labelLocation` is the only additional control.
+PASS: DSP processing regions are token-identical to 1.0.0; archive pair and hashes agree.
+
+User reports successful native compile/run for the panel update. No DSP changes were made. Native GUI/undo automation, host CPU measurement and hardware-exactness are not claimed.

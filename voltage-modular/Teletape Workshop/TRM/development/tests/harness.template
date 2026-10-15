@@ -1,0 +1,149 @@
+public final class TrmChecks {
+    @@FIELDS@@
+    @@CORE@@
+    private void initialize() {
+        @@INIT@@
+    }
+    private void process() {
+        @@PROCESS@@
+    }
+    private void bypass() {
+        @@BYPASS@@
+    }
+
+    private static void check(boolean condition, String message) {
+        if (!condition) throw new AssertionError(message);
+    }
+    private static void near(double actual, double expected, double tolerance, String message) {
+        check(Double.isFinite(actual) && Math.abs(actual - expected) <= tolerance,
+                message + ": " + actual + " versus " + expected);
+    }
+    private static void directModeTests() {
+        double[] voices = new double[4];
+        for (int mode = 0; mode < 4; mode++) {
+            voices[mode] = processRingCore(2.4, 1.7, mode, 0.5);
+            check(Double.isFinite(voices[mode]), "finite mode output " + mode);
+            check(Math.abs(voices[mode]) > 1e-4, "mode retains ring response " + mode);
+            if (mode != 0) {
+                near(processRingCore(-2.4, 1.7, mode, 0.5), -voices[mode], 1e-12,
+                        "carrier polarity " + mode);
+                near(processRingCore(2.4, -1.7, mode, 0.5), -voices[mode], 1e-12,
+                        "modulator polarity " + mode);
+            }
+            if (mode != 0) {
+                near(processRingCore(2.4, 0.0, mode, 0.5), 0.0, 0.0,
+                        "zero modulator suppresses mode " + mode);
+            }
+        }
+        for (int left = 0; left < 4; left++) {
+            for (int right = left + 1; right < 4; right++) {
+                check(Math.abs(voices[left] - voices[right]) > 1e-4,
+                        "distinct mode voices " + left + " / " + right);
+            }
+        }
+        near(processRingCore(2.4, 0.0, 0, 0.5), 0.035 * transformerTransfer(2.4, 0.5),
+                1e-12, "transformer carrier-leakage consequence");
+        check(Math.abs(processRingCore(2.4, 1.7, 0, 0.0)
+                - processRingCore(2.4, 1.7, 0, 1.0)) > 1e-4, "transformer envelope voicing");
+        check(Math.abs(processRingCore(2.4, 1.7, 1, 0.0)
+                - processRingCore(2.4, 1.7, 1, 1.0)) > 1e-4, "germanium envelope voicing");
+        check(Math.abs(processRingCore(2.4, 1.7, 2, 0.0)
+                - processRingCore(2.4, 1.7, 2, 1.0)) > 1e-4, "schottky envelope voicing");
+        check(Math.abs(processRingCore(2.4, 1.7, 3, 0.0)
+                - processRingCore(2.4, 1.7, 3, 1.0)) > 1e-4, "silicon envelope voicing");
+        System.out.println("PASS: four distinct ring voices, polarity, envelope character and T leakage");
+    }
+    private static TrmChecks module() {
+        TrmChecks module = new TrmChecks();
+        module.input1A = new VoltageAudioJack(); module.input1B = new VoltageAudioJack();
+        module.input2A = new VoltageAudioJack(); module.input2B = new VoltageAudioJack();
+        module.input3A = new VoltageAudioJack(); module.input3B = new VoltageAudioJack();
+        module.out1 = new VoltageAudioJack(); module.out2 = new VoltageAudioJack();
+        module.out3 = new VoltageAudioJack();
+        module.knobCarrier1 = knob(); module.knobCarrier2 = knob(); module.knobCarrier3 = knob();
+        module.knobModulator1 = knob(); module.knobModulator2 = knob(); module.knobModulator3 = knob();
+        module.switchDiode1 = new VoltageSwitch(2); module.switchDiode2 = new VoltageSwitch(1);
+        module.switchDiode3 = new VoltageSwitch(3);
+        module.lamp1 = new VoltageLED(); module.lamp2 = new VoltageLED(); module.lamp3 = new VoltageLED();
+        module.initialize();
+        return module;
+    }
+    private static VoltageKnob knob() { return new VoltageKnob(1.0); }
+    private static void callbackTests() {
+        TrmChecks module = module();
+        check(module.modeFrom[0] == 2 && module.modeFrom[1] == 1 && module.modeFrom[2] == 3,
+                "distinct approved selector startup states");
+        module.input1A.connected = true; module.input1B.connected = true;
+        module.input1A.value = 2.4; module.input1B.value = 1.7;
+        for (int i = 0; i < 1200; i++) module.process();
+        check(Double.isFinite(module.out1.value) && Math.abs(module.out1.value) > 1e-4,
+                "lane 1 produces output");
+        near(module.out2.value, 0.0, 0.0, "lane 2 isolation");
+        near(module.out3.value, 0.0, 0.0, "lane 3 isolation");
+        check(module.lamp1.value > 0.0 && module.lamp1.value <= 1.0, "input activity lamp range");
+        near(module.lamp2.value, 0.0, 0.0, "quiet lane lamp");
+
+        int readsBefore = module.knobCarrier1.reads + module.switchDiode1.reads
+                + module.input1A.reads + module.input1B.reads;
+        module.bypass();
+        near(module.out1.value, 0.0, 0.0, "bypass is silent");
+        near(module.lamp1.value, 0.0, 0.0, "bypass clears lamp");
+        int readsAfter = module.knobCarrier1.reads + module.switchDiode1.reads
+                + module.input1A.reads + module.input1B.reads;
+        check(readsBefore == readsAfter, "bypass skips signal and control reads");
+        module.knobCarrier1.value = 0.4;
+        module.switchDiode1.value = 0;
+        module.process();
+        check(module.modeTarget[0] == 0, "resume adopts current selector");
+        check(Double.isFinite(module.out1.value), "finite output after bypass resume");
+
+        TrmChecks zeroGain = module();
+        zeroGain.knobCarrier1.value = 0.0;
+        zeroGain.input1A.connected = true; zeroGain.input1B.connected = true;
+        zeroGain.input1A.value = 3.0; zeroGain.input1B.value = 0.0;
+        for (int i = 0; i < 20000; i++) zeroGain.process();
+        near(zeroGain.out1.value, 0.0, 0.0, "zero carrier gain");
+        check(zeroGain.lamp1.value < 0.1, "activity lamp decays after input stops");
+
+        TrmChecks stress = module();
+        stress.input1A.connected = true; stress.input1B.connected = true;
+        stress.input1A.value = 100.0; stress.input1B.value = -100.0;
+        for (int i = 0; i < 30000; i++) {
+            stress.switchDiode1.value = i % 4;
+            stress.process();
+            check(Double.isFinite(stress.out1.value), "stress finite output " + i);
+            check(Double.isFinite(stress.lamp1.value) && stress.lamp1.value >= 0.0
+                    && stress.lamp1.value <= 1.0, "stress finite lamp " + i);
+        }
+        System.out.println("PASS: callbacks, channel isolation, defaults, gain zero, lamps, bypass/resume and stress");
+    }
+    private static void primitiveParity() {
+        HalfBand19 embedded = new HalfBand19();
+        com.insectlabs.dsp.filters.HalfBand19 primitive = new com.insectlabs.dsp.filters.HalfBand19();
+        for (int i = 0; i < 160000; i++) {
+            double input = 8.0 * Math.sin(i * 0.173) + 0.35 * Math.cos(i * 0.009);
+            near(embedded.process(input), primitive.process(input), 0.0,
+                    "HalfBand19 bit parity at " + i);
+            if (i % 19997 == 0) {
+                embedded.reset();
+                primitive.reset();
+            }
+        }
+        System.out.println("PASS: embedded HalfBand19 is bit-identical to the shared DSP primitive");
+    }
+    public static void main(String[] args) { directModeTests(); callbackTests(); primitiveParity(); }
+}
+class VoltageComponent {
+    double value; int reads;
+    VoltageComponent() { this(0.0); }
+    VoltageComponent(double value) { this.value = value; }
+    public double GetValue() { reads++; return value; }
+    public void SetValue(double next) { value = next; }
+}
+class VoltageAudioJack extends VoltageComponent {
+    boolean connected;
+    public boolean IsConnected() { return connected; }
+}
+class VoltageKnob extends VoltageComponent { VoltageKnob(double value) { super(value); } }
+class VoltageSwitch extends VoltageComponent { VoltageSwitch(double value) { super(value); } }
+class VoltageLED extends VoltageComponent {}

@@ -1,0 +1,10 @@
+RVG 2.0.1 validation — 2026-10-15
+
+PASS: exported and embedded Java compile against the installed Voltage SDK, --release 17 -Xlint:all -Werror.
+PASS: canonical VMOD round-trip, exported/embedded Java agreement and Notes v2.0.1.
+PASS: callback substitutes cover startup, all hold/droop modes, trigger timing, inhibit/reselection, external gate hysteresis, bypass/resume and lifecycle.
+PASS: normalized shaping endpoints and post-shaping Level behavior.
+PASS: existing control UUIDs/switch states preserved; new label is the only control addition.
+PASS: DSP code regions are token-identical to 2.0.0; source pair, art, docs and checksums agree.
+
+The user reports the panel update compiled and ran in Voltage Modular. This release changes panel metadata only. Native visual/undo automation, target-host CPU profiling and account publication are not claimed.

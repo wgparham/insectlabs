@@ -28,7 +28,7 @@ public class svf extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "80dd113f6a5041109d46b7c937ecd0dc" );
+        SetSkin( "f5b1b4d9858a4795b95f75beba9338b8" );
     }
 
 void InitializeControls()
@@ -60,7 +60,7 @@ void InitializeControls()
         imageTTW.SetWantsMouseNotifications( false );
         imageTTW.SetPosition( 5, 5 );
         imageTTW.SetSize( 41, 13 );
-        imageTTW.SetCurrentImage( "image image.svg" );
+        imageTTW.SetCurrentImage( "image image(5).svg" );
 
         labelNumber = new VoltageLabel( "labelNumber", "Model Number Label", this, "svf" );
         AddComponent( labelNumber );
@@ -695,6 +695,27 @@ void InitializeControls()
         switchRoute.SetPosition( 52, 124 );
         switchRoute.SetSize( 11, 30 );
         switchRoute.SetSkin( "3-State Slide Black" );
+
+        labelLocation = new VoltageLabel( "labelLocation", "Location Mark", this, "(Seattle) Ltd" );
+        AddComponent( labelLocation );
+        labelLocation.SetWantsMouseNotifications( false );
+        labelLocation.SetPosition( 5, 13 );
+        labelLocation.SetSize( 41, 13 );
+        labelLocation.SetEditable( false, false );
+        labelLocation.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelLocation.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelLocation.SetColor( new Color( 26, 26, 26, 255 ) );
+        labelLocation.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        labelLocation.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        labelLocation.SetBorderSize( 1 );
+        labelLocation.SetMultiLineEdit( false );
+        labelLocation.SetIsNumberEditor( false );
+        labelLocation.SetNumberEditorRange( 0, 100 );
+        labelLocation.SetNumberEditorInterval( 1 );
+        labelLocation.SetNumberEditorUsesMouseWheel( false );
+        labelLocation.SetHasCustomTextHoverColor( false );
+        labelLocation.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelLocation.SetFont( "Arial", 7, true, false );
 }
 
 
@@ -1029,6 +1050,7 @@ void InitializeControls()
 
 
     // Auto-generated variables
+    private VoltageLabel labelLocation;
     private VoltageSwitch switchRoute;
     private VoltageLabel labelParallel;
     private VoltageLabel labelOff;

@@ -1,6 +1,6 @@
-# SVF 1.0.0 — approved DSP design
+# SVF 1.0.1 — approved DSP design
 
-Approved 2026-10-15. Canonical in `../versions/1.0.0/`; publication remains deferred. Based on the documented Synthi 100 high-pass board 34/01 / Hilton drawing 32/01, exposing its three labeled output links. This does not establish the circuit revision used in every Synthi 100 or reproduce the separate 34/00 LPF.
+Approved 2026-10-15. DSP unchanged from 1.0.0 and canonized in `../versions/1.0.1/`; publication remains deferred. Based on the documented Synthi 100 high-pass board 34/01 / Hilton drawing 32/01, exposing its three labeled output links. This does not establish the circuit revision used in every Synthi 100 or reproduce the separate 34/00 LPF.
 
 ## Circuit interpretation
 

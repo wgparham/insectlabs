@@ -11,7 +11,7 @@ s=(p/'svf.java').read_text(encoding='utf-8-sig');raw=(p/'svf.vmod').read_bytes()
 assert encode(t)==raw
 e=props(next(x for x in t[2] if x[0]=='module code'))['MODULE.SOURCE']
 assert normalized(s)==normalized(e)
-assert props(t)['notes']=='v1.0.0'
+assert props(t)['notes']=='v1.0.1'
 z=regions(s);h=(p/'tests/harness.template').read_text()
 for token,key in [('CORE','code-and-variables'),('INIT','Initialize'),('PROCESS','ProcessSample'),('BYPASS','ProcessBypassedSample'),('TOOLTIP','GetTooltipText'),('EDIT','EditComponentValue')]:
     h=h.replace('@@'+token+'@@',z[key])

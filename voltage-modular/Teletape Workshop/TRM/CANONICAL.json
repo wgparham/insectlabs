@@ -1,0 +1,8 @@
+{
+  "trm": {
+    "version": "1.0.0",
+    "path": "versions/1.0.0",
+    "module": "trm",
+    "name": "TRM Triple Ring Modulator"
+  }
+}

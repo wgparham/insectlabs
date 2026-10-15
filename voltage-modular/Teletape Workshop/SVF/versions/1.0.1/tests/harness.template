@@ -1,0 +1,183 @@
+public final class SvfChecks extends MockBase {
+@@FIELDS@@
+@@CORE@@
+    private void initialize() {
+@@INIT@@
+    }
+    private void process() {
+@@PROCESS@@
+    }
+    private void bypass() {
+@@BYPASS@@
+    }
+    public String GetTooltipText(VoltageComponent component) {
+@@TOOLTIP@@
+    }
+    public void EditComponentValue(VoltageComponent component, double newValue, String newText) {
+@@EDIT@@
+        super.EditComponentValue(component,newValue,newText);
+    }
+    private static void check(boolean pass,String message) {
+        if (!pass) throw new AssertionError(message);
+    }
+    private static void near(double a,double b,double tol,String message) {
+        check(Double.isFinite(a) && Math.abs(a-b)<=tol,message+": "+a+" versus "+b);
+    }
+    private static SvfChecks module(int mode,int route,boolean patched) {
+        SvfChecks m=new SvfChecks();
+        m.knobIn1.value=m.knobIn2.value=.5;
+        m.knobFrequency1.value=Math.log(1000.0/5)/FREQUENCY_SPAN;
+        m.knobFrequency2.value=Math.log(2000.0/5)/FREQUENCY_SPAN;
+        m.knobResponse1.value=m.knobResponse2.value=.3;
+        m.switchMode.value=2-mode;m.switchRoute.value=2-route;
+        m.jackInput1.connected=true;m.jackInput2.connected=patched;
+        m.initialize();return m;
+    }
+    private static void responseTests() {
+        for(double freq:new double[]{25,100,500,1000,5000,15000}) {
+            SvfCore c=new SvfCore();c.configure(1000,.3);
+            double[][] measured=new double[3][2];int n=96000;
+            for(int i=0;i<2*n;i++) {
+                double angle=2*Math.PI*freq*i/INTERNAL_RATE;
+                c.process(.00001*Math.cos(angle));
+                if(i>=n) for(int t=0;t<3;t++) {
+                    measured[t][0]+=c.taps[t]*Math.cos(angle)*2/n/.00001;
+                    measured[t][1]-=c.taps[t]*Math.sin(angle)*2/n/.00001;
+                }
+            }
+            double u=Math.tan(Math.PI*freq/INTERNAL_RATE)/Math.tan(Math.PI*1000/INTERNAL_RATE);
+            double dr=1-u*u,di=dampingFor(.3)*u,den=dr*dr+di*di;
+            double k=INPUT_SUM_GAIN*OUTPUT_GAIN;
+            double[][] expected={{k*u*u*dr/den,-k*u*u*di/den},
+                    {-k*u*di/den,-k*u*dr/den},{-k*dr/den,k*di/den}};
+            for(int t=0;t<3;t++)for(int q=0;q<2;q++)near(measured[t][q],expected[t][q],1e-7,"analytic tap "+t+" at "+freq);
+        }
+        System.out.println("PASS: independent quadratic transfer, gain and polarity for HP/BP/LP at six frequencies");
+    }
+    private static double[] phasorRatio(double[] a,double[] b) {
+        double d=b[0]*b[0]+b[1]*b[1];
+        return new double[]{(a[0]*b[0]+a[1]*b[1])/d,(a[1]*b[0]-a[0]*b[1])/d};
+    }
+    private static double[] multiply(double[] a,double[] b) {
+        return new double[]{a[0]*b[0]-a[1]*b[1],a[0]*b[1]+a[1]*b[0]};
+    }
+    private static double[] analytic(double freq,double cutoff,int tap) {
+        double u=Math.tan(Math.PI*freq/INTERNAL_RATE)/Math.tan(Math.PI*cutoff/INTERNAL_RATE);
+        double dr=1-u*u,di=dampingFor(.3)*u,den=dr*dr+di*di,k=INPUT_SUM_GAIN*OUTPUT_GAIN;
+        if(tap==0)return new double[]{k*u*u*dr/den,-k*u*u*di/den};
+        if(tap==1)return new double[]{-k*u*di/den,-k*u*dr/den};
+        return new double[]{-k*dr/den,k*di/den};
+    }
+    private static double firMagnitude(double w) {
+        return .488912264413122+2*(.308510413777763*Math.cos(w)
+                -.095789590456413*Math.cos(3*w)+.049537687283950*Math.cos(5*w)
+                -.027992303277934*Math.cos(7*w)+.021277660466073*Math.cos(9*w));
+    }
+    private static void routingTests() {
+        for(int route=0;route<3;route++) {
+            SvfChecks m=module(0,route,false);double[][] sums=new double[2][2];
+            for(int i=0;i<96000;i++) {
+                double angle=2*Math.PI*500*i/SAMPLE_RATE;m.jackInput1.value=.00001*Math.cos(angle);m.process();
+                if(i>=48000) {
+                    double[] values={m.outputs[1][0].value,m.outputs[0][route].value};
+                    for(int j=0;j<2;j++) {sums[j][0]+=values[j]*Math.cos(angle);sums[j][1]-=values[j]*Math.sin(angle);}
+                }
+            }
+            double[] ratio=phasorRatio(sums[0],sums[1]);double[] numerator=new double[2],denominator=new double[2];
+            for(double freq:new double[]{500,48500}) {
+                double amplitude=firMagnitude(2*Math.PI*freq/INTERNAL_RATE),weight=amplitude*amplitude;
+                double[] one=analytic(freq,1000,route),two=analytic(freq,2000,0),product=multiply(one,two);
+                for(int q=0;q<2;q++){numerator[q]+=weight*product[q];denominator[q]+=weight*one[q];}
+            }
+            double[] expected=phasorRatio(numerator,denominator);
+            near(ratio[0],expected[0],.0000001,"series route real "+route);
+            near(ratio[1],expected[1],.0000001,"series route imag "+route);
+        }
+        SvfChecks p=module(2,0,false);p.knobFrequency2.value=p.knobFrequency1.value;p.resetDsp();
+        SvfChecks a=module(1,0,true),b=module(0,2,true),c=module(2,1,true);
+        for(int i=0;i<12000;i++) {
+            p.jackInput1.value=Math.sin(i*.1);p.process();
+            for(int t=0;t<3;t++)near(p.outputs[0][t].value,p.outputs[1][t].value,0,"parallel match");
+            for(SvfChecks m:new SvfChecks[]{a,b,c}) {m.jackInput1.value=Math.sin(i*.07);m.jackInput2.value=.5*Math.cos(i*.13);m.process();}
+            for(int t=0;t<3;t++) {near(a.outputs[1][t].value,b.outputs[1][t].value,0,"patch override series");near(a.outputs[1][t].value,c.outputs[1][t].value,0,"patch override parallel");}
+        }
+        SvfChecks independent=module(1,0,false);for(int i=0;i<1000;i++){independent.jackInput1.value=1;independent.process();for(int t=0;t<3;t++)near(independent.outputs[1][t].value,0,0,"independent silence");}
+        System.out.println("PASS: three series source routes, parallel channels, independent silence and patched-IN2 override");
+    }
+    private static void oscillatorTests() {
+        for(double hz:new double[]{5,1000,15000,20000}) {
+            SvfCore c=new SvfCore();c.configure(hz,1);double peak=0;int count=hz==5?96000*3:96000;
+            for(int i=0;i<count;i++){c.process(0);for(double out:c.taps){check(Double.isFinite(out)&&Math.abs(out)<=10.00001,"oscillator bounded");peak=Math.max(peak,Math.abs(out));}}
+            if(hz>=1000)check(peak>1,"self oscillation grows at "+hz+" peak "+peak);
+        }
+        System.out.println("PASS: self-oscillation growth and bounded output, low/high cutoff extremes");
+    }
+    private static void solverTests() {
+        SvfCore c=new SvfCore();double worst=0;
+        for(int i=0;i<150000;i++) {
+            double frequency=5*Math.pow(4000,.5+.5*Math.sin(i*.00013));
+            c.configure(frequency,.5+.5*Math.sin(i*.00019));
+            double oldB=c.bandState,oldL=c.lowState,input=20*Math.sin(i*.31);
+            c.process(input);
+            double b=(oldB+c.bandState)*.5,l=(oldL+c.lowState)*.5;
+            double high=-INPUT_SUM_GAIN*input-l-c.damping*b-LOOP_LOSS*b*b*b;
+            double errorB=b-oldB-c.g*OTA_SCALE*Math.tanh(high/OTA_SCALE);
+            double errorL=l-oldL-c.g*OTA_SCALE*Math.tanh(b/OTA_SCALE);
+            worst=Math.max(worst,Math.max(Math.abs(errorB),Math.abs(errorL)));
+            for(double out:c.taps)check(Double.isFinite(out)&&Math.abs(out)<10.00001,"swept core bounded");
+        }
+        check(worst<1e-8,"implicit solver residual "+worst);
+        c.reset();c.configure(1000,0);
+        for(int i=0;i<96000;i++)c.process(.01);
+        near(c.taps[0],0,1e-10,"HP DC rejection");near(c.taps[1],0,1e-10,"BP DC rejection");
+        near(c.taps[2],-.01*INPUT_SUM_GAIN*OUTPUT_GAIN,1e-10,"LP DC gain and sign");
+        System.out.println("PASS: 20 V modulation stress, solver residual "+worst+", DC gain/rejection");
+    }
+    private static void stateTests() {
+        SvfChecks m=module(2,1,false);for(int i=0;i<1000;i++){m.jackInput1.value=1;m.process();}
+        double oldB=m.cores[0].bandState;int reads=m.knobIn1.reads+m.switchMode.reads+m.jackCVin1.reads;
+        m.jackInput1.value=2;m.bypass();
+        for(int t=0;t<3;t++){near(m.outputs[0][t].value,2,0,"bypass 1");near(m.outputs[1][t].value,2,0,"bypass normal");}
+        near(m.cores[0].bandState,oldB,0,"bypass freezes");
+        check(reads==m.knobIn1.reads+m.switchMode.reads+m.jackCVin1.reads,"bypass no controls");
+        m.jackInput1.value=0;m.process();for(int t=0;t<3;t++)near(m.outputs[0][t].value,0,0,"resume clears");
+        m.cores[0].bandState=Double.NaN;m.process();for(int t=0;t<3;t++)check(Double.isFinite(m.outputs[0][t].value),"state repair");
+        for(double bad:new double[]{Double.NaN,Double.POSITIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.MAX_VALUE,-Double.MAX_VALUE}) {
+            m.jackInput1.value=bad;m.jackCVin1.connected=true;m.jackCVin1.value=bad;
+            for(int i=0;i<500;i++){m.process();for(int ch=0;ch<2;ch++)for(int t=0;t<3;t++)check(Double.isFinite(m.outputs[ch][t].value),"finite guards");}
+        }
+        m.resetPending.set(true);m.jackInput1.value=0;m.process();for(int t=0;t<3;t++)near(m.outputs[0][t].value,0,0,"reset clears");
+        m.EditComponentValue(m.knobFrequency1,1000,"1000");near(frequencyFor(m.knobFrequency1.value,0,0),1000,1e-9,"frequency typed inverse");
+        m.EditComponentValue(m.knobIn1,50,"50");near(m.knobIn1.value,.5,0,"percent inverse");
+        double last=m.knobFrequency1.value;m.EditComponentValue(m.knobFrequency1,Double.NaN,"NaN");near(m.knobFrequency1.value,last,0,"invalid typed ignored");
+        near(frequencyFor(0,0,1),5,1e-12,"CCW");near(frequencyFor(1,0,1),15000,1e-8,"CW");
+        double pos=Math.log(1000.0/5)/FREQUENCY_SPAN;near(frequencyFor(pos,.5,1),2000,1e-8,"CV octave");near(frequencyFor(pos,-.5,1),500,1e-8,"negative CV octave");
+        check(m.GetTooltipText(m.switchRoute).contains("BAND"),"route tooltip");
+        System.out.println("PASS: bypass freeze/no controls/resume, reset, invalid signal/state recovery, taper/CV/typed units");
+    }
+
+    private static void primitiveParity() {
+        SvfCore core = new SvfCore();
+        com.insectlabs.dsp.filters.EmsSvf96 primitive = new com.insectlabs.dsp.filters.EmsSvf96();
+        for (int i=0;i<160000;i++) {
+            double frequency=5*Math.pow(4000,.5+.5*Math.sin(i*.00013));
+            double response=.5+.5*Math.sin(i*.00019);
+            core.configure(frequency,response); primitive.configure(frequency,response);
+            double input=20*Math.sin(i*.31);
+            core.process(input); primitive.process(input);
+            near(core.taps[0],primitive.getHigh(),0,"primitive HIGH parity");
+            near(core.taps[1],primitive.getBand(),0,"primitive BAND parity");
+            near(core.taps[2],primitive.getLow(),0,"primitive LOW parity");
+            if (i%17777==0) {core.reset();primitive.reset();}
+        }
+        System.out.println("PASS: extracted EmsSvf96 primitive, bit-identical for 160000 modulated steps and resets");
+    }
+    public static void main(String[] args) {responseTests();routingTests();oscillatorTests();solverTests();stateTests();primitiveParity();}
+}
+class VoltageComponent {double value;int reads;public double GetValue(){reads++;return value;}public void SetValue(double v){value=v;}}
+class VoltageKnob extends VoltageComponent {}
+class VoltageSwitch extends VoltageComponent {}
+class VoltageLabel extends VoltageComponent {}
+class VoltageImage extends VoltageComponent {}
+class VoltageAudioJack extends VoltageComponent {boolean connected;public boolean IsConnected(){return connected;}}
+class MockBase {public String GetTooltipText(VoltageComponent c){return "";}public void EditComponentValue(VoltageComponent c,double v,String text){c.value=v;}}

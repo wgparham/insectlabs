@@ -64,4 +64,8 @@ User approved the warm HP/LP bank with eight band-level CV inputs. DSP preserved
 
 ## 2026-10-15 — SVF 1.0.0 canon supersedes the HPF module plan
 
-The user approved and canonized a dual filter exposing HIGH, BAND and LOW taps from the Synthi 100 HPF board 34/01 state-variable topology. This consolidates the proposed HPF and LPF roles into a three-output SVF instrument. It does not claim to reproduce the distinct LPF board 34/00 or settle the disputed Synthi 100 revision history. Shared evidence and modeling limits are recorded in `Teletape Workshop/references/Synthi-100-Filters/` and the SVF release notes. The product directory is `SVF`, replacing the early `HPF` development identity. The next module remains unselected.
+The user approved and canonized a dual filter exposing HIGH, BAND and LOW taps from the Synthi 100 HPF board 34/01 state-variable topology. This consolidates the proposed HPF and LPF roles into a three-output SVF instrument. It does not claim to reproduce the distinct LPF board 34/00 or settle the disputed Synthi 100 revision history. Shared evidence and modeling limits are recorded in `Teletape Workshop/references/Synthi-100-Filters/` and the SVF release notes. The product directory is `SVF`, replacing the early `HPF` development identity.
+
+The user approved TRM 1.0.0 on 2026-10-15 after listening to the four ring-modulator voices. Each lane has independent Carrier/Modulator gain staging and a distinct creative nonlinear voice; the different selector startup states are intentional. EMS schematics are design inspiration, not a component-level blueprint.
+
+On 2026-10-15, the user approved the RVG 2.0.1 and SVF 1.0.1 panel updates after successful compile/runtime checks. Each adds the fixed “(Seattle) Ltd” label and adjusts panel branding/spacing; all existing control UUIDs and audio-processing callbacks are preserved. ZOID Trapezoid Generator is next, pending its design brief.

@@ -1,6 +1,6 @@
-# RVG developer notes — 2.0.0
+# RVG developer notes — 2.0.1
 
-Identity: class rvg, package com.insectlabs.rvg, Source category, Teletape Workshop. Canonical pair and hero: versions/2.0.0/rvg.java, rvg.vmod, rvg_hero.png. See the adjacent user manual, release review and tests/validate.py in the archive. Version 1.8.0 remains immutable historical canon.
+Identity: class rvg, package com.insectlabs.rvg, Source category, Teletape Workshop. Canonical pair and hero: versions/2.0.1/rvg.java, rvg.vmod, rvg_hero.png. See the adjacent user manual, release review and tests/validate.py in the archive. Version 1.8.0 remains immutable historical canon.
 
 ## Signal flow and source map
 
@@ -25,3 +25,8 @@ No callback allocation or formatting. Exponentials and tanh remain per sample; C
 User auditioned the normalized-tanh working pair and approved 2.0.0 canonization on 2026-10-14. Packaging changes only the module Notes from v2.0.0rc to v2.0.0; code/art remain identical. Repeatable tests compile both source forms using Java 17 target/warnings as errors and run actual extracted callbacks with SDK substitutes. See VALIDATION.txt and REVIEW.md for results/limits. No independent native UI/undo/CPU measurement or publication claim.
 
 Future changes to sampling distribution, variance normalization, shaping/gain order, droop, clock limits, gates or bypass require a new candidate and renewed listening approval. Validate both polarity directions, event pulse paths, switch defaults, lifecycle, state and source-pair integrity. Preserve unique owner/research evidence with the series; extract a reusable primitive only when a separate need and interface emerge.
+
+
+## 2.0.1 panel maintenance
+
+The 2.0.1 patch adds the static “(Seattle) Ltd” location label and updates embedded branding/skin references. Existing control UUIDs, audio DSP regions, initial switch positions and audible behavior are unchanged. The user reports the updated project compiled and ran.

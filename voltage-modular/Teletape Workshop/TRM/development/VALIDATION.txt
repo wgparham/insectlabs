@@ -1,0 +1,13 @@
+TRM 1.0.0 validation record
+===========================
+
+User listening and functional approval: confirmed 2026-10-15 for the accepted working DSP and selector voicings. The user reports all modes sound like ring modulation with distinct voices.
+
+Automated checks run for the promoted pair:
+- Exported Java compiles with the installed Voltage SDK, Java 17 target, -Xlint:all -Werror.
+- Java embedded in the VMOD compiles under the same settings.
+- Exported and embedded source agree after normalization; VMOD parses and re-encodes byte-identically; Designer Notes is v1.0.0.
+- Headless checks exercise the actual DSP methods and sample callbacks: distinct mode outputs, mode-dependent envelope shaping, polarity for symmetric modes, transformer carrier leakage, lane isolation, selector startup states, gain zero, lamp response, bypass silence/no reads, resume adoption, finite stress output.
+
+The test harness does not automate Voltage Modular's visual interaction or measure CPU on the target system. The user has compiled, run and listened to the candidate in the native application before this documentation-only promotion. No new audio fixture was necessary.
+PASS: embedded HalfBand19 is bit-identical to the shared dsp-primitives implementation across 160000 samples and reset points.

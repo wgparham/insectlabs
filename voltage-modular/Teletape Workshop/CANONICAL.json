@@ -1,7 +1,7 @@
 {
   "rvg": {
-    "version": "2.0.0",
-    "path": "RVG/versions/2.0.0",
+    "version": "2.0.1",
+    "path": "RVG/versions/2.0.1",
     "module": "rvg",
     "name": "RVG Random Voltage Generator"
   },
@@ -24,9 +24,15 @@
     "name": "OFB 8 Octave Filter Bank"
   },
   "svf": {
-    "version": "1.0.0",
-    "path": "SVF/versions/1.0.0",
+    "version": "1.0.1",
+    "path": "SVF/versions/1.0.1",
     "module": "svf",
     "name": "SVF Dual State Variable Filter"
+  },
+  "trm": {
+    "version": "1.0.0",
+    "path": "TRM/versions/1.0.0",
+    "module": "trm",
+    "name": "TRM Triple Ring Modulator"
   }
 }

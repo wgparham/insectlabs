@@ -29,7 +29,7 @@ public class rvg extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "1b375fd23158430491b9924e471bec09" );
+        SetSkin( "1c0e9ffec2e74930b477aaa316f55d45" );
     }
 
 void InitializeControls()
@@ -500,7 +500,7 @@ void InitializeControls()
         imageTTW.SetWantsMouseNotifications( false );
         imageTTW.SetPosition( 5, 5 );
         imageTTW.SetSize( 31, 10 );
-        imageTTW.SetCurrentImage( "image image.svg" );
+        imageTTW.SetCurrentImage( "image image(4).svg" );
 
         labelNumber = new VoltageLabel( "labelNumber", "Model Number Label", this, "rvg" );
         AddComponent( labelNumber );
@@ -529,6 +529,27 @@ void InitializeControls()
         switchComp.SetPosition( 75, 284 );
         switchComp.SetSize( 35, 35 );
         switchComp.SetSkin( "3-State Silver" );
+
+        labelLocation = new VoltageLabel( "labelLocation", "Location Mark", this, "(Seattle) Ltd" );
+        AddComponent( labelLocation );
+        labelLocation.SetWantsMouseNotifications( false );
+        labelLocation.SetPosition( 0, 10 );
+        labelLocation.SetSize( 39, 13 );
+        labelLocation.SetEditable( false, false );
+        labelLocation.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelLocation.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelLocation.SetColor( new Color( 26, 26, 26, 255 ) );
+        labelLocation.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        labelLocation.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        labelLocation.SetBorderSize( 1 );
+        labelLocation.SetMultiLineEdit( false );
+        labelLocation.SetIsNumberEditor( false );
+        labelLocation.SetNumberEditorRange( 0, 100 );
+        labelLocation.SetNumberEditorInterval( 1 );
+        labelLocation.SetNumberEditorUsesMouseWheel( false );
+        labelLocation.SetHasCustomTextHoverColor( false );
+        labelLocation.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelLocation.SetFont( "Arial", 5, true, false );
 }
 
 
@@ -864,6 +885,7 @@ SetStateInformation(stateInfo);
 
 
     // Auto-generated variables
+    private VoltageLabel labelLocation;
     private VoltageSwitch switchComp;
     private VoltageLabel labelNumber;
     private VoltageImage imageTTW;

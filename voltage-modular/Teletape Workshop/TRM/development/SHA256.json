@@ -1,0 +1,13 @@
+{
+  "CHERRY-AUDIO-NOTES.md": "a755bf9042ba8685d4b1bc33a54a7cd882f78e629e0f80a64f916b1f58f64c42",
+  "DSP-DESIGN.md": "7f7aa3ab66cb10c33ce450b9f841bbfbc6903ea5eff0bb46e89343665164f45f",
+  "README.md": "14131705907e560e8010fa88cf95105b13dab81a19bb1b8220293802aa2f73fc",
+  "RELEASE-NOTES.md": "23b20733432e7721f10b0620568f438d69e51f965c98a8d6926855c86ca46770",
+  "USER-MANUAL.md": "6fc20f51da6ea1cf59eec922aa83d412b0d5083fa4fbc731353b3194f500fa73",
+  "VALIDATION.txt": "38d2fa54df608a0ca5af7ac4b90da1ba9740879ff0856eccdbf78c4b3e3e2010",
+  "notesTowardsAtrm.md": "21fe669dfb1bc89bfedc85cef6cd96f558aa3cb029cc2a24ebc3182fbe8e9d9a",
+  "tests/harness.template": "9371ecc33f23a1b5f14545637a4da4b33fea0535f103ad828594320b08a69535",
+  "tests/validate.py": "8a7c4177b9bcf64ffd89ee8af3d0821e539aa92961ebf2b00ffa3e628daa10ed",
+  "trm.java": "ff4bbd1f68b7886ca6faf927aa05e06606220ac9f134c79fc39f10d74695072a",
+  "trm.vmod": "47e4e5ab356c73e56659ba2bd5dc02806437cc402dd70eec7a89bb7c595e4c60"
+}
