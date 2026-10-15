@@ -16,5 +16,11 @@
     "path": "TSL/versions/1.0.0",
     "module": "tsl",
     "name": "TSL Triple Slew Limiter"
+  },
+  "ofb": {
+    "version": "1.0.0",
+    "path": "OFB/versions/1.0.0",
+    "module": "ofb",
+    "name": "OFB 8 Octave Filter Bank"
   }
 }

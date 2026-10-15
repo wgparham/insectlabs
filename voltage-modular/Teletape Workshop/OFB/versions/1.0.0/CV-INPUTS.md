@@ -1,0 +1,13 @@
+> Historical candidate record. Final approval: OFB 1.0.0, 2026-10-14. See REVIEW.md; earlier pending-audition statements are superseded.
+
+# OFB band level CV â€” v0.0.5rc
+
+User supplied eight new CV jacks and confirmed the intended behavior: control band mix levels, +5V equivalent to one full knob sweep. The supplied working pair and hero are retained in ../comparisons/warm-before-cv-2026-10-14. Current notes v0.0.5rc; not canonized or published. New panel/artwork preserved, generated CV variables renamed descriptively while retaining UUIDs/geometry/defaults.
+
+Each jack controls its own band's contribution to main OUT. Effective normalized position=clamp(smoothedManualPosition+CV/5,0,1), followed by the existing approximate log-pot law and5k/10k loading. +5V opens from manual0 to1; -5V closes from manual1 to0. No frequency retuning; raw direct band taps remain clean and independent of gain/CV. Knobs at full cannot open further with positiveCV. Set a knob to0 for a0â€“5V envelope to open it, or use negative/bipolarCV to reduce a raised manual setting.
+
+Unpatched CV preserves the prior gain-smoothing/output path exactly. Patched manual positions smooth5ms before CV summation; CV itself is immediate at48kHz. Log conversion is cached whenever the effective position is unchanged. Connected/unconnected CV paths can differ during manual movement because one smooths position before taper and the unpatched legacy path smooths gain; steady settings agree. Cable insertion/removal and CV gates may intentionally step the mix; no extra CV slew is imposed. Nonfinite CV maps to0. Gain remains bounded. High audio-rate CV can generate modulation sidebands at native48kHz; the existing2x final soft knee does not make upstream modulation alias-free.
+
+Reset/recall/bypass return adopts manual positions/gains and invalidates CV caches on the audio callback. Host bypass reads no CV/knobs and freezes histories. Original component-derived HP/LP bank, alternating mixer polarity, log law,12V soft knee and9-sample alignment are unchanged.
+
+Both source forms compile with Java17 target and warnings as errors. Current actual-callback tests pass all eight routing mappings, +5V/full manual equivalence, -2.5V/half manual equivalence, -5V closed endpoint, direct-tap independence, invalidCV and noCV-read bypass. Existing frequency/phase/oversampler, alias probe, soft-knee, state/guard/reset tests also pass. Non-code VMOD comparison confirms only intended CV variable names and Notes changed; current/backup hashes verified. Native audition of this wiring, automation and panel interaction is pending.

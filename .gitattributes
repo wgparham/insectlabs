@@ -19,3 +19,6 @@ test-bench/InsectLabs-TestBench-v1.zip filter=lfs diff=lfs merge=lfs -text
 
 *.txt -text
 **/NotesTowardsAtsl text eol=lf
+
+# Preserve hashed OFB harness templates across checkout platforms.
+"voltage-modular/Teletape Workshop/OFB/**/topology-harness.template" -text

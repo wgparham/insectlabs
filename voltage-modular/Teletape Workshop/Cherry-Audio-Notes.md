@@ -15,3 +15,7 @@ b08 is an 8 HP visual blanking panel for filling unused rack space, with Teletap
 Three independent slew channels with exponential manual rates from 0.05 to 1000 V/s. Channels 1 and 2 offer rate CV; channel 3 adds gated track-and-hold. Turn clockwise for faster response. T&H tracks above 3 V and holds at or below 3 V. Useful for pitch glide, CV shaping and waveform slope limiting.
 
 Publication is deferred under the [collection publication plan](PUBLICATION-PLAN.md); these descriptions are preparation material.
+
+## OFB 8 Octave Filter Bank — 1.0.0
+
+Eight fixed octave bands with logarithmic level controls, independent level CV inputs (+5 V per full sweep), clean individual outputs and a gently saturating oversampled main mix. Canonical; publication deferred.

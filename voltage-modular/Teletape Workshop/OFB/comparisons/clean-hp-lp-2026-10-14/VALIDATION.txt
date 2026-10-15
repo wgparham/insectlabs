@@ -1,0 +1,8 @@
+OFB v0.0.3rc — 2026-10-14
+PASS: both Java source forms compile with Java17 target, lint and warnings as errors.
+PASS: actual-core complex transfer vs independent circuit model at63/125/250/500/707/1000/2000/4000/8000/12000Hz, all eight taps and summed phase response.
+PASS: DC rejection, log endpoints/monotonicity, linear input1x/5x, pre-pot tap independence, smoothed mute, direct bypass/frozen/no control reads, reset/resume and invalid-state recovery.
+PASS: source-pair agreement, binary round-trip, Notesv0.0.3rc, panel preservation, backup/current hashes.
+Native audition/CPU/automation not measured.
+
+2026-10-14: user confirmed sound/function and selected this topology for continued development. Latest Designer export matches between Java and VMOD, Notes v0.0.3. Cleanup changed no active source/project/hero bytes; hashes refreshed for that export. Previous code attempts removed as authorized.

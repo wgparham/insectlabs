@@ -1,0 +1,39 @@
+import java.util.concurrent.atomic.AtomicBoolean;
+public class OfbTopologyChecks {
+static class VoltageKnob { double v=1; int reads; double GetValue(){reads++;return v;} void SetValue(double x){v=x;} }
+static class VoltageAudioJack { double v; boolean connected=true; double GetValue(){return v;} void SetValue(double x){v=x;} boolean IsConnected(){return connected;} }
+static class VoltageLabel {} static class VoltageImage {}
+@@FIELDS@@
+@@CORE@@
+void initialize(){@@INIT@@}
+void process(){@@PROCESS@@}
+void bypass(){@@BYPASS@@}
+static void check(boolean value,String text){if(!value)throw new AssertionError(text);}
+static void near(double a,double b,double tolerance,String text){if(Math.abs(a-b)>tolerance)throw new AssertionError(text+": "+a+" != "+b);}
+// Independent ideal analog circuit evaluation, with each section prewarped to 48 kHz.
+static double[] expected(int band,double frequency){
+ double fH=1/(2*Math.PI*HP_CAPACITORS[band]*Math.sqrt(HP_RESISTOR_SMALL[band]*HP_RESISTOR_LARGE[band]));
+ double fL=1/(2*Math.PI*LP_RESISTORS[band]*Math.sqrt(LP_FEEDBACK_CAPACITORS[band]*LP_GROUND_CAPACITORS[band]));
+ double qH=Math.sqrt(HP_RESISTOR_LARGE[band]/HP_RESISTOR_SMALL[band])/2;
+ double qL=Math.sqrt(LP_FEEDBACK_CAPACITORS[band]/LP_GROUND_CAPACITORS[band])/2;
+ double u=Math.tan(Math.PI*frequency/48000)/Math.tan(Math.PI*fH/48000),v=Math.tan(Math.PI*frequency/48000)/Math.tan(Math.PI*fL/48000);
+ double ar=1-u*u,ai=u/qH,br=1-v*v,bi=v/qL;
+ double dr=ar*br-ai*bi,di=ar*bi+ai*br,scale=-u*u/(dr*dr+di*di);
+ return new double[]{scale*dr,-scale*di};
+}
+public static void main(String[] args){
+for(double frequency:new double[]{63,125,250,500,707,1000,2000,4000,8000,12000}){
+ OfbTopologyChecks m=new OfbTopologyChecks();m.initialize();double[] re=new double[8],im=new double[8];double mr=0,mi=0;
+ for(int i=0;i<96000;i++){double sine=Math.sin(2*Math.PI*frequency*i/48000),cosine=Math.cos(2*Math.PI*frequency*i/48000);m.inputAudio.v=sine;m.process();if(i>=48000){for(int b=0;b<8;b++){re[b]+=m.individualOuts[b].v*sine/24000;im[b]+=m.individualOuts[b].v*cosine/24000;}mr+=m.outputAudio.v*sine/24000;mi+=m.outputAudio.v*cosine/24000;}}
+ double er=0,ei=0;for(int b=0;b<8;b++){double[] e=expected(b,frequency);near(re[b],e[0],2e-7,"band real response");near(im[b],e[1],2e-7,"band imaginary response");er+=MIX_POLARITY[b]*e[0];ei+=MIX_POLARITY[b]*e[1];}
+ near(mr,er,2e-7,"alternating main real");near(mi,ei,2e-7,"alternating main imaginary");System.out.printf(java.util.Locale.ROOT,"PASS %.0f Hz: all taps and phase-correct mix; main gain %.3f dB%n",frequency,20*Math.log10(Math.hypot(mr,mi)));
+}
+OfbTopologyChecks m=new OfbTopologyChecks();m.initialize();m.inputAudio.v=1;for(int i=0;i<48000;i++)m.process();for(VoltageAudioJack j:m.individualOuts)near(j.v,0,1e-9,"DC rejection");
+near(mixGainForKnob(0),0,0.0000000001,"CCW mute");near(mixGainForKnob(1),1,0.0000000001,"CW full");double previous=0;for(int i=0;i<=1000;i++){double g=mixGainForKnob(i/1000.0);check(g>=previous&&g>=0&&g<=1,"bounded monotonic log law");previous=g;}
+// Check level changes do not touch direct taps and linear input scaling has no tanh.
+OfbTopologyChecks a=new OfbTopologyChecks(),b=new OfbTopologyChecks();a.initialize();b.initialize();for(VoltageKnob k:b.gainKnobs)k.v=0;
+for(int i=0;i<48000;i++){double x=Math.sin(2*Math.PI*500*i/48000);a.inputAudio.v=x;b.inputAudio.v=x*5;a.process();b.process();for(int k=0;k<8;k++)near(b.individualOuts[k].v,a.individualOuts[k].v*5,2e-9,"input linearity/direct tap independent of Level");}near(b.outputAudio.v,0,1e-9,"mix mutes after smoothing");
+m.inputAudio.v=2;m.process();double history=m.highPass[0].y1,smoothed=m.smoothedGains[0];int reads=m.gainKnobs[0].reads;m.bypass();near(m.outputAudio.v,2,1e-12,"direct bypass");near(m.highPass[0].y1,history,1e-12,"bypass frozen");near(m.smoothedGains[0],smoothed,1e-12,"gain frozen");check(m.gainKnobs[0].reads==reads,"no bypass knob reads");for(VoltageAudioJack j:m.individualOuts)near(j.v,0,1e-12,"silent taps in bypass");
+m.inputAudio.v=0;m.process();near(m.outputAudio.v,0,1e-12,"resume clears stale energy");m.inputAudio.v=1;m.process();m.resetPending.set(true);m.inputAudio.v=0;m.process();near(m.outputAudio.v,0,1e-12,"reset clears energy");m.inputAudio.v=Double.NaN;m.process();check(Double.isFinite(m.outputAudio.v),"input NaN recovery");m.highPass[0].y1=Double.NaN;m.lowPass[1].y1=Double.NaN;m.gainKnobs[2].v=Double.NaN;m.process();check(Double.isFinite(m.outputAudio.v),"state/gain recovery");
+System.out.println("PASS: DC, log endpoints/monotonicity, input linearity, raw taps, smoothed mute, bypass/state/reset/numerical recovery");
+}}

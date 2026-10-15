@@ -1,0 +1,70 @@
+import java.util.concurrent.atomic.AtomicBoolean;
+public class OfbTopologyChecks {
+static class VoltageKnob { double v=1; int reads; double GetValue(){reads++;return v;} void SetValue(double x){v=x;} }
+static class VoltageAudioJack { double v; int reads; boolean connected=true; double GetValue(){reads++;return v;} void SetValue(double x){v=x;} boolean IsConnected(){return connected;} }
+static class VoltageLabel {} static class VoltageImage {}
+@@FIELDS@@
+@@CORE@@
+void initialize(){@@INIT@@
+for(VoltageAudioJack jack:bandCvInputs)jack.connected=false;
+}
+void process(){@@PROCESS@@}
+void bypass(){@@BYPASS@@}
+static void check(boolean value,String text){if(!value)throw new AssertionError(text);}
+static void near(double a,double b,double tolerance,String text){if(Math.abs(a-b)>tolerance)throw new AssertionError(text+": "+a+" != "+b);}
+// Independent ideal analog circuit evaluation, with each section prewarped to 48 kHz.
+static double[] expected(int band,double frequency){
+ double fH=1/(2*Math.PI*HP_CAPACITORS[band]*Math.sqrt(HP_RESISTOR_SMALL[band]*HP_RESISTOR_LARGE[band]));
+ double fL=1/(2*Math.PI*LP_RESISTORS[band]*Math.sqrt(LP_FEEDBACK_CAPACITORS[band]*LP_GROUND_CAPACITORS[band]));
+ double qH=Math.sqrt(HP_RESISTOR_LARGE[band]/HP_RESISTOR_SMALL[band])/2;
+ double qL=Math.sqrt(LP_FEEDBACK_CAPACITORS[band]/LP_GROUND_CAPACITORS[band])/2;
+ double u=Math.tan(Math.PI*frequency/48000)/Math.tan(Math.PI*fH/48000),v=Math.tan(Math.PI*frequency/48000)/Math.tan(Math.PI*fL/48000);
+ double ar=1-u*u,ai=u/qH,br=1-v*v,bi=v/qL;
+ double dr=ar*br-ai*bi,di=ar*bi+ai*br,scale=-u*u/(dr*dr+di*di);
+ return new double[]{scale*dr,-scale*di};
+}
+static double[] resamplerResponse(double frequency) {
+ double[] c={.021277660466073,0,-.027992303277934,0,.049537687283950,0,-.095789590456413,0,.308510413777763,.488912264413122,.308510413777763,0,-.095789590456413,0,.049537687283950,0,-.027992303277934,0,.021277660466073};
+ double real=0,imaginary=0;
+ for(int branch=0;branch<2;branch++){double ar=0,ai=0;double w=2*Math.PI*frequency/96000+branch*Math.PI;for(int i=0;i<c.length;i++){ar+=c[i]*Math.cos(w*i);ai-=c[i]*Math.sin(w*i);}real+=ar*ar-ai*ai;imaginary+=2*ar*ai;}
+ return new double[]{real*RESAMPLER_DC_NORMALIZATION,imaginary*RESAMPLER_DC_NORMALIZATION};
+}
+static double alias(boolean oversampled) {
+ HalfBand19 up=new HalfBand19(),down=new HalfBand19();double re=0,im=0;
+ for(int i=0;i<96000;i++){double x=24*Math.sin(2*Math.PI*9000*i/48000),y;if(oversampled){double a=up.process(2*x),b=up.process(0);y=down.process(shapeMix(a))*RESAMPLER_DC_NORMALIZATION;down.process(shapeMix(b));}else y=shapeMix(x);if(i>=48000){re+=y*Math.sin(2*Math.PI*3000*i/48000)/24000;im+=y*Math.cos(2*Math.PI*3000*i/48000)/24000;}}
+ return Math.hypot(re,im);
+}
+public static void main(String[] args){
+for(double frequency:new double[]{63,125,250,500,707,1000,2000,4000,8000,12000}){
+ OfbTopologyChecks m=new OfbTopologyChecks();m.initialize();double[] re=new double[8],im=new double[8];double mr=0,mi=0;
+ for(int i=0;i<96000;i++){double sine=Math.sin(2*Math.PI*frequency*i/48000),cosine=Math.cos(2*Math.PI*frequency*i/48000);m.inputAudio.v=sine*.01;m.process();if(i>=48000){for(int b=0;b<8;b++){re[b]+=m.individualOuts[b].v*sine/240;im[b]+=m.individualOuts[b].v*cosine/240;}mr+=m.outputAudio.v*sine/240;mi+=m.outputAudio.v*cosine/240;}}
+ double er=0,ei=0;double phase=2*Math.PI*frequency*9/48000;
+ for(int b=0;b<8;b++){double[] e=expected(b,frequency);double dr=e[0]*Math.cos(phase)+e[1]*Math.sin(phase),di=e[1]*Math.cos(phase)-e[0]*Math.sin(phase);near(re[b],dr,2e-7,"delayed clean tap real");near(im[b],di,2e-7,"delayed clean tap imaginary");er+=MIX_POLARITY[b]*e[0];ei+=MIX_POLARITY[b]*e[1];}
+ double[] g=resamplerResponse(frequency);double predictedReal=er*g[0]-ei*g[1],predictedImaginary=er*g[1]+ei*g[0];near(mr,predictedReal,2e-6,"oversampled small-signal real");near(mi,predictedImaginary,2e-6,"oversampled small-signal imaginary");System.out.printf(java.util.Locale.ROOT,"PASS %.0f Hz: clean aligned taps and warm-mix small-signal response%n",frequency);
+}
+OfbTopologyChecks m=new OfbTopologyChecks();m.initialize();m.inputAudio.v=1;for(int i=0;i<48000;i++)m.process();for(VoltageAudioJack j:m.individualOuts)near(j.v,0,1e-9,"DC rejection");
+near(mixGainForKnob(0),0,0.0000000001,"CCW mute");near(mixGainForKnob(1),1,0.0000000001,"CW full");double previous=0;for(int i=0;i<=1000;i++){double g=mixGainForKnob(i/1000.0);check(g>=previous&&g>=0&&g<=1,"bounded monotonic log law");previous=g;}
+// Check level changes do not touch direct taps and linear input scaling has no tanh.
+OfbTopologyChecks a=new OfbTopologyChecks(),b=new OfbTopologyChecks();a.initialize();b.initialize();for(VoltageKnob k:b.gainKnobs)k.v=0;
+for(int i=0;i<48000;i++){double x=Math.sin(2*Math.PI*500*i/48000);a.inputAudio.v=x;b.inputAudio.v=x*5;a.process();b.process();for(int k=0;k<8;k++)near(b.individualOuts[k].v,a.individualOuts[k].v*5,2e-9,"input linearity/direct tap independent of Level");}near(b.outputAudio.v,0,1e-9,"mix mutes after smoothing");
+m.inputAudio.v=2;m.process();double history=m.highPass[0].y1,smoothed=m.smoothedGains[0];int reads=m.gainKnobs[0].reads;m.bypass();near(m.outputAudio.v,2,1e-12,"direct bypass");near(m.highPass[0].y1,history,1e-12,"bypass frozen");near(m.smoothedGains[0],smoothed,1e-12,"gain frozen");check(m.gainKnobs[0].reads==reads,"no bypass knob reads");for(VoltageAudioJack j:m.individualOuts)near(j.v,0,1e-12,"silent taps in bypass");
+m.inputAudio.v=0;m.process();near(m.outputAudio.v,0,1e-12,"resume clears stale energy");m.inputAudio.v=1;m.process();m.resetPending.set(true);m.inputAudio.v=0;m.process();near(m.outputAudio.v,0,1e-12,"reset clears energy");m.inputAudio.v=Double.NaN;m.process();check(Double.isFinite(m.outputAudio.v),"input NaN recovery");m.highPass[0].y1=Double.NaN;m.lowPass[1].y1=Double.NaN;m.gainKnobs[2].v=Double.NaN;m.process();check(Double.isFinite(m.outputAudio.v),"state/gain recovery");
+near(shapeMix(0),0,1e-12,"shape zero");near(shapeMix(1e-6),1e-6,1e-12,"unity tiny signal");double prior=0;for(int i=0;i<=10000;i++){double x=i/100.0,y=shapeMix(x);check(y>=prior&&y<=12,"bounded monotonic shaping");near(shapeMix(-x),-y,1e-12,"odd symmetry");prior=y;}check(shapeMix(5)/5>.99,"ordinary level clarity");check(shapeMix(24)/24<.5,"driven compression");check(Double.isFinite(shapeMix(Double.MAX_VALUE)),"extreme finite shape");
+m.inputAudio.v=Double.MAX_VALUE;for(int i=0;i<30;i++)m.process();m.inputAudio.v=0;for(int i=0;i<100;i++)m.process();check(Double.isFinite(m.outputAudio.v),"FIR recovery after extreme input");
+double nativeAlias=alias(false),filteredAlias=alias(true);check(filteredAlias<nativeAlias*.75,"oversampling reduces driven 3k alias");System.out.printf(java.util.Locale.ROOT,"PASS: driven alias probe native %.6f V vs 2x %.6f V%n",nativeAlias,filteredAlias);
+for(int selected=0;selected<8;selected++) {
+ OfbTopologyChecks cv=new OfbTopologyChecks(),reference=new OfbTopologyChecks();cv.initialize();reference.initialize();
+ for(int i=0;i<8;i++){cv.gainKnobs[i].v=0;reference.gainKnobs[i].v=i==selected?1:0;}
+ cv.bandCvInputs[selected].connected=true;cv.bandCvInputs[selected].v=5;
+ cv.resetPending.set(true);reference.resetPending.set(true);
+ for(int i=0;i<4000;i++){double input=.1*Math.sin(2*Math.PI*FREQUENCIES[selected]*i/48000);cv.inputAudio.v=input;reference.inputAudio.v=input;cv.process();reference.process();near(cv.outputAudio.v,reference.outputAudio.v,1e-10,"+5V same as full manual band "+selected);for(int band=0;band<8;band++)near(cv.individualOuts[band].v,reference.individualOuts[band].v,1e-10,"CV leaves clean tap unchanged");}
+ // Manual full with negative half sweep matches a manual half-position reference.
+ cv.gainKnobs[selected].v=1;cv.bandCvInputs[selected].v=-2.5;reference.gainKnobs[selected].v=.5;cv.resetPending.set(true);reference.resetPending.set(true);
+ for(int i=0;i<2000;i++){double input=.1*Math.sin(2*Math.PI*FREQUENCIES[selected]*i/48000);cv.inputAudio.v=input;reference.inputAudio.v=input;cv.process();reference.process();near(cv.outputAudio.v,reference.outputAudio.v,1e-10,"negative CV equivalent half knob");}
+ cv.bandCvInputs[selected].v=-5;for(int i=0;i<40;i++)cv.process();near(cv.outputAudio.v,0,1e-12,"-5V fully closes band");
+ int count=cv.bandCvInputs[selected].reads;cv.bypass();check(cv.bandCvInputs[selected].reads==count,"bypass skips CV reads");
+ cv.gainKnobs[selected].v=0;cv.bandCvInputs[selected].v=Double.NaN;cv.process();check(Double.isFinite(cv.outputAudio.v),"NaN CV safe");
+}
+System.out.println("PASS: all eight CV mappings, positive/full and negative/half/closed endpoints, clean-tap independence, CV invalid guard and bypass skip");
+System.out.println("PASS: DC, log endpoints/monotonicity, input linearity, raw taps, smoothed mute, bypass/state/reset/numerical recovery");
+}}

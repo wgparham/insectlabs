@@ -1,0 +1,141 @@
+{
+  "assumptions": "Ideal unity-gain op-amps; nominal parts; all knobs full; nominal 10k mixer inputs; no load/741 dynamics/tolerances; existing prototype small-signal only",
+  "bands": [
+    {
+      "label_hz": 63,
+      "highpass_f0_hz": 59.49079444974828,
+      "highpass_q": 1.5811388300841898,
+      "lowpass_f0_hz": 59.915728695817904,
+      "lowpass_q": 1.5811388300841898,
+      "peak_hz": 59.72412104014377,
+      "peak_gain": 2.517535122336805,
+      "mix_sign": -1
+    },
+    {
+      "label_hz": 125,
+      "highpass_f0_hz": 117.67409891158998,
+      "highpass_q": 1.5811388300841898,
+      "lowpass_f0_hz": 124.26965951725194,
+      "lowpass_q": 1.5811388300841898,
+      "peak_hz": 120.92496968245548,
+      "peak_gain": 2.620633811297467,
+      "mix_sign": 1
+    },
+    {
+      "label_hz": 250,
+      "highpass_f0_hz": 249.0312325803416,
+      "highpass_q": 1.5811388300841898,
+      "lowpass_f0_hz": 258.09852361275404,
+      "lowpass_q": 1.5811388300841898,
+      "peak_hz": 253.55283103029254,
+      "peak_gain": 2.582766062291267,
+      "mix_sign": -1
+    },
+    {
+      "label_hz": 500,
+      "highpass_f0_hz": 486.7428636797586,
+      "highpass_q": 1.5811388300841898,
+      "lowpass_f0_hz": 493.4236480832063,
+      "lowpass_q": 1.5811388300841898,
+      "peak_hz": 490.113186558304,
+      "peak_gain": 2.5331366607258916,
+      "mix_sign": 1
+    },
+    {
+      "label_hz": 1000,
+      "highpass_f0_hz": 1016.751759686607,
+      "highpass_q": 1.5811388300841898,
+      "lowpass_f0_hz": 1070.834300095469,
+      "lowpass_q": 1.5811388300841898,
+      "peak_hz": 1043.4018069853953,
+      "peak_gain": 2.6154133138424243,
+      "mix_sign": -1
+    },
+    {
+      "label_hz": 2000,
+      "highpass_f0_hz": 2097.0505043536264,
+      "highpass_q": 1.5811388300841898,
+      "lowpass_f0_hz": 1912.2041073133375,
+      "lowpass_q": 1.5811388300841898,
+      "peak_hz": 2003.1260728660684,
+      "peak_gain": 2.232085413317295,
+      "mix_sign": 1
+    },
+    {
+      "label_hz": 4000,
+      "highpass_f0_hz": 3966.0529633165506,
+      "highpass_q": 1.5811388300841898,
+      "lowpass_f0_hz": 4091.805862153418,
+      "lowpass_q": 1.5811388300841898,
+      "peak_hz": 4028.1281616320543,
+      "peak_gain": 2.5729999487416757,
+      "mix_sign": -1
+    },
+    {
+      "label_hz": 8000,
+      "highpass_f0_hz": 8237.1869238113,
+      "highpass_q": 1.5811388300841898,
+      "lowpass_f0_hz": 7802.978620850703,
+      "lowpass_q": 1.5811388300841898,
+      "peak_hz": 8014.498866636705,
+      "peak_gain": 2.350974229580434,
+      "mix_sign": 1
+    }
+  ],
+  "mix_samples": [
+    {
+      "frequency_hz": 125,
+      "schematic_db": 9.664596740416318,
+      "same_stages_all_positive_db": 5.98159334433846,
+      "current_prototype_db": 10.369266760168692
+    },
+    {
+      "frequency_hz": 176.78,
+      "schematic_db": 5.9327520650592565,
+      "same_stages_all_positive_db": -3.256547316562633,
+      "current_prototype_db": -5.089657265500666
+    },
+    {
+      "frequency_hz": 250,
+      "schematic_db": 9.542470408891953,
+      "same_stages_all_positive_db": 5.607504962594128,
+      "current_prototype_db": 10.361032252039731
+    },
+    {
+      "frequency_hz": 353.55,
+      "schematic_db": 7.171132809379996,
+      "same_stages_all_positive_db": -6.5366664768229645,
+      "current_prototype_db": -5.607492485975104
+    },
+    {
+      "frequency_hz": 500,
+      "schematic_db": 9.411935023541856,
+      "same_stages_all_positive_db": 5.323773909190333,
+      "current_prototype_db": 10.357019475850944
+    },
+    {
+      "frequency_hz": 707.11,
+      "schematic_db": 5.556091915595402,
+      "same_stages_all_positive_db": -2.4527409427496414,
+      "current_prototype_db": -5.713215823951453
+    },
+    {
+      "frequency_hz": 1000,
+      "schematic_db": 9.388924269355808,
+      "same_stages_all_positive_db": 5.711038239362222,
+      "current_prototype_db": 10.35412741560101
+    },
+    {
+      "frequency_hz": 1414.21,
+      "schematic_db": 6.94881927621974,
+      "same_stages_all_positive_db": -5.449625958067105,
+      "current_prototype_db": -5.645181105956106
+    },
+    {
+      "frequency_hz": 2000,
+      "schematic_db": 8.583564579820855,
+      "same_stages_all_positive_db": 3.6475101457554726,
+      "current_prototype_db": 10.348736396054337
+    }
+  ]
+}

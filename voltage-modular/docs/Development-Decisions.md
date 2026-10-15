@@ -57,3 +57,11 @@ The Pulse Shaper role is realized as Sherlock: independent positive/negative lin
 ## Teletape publication gate — 2026-10-14
 
 The user will publish all Teletape modules together after the full lineup is locked and each listed module is canonized. Canonization and Git pushes may happen beforehand; they do not authorize Cherry Audio publication. See [collection publication plan](../Teletape%20Workshop/PUBLICATION-PLAN.md).
+
+## 2026-10-14 — OFB 1.0.0 canon
+
+User approved the warm HP/LP bank with eight band-level CV inputs. DSP preserved; latest Designer save synchronized for one tooltip encoding mismatch. Publication awaits the completed collection.
+
+## 2026-10-14 — HPF follows OFB
+
+The user selected HPF, based on the Synthi 100 high-pass filter, as the next Teletape module and authorized housekeeping and Git push. The existing shared Synthi 100 schematic set is the starting source; no circuit interpretation or DSP has yet been approved.

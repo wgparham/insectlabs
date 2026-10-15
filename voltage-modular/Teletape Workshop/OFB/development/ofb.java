@@ -11,6 +11,7 @@ import voltage.effects.*;
 import java.awt.*;
 
 //[user-imports]   Add your own imports here
+import java.util.concurrent.atomic.AtomicBoolean;
 //[/user-imports]
 
 
@@ -28,87 +29,87 @@ public class ofb extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "2ecf9d9540784e3f9762d02fa5a89092" );
+        SetSkin( "4053a60ac6534bd3bb09dc4bc3bb8376" );
     }
 
 void InitializeControls()
 {
 
-        knob63 = new VoltageKnob( "knob63", "63 Hz", this, 0.0, 1.0, 1.0 );
-        AddComponent( knob63 );
-        knob63.SetWantsMouseNotifications( false );
-        knob63.SetPosition( 31, 26 );
-        knob63.SetSize( 25, 25 );
-        knob63.SetSkin( "ARP2500 Sm Silver" );
-        knob63.SetRange( 0.0, 1.0, 1.0, false, 0 );
-        knob63.SetKnobParams( 215, 145 );
-        knob63.DisplayValueInPercent( true );
-        knob63.SetKnobAdjustsRing( true );
+        knob63Hz = new VoltageKnob( "knob63Hz", "63 Hz", this, 0.0, 1.0, 1.0 );
+        AddComponent( knob63Hz );
+        knob63Hz.SetWantsMouseNotifications( false );
+        knob63Hz.SetPosition( 45, 25 );
+        knob63Hz.SetSize( 25, 25 );
+        knob63Hz.SetSkin( "ARP2500 Sm Silver" );
+        knob63Hz.SetRange( 0.0, 1.0, 1.0, false, 0 );
+        knob63Hz.SetKnobParams( 215, 145 );
+        knob63Hz.DisplayValueInPercent( true );
+        knob63Hz.SetKnobAdjustsRing( true );
 
-        knob500 = new VoltageKnob( "knob500", "500 Hz", this, 0.0, 1.0, 1.0 );
-        AddComponent( knob500 );
-        knob500.SetWantsMouseNotifications( false );
-        knob500.SetPosition( 31, 131 );
-        knob500.SetSize( 25, 25 );
-        knob500.SetSkin( "ARP2500 Sm Silver" );
-        knob500.SetRange( 0.0, 1.0, 1.0, false, 0 );
-        knob500.SetKnobParams( 215, 145 );
-        knob500.DisplayValueInPercent( true );
-        knob500.SetKnobAdjustsRing( true );
+        knob500Hz = new VoltageKnob( "knob500Hz", "500 Hz", this, 0.0, 1.0, 1.0 );
+        AddComponent( knob500Hz );
+        knob500Hz.SetWantsMouseNotifications( false );
+        knob500Hz.SetPosition( 45, 130 );
+        knob500Hz.SetSize( 25, 25 );
+        knob500Hz.SetSkin( "ARP2500 Sm Silver" );
+        knob500Hz.SetRange( 0.0, 1.0, 1.0, false, 0 );
+        knob500Hz.SetKnobParams( 215, 145 );
+        knob500Hz.DisplayValueInPercent( true );
+        knob500Hz.SetKnobAdjustsRing( true );
 
-        knob125 = new VoltageKnob( "knob125", "125 Hz", this, 0.0, 1.0, 1.0 );
-        AddComponent( knob125 );
-        knob125.SetWantsMouseNotifications( false );
-        knob125.SetPosition( 31, 61 );
-        knob125.SetSize( 25, 25 );
-        knob125.SetSkin( "ARP2500 Sm Silver" );
-        knob125.SetRange( 0.0, 1.0, 1.0, false, 0 );
-        knob125.SetKnobParams( 215, 145 );
-        knob125.DisplayValueInPercent( true );
-        knob125.SetKnobAdjustsRing( true );
+        knob125Hz = new VoltageKnob( "knob125Hz", "125 Hz", this, 0.0, 1.0, 1.0 );
+        AddComponent( knob125Hz );
+        knob125Hz.SetWantsMouseNotifications( false );
+        knob125Hz.SetPosition( 45, 60 );
+        knob125Hz.SetSize( 25, 25 );
+        knob125Hz.SetSkin( "ARP2500 Sm Silver" );
+        knob125Hz.SetRange( 0.0, 1.0, 1.0, false, 0 );
+        knob125Hz.SetKnobParams( 215, 145 );
+        knob125Hz.DisplayValueInPercent( true );
+        knob125Hz.SetKnobAdjustsRing( true );
 
-        knob1000 = new VoltageKnob( "knob1000", "1000 Hz", this, 0.0, 1.0, 1.0 );
-        AddComponent( knob1000 );
-        knob1000.SetWantsMouseNotifications( false );
-        knob1000.SetPosition( 31, 166 );
-        knob1000.SetSize( 25, 25 );
-        knob1000.SetSkin( "ARP2500 Sm Silver" );
-        knob1000.SetRange( 0.0, 1.0, 1.0, false, 0 );
-        knob1000.SetKnobParams( 215, 145 );
-        knob1000.DisplayValueInPercent( true );
-        knob1000.SetKnobAdjustsRing( true );
+        knob1kHz = new VoltageKnob( "knob1kHz", "1 kHz", this, 0.0, 1.0, 1.0 );
+        AddComponent( knob1kHz );
+        knob1kHz.SetWantsMouseNotifications( false );
+        knob1kHz.SetPosition( 46, 165 );
+        knob1kHz.SetSize( 25, 25 );
+        knob1kHz.SetSkin( "ARP2500 Sm Silver" );
+        knob1kHz.SetRange( 0.0, 1.0, 1.0, false, 0 );
+        knob1kHz.SetKnobParams( 215, 145 );
+        knob1kHz.DisplayValueInPercent( true );
+        knob1kHz.SetKnobAdjustsRing( true );
 
-        knob4000 = new VoltageKnob( "knob4000", "4000 Hz", this, 0.0, 1.0, 1.0 );
-        AddComponent( knob4000 );
-        knob4000.SetWantsMouseNotifications( false );
-        knob4000.SetPosition( 31, 236 );
-        knob4000.SetSize( 25, 25 );
-        knob4000.SetSkin( "ARP2500 Sm Silver" );
-        knob4000.SetRange( 0.0, 1.0, 1.0, false, 0 );
-        knob4000.SetKnobParams( 215, 145 );
-        knob4000.DisplayValueInPercent( true );
-        knob4000.SetKnobAdjustsRing( true );
+        knob4kHz = new VoltageKnob( "knob4kHz", "4 kHz", this, 0.0, 1.0, 1.0 );
+        AddComponent( knob4kHz );
+        knob4kHz.SetWantsMouseNotifications( false );
+        knob4kHz.SetPosition( 45, 235 );
+        knob4kHz.SetSize( 25, 25 );
+        knob4kHz.SetSkin( "ARP2500 Sm Silver" );
+        knob4kHz.SetRange( 0.0, 1.0, 1.0, false, 0 );
+        knob4kHz.SetKnobParams( 215, 145 );
+        knob4kHz.DisplayValueInPercent( true );
+        knob4kHz.SetKnobAdjustsRing( true );
 
-        output125 = new VoltageAudioJack( "output125", "125 Hz Output", this, JackType.JackType_AudioOutput );
-        AddComponent( output125 );
-        output125.SetWantsMouseNotifications( false );
-        output125.SetPosition( 58, 61 );
-        output125.SetSize( 25, 25 );
-        output125.SetSkin( "Mini Jack 25px" );
+        jack125HzOut = new VoltageAudioJack( "jack125HzOut", "125 Hz Output", this, JackType.JackType_AudioOutput );
+        AddComponent( jack125HzOut );
+        jack125HzOut.SetWantsMouseNotifications( false );
+        jack125HzOut.SetPosition( 75, 60 );
+        jack125HzOut.SetSize( 25, 25 );
+        jack125HzOut.SetSkin( "Mini Jack 25px" );
 
-        output250 = new VoltageAudioJack( "output250", "250 Hz Output", this, JackType.JackType_AudioOutput );
-        AddComponent( output250 );
-        output250.SetWantsMouseNotifications( false );
-        output250.SetPosition( 58, 96 );
-        output250.SetSize( 25, 25 );
-        output250.SetSkin( "Mini Jack 25px" );
+        jack250HzOut = new VoltageAudioJack( "jack250HzOut", "250 Hz Output", this, JackType.JackType_AudioOutput );
+        AddComponent( jack250HzOut );
+        jack250HzOut.SetWantsMouseNotifications( false );
+        jack250HzOut.SetPosition( 75, 95 );
+        jack250HzOut.SetSize( 25, 25 );
+        jack250HzOut.SetSkin( "Mini Jack 25px" );
 
-        output500 = new VoltageAudioJack( "output500", "500 Hz Output", this, JackType.JackType_AudioOutput );
-        AddComponent( output500 );
-        output500.SetWantsMouseNotifications( false );
-        output500.SetPosition( 58, 131 );
-        output500.SetSize( 25, 25 );
-        output500.SetSkin( "Mini Jack 25px" );
+        jack500HzOut = new VoltageAudioJack( "jack500HzOut", "500 Hz Output", this, JackType.JackType_AudioOutput );
+        AddComponent( jack500HzOut );
+        jack500HzOut.SetWantsMouseNotifications( false );
+        jack500HzOut.SetPosition( 75, 130 );
+        jack500HzOut.SetSize( 25, 25 );
+        jack500HzOut.SetSkin( "Mini Jack 25px" );
 
         labelFooter = new VoltageLabel( "labelFooter", "Footer", this, "8 Octave Filter Bank" );
         AddComponent( labelFooter );
@@ -131,172 +132,172 @@ void InitializeControls()
         labelFooter.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelFooter.SetFont( "Arial", 9, true, false );
 
-        output1000 = new VoltageAudioJack( "output1000", "1000 Hz Output", this, JackType.JackType_AudioOutput );
-        AddComponent( output1000 );
-        output1000.SetWantsMouseNotifications( false );
-        output1000.SetPosition( 58, 166 );
-        output1000.SetSize( 25, 25 );
-        output1000.SetSkin( "Mini Jack 25px" );
+        jack1kHzOut = new VoltageAudioJack( "jack1kHzOut", "1 kHz Output", this, JackType.JackType_AudioOutput );
+        AddComponent( jack1kHzOut );
+        jack1kHzOut.SetWantsMouseNotifications( false );
+        jack1kHzOut.SetPosition( 75, 165 );
+        jack1kHzOut.SetSize( 25, 25 );
+        jack1kHzOut.SetSkin( "Mini Jack 25px" );
 
-        output2000 = new VoltageAudioJack( "output2000", "2000 Hz Output", this, JackType.JackType_AudioOutput );
-        AddComponent( output2000 );
-        output2000.SetWantsMouseNotifications( false );
-        output2000.SetPosition( 58, 201 );
-        output2000.SetSize( 25, 25 );
-        output2000.SetSkin( "Mini Jack 25px" );
+        jack2kHzOut = new VoltageAudioJack( "jack2kHzOut", "2 kHz Output", this, JackType.JackType_AudioOutput );
+        AddComponent( jack2kHzOut );
+        jack2kHzOut.SetWantsMouseNotifications( false );
+        jack2kHzOut.SetPosition( 75, 200 );
+        jack2kHzOut.SetSize( 25, 25 );
+        jack2kHzOut.SetSkin( "Mini Jack 25px" );
 
-        labelV4 = new VoltageLabel( "labelV4", "Voltage 1 Label_1", this, "500 Hz" );
-        AddComponent( labelV4 );
-        labelV4.SetWantsMouseNotifications( false );
-        labelV4.SetPosition( 32, 154 );
-        labelV4.SetSize( 26, 12 );
-        labelV4.SetEditable( false, false );
-        labelV4.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        labelV4.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        labelV4.SetColor( new Color( 46, 46, 46, 255 ) );
-        labelV4.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        labelV4.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        labelV4.SetBorderSize( 1 );
-        labelV4.SetMultiLineEdit( false );
-        labelV4.SetIsNumberEditor( false );
-        labelV4.SetNumberEditorRange( 0, 100 );
-        labelV4.SetNumberEditorInterval( 1 );
-        labelV4.SetNumberEditorUsesMouseWheel( false );
-        labelV4.SetHasCustomTextHoverColor( false );
-        labelV4.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        labelV4.SetFont( "Arial", 7, true, false );
+        label500Hz = new VoltageLabel( "label500Hz", "500 Hz Label", this, "500 Hz" );
+        AddComponent( label500Hz );
+        label500Hz.SetWantsMouseNotifications( false );
+        label500Hz.SetPosition( 46, 153 );
+        label500Hz.SetSize( 26, 12 );
+        label500Hz.SetEditable( false, false );
+        label500Hz.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        label500Hz.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        label500Hz.SetColor( new Color( 46, 46, 46, 255 ) );
+        label500Hz.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        label500Hz.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        label500Hz.SetBorderSize( 1 );
+        label500Hz.SetMultiLineEdit( false );
+        label500Hz.SetIsNumberEditor( false );
+        label500Hz.SetNumberEditorRange( 0, 100 );
+        label500Hz.SetNumberEditorInterval( 1 );
+        label500Hz.SetNumberEditorUsesMouseWheel( false );
+        label500Hz.SetHasCustomTextHoverColor( false );
+        label500Hz.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        label500Hz.SetFont( "Arial", 7, true, false );
 
-        output4000 = new VoltageAudioJack( "output4000", "4000 Hz Output", this, JackType.JackType_AudioOutput );
-        AddComponent( output4000 );
-        output4000.SetWantsMouseNotifications( false );
-        output4000.SetPosition( 58, 236 );
-        output4000.SetSize( 25, 25 );
-        output4000.SetSkin( "Mini Jack 25px" );
+        jack4kHzOut = new VoltageAudioJack( "jack4kHzOut", "4 kHz Output", this, JackType.JackType_AudioOutput );
+        AddComponent( jack4kHzOut );
+        jack4kHzOut.SetWantsMouseNotifications( false );
+        jack4kHzOut.SetPosition( 75, 235 );
+        jack4kHzOut.SetSize( 25, 25 );
+        jack4kHzOut.SetSkin( "Mini Jack 25px" );
 
-        labelV1 = new VoltageLabel( "labelV1", "Voltage 1 Label", this, "63 Hz" );
-        AddComponent( labelV1 );
-        labelV1.SetWantsMouseNotifications( false );
-        labelV1.SetPosition( 29, 49 );
-        labelV1.SetSize( 26, 12 );
-        labelV1.SetEditable( false, false );
-        labelV1.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        labelV1.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        labelV1.SetColor( new Color( 46, 46, 46, 255 ) );
-        labelV1.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        labelV1.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        labelV1.SetBorderSize( 1 );
-        labelV1.SetMultiLineEdit( false );
-        labelV1.SetIsNumberEditor( false );
-        labelV1.SetNumberEditorRange( 0, 100 );
-        labelV1.SetNumberEditorInterval( 1 );
-        labelV1.SetNumberEditorUsesMouseWheel( false );
-        labelV1.SetHasCustomTextHoverColor( false );
-        labelV1.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        labelV1.SetFont( "Arial", 7, true, false );
+        label63Hz = new VoltageLabel( "label63Hz", "63 Hz Label", this, "63 Hz" );
+        AddComponent( label63Hz );
+        label63Hz.SetWantsMouseNotifications( false );
+        label63Hz.SetPosition( 43, 48 );
+        label63Hz.SetSize( 26, 12 );
+        label63Hz.SetEditable( false, false );
+        label63Hz.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        label63Hz.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        label63Hz.SetColor( new Color( 46, 46, 46, 255 ) );
+        label63Hz.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        label63Hz.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        label63Hz.SetBorderSize( 1 );
+        label63Hz.SetMultiLineEdit( false );
+        label63Hz.SetIsNumberEditor( false );
+        label63Hz.SetNumberEditorRange( 0, 100 );
+        label63Hz.SetNumberEditorInterval( 1 );
+        label63Hz.SetNumberEditorUsesMouseWheel( false );
+        label63Hz.SetHasCustomTextHoverColor( false );
+        label63Hz.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        label63Hz.SetFont( "Arial", 7, true, false );
 
-        output8000 = new VoltageAudioJack( "output8000", "8000 Hz Output", this, JackType.JackType_AudioOutput );
-        AddComponent( output8000 );
-        output8000.SetWantsMouseNotifications( false );
-        output8000.SetPosition( 58, 271 );
-        output8000.SetSize( 25, 25 );
-        output8000.SetSkin( "Mini Jack 25px" );
+        jack8kHzOut = new VoltageAudioJack( "jack8kHzOut", "8 kHz Output", this, JackType.JackType_AudioOutput );
+        AddComponent( jack8kHzOut );
+        jack8kHzOut.SetWantsMouseNotifications( false );
+        jack8kHzOut.SetPosition( 75, 270 );
+        jack8kHzOut.SetSize( 25, 25 );
+        jack8kHzOut.SetSkin( "Mini Jack 25px" );
 
-        output63 = new VoltageAudioJack( "output63", "63 Hz Output", this, JackType.JackType_AudioOutput );
-        AddComponent( output63 );
-        output63.SetWantsMouseNotifications( false );
-        output63.SetPosition( 58, 26 );
-        output63.SetSize( 25, 25 );
-        output63.SetSkin( "Mini Jack 25px" );
+        jack63HzOut = new VoltageAudioJack( "jack63HzOut", "63 Hz Output", this, JackType.JackType_AudioOutput );
+        AddComponent( jack63HzOut );
+        jack63HzOut.SetWantsMouseNotifications( false );
+        jack63HzOut.SetPosition( 75, 25 );
+        jack63HzOut.SetSize( 25, 25 );
+        jack63HzOut.SetSkin( "Mini Jack 25px" );
 
-        labelV5 = new VoltageLabel( "labelV5", "Voltage 2 Label_1", this, "1000 Hz" );
-        AddComponent( labelV5 );
-        labelV5.SetWantsMouseNotifications( false );
-        labelV5.SetPosition( 32, 189 );
-        labelV5.SetSize( 26, 12 );
-        labelV5.SetEditable( false, false );
-        labelV5.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        labelV5.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        labelV5.SetColor( new Color( 46, 46, 46, 255 ) );
-        labelV5.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        labelV5.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        labelV5.SetBorderSize( 1 );
-        labelV5.SetMultiLineEdit( false );
-        labelV5.SetIsNumberEditor( false );
-        labelV5.SetNumberEditorRange( 0, 100 );
-        labelV5.SetNumberEditorInterval( 1 );
-        labelV5.SetNumberEditorUsesMouseWheel( false );
-        labelV5.SetHasCustomTextHoverColor( false );
-        labelV5.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        labelV5.SetFont( "Arial", 7, true, false );
+        label1000Hz = new VoltageLabel( "label1000Hz", "1000 Hz Label", this, "1000 Hz" );
+        AddComponent( label1000Hz );
+        label1000Hz.SetWantsMouseNotifications( false );
+        label1000Hz.SetPosition( 46, 188 );
+        label1000Hz.SetSize( 26, 12 );
+        label1000Hz.SetEditable( false, false );
+        label1000Hz.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        label1000Hz.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        label1000Hz.SetColor( new Color( 46, 46, 46, 255 ) );
+        label1000Hz.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        label1000Hz.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        label1000Hz.SetBorderSize( 1 );
+        label1000Hz.SetMultiLineEdit( false );
+        label1000Hz.SetIsNumberEditor( false );
+        label1000Hz.SetNumberEditorRange( 0, 100 );
+        label1000Hz.SetNumberEditorInterval( 1 );
+        label1000Hz.SetNumberEditorUsesMouseWheel( false );
+        label1000Hz.SetHasCustomTextHoverColor( false );
+        label1000Hz.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        label1000Hz.SetFont( "Arial", 7, true, false );
 
-        labelV2 = new VoltageLabel( "labelV2", "Voltage 2 Label", this, "125 Hz" );
-        AddComponent( labelV2 );
-        labelV2.SetWantsMouseNotifications( false );
-        labelV2.SetPosition( 32, 84 );
-        labelV2.SetSize( 26, 12 );
-        labelV2.SetEditable( false, false );
-        labelV2.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        labelV2.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        labelV2.SetColor( new Color( 46, 46, 46, 255 ) );
-        labelV2.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        labelV2.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        labelV2.SetBorderSize( 1 );
-        labelV2.SetMultiLineEdit( false );
-        labelV2.SetIsNumberEditor( false );
-        labelV2.SetNumberEditorRange( 0, 100 );
-        labelV2.SetNumberEditorInterval( 1 );
-        labelV2.SetNumberEditorUsesMouseWheel( false );
-        labelV2.SetHasCustomTextHoverColor( false );
-        labelV2.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        labelV2.SetFont( "Arial", 7, true, false );
+        label125Hz = new VoltageLabel( "label125Hz", "125 Hz Label", this, "125 Hz" );
+        AddComponent( label125Hz );
+        label125Hz.SetWantsMouseNotifications( false );
+        label125Hz.SetPosition( 46, 83 );
+        label125Hz.SetSize( 26, 12 );
+        label125Hz.SetEditable( false, false );
+        label125Hz.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        label125Hz.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        label125Hz.SetColor( new Color( 46, 46, 46, 255 ) );
+        label125Hz.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        label125Hz.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        label125Hz.SetBorderSize( 1 );
+        label125Hz.SetMultiLineEdit( false );
+        label125Hz.SetIsNumberEditor( false );
+        label125Hz.SetNumberEditorRange( 0, 100 );
+        label125Hz.SetNumberEditorInterval( 1 );
+        label125Hz.SetNumberEditorUsesMouseWheel( false );
+        label125Hz.SetHasCustomTextHoverColor( false );
+        label125Hz.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        label125Hz.SetFont( "Arial", 7, true, false );
 
-        labelV7 = new VoltageLabel( "labelV7", "Voltage 2 Label_2", this, "4000 Hz" );
-        AddComponent( labelV7 );
-        labelV7.SetWantsMouseNotifications( false );
-        labelV7.SetPosition( 32, 259 );
-        labelV7.SetSize( 26, 12 );
-        labelV7.SetEditable( false, false );
-        labelV7.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        labelV7.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        labelV7.SetColor( new Color( 46, 46, 46, 255 ) );
-        labelV7.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        labelV7.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        labelV7.SetBorderSize( 1 );
-        labelV7.SetMultiLineEdit( false );
-        labelV7.SetIsNumberEditor( false );
-        labelV7.SetNumberEditorRange( 0, 100 );
-        labelV7.SetNumberEditorInterval( 1 );
-        labelV7.SetNumberEditorUsesMouseWheel( false );
-        labelV7.SetHasCustomTextHoverColor( false );
-        labelV7.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        labelV7.SetFont( "Arial", 7, true, false );
+        label4000Hz = new VoltageLabel( "label4000Hz", "4000 Hz Label", this, "4000 Hz" );
+        AddComponent( label4000Hz );
+        label4000Hz.SetWantsMouseNotifications( false );
+        label4000Hz.SetPosition( 46, 258 );
+        label4000Hz.SetSize( 26, 12 );
+        label4000Hz.SetEditable( false, false );
+        label4000Hz.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        label4000Hz.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        label4000Hz.SetColor( new Color( 46, 46, 46, 255 ) );
+        label4000Hz.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        label4000Hz.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        label4000Hz.SetBorderSize( 1 );
+        label4000Hz.SetMultiLineEdit( false );
+        label4000Hz.SetIsNumberEditor( false );
+        label4000Hz.SetNumberEditorRange( 0, 100 );
+        label4000Hz.SetNumberEditorInterval( 1 );
+        label4000Hz.SetNumberEditorUsesMouseWheel( false );
+        label4000Hz.SetHasCustomTextHoverColor( false );
+        label4000Hz.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        label4000Hz.SetFont( "Arial", 7, true, false );
 
-        labelV9 = new VoltageLabel( "labelV9", "Voltage 2 Label_3", this, "8000 Hz" );
-        AddComponent( labelV9 );
-        labelV9.SetWantsMouseNotifications( false );
-        labelV9.SetPosition( 32, 294 );
-        labelV9.SetSize( 26, 12 );
-        labelV9.SetEditable( false, false );
-        labelV9.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        labelV9.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        labelV9.SetColor( new Color( 46, 46, 46, 255 ) );
-        labelV9.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        labelV9.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        labelV9.SetBorderSize( 1 );
-        labelV9.SetMultiLineEdit( false );
-        labelV9.SetIsNumberEditor( false );
-        labelV9.SetNumberEditorRange( 0, 100 );
-        labelV9.SetNumberEditorInterval( 1 );
-        labelV9.SetNumberEditorUsesMouseWheel( false );
-        labelV9.SetHasCustomTextHoverColor( false );
-        labelV9.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        labelV9.SetFont( "Arial", 7, true, false );
+        label8000Hz = new VoltageLabel( "label8000Hz", "8000 Hz Label", this, "8000 Hz" );
+        AddComponent( label8000Hz );
+        label8000Hz.SetWantsMouseNotifications( false );
+        label8000Hz.SetPosition( 44, 294 );
+        label8000Hz.SetSize( 26, 12 );
+        label8000Hz.SetEditable( false, false );
+        label8000Hz.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        label8000Hz.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        label8000Hz.SetColor( new Color( 46, 46, 46, 255 ) );
+        label8000Hz.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        label8000Hz.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        label8000Hz.SetBorderSize( 1 );
+        label8000Hz.SetMultiLineEdit( false );
+        label8000Hz.SetIsNumberEditor( false );
+        label8000Hz.SetNumberEditorRange( 0, 100 );
+        label8000Hz.SetNumberEditorInterval( 1 );
+        label8000Hz.SetNumberEditorUsesMouseWheel( false );
+        label8000Hz.SetHasCustomTextHoverColor( false );
+        label8000Hz.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        label8000Hz.SetFont( "Arial", 7, true, false );
 
         imageTTW = new VoltageImage( "imageTTW", "TTW Imagemark", this, false );
         AddComponent( imageTTW );
         imageTTW.SetWantsMouseNotifications( false );
         imageTTW.SetPosition( 5, 5 );
-        imageTTW.SetSize( 31, 10 );
+        imageTTW.SetSize( 40, 12 );
         imageTTW.SetCurrentImage( "image image.svg" );
 
         labelNumber = new VoltageLabel( "labelNumber", "Model Number Label", this, "ofb" );
@@ -320,92 +321,92 @@ void InitializeControls()
         labelNumber.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelNumber.SetFont( "Courier New", 13, true, false );
 
-        knob250 = new VoltageKnob( "knob250", "250 Hz", this, 0.0, 1.0, 1.0 );
-        AddComponent( knob250 );
-        knob250.SetWantsMouseNotifications( false );
-        knob250.SetPosition( 31, 96 );
-        knob250.SetSize( 25, 25 );
-        knob250.SetSkin( "ARP2500 Sm Silver" );
-        knob250.SetRange( 0.0, 1.0, 1.0, false, 0 );
-        knob250.SetKnobParams( 215, 145 );
-        knob250.DisplayValueInPercent( true );
-        knob250.SetKnobAdjustsRing( true );
+        knob250Hz = new VoltageKnob( "knob250Hz", "250 Hz", this, 0.0, 1.0, 1.0 );
+        AddComponent( knob250Hz );
+        knob250Hz.SetWantsMouseNotifications( false );
+        knob250Hz.SetPosition( 45, 95 );
+        knob250Hz.SetSize( 25, 25 );
+        knob250Hz.SetSkin( "ARP2500 Sm Silver" );
+        knob250Hz.SetRange( 0.0, 1.0, 1.0, false, 0 );
+        knob250Hz.SetKnobParams( 215, 145 );
+        knob250Hz.DisplayValueInPercent( true );
+        knob250Hz.SetKnobAdjustsRing( true );
 
-        knob2000 = new VoltageKnob( "knob2000", "2000 Hz", this, 0.0, 1.0, 1.0 );
-        AddComponent( knob2000 );
-        knob2000.SetWantsMouseNotifications( false );
-        knob2000.SetPosition( 31, 201 );
-        knob2000.SetSize( 25, 25 );
-        knob2000.SetSkin( "ARP2500 Sm Silver" );
-        knob2000.SetRange( 0.0, 1.0, 1.0, false, 0 );
-        knob2000.SetKnobParams( 215, 145 );
-        knob2000.DisplayValueInPercent( true );
-        knob2000.SetKnobAdjustsRing( true );
+        knob2kHz = new VoltageKnob( "knob2kHz", "2 kHz", this, 0.0, 1.0, 1.0 );
+        AddComponent( knob2kHz );
+        knob2kHz.SetWantsMouseNotifications( false );
+        knob2kHz.SetPosition( 45, 200 );
+        knob2kHz.SetSize( 25, 25 );
+        knob2kHz.SetSkin( "ARP2500 Sm Silver" );
+        knob2kHz.SetRange( 0.0, 1.0, 1.0, false, 0 );
+        knob2kHz.SetKnobParams( 215, 145 );
+        knob2kHz.DisplayValueInPercent( true );
+        knob2kHz.SetKnobAdjustsRing( true );
 
-        knob8000 = new VoltageKnob( "knob8000", "8000 Hz", this, 0.0, 1.0, 1.0 );
-        AddComponent( knob8000 );
-        knob8000.SetWantsMouseNotifications( false );
-        knob8000.SetPosition( 31, 271 );
-        knob8000.SetSize( 25, 25 );
-        knob8000.SetSkin( "ARP2500 Sm Silver" );
-        knob8000.SetRange( 0.0, 1.0, 1.0, false, 0 );
-        knob8000.SetKnobParams( 215, 145 );
-        knob8000.DisplayValueInPercent( true );
-        knob8000.SetKnobAdjustsRing( true );
+        knob8kHz = new VoltageKnob( "knob8kHz", "8 kHz", this, 0.0, 1.0, 1.0 );
+        AddComponent( knob8kHz );
+        knob8kHz.SetWantsMouseNotifications( false );
+        knob8kHz.SetPosition( 45, 270 );
+        knob8kHz.SetSize( 25, 25 );
+        knob8kHz.SetSkin( "ARP2500 Sm Silver" );
+        knob8kHz.SetRange( 0.0, 1.0, 1.0, false, 0 );
+        knob8kHz.SetKnobParams( 215, 145 );
+        knob8kHz.DisplayValueInPercent( true );
+        knob8kHz.SetKnobAdjustsRing( true );
 
-        labelV6 = new VoltageLabel( "labelV6", "Voltage3 Label_1", this, "2000 Hz" );
-        AddComponent( labelV6 );
-        labelV6.SetWantsMouseNotifications( false );
-        labelV6.SetPosition( 32, 224 );
-        labelV6.SetSize( 26, 12 );
-        labelV6.SetEditable( false, false );
-        labelV6.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        labelV6.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        labelV6.SetColor( new Color( 46, 46, 46, 255 ) );
-        labelV6.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        labelV6.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        labelV6.SetBorderSize( 1 );
-        labelV6.SetMultiLineEdit( false );
-        labelV6.SetIsNumberEditor( false );
-        labelV6.SetNumberEditorRange( 0, 100 );
-        labelV6.SetNumberEditorInterval( 1 );
-        labelV6.SetNumberEditorUsesMouseWheel( false );
-        labelV6.SetHasCustomTextHoverColor( false );
-        labelV6.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        labelV6.SetFont( "Arial", 7, true, false );
+        label2000Hz = new VoltageLabel( "label2000Hz", "2000 Hz Label", this, "2000 Hz" );
+        AddComponent( label2000Hz );
+        label2000Hz.SetWantsMouseNotifications( false );
+        label2000Hz.SetPosition( 46, 223 );
+        label2000Hz.SetSize( 26, 12 );
+        label2000Hz.SetEditable( false, false );
+        label2000Hz.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        label2000Hz.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        label2000Hz.SetColor( new Color( 46, 46, 46, 255 ) );
+        label2000Hz.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        label2000Hz.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        label2000Hz.SetBorderSize( 1 );
+        label2000Hz.SetMultiLineEdit( false );
+        label2000Hz.SetIsNumberEditor( false );
+        label2000Hz.SetNumberEditorRange( 0, 100 );
+        label2000Hz.SetNumberEditorInterval( 1 );
+        label2000Hz.SetNumberEditorUsesMouseWheel( false );
+        label2000Hz.SetHasCustomTextHoverColor( false );
+        label2000Hz.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        label2000Hz.SetFont( "Arial", 7, true, false );
 
-        labelV3 = new VoltageLabel( "labelV3", "Voltage3 Label", this, "250 Hz" );
-        AddComponent( labelV3 );
-        labelV3.SetWantsMouseNotifications( false );
-        labelV3.SetPosition( 32, 119 );
-        labelV3.SetSize( 26, 12 );
-        labelV3.SetEditable( false, false );
-        labelV3.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
-        labelV3.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
-        labelV3.SetColor( new Color( 46, 46, 46, 255 ) );
-        labelV3.SetBkColor( new Color( 65, 65, 65, 0 ) );
-        labelV3.SetBorderColor( new Color( 0, 0, 0, 0 ) );
-        labelV3.SetBorderSize( 1 );
-        labelV3.SetMultiLineEdit( false );
-        labelV3.SetIsNumberEditor( false );
-        labelV3.SetNumberEditorRange( 0, 100 );
-        labelV3.SetNumberEditorInterval( 1 );
-        labelV3.SetNumberEditorUsesMouseWheel( false );
-        labelV3.SetHasCustomTextHoverColor( false );
-        labelV3.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        labelV3.SetFont( "Arial", 7, true, false );
+        label250Hz = new VoltageLabel( "label250Hz", "250 Hz Label", this, "250 Hz" );
+        AddComponent( label250Hz );
+        label250Hz.SetWantsMouseNotifications( false );
+        label250Hz.SetPosition( 46, 118 );
+        label250Hz.SetSize( 26, 12 );
+        label250Hz.SetEditable( false, false );
+        label250Hz.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        label250Hz.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        label250Hz.SetColor( new Color( 46, 46, 46, 255 ) );
+        label250Hz.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        label250Hz.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        label250Hz.SetBorderSize( 1 );
+        label250Hz.SetMultiLineEdit( false );
+        label250Hz.SetIsNumberEditor( false );
+        label250Hz.SetNumberEditorRange( 0, 100 );
+        label250Hz.SetNumberEditorInterval( 1 );
+        label250Hz.SetNumberEditorUsesMouseWheel( false );
+        label250Hz.SetHasCustomTextHoverColor( false );
+        label250Hz.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        label250Hz.SetFont( "Arial", 7, true, false );
 
-        output = new VoltageAudioJack( "output", "Output", this, JackType.JackType_AudioOutput );
-        AddComponent( output );
-        output.SetWantsMouseNotifications( false );
-        output.SetPosition( 83, 306 );
-        output.SetSize( 25, 25 );
-        output.SetSkin( "Mini Jack 25px" );
+        outputAudio = new VoltageAudioJack( "outputAudio", "Output", this, JackType.JackType_AudioOutput );
+        AddComponent( outputAudio );
+        outputAudio.SetWantsMouseNotifications( false );
+        outputAudio.SetPosition( 84, 306 );
+        outputAudio.SetSize( 25, 25 );
+        outputAudio.SetSkin( "Mini Jack 25px" );
 
         labelIn = new VoltageLabel( "labelIn", "In Label", this, "IN" );
         AddComponent( labelIn );
         labelIn.SetWantsMouseNotifications( false );
-        labelIn.SetPosition( 0, 286 );
+        labelIn.SetPosition( 1, 290 );
         labelIn.SetSize( 36, 23 );
         labelIn.SetEditable( false, false );
         labelIn.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
@@ -426,7 +427,7 @@ void InitializeControls()
         labelOut = new VoltageLabel( "labelOut", "Output Label", this, "OUT" );
         AddComponent( labelOut );
         labelOut.SetWantsMouseNotifications( false );
-        labelOut.SetPosition( 78, 286 );
+        labelOut.SetPosition( 79, 290 );
         labelOut.SetSize( 36, 23 );
         labelOut.SetEditable( false, false );
         labelOut.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
@@ -444,11 +445,11 @@ void InitializeControls()
         labelOut.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelOut.SetFont( "Arial", 13, true, false );
 
-        labelLocation = new VoltageLabel( "labelLocation", "Location Mark", this, "(Seattle) Ltd" );
+        labelLocation = new VoltageLabel( "labelLocation", "Location Mark", this, "(Seattle) Ltd " );
         AddComponent( labelLocation );
         labelLocation.SetWantsMouseNotifications( false );
-        labelLocation.SetPosition( 0, 11 );
-        labelLocation.SetSize( 39, 13 );
+        labelLocation.SetPosition( 5, 12 );
+        labelLocation.SetSize( 40, 14 );
         labelLocation.SetEditable( false, false );
         labelLocation.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         labelLocation.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
@@ -463,14 +464,70 @@ void InitializeControls()
         labelLocation.SetNumberEditorUsesMouseWheel( false );
         labelLocation.SetHasCustomTextHoverColor( false );
         labelLocation.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
-        labelLocation.SetFont( "Arial", 5, true, false );
+        labelLocation.SetFont( "Arial", 7, true, false );
 
-        input = new VoltageAudioJack( "input", "Input", this, JackType.JackType_AudioInput );
-        AddComponent( input );
-        input.SetWantsMouseNotifications( false );
-        input.SetPosition( 5, 306 );
-        input.SetSize( 25, 25 );
-        input.SetSkin( "Jack Round 25px" );
+        inputAudio = new VoltageAudioJack( "inputAudio", "Input", this, JackType.JackType_AudioInput );
+        AddComponent( inputAudio );
+        inputAudio.SetWantsMouseNotifications( false );
+        inputAudio.SetPosition( 6, 306 );
+        inputAudio.SetSize( 25, 25 );
+        inputAudio.SetSkin( "Jack Round 25px" );
+
+        input125HzCv = new VoltageAudioJack( "input125HzCv", "125 Hz CV In", this, JackType.JackType_AudioInput );
+        AddComponent( input125HzCv );
+        input125HzCv.SetWantsMouseNotifications( false );
+        input125HzCv.SetPosition( 15, 60 );
+        input125HzCv.SetSize( 25, 25 );
+        input125HzCv.SetSkin( "Jack Round 25px" );
+
+        input250HzCv = new VoltageAudioJack( "input250HzCv", "250 Hz CV In", this, JackType.JackType_AudioInput );
+        AddComponent( input250HzCv );
+        input250HzCv.SetWantsMouseNotifications( false );
+        input250HzCv.SetPosition( 15, 95 );
+        input250HzCv.SetSize( 25, 25 );
+        input250HzCv.SetSkin( "Jack Round 25px" );
+
+        input500HzCv = new VoltageAudioJack( "input500HzCv", "500 Hz CV In", this, JackType.JackType_AudioInput );
+        AddComponent( input500HzCv );
+        input500HzCv.SetWantsMouseNotifications( false );
+        input500HzCv.SetPosition( 15, 130 );
+        input500HzCv.SetSize( 25, 25 );
+        input500HzCv.SetSkin( "Jack Round 25px" );
+
+        input1kHzCv = new VoltageAudioJack( "input1kHzCv", "1 kHz CV In", this, JackType.JackType_AudioInput );
+        AddComponent( input1kHzCv );
+        input1kHzCv.SetWantsMouseNotifications( false );
+        input1kHzCv.SetPosition( 15, 165 );
+        input1kHzCv.SetSize( 25, 25 );
+        input1kHzCv.SetSkin( "Jack Round 25px" );
+
+        input2kHzCv = new VoltageAudioJack( "input2kHzCv", "2 kHz CV In", this, JackType.JackType_AudioInput );
+        AddComponent( input2kHzCv );
+        input2kHzCv.SetWantsMouseNotifications( false );
+        input2kHzCv.SetPosition( 15, 200 );
+        input2kHzCv.SetSize( 25, 25 );
+        input2kHzCv.SetSkin( "Jack Round 25px" );
+
+        input4kHzCv = new VoltageAudioJack( "input4kHzCv", "4 kHz CV In", this, JackType.JackType_AudioInput );
+        AddComponent( input4kHzCv );
+        input4kHzCv.SetWantsMouseNotifications( false );
+        input4kHzCv.SetPosition( 15, 235 );
+        input4kHzCv.SetSize( 25, 25 );
+        input4kHzCv.SetSkin( "Jack Round 25px" );
+
+        input8kHzCv = new VoltageAudioJack( "input8kHzCv", "8 kHz CV In", this, JackType.JackType_AudioInput );
+        AddComponent( input8kHzCv );
+        input8kHzCv.SetWantsMouseNotifications( false );
+        input8kHzCv.SetPosition( 15, 270 );
+        input8kHzCv.SetSize( 25, 25 );
+        input8kHzCv.SetSkin( "Jack Round 25px" );
+
+        input63HzCv = new VoltageAudioJack( "input63HzCv", "63 Hz CV In", this, JackType.JackType_AudioInput );
+        AddComponent( input63HzCv );
+        input63HzCv.SetWantsMouseNotifications( false );
+        input63HzCv.SetPosition( 15, 26 );
+        input63HzCv.SetSize( 25, 25 );
+        input63HzCv.SetSkin( "Jack Round 25px" );
 }
 
 
@@ -485,7 +542,35 @@ void InitializeControls()
     public void Initialize()
     {
         //[user-Initialize]   Add your own initialization code here
-
+        gainKnobs[0] = knob63Hz; individualOuts[0] = jack63HzOut;
+        gainKnobs[1] = knob125Hz; individualOuts[1] = jack125HzOut;
+        gainKnobs[2] = knob250Hz; individualOuts[2] = jack250HzOut;
+        gainKnobs[3] = knob500Hz; individualOuts[3] = jack500HzOut;
+        gainKnobs[4] = knob1kHz; individualOuts[4] = jack1kHzOut;
+        gainKnobs[5] = knob2kHz; individualOuts[5] = jack2kHzOut;
+        gainKnobs[6] = knob4kHz; individualOuts[6] = jack4kHzOut;
+        gainKnobs[7] = knob8kHz; individualOuts[7] = jack8kHzOut;
+        bandCvInputs[0] = input63HzCv;
+        bandCvInputs[1] = input125HzCv;
+        bandCvInputs[2] = input250HzCv;
+        bandCvInputs[3] = input500HzCv;
+        bandCvInputs[4] = input1kHzCv;
+        bandCvInputs[5] = input2kHzCv;
+        bandCvInputs[6] = input4kHzCv;
+        bandCvInputs[7] = input8kHzCv;
+        for (int i = 0; i < BAND_COUNT; i++) {
+            highPass[i] = new BiquadFilter();
+            lowPass[i] = new BiquadFilter();
+            double highFrequency = 1.0 / (2.0 * Math.PI * HP_CAPACITORS[i]
+                    * Math.sqrt(HP_RESISTOR_SMALL[i] * HP_RESISTOR_LARGE[i]));
+            double highQ = Math.sqrt(HP_RESISTOR_LARGE[i] / HP_RESISTOR_SMALL[i]) / 2.0;
+            double lowFrequency = 1.0 / (2.0 * Math.PI * LP_RESISTORS[i]
+                    * Math.sqrt(LP_FEEDBACK_CAPACITORS[i] * LP_GROUND_CAPACITORS[i]));
+            double lowQ = Math.sqrt(LP_FEEDBACK_CAPACITORS[i] / LP_GROUND_CAPACITORS[i]) / 2.0;
+            highPass[i].configure(highFrequency, highQ, true);
+            lowPass[i].configure(lowFrequency, lowQ, false);
+            adoptGain(i);
+        }
 
 
         //[/user-Initialize]
@@ -519,209 +604,17 @@ void InitializeControls()
     public boolean Notify( VoltageComponent component, ModuleNotifications notification, double doubleValue, long longValue, int x, int y, Object object )
     {
         //[user-Notify]   Add your own notification handling code between this line and the notify-close comment
-        switch( notification )
-        {
-            case Knob_Changed:   // doubleValue is the new VoltageKnob value
-            {
-            }
-            break;
-        
-            case Slider_Changed:   // doubleValue is the new slider value
-            {
-            }
-            break;
-        
-            case Button_Changed:   // doubleValue is the new button/toggle button value
-            {
-            }
-            break;
-        
-            case Switch_Changed:   // doubleValue is the new switch value
-            {
-            }
-            break;
-        
-            case Jack_Connected:   // longValue is the new cable ID
-            {
-            }
-            break;
-        
-            case Jack_Disconnected:   // All cables have been disconnected from this jack
-            {
-            }
-            break;
-        
-            case GUI_Update_Timer:   // Called every 50ms (by default) if turned on
-            {
-            }
-            break;
-        
-            case Object_MouseMove:   // called when mouse is over an object that receives mouse notifications. 'object' parameter is a VoltageMouseKeyFlags object.
-            {
-            }
-            break;
-        
-            case Object_MouseLeave:  // called when mouse leaves an object that receives mouse notifications. 'object' parameter is a VoltageMouseKeyFlags object.
-            {
-            }
-            break;
-        
-            case Object_LeftButtonDown:   // called when user left-clicks on an object that receives mouse notifications. 'object' parameter is a VoltageMouseKeyFlags object.
-            {
-            }
-            break;
-        
-            case Object_LeftButtonUp:   // called when user releases left mouse button on an object that receives mouse notifications. 'object' parameter is a VoltageMouseKeyFlags object.
-            {
-            }
-            break;
-        
-            case Object_RightButtonDown:   // called when user releases right mouse button on an object that receives mouse notifications. 'object' parameter is a VoltageMouseKeyFlags object.
-            {
-            }
-            break;
-        
-            case Object_RightButtonUp:   // called when user right-clicks on an object that receives mouse notifications
-            {
-            }
-            break;
-        
-            case Object_LeftButtonDoubleClick: // called when user left-button double-clicks on an object that receives mouse notifications
-            {
-            }
-            break;
-        
-            // Less common notifications:
-        
-            case Named_Timer:   // object contains a String with the name of the timer that has fired
-            {
-            }
-            break;
-        
-            case Canvas_Painting:   // About to paint canvas.  object is a java.awt.Rectangle with painting boundaries
-            {
-            }
-            break;
-        
-            case Canvas_Painted:   // Canvas painting is complete
-            {
-            }
-            break;
-        
-            case Control_DragStart:    // A user has started dragging on a control that has been marked as draggable
-            {
-            }
-            break;
-        
-            case Control_DragOn:       // This control has been dragged over during a drag operation. object contains the dragged object
-            {
-            }
-            break;
-        
-            case Control_DragOff:      // This control has been dragged over during a drag operation. object contains the dragged object
-            {
-            }
-            break;
-        
-            case Control_DragEnd:      // A user has ended their drag on a control that has been marked as draggable
-            {
-            }
-            break;
-        
-            case Label_Changed:        // The text of an editable text control has changed
-            {
-            }
-            break;
-        
-            case SoundPlayback_Start:   // A sound has begun playback
-            {
-            }
-            break;
-        
-            case SoundPlayback_End:     // A sound has ended playback
-            {
-            }
-            break;
-        
-            case Scrollbar_Position:    // longValue is the new scrollbar position
-            {
-            }
-            break;
-        
-            case PolyVoices_Changed:    // longValue is the new number of poly voices
-            {
-            }
-            break;
-        
-            case File_Dropped:     // 'object' is a String containing the file path
-            {
-            }
-            break;
-        
-            case Preset_Loading_Start:   // called when preset loading begins
-            {
-            }
-            break;
-        
-            case Preset_Loading_Finish:  // called when preset loading finishes
-            {
-            }
-            break;
-        
-            case Variation_Loading_Start:    // sent when a variation is about to load
-            {
-            }
-            break;
-        
-            case Variation_Loading_Finish:   // sent when a variation has just finished loading
-            {
-            }
-            break;
-        
-            case Tempo_Changed:     // doubleValue is the new tempo
-            {
-            }
-            break;
-        
-            case Randomized:     // called when the module's controls get randomized
-            {
-            }
-            break;
-        
-            case VariationListChanged:   // sent when a variation gets added, deleted, or renamed, or the variations list gets reordered
-            {
-            }
-            break;
-        
-            case Key_Press:     // sent when module has keyboard focus and a key is pressed; object is a VoltageKeyPressInfo object
-            {
-            }
-            break;
-        
-            case Reset:    // sent when the module has been reset to default settings
-            {
-            }
-            break;
-        
-            case Keyboard_NoteOn:   // sent when a note has been pressed on a VoltageKeyboard object. longValue is the note value ( 0-127 )
-            {
-            }
-            break;
-        
-            case Keyboard_NoteOff:   // sent when a note has been released on a VoltageKeyboard object. longValue is the note value ( 0-127 )
-            {
-            }
-            break;
-        
-            case Curve_Changed:   // sent when user has edited a curve's value. 'object' will be a VoltageCurve.CurveChangeNotification object.
-            {
-            }
-            break;
+        switch (notification) {
+            case Reset:
+            case Preset_Loading_Finish:
+            case Variation_Loading_Finish:
+                resetPending.set(true);
+                break;
+            default:
+                break;
         }
-
-
-
         return false;
+
         //[/user-Notify]
     }
 
@@ -738,7 +631,52 @@ void InitializeControls()
     public void ProcessSample()
     {
         //[user-ProcessSample]   Add your own process-sampling code here
-
+        boolean clearHistory = resetPending.getAndSet(false);
+        if (resumePending.getAndSet(false) || clearHistory) {
+            for (int i = 0; i < BAND_COUNT; i++) {
+                highPass[i].reset();
+                lowPass[i].reset();
+                adoptGain(i);
+            }
+            resetMixer();
+        }
+        double input = readSignal(inputAudio);
+        double mix = 0.0;
+        for (int i = 0; i < BAND_COUNT; i++) {
+            double band = lowPass[i].process(highPass[i].process(input));
+            double position = safeGain(gainKnobs[i].GetValue());
+            if (position != cachedPositions[i]) {
+                cachedPositions[i] = position;
+                targetGains[i] = mixGainForKnob(position);
+            }
+            smoothedGains[i] += GAIN_SMOOTHING * (targetGains[i] - smoothedGains[i]);
+            double delayedBand = tapDelay[i][tapDelayPosition];
+            tapDelay[i][tapDelayPosition] = band;
+            individualOuts[i].SetValue(delayedBand);
+            smoothedPositions[i] += GAIN_SMOOTHING * (position - smoothedPositions[i]);
+            double effectiveGain = smoothedGains[i];
+            if (bandCvInputs[i].IsConnected()) {
+                double effectivePosition = safeGain(smoothedPositions[i]
+                        + readSignal(bandCvInputs[i]) / CV_FULL_SWEEP_VOLTS);
+                if (effectivePosition != cachedCvPositions[i]) {
+                    cachedCvPositions[i] = effectivePosition;
+                    cachedCvGains[i] = mixGainForKnob(effectivePosition);
+                }
+                effectiveGain = cachedCvGains[i];
+            }
+            mix += MIX_POLARITY[i] * band * effectiveGain;
+        }
+        tapDelayPosition++;
+        if (tapDelayPosition == MIX_DELAY_SAMPLES) {
+            tapDelayPosition = 0;
+        }
+        // Numerical guard outside the intended audio domain protects FIR histories.
+        double safeMix = Double.isFinite(mix) ? Math.max(-1.0e6, Math.min(1.0e6, mix)) : 0.0;
+        double first = mixUpsampler.process(safeMix * 2.0);
+        double second = mixUpsampler.process(0.0);
+        double output = mixDownsampler.process(shapeMix(first));
+        mixDownsampler.process(shapeMix(second));
+        outputAudio.SetValue(output * RESAMPLER_DC_NORMALIZATION);
 
 
         //[/user-ProcessSample]
@@ -757,14 +695,11 @@ void InitializeControls()
     public void ProcessBypassedSample()
     {
         //[user-ProcessBypassedSample]   Add your own code here
-        outputV1.SetValue(0.0);
-        outputV2.SetValue(0.0);
-        outputV3.SetValue(0.0);  
-                                    
-                                    
-                                          
-                                 
-                             
+        outputAudio.SetValue(readSignal(inputAudio));
+        for (int i = 0; i < BAND_COUNT; i++) {
+            individualOuts[i].SetValue(0.0);
+        }
+        resumePending.set(true);
 
         //[/user-ProcessBypassedSample]
     }
@@ -781,10 +716,32 @@ void InitializeControls()
     public String GetTooltipText( VoltageComponent component )
     {
         //[user-GetTooltipText]   Add your own code here
+        if (component == inputAudio) {
+            return "Audio input: unpatched = 0 V; buffered input feeds eight HP/LP paths; no added input saturation.";
+        }
+        if (component == outputAudio) {
+            return "Main mix: gentle 12 V soft knee, 2x oversampled; no makeup gain; 9-sample delay; bypass passes input.";
+        }
+        for (int i = 0; i < BAND_COUNT; i++) {
+            if (component == bandCvInputs[i]) {
+                return String.format(java.util.Locale.ROOT,
+                        "%.0f Hz mix-level CV: +5 V adds full knob travel, negative closes; bounded 0–100%%; direct tap unaffected",
+                        FREQUENCIES[i]);
+            }
+            if (component == gainKnobs[i]) {
+                double position = safeGain(gainKnobs[i].GetValue());
+                return String.format(java.util.Locale.ROOT,
+                        "%.0f Hz mix knob: %.2f%%; log attenuation %.2f%%; enter knob percent; direct tap unaffected",
+                        FREQUENCIES[i], position * 100.0, mixGainForKnob(position) * 100.0);
+            }
+            if (component == individualOuts[i]) {
+                return String.format(java.util.Locale.ROOT,
+                        "%.0f Hz clean HP/LP tap before mix pot; aligned 9-sample delay; silent in bypass", FREQUENCIES[i]);
+            }
+        }
+        return super.GetTooltipText(component);
 
 
-
-        return super.GetTooltipText( component );
         //[/user-GetTooltipText]
     }
 
@@ -800,6 +757,14 @@ void InitializeControls()
     public void EditComponentValue( VoltageComponent component, double newValue, String newText )
     {
         //[user-EditComponentValue]   Add your own code here
+        for (int i = 0; i < BAND_COUNT; i++) {
+            if (component == gainKnobs[i]) {
+                if (Double.isFinite(newValue)) {
+                    gainKnobs[i].SetValue(safeGain(newValue / 100.0));
+                }
+                return;
+            }
+        }
 
 
 
@@ -836,10 +801,7 @@ void InitializeControls()
     public byte[] GetStateInformation()
     {
         //[user-GetStateInformation]   Add your own code here
-
-
-
-        return null;
+return null;
         //[/user-GetStateInformation]
     }
 
@@ -872,10 +834,7 @@ void InitializeControls()
     public byte[] GetStateInformationForVariations()
     {
         //[user-GetStateInformationForVariations]   Add your own code here
-
-
-
-        return GetStateInformation();
+return GetStateInformation();
         //[/user-GetStateInformationForVariations]
     }
 
@@ -890,56 +849,296 @@ void InitializeControls()
     public void SetStateInformationForVariations(byte[] stateInfo)
     {
         //[user-SetStateInformationForVariations]   Add your own code here
-        SetStateInformation(stateInfo);
-
-
-
+SetStateInformation(stateInfo);
         //[/user-SetStateInformationForVariations]
     }
 
 
     // Auto-generated variables
-    private VoltageAudioJack input;
+    private VoltageAudioJack input63HzCv;
+    private VoltageAudioJack input8kHzCv;
+    private VoltageAudioJack input4kHzCv;
+    private VoltageAudioJack input2kHzCv;
+    private VoltageAudioJack input1kHzCv;
+    private VoltageAudioJack input500HzCv;
+    private VoltageAudioJack input250HzCv;
+    private VoltageAudioJack input125HzCv;
+    private VoltageAudioJack inputAudio;
     private VoltageLabel labelLocation;
     private VoltageLabel labelOut;
     private VoltageLabel labelIn;
-    private VoltageAudioJack output;
-    private VoltageLabel labelV3;
-    private VoltageLabel labelV6;
-    private VoltageKnob knob8000;
-    private VoltageKnob knob2000;
-    private VoltageKnob knob250;
+    private VoltageAudioJack outputAudio;
+    private VoltageLabel label250Hz;
+    private VoltageLabel label2000Hz;
+    private VoltageKnob knob8kHz;
+    private VoltageKnob knob2kHz;
+    private VoltageKnob knob250Hz;
     private VoltageLabel labelNumber;
     private VoltageImage imageTTW;
-    private VoltageLabel labelV9;
-    private VoltageLabel labelV7;
-    private VoltageLabel labelV2;
-    private VoltageLabel labelV5;
-    private VoltageAudioJack output63;
-    private VoltageAudioJack output8000;
-    private VoltageLabel labelV1;
-    private VoltageAudioJack output4000;
-    private VoltageLabel labelV4;
-    private VoltageAudioJack output2000;
-    private VoltageAudioJack output1000;
+    private VoltageLabel label8000Hz;
+    private VoltageLabel label4000Hz;
+    private VoltageLabel label125Hz;
+    private VoltageLabel label1000Hz;
+    private VoltageAudioJack jack63HzOut;
+    private VoltageAudioJack jack8kHzOut;
+    private VoltageLabel label63Hz;
+    private VoltageAudioJack jack4kHzOut;
+    private VoltageLabel label500Hz;
+    private VoltageAudioJack jack2kHzOut;
+    private VoltageAudioJack jack1kHzOut;
     private VoltageLabel labelFooter;
-    private VoltageAudioJack output500;
-    private VoltageAudioJack output250;
-    private VoltageAudioJack output125;
-    private VoltageKnob knob4000;
-    private VoltageKnob knob1000;
-    private VoltageKnob knob125;
-    private VoltageKnob knob500;
-    private VoltageKnob knob63;
+    private VoltageAudioJack jack500HzOut;
+    private VoltageAudioJack jack250HzOut;
+    private VoltageAudioJack jack125HzOut;
+    private VoltageKnob knob4kHz;
+    private VoltageKnob knob1kHz;
+    private VoltageKnob knob125Hz;
+    private VoltageKnob knob500Hz;
+    private VoltageKnob knob63Hz;
 
 
     //[user-code-and-variables]    Add your own variables and functions here
+    private static final int BAND_COUNT = 8;
+    private static final double SAMPLE_RATE = 48000.0;
+    private static final double GAIN_SMOOTHING = 1.0 - Math.exp(-1.0 / (0.005 * SAMPLE_RATE));
+    private static final double POT_OHMS = 5000.0;
+    private static final double MIX_INPUT_OHMS = 10000.0;
+    private static final double LOG_TAPER_SPAN = Math.log(100.0);
+    private static final double[] FREQUENCIES = {63, 125, 250, 500, 1000, 2000, 4000, 8000};
+    // Nominal components from drawing 82/11 p1; PCB low-band trim is not applied.
+    private static final double[] HP_RESISTOR_SMALL = {18000, 9100, 4300, 2200, 3300, 1600, 2700, 1300};
+    private static final double[] HP_RESISTOR_LARGE = {180000, 91000, 43000, 22000, 33000, 16000, 27000, 13000};
+    private static final double[] HP_CAPACITORS = {47e-9, 47e-9, 47e-9, 47e-9, 15e-9, 15e-9, 4.7e-9, 4.7e-9};
+    private static final double[] LP_RESISTORS = {56000, 27000, 13000, 6800, 10000, 5600, 8200, 4300};
+    private static final double[] LP_FEEDBACK_CAPACITORS = {150e-9, 150e-9, 150e-9, 150e-9, 47e-9, 47e-9, 15e-9, 15e-9};
+    private static final double[] LP_GROUND_CAPACITORS = {15e-9, 15e-9, 15e-9, 15e-9, 4.7e-9, 4.7e-9, 1.5e-9, 1.5e-9};
+    private static final double[] MIX_POLARITY = {-1, 1, -1, 1, -1, 1, -1, 1};
+    private final BiquadFilter[] highPass = new BiquadFilter[BAND_COUNT];
+    private final BiquadFilter[] lowPass = new BiquadFilter[BAND_COUNT];
+    private final VoltageKnob[] gainKnobs = new VoltageKnob[BAND_COUNT];
+    private final VoltageAudioJack[] individualOuts = new VoltageAudioJack[BAND_COUNT];
+    private static final double CV_FULL_SWEEP_VOLTS = 5.0;
+    private final VoltageAudioJack[] bandCvInputs = new VoltageAudioJack[BAND_COUNT];
+    private final double[] smoothedPositions = new double[BAND_COUNT];
+    private final double[] cachedCvPositions = new double[BAND_COUNT];
+    private final double[] cachedCvGains = new double[BAND_COUNT];
+    private final double[] smoothedGains = new double[BAND_COUNT];
+    private final double[] cachedPositions = new double[BAND_COUNT];
+    private final double[] targetGains = new double[BAND_COUNT];
+    private final AtomicBoolean resetPending = new AtomicBoolean(false);
+    private final AtomicBoolean resumePending = new AtomicBoolean(false);
+
+    private static double safeGain(double value) {
+        return Double.isFinite(value) ? Math.max(0.0, Math.min(1.0, value)) : 0.0;
+    }
+
+    private static double readSignal(VoltageAudioJack jack) {
+        if (!jack.IsConnected()) {
+            return 0.0;
+        }
+        double value = jack.GetValue();
+        return Double.isFinite(value) ? value : 0.0;
+    }
+
+    // Chosen smooth audio taper; actual vintage LOG-pot curve has not been measured.
+    private static double mixGainForKnob(double position) {
+        double fraction = Math.min(1.0, Math.expm1(LOG_TAPER_SPAN * safeGain(position)) / 99.0);
+        return fraction / (1.0 + POT_OHMS * fraction * (1.0 - fraction) / MIX_INPUT_OHMS);
+    }
+
+    private void adoptGain(int index) {
+        cachedPositions[index] = safeGain(gainKnobs[index].GetValue());
+        targetGains[index] = mixGainForKnob(cachedPositions[index]);
+        smoothedGains[index] = targetGains[index];
+        smoothedPositions[index] = cachedPositions[index];
+        cachedCvPositions[index] = Double.NaN;
+        cachedCvGains[index] = 0.0;
+    }
+
+    // Experimental summing-amplifier headroom; not a measured 741 saturation law.
+    private static final double MIX_HEADROOM_VOLTS = 12.0;
+    private static final int MIX_DELAY_SAMPLES = 9;
+    private final HalfBand19 mixUpsampler = new HalfBand19();
+    private final HalfBand19 mixDownsampler = new HalfBand19();
+    private final double[][] tapDelay = new double[BAND_COUNT][MIX_DELAY_SAMPLES];
+    private int tapDelayPosition;
+    private static final double RESAMPLER_DC_NORMALIZATION = resamplerDcNormalization();
+
+    private static double resamplerDcNormalization() {
+        double sum = 2.0 * (0.021277660466073 - 0.027992303277934
+                + 0.049537687283950 - 0.095789590456413 + 0.308510413777763)
+                + 0.488912264413122;
+        double alternating = sum - 2.0 * 0.488912264413122;
+        return 1.0 / (sum * sum + alternating * alternating);
+    }
+
+    // Fourth-order soft knee: unity small-signal gain, no time-varying compressor or DC bias.
+    private static double shapeMix(double value) {
+        if (!Double.isFinite(value)) {
+            return 0.0;
+        }
+        double ratio = Math.abs(value) / MIX_HEADROOM_VOLTS;
+        if (ratio <= 1.0) {
+            double squared = ratio * ratio;
+            return value / Math.sqrt(Math.sqrt(1.0 + squared * squared));
+        }
+        double inverse = 1.0 / ratio;
+        double squared = inverse * inverse;
+        return Math.copySign(MIX_HEADROOM_VOLTS
+                / Math.sqrt(Math.sqrt(1.0 + squared * squared)), value);
+    }
+
+    private void resetMixer() {
+        mixUpsampler.reset();
+        mixDownsampler.reset();
+        for (int i = 0; i < BAND_COUNT; i++) {
+            java.util.Arrays.fill(tapDelay[i], 0.0);
+        }
+        tapDelayPosition = 0;
+    }
+
+/** Established Colorbox 19-tap half-band FIR; coefficients/arithmetic preserved. */
+private static final class HalfBand19
+{
+    private static final double C0 =
+         0.021277660466073;
+
+    private static final double C2 =
+        -0.027992303277934;
+
+    private static final double C4 =
+         0.049537687283950;
+
+    private static final double C6 =
+        -0.095789590456413;
+
+    private static final double C8 =
+         0.308510413777763;
+
+    private static final double C9 =
+         0.488912264413122;
+
+
+    // A doubled ring buffer avoids array shifting and modulo.
+
+    private final double[] buffer =
+        new double[38];
+
+    private int position = 0;
+    private boolean dirty = false;
+
+
+    public double process( double input )
+    {
+        position--;
+
+        if( position < 0 )
+        {
+            position = 18;
+        }
+
+        buffer[position] = input;
+        buffer[position + 19] = input;
+
+        dirty = true;
+
+
+        return
+            C0 *
+                (buffer[position] +
+                 buffer[position + 18])
+            +
+            C2 *
+                (buffer[position + 2] +
+                 buffer[position + 16])
+            +
+            C4 *
+                (buffer[position + 4] +
+                 buffer[position + 14])
+            +
+            C6 *
+                (buffer[position + 6] +
+                 buffer[position + 12])
+            +
+            C8 *
+                (buffer[position + 8] +
+                 buffer[position + 10])
+            +
+            C9 *
+                buffer[position + 9];
+    }
+
+
+    public void reset()
+    {
+        // Avoid repeatedly clearing an already-empty filter.
+
+        if( !dirty )
+        {
+            return;
+        }
+
+        for( int i = 0; i < 38; i++ )
+        {
+            buffer[i] = 0.0;
+        }
+
+        position = 0;
+        dirty = false;
+    }
+}
+
+
+    // Ideal unity-gain Sallen-Key equivalent, bilinear transformed with each f0 prewarped.
+    private static final class BiquadFilter {
+        private double b0, b1, b2, a1, a2;
+        private double x1, x2, y1, y2;
+
+        private void configure(double frequency, double q, boolean highpass) {
+            if (!Double.isFinite(frequency) || !Double.isFinite(q)
+                    || frequency <= 0.0 || frequency >= SAMPLE_RATE * 0.5 || q <= 0.0) {
+                throw new IllegalArgumentException("Invalid fixed filter configuration");
+            }
+            double omega = 2.0 * Math.PI * frequency / SAMPLE_RATE;
+            double cosine = Math.cos(omega);
+            double alpha = Math.sin(omega) / (2.0 * q);
+            double denominator = 1.0 + alpha;
+            double numerator = highpass ? (1.0 + cosine) : (1.0 - cosine);
+            b0 = numerator * 0.5 / denominator;
+            b1 = (highpass ? -numerator : numerator) / denominator;
+            b2 = b0;
+            a1 = -2.0 * cosine / denominator;
+            a2 = (1.0 - alpha) / denominator;
+        }
+
+        private double process(double input) {
+            if (!Double.isFinite(input)) {
+                input = 0.0;
+            }
+            if (!Double.isFinite(x1) || !Double.isFinite(x2)
+                    || !Double.isFinite(y1) || !Double.isFinite(y2)) {
+                reset();
+            }
+            double output = (b0 * input) + (b1 * x1) + (b2 * x2) - (a1 * y1) - (a2 * y2);
+            if (!Double.isFinite(output)) {
+                reset();
+                return 0.0;
+            }
+            x2 = x1;
+            x1 = input;
+            y2 = y1;
+            y1 = output;
+            return output;
+        }
+
+        private void reset() {
+            x1 = x2 = y1 = y2 = 0.0;
+        }
+    }
+
+
+    
     //[/user-code-and-variables]
-
-
-
-
-
 }
 
  

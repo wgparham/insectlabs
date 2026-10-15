@@ -1,3 +1,13 @@
-# OFB development
+# OFB 1.0.0
 
-User-supplied Octave Filter Bank working pair. Preserved in Git at the user's request to push all current work on 2026-10-14. Not reviewed, tested, canonized or published by this commit. Shared schematics are in ../../references/. Publication follows the collection gate.
+Canonical, approved 2026-10-14; publication deferred.
+
+- [Manual](USER-MANUAL.md)
+- [Developer notes](DEVELOPER-NOTES.md)
+- [Release notes](RELEASE-NOTES.md)
+- [Review](REVIEW.md)
+- [Validation](VALIDATION.txt)
+- [Tests](tests/validate.py)
+- [Hashes](SHA256.json)
+
+Development pair matches canon. Historical design records retain their original candidate context.
