@@ -14,6 +14,12 @@ Provenance: unchanged coefficients/arithmetic from Colorbox RGB 4.0.2, extracted
 
 This is a low-cost interpolation primitive, not an anti-aliasing resampler. For pitch reduction or playback-rate conversion, pair it with a suitable band-limit filter. Model 62 uses a windowed-sinc table instead; it does not use this primitive in its approved audio path.
 
+## EmsSvf96
+
+[Source](src/com/insectlabs/dsp/filters/EmsSvf96.java): reusable 96 kHz two-integrator nonlinear SVF core extracted from Teletape Workshop SVF 1.0.0. It returns simultaneous circuit-scaled HIGH, BAND and LOW taps. The caller supplies samples at 96 kHz and owns input gain, routing and resampling. Call `configure(frequencyHz, response)` with finite `0 < frequencyHz < 48000`; response is clamped to 0–1. Call `process(input)` for each sample, then read the three taps. `reset()` clears integrator state, oscillation-seed state and taps. Invalid frequency throws `IllegalArgumentException`; nonfinite input is converted to zero.
+
+The arithmetic is bit-identical to the approved embedded core. The `tanh` OTA law, response mapping, amplitude-dependent loop loss, oscillation seed and output stage are software voicing choices, not a component-level reconstruction or measured EMS behavior. Use this primitive when that specific nonlinear response is wanted; a general linear SVF should use a simpler module-specific core.
+
 ## Validation
 
-Run `python tests/validate.py` with Java 17 for half-band impulse/symmetry, gain, reset and independence checks plus cubic interpolation endpoints, constants, and linear ramps.
+Run `python tests/validate.py` with Java 17. It checks HalfBand19 impulse/symmetry/gain/reset/independence, CubicHermite endpoints/constant/linear interpolation, and EmsSvf96 finite and bounded processing, reset, high-response stress and API preconditions. The separate Teletape SVF release harness compares the extracted primitive bit-for-bit with its embedded source.

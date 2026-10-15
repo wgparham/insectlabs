@@ -23,4 +23,4 @@
 
 Canonical means the repository’s authoritative source release, not store publication. Each module’s release record states what was compiled, auditioned, and reviewed.
 
-The next collection is [Teletape Workshop](../Teletape%20Workshop/README.md), formerly the Radiophonic series. Its first canonical module is the EMS-inspired [RVG Random Voltage Generator](../Teletape%20Workshop/RVG/README.md) v1.8.0. The remaining series direction is open.
+The next collection is [Teletape Workshop](../Teletape%20Workshop/README.md), formerly the Radiophonic series. Its first canonical module is the EMS-inspired [RVG Random Voltage Generator](../Teletape%20Workshop/RVG/README.md) v2.0.0. Teletape Workshop now has five canonized modules (RVG, TSL, OFB, b08 and SVF); its complete lineup remains open.

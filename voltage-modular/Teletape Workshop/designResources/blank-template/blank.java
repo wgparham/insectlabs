@@ -1,0 +1,310 @@
+package com.insectlabs.blank;
+
+
+import voltage.controllers.*;
+import voltage.core.*;
+import voltage.core.Jack.JackType;
+import voltage.sources.*;
+import voltage.utility.*;
+import voltage.processors.*;
+import voltage.effects.*;
+import java.awt.*;
+
+//[user-imports]   Add your own imports here
+
+
+//[/user-imports]
+
+
+public class blank extends VoltageModule
+//[user-inheritance]
+
+
+//[/user-inheritance]
+{
+
+    @SuppressWarnings("this-escape") 
+    public blank( long moduleID, VoltageObjects voltageObjects )
+    {
+        super( moduleID, voltageObjects, "blank", ModuleType.ModuleType_Source, 1.6 );
+
+        InitializeControls();
+
+
+        canBeBypassed = true;
+        SetSkin( "241d40c721ee438e84043d843f0c55a3" );
+    }
+
+void InitializeControls()
+{
+
+        labelFooter = new VoltageLabel( "labelFooter", "", this, "" );
+        AddComponent( labelFooter );
+        labelFooter.SetWantsMouseNotifications( false );
+        labelFooter.SetPosition( 3, 335 );
+        labelFooter.SetSize( 109, 23 );
+        labelFooter.SetEditable( false, false );
+        labelFooter.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelFooter.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelFooter.SetColor( new Color( 166, 36, 36, 255 ) );
+        labelFooter.SetBkColor( new Color( 0, 0, 0, 0 ) );
+        labelFooter.SetBorderColor( new Color( 26, 26, 26, 255 ) );
+        labelFooter.SetBorderSize( 2 );
+        labelFooter.SetMultiLineEdit( true );
+        labelFooter.SetIsNumberEditor( false );
+        labelFooter.SetNumberEditorRange( 0, 100 );
+        labelFooter.SetNumberEditorInterval( 1 );
+        labelFooter.SetNumberEditorUsesMouseWheel( false );
+        labelFooter.SetHasCustomTextHoverColor( false );
+        labelFooter.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelFooter.SetFont( "Arial", 9, true, false );
+
+        imageTTW = new VoltageImage( "imageTTW", "TTW Imagemark", this, false );
+        AddComponent( imageTTW );
+        imageTTW.SetWantsMouseNotifications( false );
+        imageTTW.SetPosition( 5, 5 );
+        imageTTW.SetSize( 41, 13 );
+        imageTTW.SetCurrentImage( "image image.svg" );
+
+        labelNumber = new VoltageLabel( "labelNumber", "Model Number Label", this, "" );
+        AddComponent( labelNumber );
+        labelNumber.SetWantsMouseNotifications( false );
+        labelNumber.SetPosition( 85, 5 );
+        labelNumber.SetSize( 25, 13 );
+        labelNumber.SetEditable( false, false );
+        labelNumber.SetJustificationFlags( VoltageLabel.Justification.Right );
+        labelNumber.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelNumber.SetColor( new Color( 166, 36, 36, 255 ) );
+        labelNumber.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        labelNumber.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        labelNumber.SetBorderSize( 1 );
+        labelNumber.SetMultiLineEdit( false );
+        labelNumber.SetIsNumberEditor( false );
+        labelNumber.SetNumberEditorRange( 0, 100 );
+        labelNumber.SetNumberEditorInterval( 1 );
+        labelNumber.SetNumberEditorUsesMouseWheel( false );
+        labelNumber.SetHasCustomTextHoverColor( false );
+        labelNumber.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelNumber.SetFont( "Courier New", 13, true, false );
+}
+
+
+
+    //-------------------------------------------------------------------------------
+    //  public void Initialize()
+
+        //  Initialize will get called shortly after your module's constructor runs. You can use it to
+        //  do any initialization that the auto-generated code doesn't handle.
+    //-------------------------------------------------------------------------------
+    @Override
+    public void Initialize()
+    {
+        //[user-Initialize]   Add your own initialization code here
+
+
+        //[/user-Initialize]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public void Destroy()
+
+        //  Destroy will get called just before your module gets deleted. You can use it to perform any
+        //  cleanup that's not handled automatically by Java.
+    //-------------------------------------------------------------------------------
+    @Override
+    public void Destroy()
+    {
+        super.Destroy();
+        //[user-Destroy]   Add your own module-getting-deleted code here
+
+
+        //[/user-Destroy]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public boolean Notify( VoltageComponent component, ModuleNotifications notification, double doubleValue, long longValue, int x, int y, Object object )
+
+        //  Notify will get called when various events occur - control values changing, timers firing, etc.
+    //-------------------------------------------------------------------------------
+    @Override
+    public boolean Notify( VoltageComponent component, ModuleNotifications notification, double doubleValue, long longValue, int x, int y, Object object )
+    {
+        //[user-Notify]   Add your own notification handling code between this line and the notify-close comment
+
+        return false;
+
+        //[/user-Notify]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public void ProcessSample()
+
+        //  ProcessSample is called once per sample. Usually it's where you read
+        //  from input jacks, process audio, and write it to your output jacks.
+        //  Since ProcesssSample gets called 48,000 times per second, offload CPU-intensive operations
+        //  to other threads when possible and avoid calling native functions.
+    //-------------------------------------------------------------------------------
+    @Override
+    public void ProcessSample()
+    {
+        //[user-ProcessSample]   Add your own process-sampling code here
+
+
+        //[/user-ProcessSample]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public void ProcessBypassedSample()
+
+        //  ProcessBypassedSample gets called instead of ProcessSample when you've checked the "Can Be Bypassed" box
+        //  and a user has bypassed your module. If your module processes data from input jacks and then sends it to
+        //  output jack(s), make ProcessBypassedSample just send the data from the input jacks to the output jacks without
+        //  processing it.
+    //-------------------------------------------------------------------------------
+    @Override
+    public void ProcessBypassedSample()
+    {
+        //[user-ProcessBypassedSample]   Add your own code here
+
+
+        //[/user-ProcessBypassedSample]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public String GetTooltipText( VoltageComponent component )
+
+        //  Gets called when a tooltip is about to display for a control. Override it if
+        //  you want to change what the tooltip displays - if you want a knob to work in logarithmic fashion,
+        //  for instance, you can translate the knob's current value to a log-based string and display it here.
+    //-------------------------------------------------------------------------------
+    @Override
+    public String GetTooltipText( VoltageComponent component )
+    {
+        //[user-GetTooltipText]   Add your own code here
+
+        return super.GetTooltipText( component );
+
+        //[/user-GetTooltipText]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public void EditComponentValue( VoltageComponent component, double newValue, String newText )
+
+        //  Gets called after a user clicks on a tooltip and types in a new value for a control. Override this if
+        //  you've changed the default tooltip display (translating a linear value to logarithmic, for instance)
+        //  in GetTooltipText().
+    //-------------------------------------------------------------------------------
+    @Override
+    public void EditComponentValue( VoltageComponent component, double newValue, String newText )
+    {
+        //[user-EditComponentValue]   Add your own code here
+
+
+        //[/user-EditComponentValue]
+        super.EditComponentValue( component, newValue, newText );
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public void OnUndoRedo( String undoType, double newValue, Object optionalObject )
+
+        //  If you've created custom undo events via calls to CreateUndoEvent, you'll need to
+        //  process them in this function when they get triggered by undo/redo actions.
+    //-------------------------------------------------------------------------------
+    @Override
+    public void OnUndoRedo( String undoType, double newValue, Object optionalObject )
+    {
+        //[user-OnUndoRedo]   Add your own code here
+
+
+        //[/user-OnUndoRedo]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public byte[] GetStateInformation()
+
+        //  Gets called when the module's state gets saved, typically when the user saves a preset with
+        //  this module in it. Voltage Modular will automatically save the states of knobs, sliders, etc.,
+        //  but if you have any custom state information you need to save, return it from this function.
+    //-------------------------------------------------------------------------------
+    @Override
+    public byte[] GetStateInformation()
+    {
+        //[user-GetStateInformation]   Add your own code here
+
+        return null;
+
+        //[/user-GetStateInformation]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public void SetStateInformation(byte[] stateInfo)
+
+        //  Gets called when this module's state is getting restored, typically when a user opens a preset with
+        //  this module in it. The stateInfo parameter will contain whatever custom data you stored in GetStateInformation().
+    //-------------------------------------------------------------------------------
+    @Override
+    public void SetStateInformation(byte[] stateInfo)
+    {
+        //[user-SetStateInformation]   Add your own code here
+
+
+        //[/user-SetStateInformation]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public byte[] GetStateInformationForVariations()
+
+        //  Gets called when a user saves a variation with this module in it.
+        //  Voltage Modular will automatically save the states of knobs, sliders, etc.,
+        //  but if you have any custom state information you need to save, return it from this function.
+    //-------------------------------------------------------------------------------
+    @Override
+    public byte[] GetStateInformationForVariations()
+    {
+        //[user-GetStateInformationForVariations]   Add your own code here
+
+        return null;
+
+        //[/user-GetStateInformationForVariations]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public void SetStateInformationForVariations(byte[] stateInfo)
+
+        //  Gets called when a user loads a variation with this module in it.
+        //  The stateInfo parameter will contain whatever custom data you stored in GetStateInformationForVariations().
+    //-------------------------------------------------------------------------------
+    @Override
+    public void SetStateInformationForVariations(byte[] stateInfo)
+    {
+        //[user-SetStateInformationForVariations]   Add your own code here
+
+
+        //[/user-SetStateInformationForVariations]
+    }
+
+
+    // Auto-generated variables
+    private VoltageLabel labelNumber;
+    private VoltageImage imageTTW;
+    private VoltageLabel labelFooter;
+
+
+    //[user-code-and-variables]    Add your own variables and functions here
+
+
+    //[/user-code-and-variables]
+}
+
+ 

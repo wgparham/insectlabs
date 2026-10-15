@@ -24,7 +24,7 @@ sn16u 2.1.0 provides DC/Vpp, CV pitch, audio Hz and RMS measurement, along with 
 
 ## Teletape Workshop possibilities (formerly Radiophonic)
 
-**RVG Random Voltage Generator — canonical v1.8.0.** RVG provides two independent stepped random voltages, variable event timing, manual and external reselection, inhibit/free-run, a +4 V trigger, and compensated/factory/failure hold modes. The design models workflow and response rather than claiming a component-exact EMS circuit. The [module research notes](../Teletape%20Workshop/RVG/RESEARCH-NOTES.md) and [references](../Teletape%20Workshop/RVG/references/README.md) preserve the unresolved circuit questions. Remaining Teletape proposals below are still optional and unsequenced.
+**RVG Random Voltage Generator — canonical v2.0.0.** RVG provides two independent stepped random voltages, variable event timing, manual and external reselection, inhibit/free-run, a +4 V trigger, and compensated/factory/failure hold modes. The design models workflow and response rather than claiming a component-exact EMS circuit. The [module research notes](../Teletape%20Workshop/RVG/RESEARCH-NOTES.md) and [references](../Teletape%20Workshop/RVG/references/README.md) preserve the unresolved circuit questions. Remaining Teletape proposals below are still optional and unsequenced.
 
 **External sample-and-hold / track-and-hold:** n01 STEPPED samples its own ramp only. Sampling arbitrary patched audio/CV is a real capability gap, and fits the accepted Series Two S&H direction. Decide whether this belongs in the random-voltage instrument or a small independent sampler.
 

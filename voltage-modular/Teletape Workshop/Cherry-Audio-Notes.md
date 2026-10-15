@@ -19,3 +19,9 @@ Publication is deferred under the [collection publication plan](PUBLICATION-PLAN
 ## OFB 8 Octave Filter Bank — 1.0.0
 
 Eight fixed octave bands with logarithmic level controls, independent level CV inputs (+5 V per full sweep), clean individual outputs and a gently saturating oversampled main mix. Canonical; publication deferred.
+
+## SVF Dual State Variable Filter — 1.0.0
+
+Two independent filters with simultaneous HIGH, BAND and LOW outputs. Each channel has input level, exponential cutoff, 0.5 V/octave cutoff CV and resonance. Select independent, series or parallel routing; in series, choose which output from channel 1 feeds channel 2.
+
+Canonical; publication deferred under the [collection publication plan](PUBLICATION-PLAN.md).

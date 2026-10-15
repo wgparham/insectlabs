@@ -23,6 +23,10 @@ References useful across multiple Teletape Workshop instruments belong here. Kee
 
 These manuals describe software reconstructions, not original RAI/WDR service documents. Use them to locate device names, operating ideas, and bibliographic leads; corroborate hardware and circuit claims with the cited historical sources before treating them as primary evidence.
 
+## Synthi 100 filter evidence
+
+- [Synthi 100 filter research packet](Synthi-100-Filters/INITIAL-RESEARCH.md) — separates the documented 34/01 HPF/three-tap core from the distinct, incompletely documented 34/00 LPF board. It includes the user-supplied Digitana Mk1 photos/demos and front-panel photograph, hashes, unresolved revision history and limits on what component photos establish.
+
 ## TSL research notes
 
 - [Notes Towards a Triple Slew Limiter](NotesTowardsAtsl) — user-assembled forum and web-search fragments. Treat component, topology and performance statements as unverified leads unless corroborated by primary documentation.

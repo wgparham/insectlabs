@@ -22,5 +22,11 @@
     "path": "OFB/versions/1.0.0",
     "module": "ofb",
     "name": "OFB 8 Octave Filter Bank"
+  },
+  "svf": {
+    "version": "1.0.0",
+    "path": "SVF/versions/1.0.0",
+    "module": "svf",
+    "name": "SVF Dual State Variable Filter"
   }
 }

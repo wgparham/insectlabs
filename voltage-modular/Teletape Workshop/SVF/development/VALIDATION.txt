@@ -1,0 +1,16 @@
+SVF 1.0.0 validation — 2026-10-15
+
+PASS: exported and embedded Java compile against installed Voltage SDK, --release 17 -Xlint:all -Werror.
+PASS: normalized source agreement, VMOD binary round-trip, Notes v1.0.0.
+PASS: independent quadratic transfer, gain and polarity for HIGH/BAND/LOW at six frequencies.
+PASS: SERIES core-2 input selection for all three source taps; parallel routes, independent silence and patched-IN2 override.
+PASS: self-oscillation growth and bounded output, low/high cutoff extremes.
+PASS: 20 V modulation stress; solver residual 1.1657341758564144E-15; DC gain/rejection.
+PASS: bypass freeze/no control reads/resume, reset, invalid signal/state recovery, taper/CV/typed units.
+PASS: extracted EmsSvf96 primitive bit-identical to embedded core across 160000 modulated steps and resets.
+PASS: canonical archive Java, VMOD and hero match approved working files; metadata is v1.0.0.
+PASS: reusable blank template pair source and project compile and agree.
+PASS: repository-wide links, source pairs, hashes and standards audit.
+
+User listening and operational approval: approved/canonized by the user on 2026-10-15.
+Native host CPU benchmarking, automated GUI control/undo/recall interaction and exact hardware comparison were not measured independently. The filter response and overload/resonance voicing are deliberate software models documented in DEVELOPER-NOTES.md, not component-exact reconstruction claims.

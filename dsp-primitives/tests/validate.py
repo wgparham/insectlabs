@@ -25,5 +25,5 @@ public static void main(String[] args){
 }
 }
 """
-with tempfile.TemporaryDirectory(prefix='insectlabs-halfband-') as tmp:
- p=Path(tmp)/'FilterChecks.java';p.write_text(test,encoding='utf-8');subprocess.run(['javac','--release','17','-encoding','utf-8','-Xlint:all','-Werror','-d',tmp,*map(str,(PROJECT/'src').rglob('*.java')),str(p)],check=True);subprocess.run(['java','-cp',tmp,'FilterChecks'],check=True)
+with tempfile.TemporaryDirectory(prefix='insectlabs-halfband-',dir=PROJECT) as tmp:
+ p=Path(tmp)/'FilterChecks.java';p.write_text(test,encoding='utf-8');subprocess.run(['javac','--release','17','-encoding','utf-8','-Xlint:all','-Werror','-d',tmp,*map(str,(PROJECT/'src').rglob('*.java')),str(p),str(PROJECT/'tests/EmsSvfChecks.java')],check=True);subprocess.run(['java','-cp',tmp,'FilterChecks'],check=True);subprocess.run(['java','-cp',tmp,'EmsSvfChecks'],check=True)

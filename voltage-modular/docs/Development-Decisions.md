@@ -62,6 +62,6 @@ The user will publish all Teletape modules together after the full lineup is loc
 
 User approved the warm HP/LP bank with eight band-level CV inputs. DSP preserved; latest Designer save synchronized for one tooltip encoding mismatch. Publication awaits the completed collection.
 
-## 2026-10-14 — HPF follows OFB
+## 2026-10-15 — SVF 1.0.0 canon supersedes the HPF module plan
 
-The user selected HPF, based on the Synthi 100 high-pass filter, as the next Teletape module and authorized housekeeping and Git push. The existing shared Synthi 100 schematic set is the starting source; no circuit interpretation or DSP has yet been approved.
+The user approved and canonized a dual filter exposing HIGH, BAND and LOW taps from the Synthi 100 HPF board 34/01 state-variable topology. This consolidates the proposed HPF and LPF roles into a three-output SVF instrument. It does not claim to reproduce the distinct LPF board 34/00 or settle the disputed Synthi 100 revision history. Shared evidence and modeling limits are recorded in `Teletape Workshop/references/Synthi-100-Filters/` and the SVF release notes. The product directory is `SVF`, replacing the early `HPF` development identity. The next module remains unselected.

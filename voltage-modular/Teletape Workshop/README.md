@@ -1,6 +1,6 @@
 # Teletape Workshop
 
-Teletape Workshop is the new name for the planned Radiophonic series. It follows the completed Wardenclyffe Station collection and shifts toward electronic-music studio equipment rooted in the mid-1960s through mid-1970s. RVG, TSL, OFB and b08 are canonized. HPF, based on the Synthi 100 high-pass filter, is next; the complete series inventory is not yet locked.
+Teletape Workshop is the new name for the planned Radiophonic series. It follows the completed Wardenclyffe Station collection and shifts toward electronic-music studio equipment rooted in the mid-1960s through mid-1970s. RVG, TSL, OFB, b08 and SVF are canonized. The SVF combines three outputs from the documented Synthi 100 HPF state-variable core; the complete series inventory is not yet locked.
 
 ## Accepted directions to explore
 
@@ -21,6 +21,7 @@ These are design directions, not a committed product list. Keep the general CV r
 | [b08 Blanking Panel](b08/versions/1.0.0/) | 1.0.0 | 8 HP visual blanking panel; no custom DSP | [User manual](b08/versions/1.0.0/USER-MANUAL.md) |
 | [TSL Triple Slew Limiter](TSL/versions/1.0.0/) | 1.0.0 | Two CV slew channels and one slew/track-and-hold channel | [User manual](TSL/versions/1.0.0/USER-MANUAL.md) |
 | [OFB 8 Octave Filter Bank](OFB/versions/1.0.0/) | 1.0.0 | Eight fixed bands, level CV, clean taps and warm mix | [User manual](OFB/versions/1.0.0/USER-MANUAL.md) |
+| [SVF Dual State Variable Filter](SVF/versions/1.0.0/) | 1.0.0 | Dual Synthi 100-derived core with simultaneous HIGH/BAND/LOW outputs and selectable routing | [User manual](SVF/versions/1.0.0/USER-MANUAL.md) |
 
 The RVG's [developer notes](RVG/DEVELOPER-NOTES.md), [release review](RVG/versions/2.0.0/REVIEW.md), and [shared references](references/README.md) record implementation, validation and research. The RVG models EMS workflow and feel; it is not an exact circuit reconstruction. The b08's [developer notes](b08/DEVELOPER-NOTES.md) and [release review](b08/versions/1.0.0/REVIEW.md) document its artwork-only panel and validation.
 
@@ -34,4 +35,4 @@ Cherry Audio publication is deferred until the complete module list is locked an
 
 ## Next module
 
-[HPF — Synthi 100 high-pass filter](HPF/README.md) is next. Shared service schematics are archived; circuit review and development are pending.
+The next module has not been selected. The [SVF release](SVF/README.md) consolidates the planned Synthi 100 filter outputs; other modules remain under consideration until the full lineup is locked.

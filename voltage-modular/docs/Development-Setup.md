@@ -20,6 +20,6 @@ Series One is mono-first and predominantly manual. +5 V is the common modulation
 
 The Berna manuals, 1971 Moog catalog, Q125 data and other hardware/software references are maintained in the local Resources folder rather than duplicated in the repository. Collection decisions are summarized in the [roadmap](Collection-Roadmap.md).
 
-TSL Triple Slew Limiter is [canonical v1.0.0](../Teletape%20Workshop/TSL/README.md) as of 2026-10-14. OFB Octave Filter Bank is [canonical v1.0.0](../Teletape%20Workshop/OFB/README.md) as of 2026-10-14. Next: HPF, based on the Synthi 100 high-pass filter. Circuit review and panel/DSP work are pending.
+TSL Triple Slew Limiter is [canonical v1.0.0](../Teletape%20Workshop/TSL/README.md) as of 2026-10-14. OFB Octave Filter Bank is [canonical v1.0.0](../Teletape%20Workshop/OFB/README.md) as of 2026-10-14. SVF Dual State Variable Filter is canonical v1.0.0 as of 2026-10-15. The early HPF working directory was renamed SVF after the approved design exposed all three filter taps. The next module has not been selected.
 
 RVG current canon is [2.0.0](../Teletape%20Workshop/RVG/versions/2.0.0/README.md), approved 2026-10-14; the 1.8.0 archive remains preserved.

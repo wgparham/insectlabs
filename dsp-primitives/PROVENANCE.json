@@ -12,6 +12,12 @@
       "origin": "voltage-modular/Wardenclyffe Station/model-62/versions/1.0.0/tests/WireTests.txt; user-provided exploratory testCode/cubicHermite.java",
       "date": "2026-10-09",
       "arithmetic": "four-sample Catmull-Rom tangent cubic; transcribed as a stateless reusable utility; not used by Model 62 DSP"
+    },
+    {
+      "name": "EmsSvf96",
+      "origin": "voltage-modular/Teletape Workshop/SVF/versions/1.0.0/svf.java",
+      "date": "2026-10-15",
+      "arithmetic": "exact extraction of the approved nonlinear 96 kHz two-integrator filter core; input, routing and resampling remain module-owned"
     }
   ]
 }

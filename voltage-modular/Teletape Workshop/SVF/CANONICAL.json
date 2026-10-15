@@ -1,0 +1,8 @@
+{
+  "svf": {
+    "version": "1.0.0",
+    "path": "versions/1.0.0",
+    "module": "svf",
+    "name": "SVF Dual State Variable Filter"
+  }
+}
