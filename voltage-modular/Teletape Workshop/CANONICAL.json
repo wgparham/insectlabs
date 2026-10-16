@@ -34,5 +34,11 @@
     "path": "TRM/versions/1.0.0",
     "module": "trm",
     "name": "TRM Triple Ring Modulator"
+  },
+  "zoid": {
+    "version": "1.0.0",
+    "path": "ZOID/versions/1.0.0",
+    "module": "zoid",
+    "name": "ZOID Trapezoid Generator"
   }
 }

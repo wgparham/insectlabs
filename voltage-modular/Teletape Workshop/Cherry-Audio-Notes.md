@@ -2,7 +2,7 @@
 
 Short module descriptions for the Cherry Audio Notes fields. Versions and descriptions follow the current Teletape Workshop canonical list.
 
-## RVG Random Voltage Generator — 2.0.0
+## RVG Random Voltage Generator — 2.0.1
 
 RVG creates two independent normalized-tanh-shaped stepped random voltages with variable event timing, manual and external reselection, and a +4 V trigger output. Set the three-position hold switch for clean compensated output, gentle factory drift, or stronger failure-style droop.
 
@@ -20,8 +20,20 @@ Publication is deferred under the [collection publication plan](PUBLICATION-PLAN
 
 Eight fixed octave bands with logarithmic level controls, independent level CV inputs (+5 V per full sweep), clean individual outputs and a gently saturating oversampled main mix. Canonical; publication deferred.
 
-## SVF Dual State Variable Filter — 1.0.0
+## SVF Dual State Variable Filter — 1.0.1
 
 Two independent filters with simultaneous HIGH, BAND and LOW outputs. Each channel has input level, exponential cutoff, 0.5 V/octave cutoff CV and resonance. Select independent, series or parallel routing; in series, choose which output from channel 1 feeds channel 2.
+
+Canonical; publication deferred under the [collection publication plan](PUBLICATION-PLAN.md).
+
+## TRM Triple Ring Modulator — 1.0.0
+
+Three independent ring-modulator lanes with gain-staged carrier and modulator inputs, distinct diode-character voicings, and envelope-following activity lamps. Each lane has its own output.
+
+Canonical; publication deferred under the [collection publication plan](PUBLICATION-PLAN.md).
+
+## ZOID Trapezoid Generator — 1.0.0
+
+A shared four-stage trapezoid generator with two segment-rotated control outputs, four exponential time CV inputs, five trigger modes, EOA/EOC pulses and a logarithmic envelope VCA.
 
 Canonical; publication deferred under the [collection publication plan](PUBLICATION-PLAN.md).

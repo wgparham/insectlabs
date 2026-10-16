@@ -1,3 +1,3 @@
-# ZOID development — awaiting module brief
+# ZOID development
 
-Next in the Teletape Workshop sequence: **ZOID Trapezoid Generator**. This folder is reserved for the user’s panel mockup, design notes and approved working pair. No controls, DSP topology or signal behavior have been assumed yet; begin implementation after the design brief and working materials arrive.
+The approved build is archived in [versions/1.0.0](../versions/1.0.0/). No active candidate remains. Start a new development pair here only for an explicitly scoped revision; keep the canonical archive unchanged.

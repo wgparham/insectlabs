@@ -1,0 +1,11 @@
+ZOID 1.0.0 — validation record (2026-10-16)
+
+PASS: exported and Designer-embedded Java compile against the installed Voltage SDK using Java 17 target, -Xlint:all and -Werror.
+PASS: Designer binary round-trips exactly; exported Java and embedded source agree.
+PASS: Designer class/package/version identity is zoid / com.insectlabs.zoid / v1.0.0; control UUIDs are unique.
+PASS: SHA-256 manifest matches every archived artifact.
+PASS: callback/core checks cover 2 ms and 20 s stage endpoints, shared exponential mappings, CV and typed-time conversion, segment rotation with unequal stage lengths, retriggers, signed output levels, logarithmic VCA, exact 5 ms EOA/EOC pulses and tooltip agreement, all five modes, bypass/resume and recall.
+
+User reports successful host operation and sound. Automated closeout did not repeat GUI interaction, patch migration, CPU benchmarking or audition.
+
+Command: python tests/validate.py

@@ -1,0 +1,166 @@
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Locale;
+
+class ZoidBase {
+    String GetTooltipText(ZoidChecks.VoltageComponent c) { return ""; }
+    void EditComponentValue(ZoidChecks.VoltageComponent c, double v, String text) {
+        c.value = c instanceof ZoidChecks.VoltageKnob && ((ZoidChecks.VoltageKnob)c).percent ? v/100 : v;
+    }
+}
+public class ZoidChecks extends ZoidBase {
+    static class VoltageComponent { double value; double GetValue() { return value; } void SetValue(double v) { value = v; } }
+    static class VoltageKnob extends VoltageComponent { boolean percent; }
+    static class VoltageAudioJack extends VoltageComponent { }
+    static class VoltageLED extends VoltageComponent { }
+    static class VoltageButton extends VoltageComponent { }
+    static class VoltageLabel extends VoltageComponent { }
+    static class VoltageImage extends VoltageComponent { }
+    static class VoltageLine extends VoltageComponent { }
+    enum ModuleNotifications { Button_Changed, GUI_Update_Timer }
+    void StartGuiUpdateTimer(long ms) { }
+    @@FIELDS@@
+    @@code-and-variables@@
+    void initialize() { @@Initialize@@ }
+    boolean notify(VoltageComponent component, ModuleNotifications notification, double doubleValue) { @@Notify@@ }
+    void process() { @@ProcessSample@@ }
+    void bypass() { @@ProcessBypassedSample@@ }
+    void recall() { @@SetStateInformation@@ }
+    String tooltip(VoltageComponent component) { @@GetTooltipText@@ }
+    void edit(VoltageComponent component, double newValue, String newText) { @@EditComponentValue@@
+        super.EditComponentValue(component, newValue, newText);
+    }
+    ZoidChecks() { @@DEFAULTS@@ }
+
+    static void check(boolean ok, String what) { if (!ok) throw new AssertionError(what); }
+    static void close(double a, double b, double tol, String what) { check(Math.abs(a-b) <= tol, what + ": " + a + " vs " + b); }
+    static Timing timing(double delay, double attack, double on, double decay) {
+        Timing t = new Timing(); t.delay=delay; t.attack=attack; t.on=on; t.decay=decay; return t;
+    }
+    static ZoidChecks ready(int mode) {
+        ZoidChecks m = new ZoidChecks();
+        m.knobMode.value=mode; m.knobDelay.value=0; m.knobAttack.value=0;
+        m.knobOn.value=0; m.knobDecay.value=0; m.knobZoid1.value=m.knobZoid2.value=1;
+        m.initialize(); m.process(); return m;
+    }
+    void press() { notify(buttonTrigger, ModuleNotifications.Button_Changed, 1); }
+    void release() { notify(buttonTrigger, ModuleNotifications.Button_Changed, 0); }
+    void tap() { press(); release(); }
+    void samples(int n) { for (int i=0; i<n; ++i) process(); }
+
+    public static void main(String[] args) {
+        // Unequal stage times prove this is a rotation by segment, not T/4 seconds.
+        int[] counts={192,288,480,672};
+        Timing t=timing(.004,.006,.010,.014);
+        SharedTrapezoid e=new SharedTrapezoid(); e.trigger();
+        for(int stage=0;stage<4;++stage) {
+            for(int i=1;i<=counts[stage];++i) {
+                double p=(double)i/counts[stage];
+                int flags=e.step(t,false);
+                double a=stage==0?0:stage==1?p:stage==2?1:1-p;
+                double b=stage==0?1-p:stage==1?0:stage==2?p:1;
+                close(e.value,a,1e-10,"I segment "+stage);
+                close(e.other,b,1e-10,"II segment "+stage);
+                close(.3*(2*e.value-1)-.7*(2*e.other-1),.3*(2*a-1)-.7*(2*b-1),1e-10,"four-line sum");
+                check(((flags&1)!=0)==(stage==1 && i==counts[stage]),"EOA boundary");
+                check(((flags&2)!=0)==(stage==3 && i==counts[stage]),"EOC boundary");
+            }
+        }
+        check(e.phase==SharedTrapezoid.IDLE,"one complete sequence");
+        close(e.value,0,0,"I idle low"); close(e.other,1,0,"II idle high");
+        e.trigger(); for(int i=0;i<96;++i)e.step(t,false); close(e.other,.5,1e-10,"half Delay");
+        e.trigger(); close(e.other,1,0,"Delay restart resynchronizes II");
+        for(int i=0;i<192+144;++i)e.step(t,false); close(e.value,.5,1e-10,"half Attack");
+        e.trigger(); for(int i=0;i<144;++i)e.step(t,false); check(e.phase==SharedTrapezoid.ON,"Attack not restarted");
+        for(int i=0;i<240;++i)e.step(t,false); close(e.other,.5,1e-10,"half On");
+        e.trigger(); close(e.other,0,0,"On retrigger rearms II");
+        for(int i=0;i<480+336;++i)e.step(t,false); close(e.value,.5,1e-10,"half Decay");
+        e.trigger(); close(e.value,.5,1e-10,"continuous primary retrigger"); close(e.other,0,0,"secondary phase resync");
+        for(int i=0;i<144;++i)e.step(t,false); check(e.phase==SharedTrapezoid.ON,"remaining Attack travel");
+        // Hold extends an already elapsed On; there is no second On timer after release.
+        for(int i=0;i<1000;++i)e.step(t,true);
+        check(e.phase==SharedTrapezoid.ON,"gate blocks Decay"); close(e.other,1,0,"II reaches peak while held");
+        e.step(t,false); check(e.phase==SharedTrapezoid.DECAY,"release allows Decay immediately after elapsed On");
+        // All manual stage endpoints and exact exponential ratios.
+        for(int i=0;i<4;++i) {
+            close(timeForPosition(i,0),.002,1e-14,"stage minimum");
+            close(timeForPosition(i,1),20,1e-12,"20 s maximum");
+            close(timeForPosition(i,.5),.2,1e-12,"stage midpoint");
+            close(timeForPosition(i,.75)/timeForPosition(i,0),1000,1e-9,"1000:1 exponential law");
+        }
+        close(vcaGain(0),.001,1e-14,"-60 dB VCA floor");
+        close(vcaGain(.5),Math.sqrt(.001),1e-14,"-30 dB midpoint");
+        close(vcaGain(1),1,1e-14,"unity peak");
+        ZoidChecks m=ready(2);
+        check(m.tooltip(m.outEOA).contains("5 ms pulse") && m.tooltip(m.outEOC).contains("5 ms pulse"),"event tooltip matches pulse width");
+        m.inSignal.value=2; m.tap();
+        int eoa=0,eoc=0;
+        for(int i=1;i<=700;++i) {
+            m.process(); if(m.outEOA.value>0)++eoa; if(m.outEOC.value>0)++eoc;
+            if(i==48) { close(m.outZoid1.value,-5,1e-10,"I Delay plateau"); close(m.outZoid2.value,0,1e-10,"II Delay midpoint"); }
+            if(i==144) { close(m.outZoid1.value,0,1e-10,"I Attack midpoint"); close(m.outZoid2.value,-5,1e-10,"II Attack plateau"); }
+            if(i==192) { close(m.outSignal.value,2,1e-10,"VCA unity at primary EOA"); close(m.outZoid1.value,5,1e-10,"I peak"); }
+            if(i==240) { close(m.outZoid1.value,5,1e-10,"I On plateau"); close(m.outZoid2.value,0,1e-10,"II On midpoint"); }
+            if(i==336) { close(m.outZoid1.value,0,1e-10,"I Decay midpoint"); close(m.outZoid2.value,5,1e-10,"II Decay plateau"); }
+        }
+        check(eoa==240 && eoc==240,"exact 5 ms event pulses");
+        close(m.outSignal.value,.002,1e-12,"VCA idle leakage -60 dB");
+        // Negative output controls invert; midpoint is zero with underlying phases unchanged.
+        m.knobZoid1.value=-1; m.knobZoid2.value=-1; m.recall(); m.process();
+        close(m.outZoid1.value,5,1e-12,"I inverted idle"); close(m.outZoid2.value,-5,1e-12,"II inverted idle");
+        m.knobZoid1.value=m.knobZoid2.value=0; m.recall(); m.process();
+        check(m.outZoid1.value==0 && m.outZoid2.value==0,"center zero both outputs");
+        // Stage CV, typed entries and extreme CV bounds.
+                close(m.stageTime(1,0,5),20,1e-12,"+5 V stage CV covers complete range");
+        close(m.stageTime(1,1,20),20,1e-12,"slow bound");
+        close(m.stageTime(1,0,-20),.002,1e-14,"fast bound");
+        m=ready(2);
+        m.edit(m.knobAttack,.2,""); close(m.knobAttack.value,.5,1e-14,"typed seconds inverse");
+        m.edit(m.knobZoid1,-2.5,""); close(m.knobZoid1.value,-.5,1e-14,"typed signed volts");
+        m.edit(m.knobThreshold,2.5,""); close(m.knobThreshold.value,.5,1e-14,"typed threshold volts");
+        m.edit(m.knobLevel,150,""); close(m.knobLevel.value,1.5,1e-14,"native percent entry");
+        // Five modes including zero-crossing Single Cycle and a short trigger.
+        m=ready(0); m.samples(1000); check(m.first.phase!=SharedTrapezoid.IDLE,"Free Run");
+        m=ready(1); m.inputTrigger.value=5; m.samples(1000);
+        check(m.first.phase==SharedTrapezoid.ON && m.first.other==1,"Hold-On with II at peak");
+        m.inputTrigger.value=0; m.process(); check(m.first.phase==SharedTrapezoid.DECAY,"Hold release");
+        m.samples(192); check(m.first.phase==SharedTrapezoid.IDLE,"Hold completion");
+        m=ready(2); m.inputTrigger.value=.001; m.process(); m.inputTrigger.value=0; m.samples(500);
+        check(m.first.phase==SharedTrapezoid.IDLE,"positive-zero trigger completes cycle");
+        m=ready(3); m.inputTrigger.value=5; m.samples(1000); m.inputTrigger.value=0;
+        m.samples(500); check(m.first.phase==SharedTrapezoid.IDLE,"Multi Cycle stops at cycle end");
+        m=ready(4); m.knobThreshold.value=.2; m.recall(); m.process();
+        m.inSignal.value=1.1; m.process(); check(m.first.phase==SharedTrapezoid.DELAY,"Threshold trigger");
+        m.samples(500); check(m.first.phase==SharedTrapezoid.IDLE,"threshold requires a crossing");
+        m.inSignal.value=.9; m.process(); m.inSignal.value=1.1; m.samples(150);
+        double held=m.first.value, heldOther=m.first.other, heldProgress=m.first.progress;
+        m.inSignal.value=-3.25; m.bypass();
+        close(m.outSignal.value,-3.25,0,"direct bypass"); close(m.first.value,held,0,"bypass freezes I");
+        close(m.first.other,heldOther,0,"bypass freezes II"); close(m.first.progress,heldProgress,0,"bypass freezes phase");
+        check(m.outZoid1.value==0 && m.outZoid2.value==0 && m.outEOA.value==0 && m.lampBits==0,"bypass source silence");
+        m.process(); check(m.first.value>held,"resume continuity");
+        m.inSignal.value=Double.NaN; m.inputDelay.value=Double.POSITIVE_INFINITY; m.samples(500);
+        check(Double.isFinite(m.outSignal.value),"nonfinite sanitation");
+        m=ready(2); m.tap(); m.samples(150); m.recall(); m.process();
+        check(m.first.phase==SharedTrapezoid.IDLE,"recall clears transients");
+        close(m.first.other,1,0,"recall preserves phase relationship at rest");
+        m.tap(); m.samples(150); m.knobMode.value=4; m.process(); check(m.first.phase==SharedTrapezoid.IDLE,"mode reset");
+        // Delay uses the same nonzero 2 ms–20 s range and taper as every stage.
+        for(int i=0;i<4;++i) {
+            close(timeForPosition(i,0),.002,1e-14,"common 2 ms minimum");
+            close(timeForPosition(i,1),20,1e-12,"common 20 s maximum");
+            close(timeForPosition(i,.5),.2,1e-12,"common taper midpoint");
+        }
+        m=ready(2); m.knobDelay.value=0; m.recall(); m.process();
+        close(m.timing.delay,.002,1e-12,"Delay CCW is schematic 2 ms minimum");
+        m.tap(); m.samples(95); check(m.first.phase==SharedTrapezoid.DELAY,"minimum Delay still active");
+        m.process(); check(m.first.phase==SharedTrapezoid.ATTACK,"minimum Delay completes at 96 samples");
+        m=ready(2); m.inputDelay.value=5; m.recall(); m.process();
+        close(m.timing.delay,20,1e-12,"CV spans full Delay range");
+        m.edit(m.knobDelay,.002,""); close(m.knobDelay.value,0,1e-12,"typed Delay minimum");
+        m.edit(m.knobDelay,20,""); close(m.knobDelay.value,1,1e-14,"typed Delay maximum");
+        for(double seconds:new double[]{.002,.02,.2,2,10,20}) {
+            m.edit(m.knobDelay,seconds,""); close(timeForPosition(0,m.knobDelay.value),seconds,1e-10,"Delay entry roundtrip");
+        }
+        System.out.println("PASS: common stage timing, CV and typed time, segment rotation, retriggers, VCA, 5 ms pulses, modes, bypass/recall");
+    }
+}
