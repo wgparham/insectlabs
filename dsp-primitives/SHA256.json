@@ -1,9 +1,10 @@
 {
-  "PROVENANCE.json": "58aa7723b62e53e98a9c75fc9e40f17beb6e75c7f15e0ea1d7ec10948d260509",
-  "README.md": "06e95814a580ca2c521f6f5caaaa7fa55b1fbe0cc26e83301e30d7fc548df766",
+  "PROVENANCE.json": "2ed22a77263f4f1d5662775b12397149280efac92f72757506464dc012f157aa",
+  "README.md": "c452c049adf71b958230b40fcefd452a45212538b9af83bad2f42ed633f428f8",
   "src/com/insectlabs/dsp/filters/EmsSvf96.java": "4255a19ccc5bfd9309316d6862fc08be699b33b4e04122b543d2db45f66877bd",
   "src/com/insectlabs/dsp/filters/HalfBand19.java": "fd2154506475dbc322137e47be4797f9303a04b7392e80159acd94ddfd04a4a0",
   "src/com/insectlabs/dsp/interpolation/CubicHermite.java": "eb0e9b428dc111031f6773d6c8731cdabe1e3db1c6313af970c6acdadba98451",
+  "src/com/insectlabs/dsp/noise/GaloisLfsr.java": "1e516136b88d2592fe8e00c8cc1f9633198e4d7e7d324929fdff4187b1eb7c36",
   "tests/EmsSvfChecks.java": "804a05e6233717704ea23167c95f0aead9fc4110e9d7e985bd6812d75fe6300c",
   "tests/validate.py": "a9798d6ec0e3e8f3ffd4967a652d5fc7ec0583d5869e998c27e7707036e69b40"
 }

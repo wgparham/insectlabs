@@ -1,6 +1,6 @@
 # Optional gap-fillers and later-series ideas
 
-Proposal review: 11 October 2026. LM-21 Mk III and RM1010 are canonized; RM1010 supersedes the earlier minimixer concept, and no separate minimixer module is planned. XL-35h and XL-35c add the matched high-pass / low-pass filter pair, and 21-24eq adds passive-voiced frequency correction. Twenty-three Wardenclyffe products are canonized; sn46 Standards is canonical v1.0.0, completing the planned Wardenclyffe Station lineup. Other additions below remain optional proposals. These suggestions come from comparing current capabilities and the completed briefs; they are not historical user decisions.
+Proposal review: 16 October 2026. LM-21 Mk III and RM1010 are canonized; RM1010 supersedes the earlier minimixer concept, and no separate minimixer module is planned. XL-35h and XL-35c add the matched high-pass / low-pass filter pair, and 21-24eq adds passive-voiced frequency correction. Twenty-four Wardenclyffe products are canonized; sn46 Standards is canonical v1.0.0 and the planned Wardenclyffe Station lineup is complete. Other additions below remain optional proposals. These suggestions come from comparing current capabilities and the completed briefs; they are not historical user decisions.
 
 ## Completed Wardenclyffe module and optional gap-fillers
 
@@ -24,13 +24,15 @@ sn16u 2.1.0 provides DC/Vpp, CV pitch, audio Hz and RMS measurement, along with 
 
 ## Teletape Workshop possibilities (formerly Radiophonic)
 
-**RVG Random Voltage Generator — canonical v2.0.0.** RVG provides two independent stepped random voltages, variable event timing, manual and external reselection, inhibit/free-run, a +4 V trigger, and compensated/factory/failure hold modes. The design models workflow and response rather than claiming a component-exact EMS circuit. The [module research notes](../Teletape%20Workshop/RVG/RESEARCH-NOTES.md) and [references](../Teletape%20Workshop/RVG/references/README.md) preserve the unresolved circuit questions. Remaining Teletape proposals below are still optional and unsequenced.
+Teletape Workshop has eight canonized modules: RVG 2.0.1, TSL 1.0.0, OFB 1.0.0, b08 1.0.0, SVF 1.0.1, TRM 1.0.0, ZOID 1.0.0 and N02 1.0.0. N02 fills the dedicated audio-noise source role with independent EMS-inspired analog and clocked digital voices; its sequence lengths automatically increase from 7 to 15 to 31 bits with SPEED. The final inventory and next module brief remain open. The options below are possible additions rather than mandatory gaps.
 
-**External sample-and-hold / track-and-hold:** n01 STEPPED samples its own ramp only. Sampling arbitrary patched audio/CV is a real capability gap, and fits the accepted Series Two S&H direction. Decide whether this belongs in the random-voltage instrument or a small independent sampler.
+**RVG Random Voltage Generator — canonical v2.0.1.** RVG provides two independent stepped random voltages, variable event timing, manual and external reselection, inhibit/free-run, a +4 V trigger, and compensated/factory/failure hold modes. The design models workflow and response rather than claiming a component-exact EMS circuit. The [module research notes](../Teletape%20Workshop/RVG/RESEARCH-NOTES.md) and [references](../Teletape%20Workshop/RVG/references/README.md) preserve the unresolved circuit questions.
 
-**Studio noise processor:** CV-controlled spectral movement, bands and perhaps bursts could take the multiple-voice EMW and noise references further. Keep n01's approved manual noise voice intact; this is a later processor proposal rather than a revision to n01.
+**Additional sample-and-hold capacity:** TSL channel 3 already provides a track-and-hold function, so external T&H is not wholly absent from the series. A dedicated sampler could still add independent channels, sample-and-hold behavior, or a different workflow; treat that as optional unless testing reveals a specific need.
 
-Frequency shifting with separate UP/DOWN outputs, voltage-controlled switches, modern manual routers, studio contour/filter tools and tape/delay/reverb remain possible Teletape Workshop directions. These ideas do not commit the whole list or a development order.
+**Noise processing beyond N02:** CV-controlled spectral movement, bands and perhaps bursts could take the multiple-voice EMW and noise references further. This is distinct from N02's canonical role as a source; OFB and SVF already provide substantial filtering. Keep n01's approved manual noise voice intact.
+
+Frequency shifting with separate UP/DOWN outputs, voltage-controlled switches, modern manual routers, a continuous studio contour/filter tool distinct from the existing OFB and SVF, and tape/delay/reverb remain possible Teletape Workshop directions. These ideas do not commit the whole list or a development order.
 
 ## Computing boundary
 

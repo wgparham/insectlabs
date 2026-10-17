@@ -20,6 +20,12 @@ This is a low-cost interpolation primitive, not an anti-aliasing resampler. For 
 
 The arithmetic is bit-identical to the approved embedded core. The `tanh` OTA law, response mapping, amplitude-dependent loop loss, oscillation seed and output stage are software voicing choices, not a component-level reconstruction or measured EMS behavior. Use this primitive when that specific nonlinear response is wanted; a general linear SVF should use a simpler module-specific core.
 
+## GaloisLfsr
+
+[Source](src/com/insectlabs/dsp/noise/GaloisLfsr.java): allocation-free right-shifting XOR Galois step extracted from N02 1.0.0. `maskForBits` supports 7, 15 and 31 bits; `advance` consumes a caller-owned nonzero state and feedback mask. Read its least-significant bit for binary output. The caller owns clocking, seed choice, output levels, reconstruction and all state persistence. Zero is an absorbing state and is not automatically repaired. Unsupported widths throw during configuration. This is a deterministic musical PRNG, not a cryptographic random source. Original InsectLabs implementation; repository license applies.
+
+The [N02 release checks](../voltage-modular/Teletape%20Workshop/n02/versions/1.0.0/tests/validate.py) compare this step bit-for-bit with the approved embedded code, exhaustively verify 7/15-bit periods and verify the 31-bit period algebraically. Released N02 remains self-contained and does not import this copy.
+
 ## Validation
 
 Run `python tests/validate.py` with Java 17. It checks HalfBand19 impulse/symmetry/gain/reset/independence, CubicHermite endpoints/constant/linear interpolation, and EmsSvf96 finite and bounded processing, reset, high-response stress and API preconditions. The separate Teletape SVF release harness compares the extracted primitive bit-for-bit with its embedded source.

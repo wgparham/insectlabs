@@ -1,10 +1,10 @@
 # Wardenclyffe Station roadmap
 
-Wardenclyffe Station is the first mono-first collection in Insect Laboratories’ Voltage Modular line. Canonical release means the repository’s authoritative source pair, panel and documentation; it does not imply store publication. The current collection has twenty-three canonized products, including the 21-24eq Frequency Corrector at v1.0.1. Model 62 is now v2.0.0; sn46 Standards completes the planned Wardenclyffe Station lineup. The XL-35h / XL-35c matched filter pair is also at canonical v1.0.1, with each v1.0.0 archive retained.
+Wardenclyffe Station is the first mono-first collection in Insect Laboratories’ Voltage Modular line. Canonical release means the repository’s authoritative source pair, panel and documentation; it does not imply store publication. The current collection has twenty-four canonized products, including the 21-24eq Frequency Corrector at v1.0.1. Model 62 is now v2.0.0; sn46 Standards completes the planned Wardenclyffe Station lineup. The XL-35h / XL-35c matched filter pair is also at canonical v1.0.1, with each v1.0.0 archive retained.
 
 ## Current collection
 
-Twenty-three current products are canonized in [Wardenclyffe Station](../Wardenclyffe%20Station/README.md). Earlier products retain active 2.x releases and their prior 1.x archives; LM-21 is canonical at v1.1.0, with v1.0.1 retained in its archive.
+Twenty-four current products are canonized in [Wardenclyffe Station](../Wardenclyffe%20Station/README.md). Earlier products retain active 2.x releases and their prior 1.x archives; LM-21 is canonical at v1.1.0, with v1.0.1 retained in its archive.
 
 | Product | Current | 1.x archives | Role | Manual |
 | --- | ---: | ---: | --- | --- |
@@ -51,15 +51,17 @@ References: [Moog 984 corrected schematic](https://modularsynthesis.com/moog/984
 
 ## Later collections
 
-**Teletape Workshop (formerly the Radiophonic series).** Six modules are canonized: RVG 2.0.1, TSL 1.0.0, OFB 1.0.0, b08 1.0.0, SVF 1.0.1 and TRM 1.0.0. RVG and SVF 2.0.1/1.0.1 are panel-only maintenance releases; earlier archives remain preserved. EMS research informs workflows and response rather than mandating component-level reconstruction. The shared Synthi handbook and series research remain under Teletape Workshop. The full lineup is open; the next module is ZOID Trapezoid Generator, pending its design brief. Other directions remain proposals, not committed modules. n01 remains the canonical Wardenclyffe noise instrument.
+**Teletape Workshop (formerly the Radiophonic series).** Eight modules are canonized: RVG 2.0.1, TSL 1.0.0, OFB 1.0.0, b08 1.0.0, SVF 1.0.1, TRM 1.0.0, ZOID 1.0.0 and N02 1.0.0. RVG and SVF maintenance releases preserve their DSP. EMS research informs workflows and response rather than mandating component-level reconstruction. N02 provides independent EMS-inspired analog noise and digital noise whose 7/15/31-bit sequence lengths follow SPEED. Shared series research remains under Teletape Workshop. The final lineup and next module brief remain open, and publication is deferred. n01 remains the canonical Wardenclyffe noise instrument.
 
 **Series Three — Electronic Computation.** Keep the accepted direction broad: analog arithmetic, accumulation and integration, comparison and windows, logic, latches, counters, registers and event routing. ACE, Befaco A*B+C, Count Modula, alef’s bits, Lilac and Patchable Devices are references. Window Generator and Voltage Sequencer remain concepts to explore, not locked briefs. Preserve distinctions between continuous integration and clocked accumulation, and between a voltage-window comparator and a multi-stage envelope generator.
+
+**Research lead for the Lab Computer era:** consider the noise-generation method in [Kawai's 1979-filed, 1981-granted synthesizer patent](https://patents.google.com/patent/US4270430A/en) for a future digital-noise or computation module. It uses a 16-bit feedback shift-register random source to supply coefficients for a 64-sample noise-like waveform, with formant-based spectral control. This is a period-relevant algorithmic reference, not evidence that a particular Lab Computer used this design and not a committed module feature.
 
 The detailed design records and optional gap analysis are indexed in [docs](README.md). These later-series ideas do not reopen or alter Wardenclyffe releases.
 
 
 **Model 62 Wire Player Recorder** is canonized at v2.0.0. Its transport/reel and magic-eye canvases are redesigned, and loop-position and duration displays account for varispeed. The approved audio engine, recording behavior, panel and saved-state format remain unchanged. Its release pair, artwork, manuals, review, checks and previews are in `Wardenclyffe Station/model-62/versions/2.0.0`; v1.1.0 and v1.0.0 are preserved.
 
-TSL Triple Slew Limiter is [canonical v1.0.0](../Teletape%20Workshop/TSL/README.md) as of 2026-10-14. OFB Octave Filter Bank is [canonical v1.0.0](../Teletape%20Workshop/OFB/README.md) as of 2026-10-14. SVF Dual State Variable Filter is [canonical v1.0.1](../Teletape%20Workshop/SVF/README.md) as of 2026-10-15. TRM Triple Ring Modulator is [canonical v1.0.0](../Teletape%20Workshop/TRM/README.md) as of 2026-10-15. The next module is ZOID Trapezoid Generator, pending its brief; the collection lineup remains open.
+TSL Triple Slew Limiter is [canonical v1.0.0](../Teletape%20Workshop/TSL/README.md) as of 2026-10-14. OFB Octave Filter Bank is [canonical v1.0.0](../Teletape%20Workshop/OFB/README.md) as of 2026-10-14. SVF Dual State Variable Filter is [canonical v1.0.1](../Teletape%20Workshop/SVF/README.md) as of 2026-10-15. TRM Triple Ring Modulator is [canonical v1.0.0](../Teletape%20Workshop/TRM/README.md) as of 2026-10-15. ZOID Trapezoid Generator is canonical v1.0.0. N02 Dual Noise Generator is canonical v1.0.0 as of 2026-10-16; Teletape's next brief and final inventory remain open.
 
 RVG current canon is [2.0.1](../Teletape%20Workshop/RVG/versions/2.0.1/README.md), approved 2026-10-15; 2.0.0 and 1.8.0 remain preserved.

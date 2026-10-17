@@ -18,6 +18,13 @@
       "origin": "voltage-modular/Teletape Workshop/SVF/versions/1.0.0/svf.java",
       "date": "2026-10-15",
       "arithmetic": "exact extraction of the approved nonlinear 96 kHz two-integrator filter core; input, routing and resampling remain module-owned"
+    },
+    {
+      "name": "GaloisLfsr",
+      "origin": "voltage-modular/Teletape Workshop/n02/versions/1.0.0/n02.java",
+      "date": "2026-10-16",
+      "arithmetic": "bit-identical unsigned right-shift XOR Galois step; caller owns nonzero state and clock; supported 7/15/31-bit masks",
+      "validation": "N02 1.0.0 archived harness checks exact step parity, exhaustive 7/15-bit periods and algebraic 31-bit period"
     }
   ]
 }

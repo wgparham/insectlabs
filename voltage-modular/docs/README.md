@@ -2,7 +2,7 @@
 
 ## Current project
 
-**Wardenclyffe Station has twenty-three canonized products, and its planned lineup is complete.** LM-21 Mk III, RM1010, Model 62, the XL-35h / XL-35c filter pair, and 21-24eq are canonical. sn46 Standards is canonical v1.0.0. Model 62 is now v2.0.0 with redesigned transport and varispeed-aware loop timing. Earlier archives remain preserved where applicable.
+**Wardenclyffe Station has twenty-four canonized products, and its planned lineup is complete.** LM-21 Mk III, RM1010, Model 62, the XL-35h / XL-35c filter pair, and 21-24eq are canonical. sn46 Standards is canonical v1.0.0. Model 62 is now v2.0.0 with redesigned transport and varispeed-aware loop timing. Earlier archives remain preserved where applicable.
 
 | Document | Purpose |
 | --- | --- |
@@ -23,4 +23,4 @@
 
 Canonical means the repository’s authoritative source release, not store publication. Each module’s release record states what was compiled, auditioned, and reviewed.
 
-The next collection is [Teletape Workshop](../Teletape%20Workshop/README.md), formerly the Radiophonic series. Its first canonical module is the EMS-inspired [RVG Random Voltage Generator](../Teletape%20Workshop/RVG/README.md) v2.0.0. Teletape Workshop now has six canonized modules (RVG, TSL, OFB, b08, SVF and TRM); its complete lineup remains open. The next planned module is ZOID Trapezoid Generator, pending its brief.
+The next collection is [Teletape Workshop](../Teletape%20Workshop/README.md), formerly the Radiophonic series. Its first canonical module is the EMS-inspired [RVG Random Voltage Generator](../Teletape%20Workshop/RVG/README.md) v2.0.1. Teletape Workshop has eight canonized modules: RVG, TSL, OFB, b08, SVF, TRM, ZOID and N02. N02 Dual Noise Generator is canonical v1.0.0. Its complete lineup and next module brief remain open.

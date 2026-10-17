@@ -1,0 +1,14 @@
+N02 1.0.0 — final validation, 2026-10-16
+
+PASS: final archive exported and embedded sources compiled against the installed Voltage SDK, Java 17 target, -Xlint:all -Werror.
+PASS: byte-exact VMOD parse/encode, source agreement, version-only Notes, unique UUIDs, generated/serialized knob ranges/defaults and archive hashes.
+PASS: exhaustive 7/15-bit LFSR periods; algebraic 31-bit period; extracted primitive exact-step parity and API checks.
+PASS: clock endpoints/inverses, automatic bands and hysteresis, live and interrupted transitions, FIR response, bounded finite output and colour extremes.
+PASS: dedicated outputs, full bipolar MIX sweep following D-left/A-right, equal-power center, typed Hz/colour/level/blend inverses and tooltip consistency.
+PASS: silent initial levels, bypass silence and frozen histories, recall continuity, invalid-control fallbacks.
+PASS: latest user metadata, panel, skins, test state and hero preserved; only release Notes and documented MIX mapping/UI changes differ.
+
+User approved the working instrument and final hero. No separate native audition of the post-housekeeping MIX correction, CPU profile, saved-patch migration test or Cherry Audio publication is claimed.
+
+PASS: exact staged-release repository audit: 87 manifests, 681 hashed files, 71 source pairs, 41 canonical modules, 1010 local links; zero errors.
+Audit scope excludes four unrelated local blank-template/Sectronix working files by reading their index versions without changing the working files. The whole working tree still reports the two existing blank-template hash mismatches; those edits are outside this release.

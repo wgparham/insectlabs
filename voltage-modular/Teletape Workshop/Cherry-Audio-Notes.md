@@ -37,3 +37,9 @@ Canonical; publication deferred under the [collection publication plan](PUBLICAT
 A shared four-stage trapezoid generator with two segment-rotated control outputs, four exponential time CV inputs, five trigger modes, EOA/EOC pulses and a logarithmic envelope VCA.
 
 Canonical; publication deferred under the [collection publication plan](PUBLICATION-PLAN.md).
+
+## N02 Dual Noise Generator — 1.0.0
+
+Two independent noise voices with colour and level controls, dedicated outputs and an equal-power blend. The digital clock spans 20 Hz–48 kHz and automatically progresses through repeating 7/15/31-bit sequences as SPEED increases. The analog voice follows EMS-inspired noise and colour workflows. BLEND moves from Digital at CCW to Analog at CW.
+
+Canonical; publication deferred under the collection publication plan.

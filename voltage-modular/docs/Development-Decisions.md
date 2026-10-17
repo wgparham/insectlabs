@@ -69,3 +69,11 @@ The user approved and canonized a dual filter exposing HIGH, BAND and LOW taps f
 The user approved TRM 1.0.0 on 2026-10-15 after listening to the four ring-modulator voices. Each lane has independent Carrier/Modulator gain staging and a distinct creative nonlinear voice; the different selector startup states are intentional. EMS schematics are design inspiration, not a component-level blueprint.
 
 On 2026-10-15, the user approved the RVG 2.0.1 and SVF 1.0.1 panel updates after successful compile/runtime checks. Each adds the fixed “(Seattle) Ltd” label and adjusts panel branding/spacing; all existing control UUIDs and audio-processing callbacks are preserved. ZOID Trapezoid Generator is next, pending its design brief.
+
+## Teletape status update — 2026-10-16
+
+ZOID Trapezoid Generator is canonized at v1.0.0, bringing Teletape Workshop to seven canonized modules including the b08 blank panel. N02 Dual Noise Generator is the current early-design candidate, with an EMS-inspired analog source and a contrasting digital source; the overall lineup remains open and N02 is not yet canonized. TSL channel 3 already provides a track-and-hold, so a future sampler proposal should describe additional channels or workflow rather than claim the series lacks T&H entirely.
+
+## N02 1.0.0 canon — 2026-10-16
+
+The user approved N02 and authorized canonization, housekeeping and push after successful final tests. The final hero removes the word-length switch and labels MIX D-left/A-right, with native range -1..+1. Release housekeeping corrects the earlier 0..1 DSP assumption to use the full new range and follow those labels; tooltip and typed percent-digital entry match. All other voice/filter/timing arithmetic and the latest panel metadata/assets remain preserved. The archived pair is 1.0.0; the post-housekeeping MIX fix has automated evidence, without a separate native-host audition. Teletape Workshop now has eight canonical modules, its next brief remains open, and publication is still deferred.

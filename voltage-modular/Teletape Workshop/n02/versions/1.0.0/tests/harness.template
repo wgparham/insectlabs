@@ -1,0 +1,160 @@
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.Locale;
+
+class VoltageComponent {
+    double value;
+    VoltageComponent(double value) { this.value=value; }
+}
+class ModuleStub {
+    String GetTooltipText(VoltageComponent component) { return ""; }
+    void EditComponentValue(VoltageComponent component, double value, String text) { component.value=value; }
+}
+public final class NoiseChecks extends ModuleStub {
+    private static final class Control extends VoltageComponent {
+        Control(double initial) { super(initial); }
+        double GetValue() { return value; }
+        void SetValue(double next) { value = next; }
+    }
+    private final Control knobSpeed = new Control(0), knobMix = new Control(-1);
+    private final Control knobColourA = new Control(0), knobColourD = new Control(0);
+    private final Control knobLevelA = new Control(0), knobLevelD = new Control(0);
+    private final Control outputAnalog = new Control(0), outputDigital = new Control(0), outputBlend = new Control(0);
+    @@CORE@@
+    private void init() { @@INIT@@ }
+    private void process() { @@PROCESS@@ }
+    private void bypass() { @@BYPASS@@ }
+    private void recall() { @@RECALL@@ }
+    private String tooltip(VoltageComponent component) { @@TOOLTIP@@ }
+    private void edit(VoltageComponent component, double newValue, String newText) { @@EDIT@@ }
+    private static void check(boolean condition, String message) {
+        if (!condition) throw new AssertionError(message);
+    }
+    private static void near(double actual, double wanted, double tolerance, String message) {
+        check(Double.isFinite(actual) && Math.abs(actual-wanted) <= tolerance, message + ": " + actual);
+    }
+    private static int jump(int state, long clocks, int mask) {
+        int[] power = new int[31], square = new int[31];
+        for (int bit=0; bit<31; ++bit) power[bit] = advanceLfsr(1 << bit, mask);
+        while (clocks > 0) {
+            if ((clocks & 1) != 0) state = apply(power, state);
+            for (int bit=0; bit<31; ++bit) square[bit] = apply(power, power[bit]);
+            int[] swap=power; power=square; square=swap;
+            clocks >>>= 1;
+        }
+        return state;
+    }
+    private static int apply(int[] matrix, int value) {
+        int result=0;
+        for (int bit=0; bit<31; ++bit) if (((value >>> bit) & 1) != 0) result ^= matrix[bit];
+        return result;
+    }
+    private static void periods() {
+        for (int bank=0; bank<2; ++bank) {
+            int expected=(1 << WORD_LENGTHS[bank])-1, state=1, count=0;
+            do { state=advanceLfsr(state, FEEDBACK[bank]); ++count;
+                check(state != 0 && count <= expected, "nonzero bounded period");
+            } while (state != 1);
+            check(count == expected, "full period " + WORD_LENGTHS[bank]);
+        }
+        // 2^31-1 is prime: a non-fixed state returning after that many steps has full period.
+        near(jump(1, 2147483647L, FEEDBACK[2]), 1, 0, "31-bit full period by jump-ahead");
+        check(advanceLfsr(1, FEEDBACK[2]) != 1, "31-bit seed is not fixed");
+        System.out.println("PASS: 7/15-bit exhaustive periods; 31-bit algebraic period");
+    }
+    private double response(double hz) {
+        double real=0, imaginary=0;
+        for (int i=0; i<FIR_LENGTH; ++i) {
+            double phase=2*Math.PI*hz*i/INTERNAL_RATE;
+            real += reconstruction[i]*Math.cos(phase);
+            imaginary -= reconstruction[i]*Math.sin(phase);
+        }
+        return Math.hypot(real, imaginary);
+    }
+    public static void main(String[] args) {
+        periods();
+        near(wordForRate(rateFor(-1)),0,0,"slow selects 7 bits");
+        near(wordForRate(rateFor(0)),1,0,"middle selects 15 bits");
+        near(wordForRate(rateFor(1)),2,0,"fast selects 31 bits");
+        for (int boundary=0; boundary<2; ++boundary) {
+            double edge=WORD_BOUNDARIES[boundary];
+            check(wordForRate(edge,boundary)==boundary,"hold lower band at boundary");
+            check(wordForRate(edge,boundary+1)==boundary+1,"hold upper band at boundary");
+            check(wordForRate(edge*WORD_HYSTERESIS*1.001,boundary)==boundary+1,"upward crossing");
+            check(wordForRate(edge/WORD_HYSTERESIS/1.001,boundary+1)==boundary,"downward crossing");
+        }
+        NoiseChecks n=new NoiseChecks(); n.init(); n.analogState=12345;
+        near(rateFor(-1),20,1e-10,"minimum clock"); near(rateFor(1),48000,1e-8,"maximum clock");
+        for (double position : new double[]{-1,-0.5,0,0.5,1}) {
+            near(2*Math.log(rateFor(position)/MIN_CLOCK)/LOG_CLOCK_SPAN-1,position,1e-12,"Hz inverse");
+        }
+        check(n.response(24000) < 0.001, "anti-alias filter attenuation at Nyquist");
+        check(n.response(10000) > 0.99, "audio passband");
+        n.process(); near(n.outputBlend.value,0,0,"silent initial levels");
+        n.knobLevelA.value=1; n.knobLevelD.value=1;
+        for (double speed : new double[]{-1,0,1})
+            for (double colour : new double[]{-1,0,1}) {
+                n.knobSpeed.value=speed;
+                n.knobColourA.value=colour; n.knobColourD.value=colour; n.recall();
+                double sumA=0,sumD=0;
+                for (int i=0; i<48000; ++i) {
+                    n.process(); double a=n.outputAnalog.value, d=n.outputDigital.value;
+                    check(Double.isFinite(a) && Double.isFinite(d) && Math.abs(a)<15 && Math.abs(d)<5,"finite bounded outputs");
+                    sumA+=a*a; sumD+=d*d;
+                    check(n.clockPhase>=0 && n.clockPhase<1,"clock phase bounded");
+                }
+                check(sumA>10 && sumD>10,"both voices active at extremes");
+                check(n.activeWord==wordForRate(rateFor(speed)),"automatic selection follows settled clock");
+            }
+        for (double mix : new double[]{-1,0,1}) {
+            n.knobMix.value=mix; n.recall(); n.process();
+            double expected = mix==-1 ? n.outputDigital.value : mix==1 ? n.outputAnalog.value
+                : (n.outputAnalog.value+n.outputDigital.value)*Math.sqrt(0.5);
+            near(n.outputBlend.value,expected,1e-12,"blend endpoints and center");
+        }
+        for (double percentage : new double[]{0,25,50,75,100}) {
+            n.edit(n.knobMix,percentage,"test");
+            near(n.knobMix.value,1-2*percentage/100,1e-12,"typed blend inverse follows D/A panel");
+            check(n.tooltip(n.knobMix).contains(String.format(Locale.ROOT,"%.1f",percentage)),"blend tooltip matches typed percent digital");
+            n.edit(n.knobLevelA,percentage,"test"); near(n.knobLevelA.value,percentage/100,1e-12,"typed level inverse");
+        }
+        for (double hz : new double[]{20,100,1000,48000}) {
+            n.edit(n.knobSpeed,hz,"test"); near(rateFor(n.knobSpeed.value),hz,1e-7,"typed Hz inverse");
+        }
+        for (double percent : new double[]{-100,0,100}) {
+            n.edit(n.knobColourD,percent,"test"); near(n.knobColourD.value,percent/100,1e-12,"typed colour inverse");
+        }
+        for (int bank=0;bank<3;bank++) {
+            int state=1;
+            check(com.insectlabs.dsp.noise.GaloisLfsr.maskForBits(WORD_LENGTHS[bank])==FEEDBACK[bank],"primitive mask matches embedded");
+            for (int i=0;i<10000;i++) {
+                int expected=advanceLfsr(state,FEEDBACK[bank]);
+                check(com.insectlabs.dsp.noise.GaloisLfsr.advance(state,FEEDBACK[bank])==expected,"primitive exact step parity");
+                state=expected;
+            }
+        }
+        boolean rejected=false;
+        try { com.insectlabs.dsp.noise.GaloisLfsr.maskForBits(0); } catch (IllegalArgumentException e) { rejected=true; }
+        check(rejected,"unsupported primitive word size rejected");
+        for (int i=0; i<500; ++i) {
+            if (i%17==0) n.knobSpeed.value=(i/17)%3-1;
+            n.process(); near(n.wordWeight[0]+n.wordWeight[1]+n.wordWeight[2],1,1e-12,"selector weights sum to unity");
+        }
+        for (double speed : new double[]{-1,0,1}) {
+            n.knobSpeed.value=speed;
+            for (int i=0;i<6000;i++) n.process();
+            int bank=wordForRate(rateFor(speed));
+            check(n.activeWord==bank && n.wordFadeRemaining==0,"live speed change completes automatic transition");
+            for (int i=0;i<3;i++) near(n.wordWeight[i],i==bank?1:0,1e-12,"settled automatic weights");
+        }
+        double phase=n.clockPhase; int state=n.lfsr[2]; double low=n.analogColourLow;
+        for (int i=0;i<100;i++) n.bypass();
+        near(n.outputBlend.value,0,0,"bypass silent"); near(n.clockPhase,phase,0,"bypass clock freeze");
+        near(n.analogColourLow,low,0,"bypass filter freeze"); check(n.lfsr[2]==state,"bypass LFSR freeze");
+        n.recall(); check(n.lfsr[2]==state,"recall preserves sequence state");
+        n.knobSpeed.value=Double.NaN; n.knobMix.value=Double.POSITIVE_INFINITY;
+        n.knobColourA.value=Double.NEGATIVE_INFINITY; n.knobColourD.value=Double.NaN;
+        n.knobLevelA.value=Double.NaN; n.knobLevelD.value=Double.NaN;
+        n.recall(); n.process(); near(n.outputBlend.value,0,0,"invalid level controls fall back to silence");
+        System.out.println("PASS: controls, FIR response, automatic bands/hysteresis and rate/colour extremes, routing, transitions, bypass and recall");
+    }
+}

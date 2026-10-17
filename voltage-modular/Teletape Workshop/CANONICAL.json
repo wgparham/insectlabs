@@ -40,5 +40,11 @@
     "path": "ZOID/versions/1.0.0",
     "module": "zoid",
     "name": "ZOID Trapezoid Generator"
+  },
+  "n02": {
+    "version": "1.0.0",
+    "path": "n02/versions/1.0.0",
+    "module": "n02",
+    "name": "N02 Dual Noise Generator"
   }
 }

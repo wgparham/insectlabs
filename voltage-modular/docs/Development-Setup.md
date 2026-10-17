@@ -8,7 +8,7 @@
 - Voltage Module Designer SDK: `C:/ProgramData/Voltage/voltage.jar`
 - Compile output belongs outside Dropbox/Git, for example `C:/InsectLabs-Build/<module>`.
 
-Each product folder contains its current canonical release and any preserved older versions; versions vary by product. Open the pair named in the collection's `CANONICAL.json` in Voltage Module Designer; its matching `.java` is the exported source. The next collection is [Teletape Workshop](../Teletape%20Workshop/README.md), whose first canonical instrument is RVG and whose remaining module briefs remain in development.
+Each product folder contains its current canonical release and any preserved older versions; versions vary by product. Open the pair named in the collection's `CANONICAL.json` in Voltage Module Designer; its matching `.java` is the exported source. The next collection is [Teletape Workshop](../Teletape%20Workshop/README.md), whose first canonical instrument is RVG. Eight modules are canonized, including N02 Dual Noise Generator 1.0.0. The final list and next brief remain open.
 
 ## Toolchain and validation
 
@@ -20,6 +20,6 @@ Series One is mono-first and predominantly manual. +5 V is the common modulation
 
 The Berna manuals, 1971 Moog catalog, Q125 data and other hardware/software references are maintained in the local Resources folder rather than duplicated in the repository. Collection decisions are summarized in the [roadmap](Collection-Roadmap.md).
 
-TSL Triple Slew Limiter is [canonical v1.0.0](../Teletape%20Workshop/TSL/README.md) as of 2026-10-14. OFB Octave Filter Bank is [canonical v1.0.0](../Teletape%20Workshop/OFB/README.md) as of 2026-10-14. SVF Dual State Variable Filter is canonical v1.0.1 as of 2026-10-15. TRM Triple Ring Modulator is canonical v1.0.0 as of 2026-10-15. RVG is canonical v2.0.1. The next module is ZOID Trapezoid Generator, pending its brief. The early HPF working directory was renamed SVF after the approved design exposed all three filter taps.
+TSL Triple Slew Limiter is [canonical v1.0.0](../Teletape%20Workshop/TSL/README.md) as of 2026-10-14. OFB Octave Filter Bank is [canonical v1.0.0](../Teletape%20Workshop/OFB/README.md) as of 2026-10-14. SVF Dual State Variable Filter is canonical v1.0.1 as of 2026-10-15. TRM Triple Ring Modulator is canonical v1.0.0 as of 2026-10-15. RVG is canonical v2.0.1. ZOID Trapezoid Generator and N02 Dual Noise Generator are canonical v1.0.0. The early HPF working directory was renamed SVF after the approved design exposed all three filter taps.
 
 RVG current canon is [2.0.1](../Teletape%20Workshop/RVG/versions/2.0.1/README.md), approved 2026-10-15; 2.0.0 and 1.8.0 remain preserved.
