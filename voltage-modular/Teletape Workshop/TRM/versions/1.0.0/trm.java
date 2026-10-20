@@ -28,7 +28,7 @@ public class trm extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "06d91daf485e4abd8f77913a4b877f78" );
+        SetSkin( "03b0b747329b4dd780dde88524730f88" );
     }
 
 void InitializeControls()
@@ -186,7 +186,7 @@ void InitializeControls()
         imageTTW.SetWantsMouseNotifications( false );
         imageTTW.SetPosition( 5, 5 );
         imageTTW.SetSize( 41, 13 );
-        imageTTW.SetCurrentImage( "image image.svg" );
+        imageTTW.SetCurrentImage( "image image(3).svg" );
 
         labelNumber = new VoltageLabel( "labelNumber", "Model Number Label", this, "trm" );
         AddComponent( labelNumber );
