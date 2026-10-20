@@ -11,15 +11,11 @@ import voltage.effects.*;
 import java.awt.*;
 
 //[user-imports]   Add your own imports here
-
-
 //[/user-imports]
 
 
 public class blank extends VoltageModule
 //[user-inheritance]
-
-
 //[/user-inheritance]
 {
 
@@ -32,7 +28,7 @@ public class blank extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "241d40c721ee438e84043d843f0c55a3" );
+        SetSkin( "89743ef9b29147f68c06bad2d59f6780" );
     }
 
 void InitializeControls()
@@ -86,6 +82,27 @@ void InitializeControls()
         labelNumber.SetHasCustomTextHoverColor( false );
         labelNumber.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelNumber.SetFont( "Courier New", 13, true, false );
+
+        labelLocation = new VoltageLabel( "labelLocation", "Location Mark", this, "(Seattle) Ltd" );
+        AddComponent( labelLocation );
+        labelLocation.SetWantsMouseNotifications( false );
+        labelLocation.SetPosition( 5, 13 );
+        labelLocation.SetSize( 41, 14 );
+        labelLocation.SetEditable( false, false );
+        labelLocation.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelLocation.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelLocation.SetColor( new Color( 26, 26, 26, 255 ) );
+        labelLocation.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        labelLocation.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        labelLocation.SetBorderSize( 1 );
+        labelLocation.SetMultiLineEdit( false );
+        labelLocation.SetIsNumberEditor( false );
+        labelLocation.SetNumberEditorRange( 0, 100 );
+        labelLocation.SetNumberEditorInterval( 1 );
+        labelLocation.SetNumberEditorUsesMouseWheel( false );
+        labelLocation.SetHasCustomTextHoverColor( false );
+        labelLocation.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelLocation.SetFont( "Arial", 7, true, false );
 }
 
 
@@ -100,6 +117,7 @@ void InitializeControls()
     public void Initialize()
     {
         //[user-Initialize]   Add your own initialization code here
+
 
 
         //[/user-Initialize]
@@ -117,6 +135,7 @@ void InitializeControls()
     {
         super.Destroy();
         //[user-Destroy]   Add your own module-getting-deleted code here
+
 
 
         //[/user-Destroy]
@@ -151,6 +170,7 @@ void InitializeControls()
     public void ProcessSample()
     {
         //[user-ProcessSample]   Add your own process-sampling code here
+
 
 
         //[/user-ProcessSample]
@@ -206,6 +226,7 @@ void InitializeControls()
         //[user-EditComponentValue]   Add your own code here
 
 
+
         //[/user-EditComponentValue]
         super.EditComponentValue( component, newValue, newText );
     }
@@ -221,6 +242,7 @@ void InitializeControls()
     public void OnUndoRedo( String undoType, double newValue, Object optionalObject )
     {
         //[user-OnUndoRedo]   Add your own code here
+
 
 
         //[/user-OnUndoRedo]
@@ -257,6 +279,7 @@ void InitializeControls()
         //[user-SetStateInformation]   Add your own code here
 
 
+
         //[/user-SetStateInformation]
     }
 
@@ -289,6 +312,8 @@ void InitializeControls()
     public void SetStateInformationForVariations(byte[] stateInfo)
     {
         //[user-SetStateInformationForVariations]   Add your own code here
+        SetStateInformation(stateInfo);
+
 
 
         //[/user-SetStateInformationForVariations]
@@ -296,15 +321,19 @@ void InitializeControls()
 
 
     // Auto-generated variables
+    private VoltageLabel labelLocation;
     private VoltageLabel labelNumber;
     private VoltageImage imageTTW;
     private VoltageLabel labelFooter;
 
 
     //[user-code-and-variables]    Add your own variables and functions here
-
-
     //[/user-code-and-variables]
+
+
+
+
+
 }
 
  
