@@ -1,0 +1,12 @@
+FPA 1.0.0 — validation record (2026-10-20)
+
+PASS: exported and Designer-embedded Java compile against the installed Voltage SDK using Java 17 target, -Xlint:all and -Werror.
+PASS: Designer project round-trips byte-for-byte; exported and embedded source agree; class/package/version identity, unique control UUIDs, human-readable label display names, four signed tone ranges/defaults and protected-line indices validate.
+PASS: exact nested DSP core extracted from the release source passes calibration, gain monotonicity, ceiling, silence, NaN/Infinity handling, polarity, signed tone endpoints, neutral centered voicings, O cutoff midpoint, clamp bounds, mix scaling and channel-isolation tests.
+PASS: archive SHA-256 manifest matches every listed file.
+
+Headless JVM timing runs ranged from about 0.9 to 1.4 microseconds per four-channel frame (roughly 4–7% of one 48 kHz sample-period budget) on this machine. This is a rough JVM estimate, not a native Voltage CPU benchmark.
+
+The user confirmed the candidate loaded, compiled and ran in Designer before the authorized tone-only correction. A separate native host test or listening check of the corrected tone response is not recorded.
+
+Command: python tests/validate.py

@@ -64,5 +64,11 @@
     "path": "OSC/versions/1.0.0",
     "module": "osc",
     "name": "OSC Primary Oscillator"
+  },
+  "fpa": {
+    "version": "1.0.0",
+    "path": "FPA/versions/1.0.0",
+    "module": "fpa",
+    "name": "FPA Four Pre-Amps"
   }
 }

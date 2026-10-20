@@ -1,6 +1,6 @@
 # Teletape Workshop
 
-Teletape Workshop is the new name for the planned Radiophonic series. It follows the completed Wardenclyffe Station collection and shifts toward electronic-music studio equipment rooted in the mid-1960s through mid-1970s. RVG, TSL, OFB, b08, CXL, SVF, TRM, ZOID, N02, OSC and CED are canonized. The complete series inventory is not yet locked.
+Teletape Workshop is the new name for the planned Radiophonic series. It follows the completed Wardenclyffe Station collection and shifts toward electronic-music studio equipment rooted in the mid-1960s through mid-1970s. RVG, TSL, OFB, b08, CXL, SVF, TRM, ZOID, N02, OSC, CED and FPA are canonized. The complete series inventory is not yet locked.
 
 ## Accepted directions to explore
 
@@ -34,8 +34,9 @@ These are design directions, not a committed product list. Keep the general CV r
 | [ZOID Trapezoid Generator](ZOID/versions/1.0.0/) | 1.0.0 | One four-stage envelope drives two segment-rotated control outputs and a logarithmic VCA | [User manual](ZOID/versions/1.0.0/USER-MANUAL.md) |
 | [N02 Dual Noise Generator](n02/versions/1.0.0/) | 1.0.0 | Independent analog/digital noise, automatic 7/15/31-bit sequence lengths, colour and level controls, and equal-power blend | [User manual](n02/versions/1.0.0/USER-MANUAL.md) |
 | [OSC Primary Oscillator](OSC/versions/1.0.0/) | 1.0.0 | Shared-phase shaped sine, triangle/ramp and pulse, V/oct pitch and through-zero linear FM | [User manual](OSC/versions/1.0.0/USER-MANUAL.md) |
+| [FPA Four Pre-Amps](FPA/versions/1.0.0/) | 1.0.0 | Four independent preamp/overdrive voices with individual outputs and a summed mix | [User manual](FPA/versions/1.0.0/USER-MANUAL.md) |
 
-The RVG's [developer notes](RVG/DEVELOPER-NOTES.md), [release review](RVG/versions/2.0.0/REVIEW.md), and [shared references](references/README.md) record implementation, validation and research. The RVG models EMS workflow and feel; it is not an exact circuit reconstruction. The b08's [developer notes](b08/DEVELOPER-NOTES.md) and [release review](b08/versions/1.0.0/REVIEW.md) document its artwork-only panel and validation.
+The RVG's [developer notes](RVG/DEVELOPER-NOTES.md), [release review](RVG/versions/2.0.0/REVIEW.md), and [shared references](references/README.md) record implementation, validation and research. The RVG models EMS workflow and feel; it is not an exact circuit reconstruction. The b08's [developer notes](b08/DEVELOPER-NOTES.md) and [release review](b08/versions/1.0.0/REVIEW.md) document its artwork-only panel and validation. FPA adds four independent preamp/overdrive voices inspired by CE-1, RE-201/301, BD-2 and SD-1 circuits; see its [design research](FPA/references/FPA-Design-Research.md) and [developer notes](FPA/DEVELOPER-NOTES.md).
 
 Shared [design resources](designResources/README.md) inventory the series artwork and font license. EMS schematics, manuals and broader circuit references are catalogued in the [reference index](references/README.md).
 

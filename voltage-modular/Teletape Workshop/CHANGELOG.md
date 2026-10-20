@@ -1,5 +1,9 @@
 # Teletape Workshop changelog
 
+## 2026-10-20 — FPA 1.0.0
+
+Canonized FPA Four Pre-Amps after the user-authorized signed tone-range correction and passing strict SDK/DSP checks. Tone now follows the existing −1..+1 panel sweep with 0 centered; C/Re/D are neutral at center, while O retains its full logarithmic low-pass sweep. Archived the matched project/source pair, panel artwork, manual, developer notes, research, review and repeatable tests. Roland manual duplicates were removed from FPA working references after matching them byte-for-byte to the existing SM1084 reference archive. Cherry Audio publication remains deferred and the full collection lineup is still open; twelve modules are canonical.
+
 ## 2026-10-20 — CED 1.0.0
 
 Canonized CED Chorus Ensemble Device after the matched pair compiled against the installed Voltage SDK and its headless DSP and stub-wiring checks passed. Archived the pair, current panel image, manual, developer notes, review, validation harness and results. The reusable shared chorus core is preserved in DSP primitives, and a deterministic 24-bit audition render is registered in TestBench. Native Designer loading and user listening remain unverified in this closeout; Cherry Audio publication and the final module lineup remain deferred.
