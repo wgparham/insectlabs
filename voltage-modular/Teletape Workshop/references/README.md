@@ -26,6 +26,8 @@ References useful across multiple Teletape Workshop instruments belong here. Kee
 
 These manuals describe software reconstructions, not original RAI/WDR service documents. Use them to locate device names, operating ideas, and bibliographic leads; corroborate hardware and circuit claims with the cited historical sources before treating them as primary evidence.
 
+- [Synthi 100 oscillator and sequencer panels](synthi-100-oscillator-and-sequencer-panels.jpg) — supplied photograph showing the oscillator bank, noise/random voltage controls, sequencer outputs and associated controls. Its original source and publication details were not supplied; use as visual context, not as circuit documentation.
+
 ## Synthi 100 filter evidence
 
 - [Synthi 100 filter research packet](Synthi-100-Filters/INITIAL-RESEARCH.md) — separates the documented 34/01 HPF/three-tap core from the distinct, incompletely documented 34/00 LPF board. It includes the user-supplied Digitana Mk1 photos/demos and front-panel photograph, hashes, unresolved revision history and limits on what component photos establish.
@@ -44,3 +46,4 @@ The reference set offers examples of EMS product documentation, signal routing a
 
 - [SHA-256 manifest](SHA256.json) records retained binary and code reference bytes; it excludes this README and the manifest itself.
 - Keep shared sources here so later Teletape modules can link to them without copying them into module folders.
+
