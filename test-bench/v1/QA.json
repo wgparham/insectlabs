@@ -1,7 +1,7 @@
 {
   "result": "PASS",
-  "files": 62,
-  "checks": 307,
+  "files": 63,
+  "checks": 311,
   "details": [
     "01-calibration/sine_00020Hz_minus12dBFS.wav: SHA-256",
     "01-calibration/sine_00020Hz_minus12dBFS.wav: format and duration",
@@ -286,6 +286,10 @@
     "07-recordings/extreme_metal_drums_erich94_stereo.wav: format and duration",
     "07-recordings/extreme_metal_drums_erich94_stereo.wav: no sample clipping",
     "07-recordings/extreme_metal_drums_erich94_stereo.wav: measured peak agrees",
+    "08-module-demos/CED_dimension_ce1_chorus_demo.wav: SHA-256",
+    "08-module-demos/CED_dimension_ce1_chorus_demo.wav: format and duration",
+    "08-module-demos/CED_dimension_ce1_chorus_demo.wav: no sample clipping",
+    "08-module-demos/CED_dimension_ce1_chorus_demo.wav: measured peak agrees",
     "Edited drum loop: exact musical-cycle length",
     "Edited drum loop: eight bars at 300 BPM",
     "Edited drum loop: wrap sample step below -34 dBFS",

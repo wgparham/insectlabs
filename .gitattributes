@@ -26,3 +26,5 @@ test-bench/InsectLabs-TestBench-v1.zip filter=lfs diff=lfs merge=lfs -text
 "voltage-modular/Teletape Workshop/TRM/**/harness.template" -text
 
 "voltage-modular/Teletape Workshop/n02/**/harness.template" -text
+
+"voltage-modular/Teletape Workshop/OSC/**/harness.template" -text

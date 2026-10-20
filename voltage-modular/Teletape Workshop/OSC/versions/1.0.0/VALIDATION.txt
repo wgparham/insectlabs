@@ -1,0 +1,27 @@
+PARITY 240000 frames / four outputs: d8b37ceb27425c0b
+
+PASS: endpoints, typed entry, bounds, DC, mixing, CV routes, invalid recovery, bypass/resume and drift; separate V/oct and through-zero linear FM
+PASS: reusable waveform/helper exact parity
+BENCH: eight voices, 5 simulated seconds each: 5.8412 wall seconds; 146.0303 ms/voice/audio-second; checksum 5007108.880
+BENCH SINGLE WAVE: eight voices, 5 simulated seconds each: 3.4268 wall seconds; 85.6701 ms/voice/audio-second; checksum 1714308.880
+
+PARITY 240000 frames / four outputs: d8b37ceb27425c0b
+CPU FM peak 2.5 V (forward only): 154.297 ms/voice/audio-second; checksum 1988083.884
+CPU FM peak 7.5 V (through zero): 162.109 ms/voice/audio-second; checksum 1971986.423
+CPU FM peak 2.5 V (forward only): 186.523 ms/voice/audio-second; checksum 2030109.552
+CPU FM peak 7.5 V (through zero): 197.266 ms/voice/audio-second; checksum 1994856.362
+
+STATIC WORST: {'frequency_hz': 10000.48828125, 'shape': 1.0, 'channel': 'pulse', 'alias_db': np.float64(-131.44187845674392), 'dc_volts': 4.900000000000002}
+sine {'frequency_hz': 1999.51171875, 'shape': -1.0, 'channel': 'sine', 'alias_db': np.float64(-158.2205661453723), 'dc_volts': -1.5915494308095945}
+triangle {'frequency_hz': 4999.51171875, 'shape': 1.0, 'channel': 'triangle', 'alias_db': np.float64(-132.68401862342247), 'dc_volts': 1.0710833261984298e-15}
+pulse {'frequency_hz': 10000.48828125, 'shape': 1.0, 'channel': 'pulse', 'alias_db': np.float64(-131.44187845674392), 'dc_volts': 4.900000000000002}
+MODULATION 0 [-161.77, -162.45, -155.98]
+MODULATION 1 [-136.22, -112.42, -102.89]
+MODULATION 2 [-77.17, -56.04, -60.8]
+MODULATION 3 [-73.48, -68.32, -66.68]
+MODULATION 4 [-58.82, -51.89, -49.24]
+MODULATION 5 [-161.99, -137.72, -119.34]
+MODULATION 6 [-117.86, -78.34, -57.79]
+MODULATION 7 [-73.68, -64.77, -57.98]
+THROUGH ZERO: [-161.99, -137.72, -119.34, -117.86, -78.34, -57.79, -73.68, -64.77, -57.98]
+PASS: pair/source/SDK/metadata/geometry + headless DSP + static alias rejection

@@ -1,0 +1,8 @@
+{
+  "cxl": {
+    "version": "1.0.0",
+    "path": "versions/1.0.0",
+    "module": "cxl",
+    "name": "CXL Algorithmic Reverberation"
+  }
+}

@@ -1,0 +1,992 @@
+{
+  "method": "Coherent 32768-sample FFT after 2048 warmup samples; sum of all non-DC/non-harmonic power relative to intended harmonic power. Drift and shape-to-pitch coupling disabled only to make the tones coherent. Actual voiced waveform functions and actual 2x/159-tap output decimators are exercised.",
+  "static_worst": {
+    "frequency_hz": 10000.48828125,
+    "shape": -1.0,
+    "channel": "pulse",
+    "alias_db": -128.62309356790388,
+    "dc_volts": -4.900000000000003
+  },
+  "rows": [
+    {
+      "frequency_hz": 45.41015625,
+      "shape": -1.0,
+      "channel": "sine",
+      "alias_db": -157.0908896902974,
+      "dc_volts": -1.5915494308761433
+    },
+    {
+      "frequency_hz": 45.41015625,
+      "shape": -1.0,
+      "channel": "triangle",
+      "alias_db": -134.73384893216775,
+      "dc_volts": -1.0755285551056204e-16
+    },
+    {
+      "frequency_hz": 45.41015625,
+      "shape": -1.0,
+      "channel": "pulse",
+      "alias_db": -147.11953619968247,
+      "dc_volts": -4.900000000000003
+    },
+    {
+      "frequency_hz": 45.41015625,
+      "shape": -0.5,
+      "channel": "sine",
+      "alias_db": -158.02423813372792,
+      "dc_volts": -1.1264227526894324
+    },
+    {
+      "frequency_hz": 45.41015625,
+      "shape": -0.5,
+      "channel": "triangle",
+      "alias_db": -158.49685332640132,
+      "dc_volts": 1.3877787807814457e-17
+    },
+    {
+      "frequency_hz": 45.41015625,
+      "shape": -0.5,
+      "channel": "pulse",
+      "alias_db": -160.23901556522208,
+      "dc_volts": -2.4500000000000015
+    },
+    {
+      "frequency_hz": 45.41015625,
+      "shape": 0.0,
+      "channel": "sine",
+      "alias_db": -158.45801755313613,
+      "dc_volts": -2.7755575615628914e-17
+    },
+    {
+      "frequency_hz": 45.41015625,
+      "shape": 0.0,
+      "channel": "triangle",
+      "alias_db": -160.83013005228796,
+      "dc_volts": 0.0
+    },
+    {
+      "frequency_hz": 45.41015625,
+      "shape": 0.0,
+      "channel": "pulse",
+      "alias_db": -161.45298324946242,
+      "dc_volts": 2.7755575615628914e-17
+    },
+    {
+      "frequency_hz": 45.41015625,
+      "shape": 0.5,
+      "channel": "sine",
+      "alias_db": -158.02423813425625,
+      "dc_volts": 1.1264227526894324
+    },
+    {
+      "frequency_hz": 45.41015625,
+      "shape": 0.5,
+      "channel": "triangle",
+      "alias_db": -158.49685329701325,
+      "dc_volts": -5.551115123125783e-17
+    },
+    {
+      "frequency_hz": 45.41015625,
+      "shape": 0.5,
+      "channel": "pulse",
+      "alias_db": -160.2390155654562,
+      "dc_volts": 2.450000000000001
+    },
+    {
+      "frequency_hz": 45.41015625,
+      "shape": 1.0,
+      "channel": "sine",
+      "alias_db": -157.0908896893185,
+      "dc_volts": 1.591549430876143
+    },
+    {
+      "frequency_hz": 45.41015625,
+      "shape": 1.0,
+      "channel": "triangle",
+      "alias_db": -134.73384893202822,
+      "dc_volts": -9.71445146547012e-17
+    },
+    {
+      "frequency_hz": 45.41015625,
+      "shape": 1.0,
+      "channel": "pulse",
+      "alias_db": -147.11953620088957,
+      "dc_volts": 4.900000000000003
+    },
+    {
+      "frequency_hz": 250.48828125,
+      "shape": -1.0,
+      "channel": "sine",
+      "alias_db": -156.76414522200014,
+      "dc_volts": -1.5915494306871623
+    },
+    {
+      "frequency_hz": 250.48828125,
+      "shape": -1.0,
+      "channel": "triangle",
+      "alias_db": -132.69431580986173,
+      "dc_volts": -3.729655473350135e-15
+    },
+    {
+      "frequency_hz": 250.48828125,
+      "shape": -1.0,
+      "channel": "pulse",
+      "alias_db": -143.0826193270163,
+      "dc_volts": -4.900000000000002
+    },
+    {
+      "frequency_hz": 250.48828125,
+      "shape": -0.5,
+      "channel": "sine",
+      "alias_db": -157.59810086507738,
+      "dc_volts": -1.1264227525556807
+    },
+    {
+      "frequency_hz": 250.48828125,
+      "shape": -0.5,
+      "channel": "triangle",
+      "alias_db": -158.3921454940927,
+      "dc_volts": -1.0581813203458523e-15
+    },
+    {
+      "frequency_hz": 250.48828125,
+      "shape": -0.5,
+      "channel": "pulse",
+      "alias_db": -159.3443258716265,
+      "dc_volts": -2.45
+    },
+    {
+      "frequency_hz": 250.48828125,
+      "shape": 0.0,
+      "channel": "sine",
+      "alias_db": -157.97882479746474,
+      "dc_volts": 7.806255641895632e-17
+    },
+    {
+      "frequency_hz": 250.48828125,
+      "shape": 0.0,
+      "channel": "triangle",
+      "alias_db": -160.58987630726764,
+      "dc_volts": -1.17354043149831e-15
+    },
+    {
+      "frequency_hz": 250.48828125,
+      "shape": 0.0,
+      "channel": "pulse",
+      "alias_db": -160.4530964558957,
+      "dc_volts": -1.046905617752003e-15
+    },
+    {
+      "frequency_hz": 250.48828125,
+      "shape": 0.5,
+      "channel": "sine",
+      "alias_db": -157.59810048623442,
+      "dc_volts": 1.126422752555681
+    },
+    {
+      "frequency_hz": 250.48828125,
+      "shape": 0.5,
+      "channel": "triangle",
+      "alias_db": -158.3921462006483,
+      "dc_volts": -7.086345399365257e-16
+    },
+    {
+      "frequency_hz": 250.48828125,
+      "shape": 0.5,
+      "channel": "pulse",
+      "alias_db": -159.34432552746205,
+      "dc_volts": 2.450000000000001
+    },
+    {
+      "frequency_hz": 250.48828125,
+      "shape": 1.0,
+      "channel": "sine",
+      "alias_db": -156.7641446681837,
+      "dc_volts": 1.5915494306871625
+    },
+    {
+      "frequency_hz": 250.48828125,
+      "shape": 1.0,
+      "channel": "triangle",
+      "alias_db": -132.69431564720594,
+      "dc_volts": -1.93421667571414e-16
+    },
+    {
+      "frequency_hz": 250.48828125,
+      "shape": 1.0,
+      "channel": "pulse",
+      "alias_db": -143.08262246687283,
+      "dc_volts": 4.900000000000002
+    },
+    {
+      "frequency_hz": 1000.48828125,
+      "shape": -1.0,
+      "channel": "sine",
+      "alias_db": -156.63166848925107,
+      "dc_volts": -1.5915494308840907
+    },
+    {
+      "frequency_hz": 1000.48828125,
+      "shape": -1.0,
+      "channel": "triangle",
+      "alias_db": -132.06096229071352,
+      "dc_volts": 1.784705196128389e-15
+    },
+    {
+      "frequency_hz": 1000.48828125,
+      "shape": -1.0,
+      "channel": "pulse",
+      "alias_db": -137.92689982442988,
+      "dc_volts": -4.900000000000003
+    },
+    {
+      "frequency_hz": 1000.48828125,
+      "shape": -0.5,
+      "channel": "sine",
+      "alias_db": -157.57879734371738,
+      "dc_volts": -1.1264227526950576
+    },
+    {
+      "frequency_hz": 1000.48828125,
+      "shape": -0.5,
+      "channel": "triangle",
+      "alias_db": -158.2355236036933,
+      "dc_volts": 6.810958047553939e-16
+    },
+    {
+      "frequency_hz": 1000.48828125,
+      "shape": -0.5,
+      "channel": "pulse",
+      "alias_db": -159.75943547162427,
+      "dc_volts": -2.450000000000003
+    },
+    {
+      "frequency_hz": 1000.48828125,
+      "shape": 0.0,
+      "channel": "sine",
+      "alias_db": -158.0194817625436,
+      "dc_volts": -1.154241632828068e-15
+    },
+    {
+      "frequency_hz": 1000.48828125,
+      "shape": 0.0,
+      "channel": "triangle",
+      "alias_db": -160.630399284153,
+      "dc_volts": 1.0907073855204175e-16
+    },
+    {
+      "frequency_hz": 1000.48828125,
+      "shape": 0.0,
+      "channel": "pulse",
+      "alias_db": -161.00855705202503,
+      "dc_volts": -1.9467934209149718e-15
+    },
+    {
+      "frequency_hz": 1000.48828125,
+      "shape": 0.5,
+      "channel": "sine",
+      "alias_db": -157.5787976555339,
+      "dc_volts": 1.126422752695056
+    },
+    {
+      "frequency_hz": 1000.48828125,
+      "shape": 0.5,
+      "channel": "triangle",
+      "alias_db": -158.2355231969947,
+      "dc_volts": -3.363195139050035e-16
+    },
+    {
+      "frequency_hz": 1000.48828125,
+      "shape": 0.5,
+      "channel": "pulse",
+      "alias_db": -159.75943527533727,
+      "dc_volts": 2.4499999999999993
+    },
+    {
+      "frequency_hz": 1000.48828125,
+      "shape": 1.0,
+      "channel": "sine",
+      "alias_db": -156.63166893125415,
+      "dc_volts": 1.5915494308840894
+    },
+    {
+      "frequency_hz": 1000.48828125,
+      "shape": 1.0,
+      "channel": "triangle",
+      "alias_db": -132.0609626483986,
+      "dc_volts": -1.3649021149420015e-15
+    },
+    {
+      "frequency_hz": 1000.48828125,
+      "shape": 1.0,
+      "channel": "pulse",
+      "alias_db": -137.92689978125898,
+      "dc_volts": 4.900000000000003
+    },
+    {
+      "frequency_hz": 1999.51171875,
+      "shape": -1.0,
+      "channel": "sine",
+      "alias_db": -155.707994887825,
+      "dc_volts": -1.5915494308061506
+    },
+    {
+      "frequency_hz": 1999.51171875,
+      "shape": -1.0,
+      "channel": "triangle",
+      "alias_db": -131.74966744139545,
+      "dc_volts": 1.880873928827853e-15
+    },
+    {
+      "frequency_hz": 1999.51171875,
+      "shape": -1.0,
+      "channel": "pulse",
+      "alias_db": -135.05941477408743,
+      "dc_volts": -4.900000000000003
+    },
+    {
+      "frequency_hz": 1999.51171875,
+      "shape": -0.5,
+      "channel": "sine",
+      "alias_db": -157.21758694121402,
+      "dc_volts": -1.126422752639895
+    },
+    {
+      "frequency_hz": 1999.51171875,
+      "shape": -0.5,
+      "channel": "triangle",
+      "alias_db": -158.52324032345197,
+      "dc_volts": 8.15645294360845e-16
+    },
+    {
+      "frequency_hz": 1999.51171875,
+      "shape": -0.5,
+      "channel": "pulse",
+      "alias_db": -160.09989456376033,
+      "dc_volts": -2.450000000000002
+    },
+    {
+      "frequency_hz": 1999.51171875,
+      "shape": 0.0,
+      "channel": "sine",
+      "alias_db": -157.99335573564943,
+      "dc_volts": -6.152847328855238e-16
+    },
+    {
+      "frequency_hz": 1999.51171875,
+      "shape": 0.0,
+      "channel": "triangle",
+      "alias_db": -160.7285159225931,
+      "dc_volts": 2.1196152472091612e-16
+    },
+    {
+      "frequency_hz": 1999.51171875,
+      "shape": 0.0,
+      "channel": "pulse",
+      "alias_db": -161.1216985333903,
+      "dc_volts": -6.672180169475794e-16
+    },
+    {
+      "frequency_hz": 1999.51171875,
+      "shape": 0.5,
+      "channel": "sine",
+      "alias_db": -157.21759668722694,
+      "dc_volts": 1.1264227526398942
+    },
+    {
+      "frequency_hz": 1999.51171875,
+      "shape": 0.5,
+      "channel": "triangle",
+      "alias_db": -158.5232410921721,
+      "dc_volts": 5.2692225582795515e-17
+    },
+    {
+      "frequency_hz": 1999.51171875,
+      "shape": 0.5,
+      "channel": "pulse",
+      "alias_db": -160.09989368485168,
+      "dc_volts": 2.450000000000002
+    },
+    {
+      "frequency_hz": 1999.51171875,
+      "shape": 1.0,
+      "channel": "sine",
+      "alias_db": -155.7080070774899,
+      "dc_volts": 1.59154943080615
+    },
+    {
+      "frequency_hz": 1999.51171875,
+      "shape": 1.0,
+      "channel": "triangle",
+      "alias_db": -131.74966732284105,
+      "dc_volts": -2.4947491988891457e-16
+    },
+    {
+      "frequency_hz": 1999.51171875,
+      "shape": 1.0,
+      "channel": "pulse",
+      "alias_db": -135.05941440816213,
+      "dc_volts": 4.900000000000003
+    },
+    {
+      "frequency_hz": 4999.51171875,
+      "shape": -1.0,
+      "channel": "sine",
+      "alias_db": -158.0455120424136,
+      "dc_volts": -1.5915493667125717
+    },
+    {
+      "frequency_hz": 4999.51171875,
+      "shape": -1.0,
+      "channel": "triangle",
+      "alias_db": -129.6817670627043,
+      "dc_volts": 5.627551376286011e-16
+    },
+    {
+      "frequency_hz": 4999.51171875,
+      "shape": -1.0,
+      "channel": "pulse",
+      "alias_db": -128.68775943404503,
+      "dc_volts": -4.900000000000003
+    },
+    {
+      "frequency_hz": 4999.51171875,
+      "shape": -0.5,
+      "channel": "sine",
+      "alias_db": -158.04551204171622,
+      "dc_volts": -1.1264227072775181
+    },
+    {
+      "frequency_hz": 4999.51171875,
+      "shape": -0.5,
+      "channel": "triangle",
+      "alias_db": -156.99418453897013,
+      "dc_volts": 6.855952437712087e-16
+    },
+    {
+      "frequency_hz": 4999.51171875,
+      "shape": -0.5,
+      "channel": "pulse",
+      "alias_db": -155.89651778409493,
+      "dc_volts": -2.450000000000002
+    },
+    {
+      "frequency_hz": 4999.51171875,
+      "shape": 0.0,
+      "channel": "sine",
+      "alias_db": -158.0455120427701,
+      "dc_volts": -9.756193249110812e-16
+    },
+    {
+      "frequency_hz": 4999.51171875,
+      "shape": 0.0,
+      "channel": "triangle",
+      "alias_db": -156.81396700021264,
+      "dc_volts": 2.4226497544188597e-16
+    },
+    {
+      "frequency_hz": 4999.51171875,
+      "shape": 0.0,
+      "channel": "pulse",
+      "alias_db": -155.75325209124077,
+      "dc_volts": -1.1696373036773622e-15
+    },
+    {
+      "frequency_hz": 4999.51171875,
+      "shape": 0.5,
+      "channel": "sine",
+      "alias_db": -158.04551204098996,
+      "dc_volts": 1.1264227072775168
+    },
+    {
+      "frequency_hz": 4999.51171875,
+      "shape": 0.5,
+      "channel": "triangle",
+      "alias_db": -156.99418009277537,
+      "dc_volts": -3.7876602895781097e-16
+    },
+    {
+      "frequency_hz": 4999.51171875,
+      "shape": 0.5,
+      "channel": "pulse",
+      "alias_db": -155.89651330165225,
+      "dc_volts": 2.450000000000001
+    },
+    {
+      "frequency_hz": 4999.51171875,
+      "shape": 1.0,
+      "channel": "sine",
+      "alias_db": -158.04551204389173,
+      "dc_volts": 1.5915493667125706
+    },
+    {
+      "frequency_hz": 4999.51171875,
+      "shape": 1.0,
+      "channel": "triangle",
+      "alias_db": -129.68176691480258,
+      "dc_volts": -5.381979584218044e-16
+    },
+    {
+      "frequency_hz": 4999.51171875,
+      "shape": 1.0,
+      "channel": "pulse",
+      "alias_db": -128.6877589567845,
+      "dc_volts": 4.900000000000003
+    },
+    {
+      "frequency_hz": 10000.48828125,
+      "shape": -1.0,
+      "channel": "sine",
+      "alias_db": -158.0698414471686,
+      "dc_volts": -1.591549366712571
+    },
+    {
+      "frequency_hz": 10000.48828125,
+      "shape": -1.0,
+      "channel": "triangle",
+      "alias_db": -129.80073492806616,
+      "dc_volts": -8.102920461341978e-16
+    },
+    {
+      "frequency_hz": 10000.48828125,
+      "shape": -1.0,
+      "channel": "pulse",
+      "alias_db": -128.62309356790388,
+      "dc_volts": -4.900000000000003
+    },
+    {
+      "frequency_hz": 10000.48828125,
+      "shape": -0.5,
+      "channel": "sine",
+      "alias_db": -158.06984144714193,
+      "dc_volts": -1.1264227072775175
+    },
+    {
+      "frequency_hz": 10000.48828125,
+      "shape": -0.5,
+      "channel": "triangle",
+      "alias_db": -157.0543933466849,
+      "dc_volts": -2.713215936644975e-16
+    },
+    {
+      "frequency_hz": 10000.48828125,
+      "shape": -0.5,
+      "channel": "pulse",
+      "alias_db": -155.77940739894052,
+      "dc_volts": -2.450000000000001
+    },
+    {
+      "frequency_hz": 10000.48828125,
+      "shape": 0.0,
+      "channel": "sine",
+      "alias_db": -158.0698414438967,
+      "dc_volts": 1.434941575284565e-16
+    },
+    {
+      "frequency_hz": 10000.48828125,
+      "shape": 0.0,
+      "channel": "triangle",
+      "alias_db": -156.83871187342888,
+      "dc_volts": -2.0456184489370255e-16
+    },
+    {
+      "frequency_hz": 10000.48828125,
+      "shape": 0.0,
+      "channel": "pulse",
+      "alias_db": -155.70241424703272,
+      "dc_volts": 1.6116665293997023e-16
+    },
+    {
+      "frequency_hz": 10000.48828125,
+      "shape": 0.5,
+      "channel": "sine",
+      "alias_db": -158.06984144409853,
+      "dc_volts": 1.1264227072775177
+    },
+    {
+      "frequency_hz": 10000.48828125,
+      "shape": 0.5,
+      "channel": "triangle",
+      "alias_db": -157.05439702123843,
+      "dc_volts": -7.768308565858639e-17
+    },
+    {
+      "frequency_hz": 10000.48828125,
+      "shape": 0.5,
+      "channel": "pulse",
+      "alias_db": -155.77940411912724,
+      "dc_volts": 2.450000000000001
+    },
+    {
+      "frequency_hz": 10000.48828125,
+      "shape": 1.0,
+      "channel": "sine",
+      "alias_db": -158.06984144488516,
+      "dc_volts": 1.5915493667125715
+    },
+    {
+      "frequency_hz": 10000.48828125,
+      "shape": 1.0,
+      "channel": "triangle",
+      "alias_db": -129.8007348663887,
+      "dc_volts": 1.0119672027436577e-16
+    },
+    {
+      "frequency_hz": 10000.48828125,
+      "shape": 1.0,
+      "channel": "pulse",
+      "alias_db": -128.62309365805746,
+      "dc_volts": 4.900000000000003
+    },
+    {
+      "frequency_hz": 14998.53515625,
+      "shape": -1.0,
+      "channel": "sine",
+      "alias_db": -157.95071770093568,
+      "dc_volts": -1.5915493667125729
+    },
+    {
+      "frequency_hz": 14998.53515625,
+      "shape": -1.0,
+      "channel": "triangle",
+      "alias_db": -129.69330145380044,
+      "dc_volts": -9.317565707704645e-16
+    },
+    {
+      "frequency_hz": 14998.53515625,
+      "shape": -1.0,
+      "channel": "pulse",
+      "alias_db": -128.66616771056312,
+      "dc_volts": -4.900000000000002
+    },
+    {
+      "frequency_hz": 14998.53515625,
+      "shape": -0.5,
+      "channel": "sine",
+      "alias_db": -157.95071769812512,
+      "dc_volts": -1.12642270727752
+    },
+    {
+      "frequency_hz": 14998.53515625,
+      "shape": -0.5,
+      "channel": "triangle",
+      "alias_db": -157.14158539757787,
+      "dc_volts": 1.724640395772692e-15
+    },
+    {
+      "frequency_hz": 14998.53515625,
+      "shape": -0.5,
+      "channel": "pulse",
+      "alias_db": -155.8849123468344,
+      "dc_volts": -2.4500000000000037
+    },
+    {
+      "frequency_hz": 14998.53515625,
+      "shape": 0.0,
+      "channel": "sine",
+      "alias_db": -157.95071769850748,
+      "dc_volts": -3.5412211357721546e-15
+    },
+    {
+      "frequency_hz": 14998.53515625,
+      "shape": 0.0,
+      "channel": "triangle",
+      "alias_db": -156.83504212343698,
+      "dc_volts": 5.2583805365546965e-18
+    },
+    {
+      "frequency_hz": 14998.53515625,
+      "shape": 0.0,
+      "channel": "pulse",
+      "alias_db": -155.749209581578,
+      "dc_volts": -4.491334604575514e-15
+    },
+    {
+      "frequency_hz": 14998.53515625,
+      "shape": 0.5,
+      "channel": "sine",
+      "alias_db": -157.95071770068336,
+      "dc_volts": 1.1264227072775148
+    },
+    {
+      "frequency_hz": 14998.53515625,
+      "shape": 0.5,
+      "channel": "triangle",
+      "alias_db": -157.1416002334431,
+      "dc_volts": -1.9609829168473758e-15
+    },
+    {
+      "frequency_hz": 14998.53515625,
+      "shape": 0.5,
+      "channel": "pulse",
+      "alias_db": -155.88491812637525,
+      "dc_volts": 2.449999999999999
+    },
+    {
+      "frequency_hz": 14998.53515625,
+      "shape": 1.0,
+      "channel": "sine",
+      "alias_db": -157.95071769809667,
+      "dc_volts": 1.5915493667125695
+    },
+    {
+      "frequency_hz": 14998.53515625,
+      "shape": 1.0,
+      "channel": "triangle",
+      "alias_db": -129.6933018784386,
+      "dc_volts": -4.016616683352736e-15
+    },
+    {
+      "frequency_hz": 14998.53515625,
+      "shape": 1.0,
+      "channel": "pulse",
+      "alias_db": -128.6661681340475,
+      "dc_volts": 4.900000000000003
+    },
+    {
+      "frequency_hz": 17998.53515625,
+      "shape": -1.0,
+      "channel": "sine",
+      "alias_db": -157.99186052298376,
+      "dc_volts": -1.59154936671257
+    },
+    {
+      "frequency_hz": 17998.53515625,
+      "shape": -1.0,
+      "channel": "triangle",
+      "alias_db": -129.89727679183608,
+      "dc_volts": -2.7872669450257348e-15
+    },
+    {
+      "frequency_hz": 17998.53515625,
+      "shape": -1.0,
+      "channel": "pulse",
+      "alias_db": -128.67923314196227,
+      "dc_volts": -4.900000000000003
+    },
+    {
+      "frequency_hz": 17998.53515625,
+      "shape": -0.5,
+      "channel": "sine",
+      "alias_db": -157.99186051970136,
+      "dc_volts": -1.1264227072775157
+    },
+    {
+      "frequency_hz": 17998.53515625,
+      "shape": -0.5,
+      "channel": "triangle",
+      "alias_db": -157.09730230915451,
+      "dc_volts": -1.1021999285487638e-15
+    },
+    {
+      "frequency_hz": 17998.53515625,
+      "shape": -0.5,
+      "channel": "pulse",
+      "alias_db": -155.82147599588328,
+      "dc_volts": -2.45
+    },
+    {
+      "frequency_hz": 17998.53515625,
+      "shape": 0.0,
+      "channel": "sine",
+      "alias_db": -157.99186052259552,
+      "dc_volts": 2.6400322900022033e-15
+    },
+    {
+      "frequency_hz": 17998.53515625,
+      "shape": 0.0,
+      "channel": "triangle",
+      "alias_db": -156.85505405120347,
+      "dc_volts": 5.611830444784971e-16
+    },
+    {
+      "frequency_hz": 17998.53515625,
+      "shape": 0.0,
+      "channel": "pulse",
+      "alias_db": -155.67347562111058,
+      "dc_volts": 3.3627614581810406e-15
+    },
+    {
+      "frequency_hz": 17998.53515625,
+      "shape": 0.5,
+      "channel": "sine",
+      "alias_db": -157.99186051911522,
+      "dc_volts": 1.1264227072775193
+    },
+    {
+      "frequency_hz": 17998.53515625,
+      "shape": 0.5,
+      "channel": "triangle",
+      "alias_db": -157.09723778446852,
+      "dc_volts": 1.797173521111972e-15
+    },
+    {
+      "frequency_hz": 17998.53515625,
+      "shape": 0.5,
+      "channel": "pulse",
+      "alias_db": -155.82150580330978,
+      "dc_volts": 2.4500000000000037
+    },
+    {
+      "frequency_hz": 17998.53515625,
+      "shape": 1.0,
+      "channel": "sine",
+      "alias_db": -157.9918605227493,
+      "dc_volts": 1.5915493667125724
+    },
+    {
+      "frequency_hz": 17998.53515625,
+      "shape": 1.0,
+      "channel": "triangle",
+      "alias_db": -129.89727551068358,
+      "dc_volts": 1.5931266722502002e-15
+    },
+    {
+      "frequency_hz": 17998.53515625,
+      "shape": 1.0,
+      "channel": "pulse",
+      "alias_db": -128.6792336564344,
+      "dc_volts": 4.900000000000003
+    }
+  ],
+  "modulation_method": "Actual 2x output versus a 32x evaluation of the same waveform model and exact exponential-FM phase integral, filtered to host Nyquist with the actual 159-tap FIR response retained in-band. Native CV samples have identical linear interpolation in both. Crop 8192 host samples at each end and apply a Hann window. Total reference-error power includes aliasing and modulation/interpolation differences; it is not a pure alias-power measurement.",
+  "modulation": [
+    {
+      "case": 0,
+      "carrier_hz": 1000.0,
+      "modulator_hz": 200.0,
+      "fm_octaves": 0.1,
+      "shape_cv_volts": 0.0,
+      "channel": "sine",
+      "reference_error_db": -158.27914611200106
+    },
+    {
+      "case": 0,
+      "carrier_hz": 1000.0,
+      "modulator_hz": 200.0,
+      "fm_octaves": 0.1,
+      "shape_cv_volts": 0.0,
+      "channel": "triangle",
+      "reference_error_db": -152.21464932940205
+    },
+    {
+      "case": 0,
+      "carrier_hz": 1000.0,
+      "modulator_hz": 200.0,
+      "fm_octaves": 0.1,
+      "shape_cv_volts": 0.0,
+      "channel": "pulse",
+      "reference_error_db": -135.53214774650348
+    },
+    {
+      "case": 1,
+      "carrier_hz": 4000.0,
+      "modulator_hz": 2000.0,
+      "fm_octaves": 0.5,
+      "shape_cv_volts": 0.0,
+      "channel": "sine",
+      "reference_error_db": -108.40698731059899
+    },
+    {
+      "case": 1,
+      "carrier_hz": 4000.0,
+      "modulator_hz": 2000.0,
+      "fm_octaves": 0.5,
+      "shape_cv_volts": 0.0,
+      "channel": "triangle",
+      "reference_error_db": -92.96257252526969
+    },
+    {
+      "case": 1,
+      "carrier_hz": 4000.0,
+      "modulator_hz": 2000.0,
+      "fm_octaves": 0.5,
+      "shape_cv_volts": 0.0,
+      "channel": "pulse",
+      "reference_error_db": -83.44274488773428
+    },
+    {
+      "case": 2,
+      "carrier_hz": 1000.0,
+      "modulator_hz": 2000.0,
+      "fm_octaves": 0.0,
+      "shape_cv_volts": 2.0,
+      "channel": "sine",
+      "reference_error_db": -65.01896069376046
+    },
+    {
+      "case": 2,
+      "carrier_hz": 1000.0,
+      "modulator_hz": 2000.0,
+      "fm_octaves": 0.0,
+      "shape_cv_volts": 2.0,
+      "channel": "triangle",
+      "reference_error_db": -45.94487952639032
+    },
+    {
+      "case": 2,
+      "carrier_hz": 1000.0,
+      "modulator_hz": 2000.0,
+      "fm_octaves": 0.0,
+      "shape_cv_volts": 2.0,
+      "channel": "pulse",
+      "reference_error_db": -52.10104873849029
+    },
+    {
+      "case": 3,
+      "carrier_hz": 4000.0,
+      "modulator_hz": 3000.0,
+      "fm_octaves": 0.25,
+      "shape_cv_volts": 1.0,
+      "channel": "sine",
+      "reference_error_db": -61.22234641315763
+    },
+    {
+      "case": 3,
+      "carrier_hz": 4000.0,
+      "modulator_hz": 3000.0,
+      "fm_octaves": 0.25,
+      "shape_cv_volts": 1.0,
+      "channel": "triangle",
+      "reference_error_db": -55.69791449300137
+    },
+    {
+      "case": 3,
+      "carrier_hz": 4000.0,
+      "modulator_hz": 3000.0,
+      "fm_octaves": 0.25,
+      "shape_cv_volts": 1.0,
+      "channel": "pulse",
+      "reference_error_db": -52.46400363702754
+    },
+    {
+      "case": 4,
+      "carrier_hz": 8000.0,
+      "modulator_hz": 6000.0,
+      "fm_octaves": 0.5,
+      "shape_cv_volts": 2.0,
+      "channel": "sine",
+      "reference_error_db": -46.20543182913426
+    },
+    {
+      "case": 4,
+      "carrier_hz": 8000.0,
+      "modulator_hz": 6000.0,
+      "fm_octaves": 0.5,
+      "shape_cv_volts": 2.0,
+      "channel": "triangle",
+      "reference_error_db": -39.623892722612915
+    },
+    {
+      "case": 4,
+      "carrier_hz": 8000.0,
+      "modulator_hz": 6000.0,
+      "fm_octaves": 0.5,
+      "shape_cv_volts": 2.0,
+      "channel": "pulse",
+      "reference_error_db": -36.9027982269478
+    }
+  ],
+  "harness_output": "PASS: endpoints, typed entry, bounds, DC, mixing, CV routes, invalid recovery, bypass/resume and drift\nBENCH: eight voices, 5 simulated seconds each: 3.4815 wall seconds; 87.0370 ms/voice/audio-second; checksum 5007108.881\n",
+  "source_sha256": "5c841fffdb41573f1dc7287dea4337655f4f2a037bb2f360144dcfa0b035e745"
+}

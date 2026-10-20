@@ -2,12 +2,12 @@
 
 The Audio TestBench is a standalone InsectLabs project for module development, audio/musical
 experimentation, and repeatable listening or measurement. The full TestBench collection is versioned
-here. The current v1.5.1 collection contains 62 WAV files at 48 kHz/24-bit, source recordings with
+here. The current v1.6.0 collection contains 63 WAV files at 48 kHz/24-bit, source recordings with
 license evidence, and a measured catalog, attribution, manifest, and verification results.
 
 - `v1` contains the ready-to-patch collection and its listening guide.
 - `sources/ibm-freesound` preserves the source recordings and license evidence used for the recorded fixtures.
-- `InsectLabs-TestBench-v1.zip` remains the portable v1.1 snapshot (54 WAVs); its SHA-256 digest is in the adjacent `.sha256` file. The current v1.5 WAVs and metadata are checked in individually. Rebuilding the 241 MB archive requires Git LFS tooling, which was unavailable during this release.
+- `InsectLabs-TestBench-v1.zip` remains the portable v1.1 snapshot (54 WAVs); its SHA-256 digest is in the adjacent `.sha256` file. The current v1.6 WAVs and metadata are checked in individually. Rebuilding the 241 MB archive requires Git LFS tooling, which was unavailable during this release.
 - `archive-metadata` preserves the original delivery metadata.
 
 Third-party recording licenses are separate from this repository's code license. Keep the credits with the WAV distribution. Do not apply the generated-audio CC0 dedication to the sourced recordings. The original user-provided composition source is archived separately; this repository contains only its approved delivery mix and provenance.
@@ -60,3 +60,7 @@ Rebuild with `python test-bench/tools/add_drum_recordings.py --output test-bench
 ## Metal loop edit (1.5.1)
 
 The extreme-metal WAV is now an exact 6.4-second musical cycle, taken from 3.198833–9.598833 seconds of the decoded source. Its repeated pattern supports eight 4/4 bars at 300 BPM, or four at 150 BPM half-time. A 10 ms wrap-tail blend preserves the duration and cymbal sustain across the join; no endpoint fade or silence is inserted. The original source recording is preserved. This replaces the earlier full-length metal delivery, which included a long decay tail.
+
+## CED chorus/ensemble demo (1.6.0)
+
+`v1/08-module-demos/CED_dimension_ce1_chorus_demo.wav` is an original 44-second stereo PCM render from CED's headless `ChorusCoreTest`. Eleven four-second segments demonstrate dry routing, each of four Dimension-style delay programs, all three program-combination laws, a four-program sum, and CE-style chorus/vibrato. Its section changes are intentional, so it is a listening reference rather than a seamless loop or a native Voltage Modular recording. The render is dedicated under CC0 1.0 and registered in the catalog/manifest with its checksum and measured levels. Automated WAV and checksum checks pass; user/native-host playback is pending.

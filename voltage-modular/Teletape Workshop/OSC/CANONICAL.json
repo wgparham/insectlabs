@@ -1,0 +1,8 @@
+{
+  "osc": {
+    "version": "1.0.0",
+    "path": "versions/1.0.0",
+    "module": "osc",
+    "name": "OSC Primary Oscillator"
+  }
+}

@@ -8,7 +8,7 @@
 - Voltage Module Designer SDK: `C:/ProgramData/Voltage/voltage.jar`
 - Compile output belongs outside Dropbox/Git, for example `C:/InsectLabs-Build/<module>`.
 
-Each product folder contains its current canonical release and any preserved older versions; versions vary by product. Open the pair named in the collection's `CANONICAL.json` in Voltage Module Designer; its matching `.java` is the exported source. The next collection is [Teletape Workshop](../Teletape%20Workshop/README.md), whose first canonical instrument is RVG. Eight modules are canonized, including N02 Dual Noise Generator 1.0.0. The final list and next brief remain open.
+Each product folder contains its current canonical release and any preserved older versions; versions vary by product. Open the pair named in the collection's `CANONICAL.json` in Voltage Module Designer; its matching `.java` is the exported source. The next collection is [Teletape Workshop](../Teletape%20Workshop/README.md), whose first canonical instrument is RVG. Eleven modules are canonized, including CXL Algorithmic Reverberation 1.0.0, N02 Dual Noise Generator 1.0.0, OSC Primary Oscillator 1.0.0 and CED Chorus Ensemble Device 1.0.0. The final list and next brief remain open.
 
 ## Toolchain and validation
 

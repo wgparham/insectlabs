@@ -11,6 +11,18 @@
     "module": "b08",
     "name": "b08 Blanking Panel"
   },
+  "ced": {
+    "version": "1.0.0",
+    "path": "CED/versions/1.0.0",
+    "module": "ced",
+    "name": "CED Chorus Ensemble Device"
+  },
+  "cxl": {
+    "version": "1.0.0",
+    "path": "CXL/versions/1.0.0",
+    "module": "cxl",
+    "name": "CXL Algorithmic Reverberation"
+  },
   "tsl": {
     "version": "1.0.0",
     "path": "TSL/versions/1.0.0",
@@ -46,5 +58,11 @@
     "path": "n02/versions/1.0.0",
     "module": "n02",
     "name": "N02 Dual Noise Generator"
+  },
+  "osc": {
+    "version": "1.0.0",
+    "path": "OSC/versions/1.0.0",
+    "module": "osc",
+    "name": "OSC Primary Oscillator"
   }
 }

@@ -26,6 +26,12 @@ Two independent filters with simultaneous HIGH, BAND and LOW outputs. Each chann
 
 Canonical; publication deferred under the [collection publication plan](PUBLICATION-PLAN.md).
 
+## CXL Algorithmic Reverberation — 1.0.0
+
+A dark stereo plate-style reverb with a shared modulated tank, independent stereo injections, adjustable pre-delay and high-frequency decay, wet-only drive, and two extended-character modes. The long mode balances audible converter grain with sustained tones.
+
+Canonical; publication deferred under the collection publication plan. It is an original software design inspired by EMT and Dattorro references, not a component-exact emulation.
+
 ## TRM Triple Ring Modulator — 1.0.0
 
 Three independent ring-modulator lanes with gain-staged carrier and modulator inputs, distinct diode-character voicings, and envelope-following activity lamps. Each lane has its own output.
@@ -43,3 +49,15 @@ Canonical; publication deferred under the [collection publication plan](PUBLICAT
 Two independent noise voices with colour and level controls, dedicated outputs and an equal-power blend. The digital clock spans 20 Hz–48 kHz and automatically progresses through repeating 7/15/31-bit sequences as SPEED increases. The analog voice follows EMS-inspired noise and colour workflows. BLEND moves from Digital at CCW to Analog at CW.
 
 Canonical; publication deferred under the collection publication plan.
+
+## OSC Primary Oscillator - 1.0.0
+
+A lively hybrid oscillator inspired by EMS studio instruments. Shape sine, triangle/ramp and pulse independently, modulate their shapes or levels, and use separate outputs or the direct mix. Dedicated 1 V/octave pitch and DC-coupled through-zero linear FM cover pitched, low-frequency and reversing modulation workflows. Shared phase, subtle pitch movement and intentional level/DC interactions retain character; 4x synthesis and band-limited shaping suppress sampling artifacts.
+
+Canonical; publication deferred under the collection publication plan. Not an exact EMS circuit reconstruction.
+
+## CED Chorus Ensemble Device — 1.0.0
+
+Combine four Dimension-style ensemble programs with adjustable rate, depth, noise, optional compander and three program-combination laws. Switch to a CE-1-style mono chorus or wet-only vibrato voice with its own rate, intensity and drive controls.
+
+Canonical; publication deferred under the collection publication plan. Original software interpretation, not an exact Roland hardware emulation.

@@ -1,0 +1,11 @@
+CED 1.0.0 automated validation
+
+PASS — exported Java and VMOD-embedded Java compile against the installed Voltage SDK with --release 17 and warnings as errors.
+PASS — VMOD value-tree byte round-trip; class/package/version Notes; 49 named controls with unique UUIDs; 15 synchronized source regions.
+PASS — ModuleWiringTest W1–W7 against local SDK stubs: dry and normalization, selected programs, CV mappings, exclusive controls, bypass/resume, typed tooltips, CE-1 mode and nonfinite input.
+PASS — ChorusCoreTest T1–T7: Dimension ranges and LFO periods, stereo modulation, impulse centroids, combination bounds, compander gain/noise behavior, exact dry, nonfinite recovery, and CE-1 limits.
+PASS — deterministic 44-second, 48 kHz, stereo, 24-bit PCM demo rendered to TestBench.
+
+Indicative headless benchmark: approximately 1.0–1.7 μs/sample (4.8–8.2% of one 48 kHz core budget) across two runs for the worst tested ChorusCore configuration. JVM timing varies; this is not a Voltage Modular host benchmark.
+
+LIMIT — no native Designer load, saved-patch/GUI check, or user listening verification was performed for this closeout. Local stubs test module wiring logic only.

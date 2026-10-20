@@ -622,3 +622,13 @@ Extreme-metal drum loop for fast transient density, cymbal energy, gate response
 
 CC0 source: Original stereo 44.1 kHz 320 kbps MP3. Decoded/resampled to stereo 48 kHz, mean removed, 10 ms wrap-tail blend, linked peak adjusted to -9 dBFS, rounded to 24-bit PCM without dither. No compression or additional coloration. Conversion does not restore source precision or MP3 losses. See ATTRIBUTION.md.
 
+
+## 08-module-demos/CED_dimension_ce1_chorus_demo.wav
+
+44 seconds; 2 channel(s); module-demo.
+
+Loop: non-looping segmented demonstration. Peak dBFS: [-3.098, -3.098]; RMS dBFS: [-22.9787, -23.0065].
+
+Listening reference for CED Dimension-style ensemble programs and CE-1-style chorus/vibrato; compare routing, stereo movement and mode character.
+
+Deterministic 44-second, 48 kHz stereo PCM render from the CED 1.0.0 ChorusCoreTest. Eleven 4-second sections: dry, four Dimension programs, three combination laws, all-program summed LFOs, CE-style chorus, and CE-style vibrato. Section boundaries are intentional; not a seamless loop.

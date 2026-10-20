@@ -1,0 +1,4 @@
+CPU FM peak 2.5 V (forward only): 150.391 ms/voice/audio-second; checksum 1988083.884
+CPU FM peak 7.5 V (through zero): 147.461 ms/voice/audio-second; checksum 1971986.423
+CPU FM peak 2.5 V (forward only): 150.391 ms/voice/audio-second; checksum 2030109.552
+CPU FM peak 7.5 V (through zero): 166.016 ms/voice/audio-second; checksum 1994856.362

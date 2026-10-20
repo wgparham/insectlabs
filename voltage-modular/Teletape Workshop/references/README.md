@@ -4,10 +4,13 @@ References useful across multiple Teletape Workshop instruments belong here. Kee
 
 ## EMS manuals and schematics
 
-- [Synthi 100 educational handbook](ems_synthi100_sm.pdf) — user's reference drop, linked to the [Vasulka archive source](https://www.vasulka.org/archive/RightsIntrvwInstitMediaPolicies/IntrvwInstitKaldron/Amherst,MassEMS/SynthiEducHandbook.pdf). A 12-page scanned PDF; its encryption permits printing but restricts copying and modification. It is general EMS/Synthi context, not an RVG schematic.
+- [CXL plate reverb research and sources](../CXL/RESEARCH.md) — EMT 140 documentation, the Dattorro plate-network paper and CXL implementation limits. Source PDFs are archived under CXL so module-specific research stays with its series module.
+
+- [Synthi 100 service index and excerpts](ems_synthi100_sm.pdf) — 12-page service document with a drawing index and circuit excerpts. Earlier identified here as the educational handbook in error; it is not the [Vasulka educational handbook](https://www.vasulka.org/archive/RightsIntrvwInstitMediaPolicies/IntrvwInstitKaldron/Amherst,MassEMS/SynthiEducHandbook.pdf).
 - [Synthi 100 schematic](ems_synthi_100_sch.pdf) — 63-page service schematic PDF.
 - [Synthi 100 Computer Synthi document](EMS%2520%2520Synthi%2520100%2520Computer%2520Synthi.pdf) — four-page PDF retained under its supplied filename.
 - [Synthi AKS service manual](emsa_synthi-aks_sm.pdf) — 88-page reference PDF.
+- [OSC oscillator research](../OSC/RESEARCH.md) — locations of the 100/AKS oscillator drawings, calibration evidence, thermal mechanisms and proposed hybrid DSP consequences.
 - [Synthi 256 sequencer service manual](ems_synthi_sequencer_256_sm.pdf) — 25-page reference PDF.
 - [Vocoder 2000 service manual](ems_vocoder-2000_sm.pdf) — 22-page reference PDF.
 - [Three-channel slew schematic](3xSlew_Schematics.pdf) — one-page schematic reference for a separate slew design.

@@ -26,6 +26,18 @@ The arithmetic is bit-identical to the approved embedded core. The `tanh` OTA la
 
 The [N02 release checks](../voltage-modular/Teletape%20Workshop/n02/versions/1.0.0/tests/validate.py) compare this step bit-for-bit with the approved embedded code, exhaustively verify 7/15-bit periods and verify the 31-bit period algebraically. Released N02 remains self-contained and does not import this copy.
 
-## Validation
+## HybridWaveforms48
 
-Run `python tests/validate.py` with Java 17. It checks HalfBand19 impulse/symmetry/gain/reset/independence, CubicHermite endpoints/constant/linear interpolation, and EmsSvf96 finite and bounded processing, reset, high-response stress and API preconditions. The separate Teletape SVF release harness compares the extracted primitive bit-for-bit with its embedded source.
+[Source](src/com/insectlabs/dsp/oscillators/HybridWaveforms48.java): exact extraction of OSC 1.0.0's band-limited waveform families, triangle/ramp construction, pulse shaping, imperfect/rectified sine and signed FM integration helper. This preserves that instrument's particular voicing and conservative 48 kHz host-bandwidth policy. It is not a general transistor simulation or an arbitrary-sample-rate oscillator.
+
+Call `selectBandwidth` before evaluating waveforms; each caller owns its selection state. Supply finite bounded phase/shape/rate values. The caller owns phase advance, gain, CV interpolation, corner-velocity allowance, oversampling and output decimation. Static table construction allocates roughly 5.4 MiB per loaded class and must happen outside audio callbacks. The [OSC release harness](../voltage-modular/Teletape%20Workshop/OSC/versions/1.0.0/tests/validate.py) checks exact waveform/helper parity against the embedded implementation. Released OSC remains self-contained.
+
+## ChorusCore
+
+[Source](src/com/insectlabs/dsp/chorus/ChorusCore.java): SDK-independent, allocation-free shared DSP extracted from CED 1.0.0. It contains two explicit voices: four-program Dimension-style stereo chorus and a mono CE-1-style chorus/vibrato path. The caller owns host control mapping, ±5 V normalization, input/output routing and lifecycle. Internally it supplies smoothed controls/program selection, delay lines, LFOs, optional noise and Dimension compander. The CE-style transfer model and combination laws are software choices, not component-accurate Roland emulations. Use the CED developer notes and its source references before changing behavior; released CED retains a self-contained embedded copy.
+
+The [CED archived checks](../voltage-modular/Teletape%20Workshop/CED/versions/1.0.0/tests/validate.py) compile both source forms against the Voltage SDK, compare the module callback with this core through stubs, and run numeric tests. The `ChorusCoreTest` also renders a 24-bit TestBench audition demo.
+
+## Validation commands
+
+Run `python tests/validate.py` with Java 17. It checks HalfBand19 impulse/symmetry/gain/reset/independence, CubicHermite endpoints/constant/linear interpolation, EmsSvf96 finite and bounded processing, reset, high-response stress and API preconditions, and ChorusCore's delay, blend, nonfinite and mode limits. The separate Teletape SVF release harness compares the extracted primitive bit-for-bit with its embedded source.

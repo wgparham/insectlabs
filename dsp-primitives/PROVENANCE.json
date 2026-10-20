@@ -25,6 +25,20 @@
       "date": "2026-10-16",
       "arithmetic": "bit-identical unsigned right-shift XOR Galois step; caller owns nonzero state and clock; supported 7/15/31-bit masks",
       "validation": "N02 1.0.0 archived harness checks exact step parity, exhaustive 7/15-bit periods and algebraic 31-bit period"
+    },
+    {
+      "name": "HybridWaveforms48",
+      "origin": "voltage-modular/Teletape Workshop/OSC/versions/1.0.0/osc.java",
+      "date": "2026-10-17",
+      "arithmetic": "Exact extraction of approved band-limited saw/integral/absolute-sine tables, shaping and signed FM integration helpers; caller owns phase, gain and oversampling",
+      "validation": "OSC archived harness compares waveform and helper output bits with embedded implementation"
+    },
+    {
+      "name": "ChorusCore",
+      "origin": "voltage-modular/Teletape Workshop/CED/versions/1.0.0/ced.java",
+      "date": "2026-10-20",
+      "arithmetic": "Exact extraction of the Dimension-style ensemble and CE-1-style chorus/vibrato shared core; module routing and Voltage controls remain outside the primitive",
+      "validation": "CED archived harness compiles the module and primitive, compares module output against this core through stubs, and runs standalone numeric checks"
     }
   ]
 }

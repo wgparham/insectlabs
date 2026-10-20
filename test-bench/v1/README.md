@@ -1,6 +1,6 @@
-# InsectLabs Audio Test Bench — v1.5.1
+# InsectLabs Audio Test Bench — v1.6.0
 
-62 listening and measurement files for the InsectLabs Voltage Modular collections. All delivery files are **48 kHz, 24-bit PCM WAV**, with mono sources prioritized and explicit stereo routing fixtures. Typical lengths are 4–24 seconds, plus two 42-second sn-16u sweeps, with one complete original experimental-music mix for extended audition. No Voltage Modular patch or special player is required.
+63 listening and measurement files for the InsectLabs Voltage Modular collections. All delivery files are **48 kHz, 24-bit PCM WAV**, with mono sources prioritized and explicit stereo routing fixtures. Typical lengths are 4–24 seconds, plus two 42-second sn-16u sweeps, with one complete original experimental-music mix for extended audition. No Voltage Modular patch or special player is required.
 
 ## Start here
 
@@ -24,6 +24,7 @@
 | 05-musical | 7 | Original synthesized guitar-like and piano-like performances, split-channel pairs, duo, full instrumental mix and complete user-owned experimental-music mix |
 | 06-ambience | 2 | Synthesized garden and stream textures |
 | 07-recordings | 10 | Sourced guitar and piano, birds and rain, mono instrument versions, split-channel pairs, Hip-Hop and extreme-metal drum loops |
+| 08-module-demos | 1 | Original module-rendered chorus/ensemble listening demonstration |
 
 ## Playback and level conventions
 
@@ -85,3 +86,7 @@ Use `07-recordings/hiphop_drums_loopdilla_stereo.wav` for spacious kick/snare/ha
 ## Metal loop edit (1.5.1)
 
 The extreme-metal WAV is now an exact 6.4-second musical cycle, taken from 3.198833–9.598833 seconds of the decoded source. Its repeated pattern supports eight 4/4 bars at 300 BPM, or four at 150 BPM half-time. A 10 ms wrap-tail blend preserves the duration and cymbal sustain across the join; no endpoint fade or silence is inserted. The original source recording is preserved. This replaces the earlier full-length metal delivery, which included a long decay tail.
+
+## Module audition demo (1.6.0)
+
+`08-module-demos/CED_dimension_ce1_chorus_demo.wav` is a deterministic 44-second stereo render from CED 1.0.0's `ChorusCoreTest`, in 11 four-second sections. It covers dry, each Dimension-style program, all three combination laws, a four-program combination, CE-style chorus and vibrato. This is a source-code audition fixture, not a native Voltage Modular recording or a seamless loop. The generated audio is dedicated under CC0 1.0.

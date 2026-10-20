@@ -1,0 +1,21 @@
+CXL 1.0.0 validation — 2026-10-18
+
+User approval: The user confirmed that the 8.5-bit audition works and approved canonization on 2026-10-18. No DSP behavior changed after that audition; canonization cleanup renamed generic decorative label identifiers and display names, set the module Notes to v1.0.0, and removed temporary control Notes. UUIDs, panel text, geometry, artwork, signal flow and DSP were preserved.
+
+Build and structure:
+- Exported Java and embedded Designer source compile with JDK 27, --release 17, -Xlint:all, -Werror and the installed Voltage SDK.
+- Designer binary parses and round-trips without changing its serialization.
+- Exported and embedded source match after normalization of Designer's generated user-region anchors.
+- Component UUIDs, knob/jack/switch values, panel geometry, artwork and saved test state are preserved.
+- Runtime tooltips support typed values for converted control units; inverse edits clamp to each documented range.
+
+Repeatable DSP validation (`tests/validate_dsp.py`):
+- Integer delay timing; zero, fractional and 250 ms pre-delay; all-pass impulse energy; tank finite/stability sweep: PASS.
+- Converter comparison at 1 kHz / 0.25 amplitude: 8-bit post-pickup-LPF error 0.000824 RMS; selected 8.5-bit 0.000585; prior 9-bit 0.000407.
+- Raw 500 Hz tank fit at DAMP 50%: configured/measured 0.8/0.467 s, 3/3.055 s, 5/4.695 s, 30/35.078 s.
+- PlateTank-only Java benchmark: latest archived run 439.5 ns/sample, estimated 2.11% of one desktop CPU core at 48 kHz; this excludes the module callback and host.
+- Nonlinear exciter was compared against an 8×-rate band-limited reference as an alias proxy. It is not an isolated alias measurement.
+
+Limits: Headless measurements do not certify full-band standardized RT60, Designer automation/undo/migration, native host CPU use or isolated alias energy. User approval records the native audition of the accepted sound; no separate native measurement log is claimed. See `tests/DSP-TEST-REPORT.md` and `REVIEW.md` for detail.
+
+Publication: Not published. Collection publication is deferred under the Teletape Workshop plan.

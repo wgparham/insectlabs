@@ -1,0 +1,24 @@
+{
+  "version": "v1.0.0",
+  "promoted_from": "v0.1.0rc working audition; approved divisor 180 / approximately 8.5-bit effective step",
+  "exported_source_compiles": true,
+  "embedded_source_compiles": true,
+  "compiler": "JDK 27 --release 17 -Xlint:all -Werror; installed Voltage SDK",
+  "source_pair_agrees": true,
+  "source_pair_agreement_method": "Designer embedded source compared with exported Java after normalizing generated user-region anchors",
+  "binary_round_trip": true,
+  "component_uuids_preserved": true,
+  "panel_geometry_artwork_strings_and_saved_test_state_preserved": true,
+  "metadata_fields_changed": [
+    "decorative label/image internal names and display names; module Notes v1.0.0; temporary control Notes cleared"
+  ],
+  "dsp_behavior_changed_during_canonization": false,
+  "dsp_tests_run": true,
+  "native_audition": "User confirmed 8.5-bit balance and module behavior in Designer and approved canonization on 2026-10-18; only metadata/identifier cleanup followed.",
+  "measured_rt60": "headless raw-tank 500 Hz fit at DAMP 50%: configured 0.8s=0.467s, 3s=3.055s, 5s=4.695s, 30s=35.078s; see release DSP report for fit windows and limits",
+  "cpu_and_alias_measurements": "PlateTank-only 439.5 ns/sample (2.11% of one core at 48 kHz in this desktop JIT run); 8x nonlinear exciter comparison is an alias proxy, not isolated alias energy",
+  "dsp_test_report": "versions/1.0.0/tests/DSP-TEST-REPORT.md",
+  "dsp_test_results": "versions/1.0.0/tests/DSP-RESULTS.json",
+  "audition_spin": "Extended mode uses divisor 180, approximately 8.5-bit effective step, between original 8-bit and prior 9-bit auditions. 12-bit mode and nominal decay ranges unchanged.",
+  "publication": "Deferred until Teletape Workshop lineup is locked."
+}

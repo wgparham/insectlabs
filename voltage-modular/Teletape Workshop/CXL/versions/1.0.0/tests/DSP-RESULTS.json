@@ -1,0 +1,138 @@
+{
+  "sample_rate_hz": 48000,
+  "exciter_sample_rate_comparison_2x_input": {
+    "1000": {
+      "native_vs_8x_bandlimited_error_db": -30.41
+    },
+    "5000": {
+      "native_vs_8x_bandlimited_error_db": -13.55
+    },
+    "9000": {
+      "native_vs_8x_bandlimited_error_db": -8.38
+    },
+    "12000": {
+      "native_vs_8x_bandlimited_error_db": -6.04
+    },
+    "17000": {
+      "native_vs_8x_bandlimited_error_db": -3.05
+    }
+  },
+  "exciter_comparison_note": "Error versus the same equations at 8x sample rate, low-pass filtered at 20.5 kHz then decimated. This is an alias proxy that also includes discrete-time envelope/filter differences; it is not a pure spectral alias measurement.",
+  "stepped_converter": {
+    "constant_input": 0.25,
+    "noise_and_mean_error": [
+      [
+        0.000488519785051,
+        0.000122129946263,
+        -6.75090155222e-08
+      ],
+      [
+        0.00787401574803,
+        0.00196850393701,
+        -1.08811775412e-06
+      ]
+    ],
+    "rows": [
+      "inverse_step",
+      "rms_error",
+      "mean_error"
+    ],
+    "note": "Rows are the 12-bit then 8-bit relative granular steps; zero input is separately asserted to return exact digital zero."
+  },
+  "8bit_noise_reduction_variants": {
+    "tone": "1 kHz, 0.25 amplitude, one second, direct cascaded converter stages; this omits tank diffusion and is for relative comparison only",
+    "metrics": {
+      "10bit_both": {
+        "error_rms": 0.0003149,
+        "post_6p8khz_pickup_lpf_error_rms": 0.00020347,
+        "nonharmonic_error_rms": 0.00022258,
+        "low_band_nonharmonic_error_rms_below_6khz": 0.0001106,
+        "high_band_nonharmonic_error_rms_above_8khz": 0.0001822,
+        "largest_spur_harmonic_dbc": -93.13
+      },
+      "8bit_full_dither": {
+        "error_rms": 0.00126986,
+        "post_6p8khz_pickup_lpf_error_rms": 0.00082359,
+        "nonharmonic_error_rms": 0.00089745,
+        "low_band_nonharmonic_error_rms_below_6khz": 0.00045069,
+        "high_band_nonharmonic_error_rms_above_8khz": 0.0007321,
+        "largest_spur_harmonic_dbc": -77.84
+      },
+      "8bit_input_12bit_output": {
+        "error_rms": 0.0009083,
+        "post_6p8khz_pickup_lpf_error_rms": 0.00058772,
+        "nonharmonic_error_rms": 0.00064205,
+        "low_band_nonharmonic_error_rms_below_6khz": 0.00031998,
+        "high_band_nonharmonic_error_rms_above_8khz": 0.00052462,
+        "largest_spur_harmonic_dbc": -83.17
+      },
+      "8bit_no_output_dither": {
+        "error_rms": 0.00096726,
+        "post_6p8khz_pickup_lpf_error_rms": 0.00062565,
+        "nonharmonic_error_rms": 0.00067742,
+        "low_band_nonharmonic_error_rms_below_6khz": 0.00033423,
+        "high_band_nonharmonic_error_rms_above_8khz": 0.00055419,
+        "largest_spur_harmonic_dbc": -69.99
+      },
+      "8bit_noise_shaped": {
+        "error_rms": 0.00170122,
+        "post_6p8khz_pickup_lpf_error_rms": 0.00084899,
+        "nonharmonic_error_rms": 0.00120261,
+        "low_band_nonharmonic_error_rms_below_6khz": 0.00019808,
+        "high_band_nonharmonic_error_rms_above_8khz": 0.00116616,
+        "largest_spur_harmonic_dbc": -78.41
+      },
+      "8p5bit_both": {
+        "error_rms": 0.0009017,
+        "post_6p8khz_pickup_lpf_error_rms": 0.00058481,
+        "nonharmonic_error_rms": 0.00063736,
+        "low_band_nonharmonic_error_rms_below_6khz": 0.0003199,
+        "high_band_nonharmonic_error_rms_above_8khz": 0.00051911,
+        "largest_spur_harmonic_dbc": -86.36
+      },
+      "9bit_both": {
+        "error_rms": 0.00062793,
+        "post_6p8khz_pickup_lpf_error_rms": 0.00040724,
+        "nonharmonic_error_rms": 0.0004438,
+        "low_band_nonharmonic_error_rms_below_6khz": 0.00022267,
+        "high_band_nonharmonic_error_rms_above_8khz": 0.00036191,
+        "largest_spur_harmonic_dbc": -87.41
+      }
+    }
+  },
+  "tank_decay": {
+    "targets_and_measurements_seconds": {
+      "0.8": {
+        "measured_rt60_seconds": 0.467,
+        "fit_slope_db_per_second": -128.56,
+        "fit_sample_count": 14
+      },
+      "3.0": {
+        "measured_rt60_seconds": 3.055,
+        "fit_slope_db_per_second": -19.637,
+        "fit_sample_count": 79
+      },
+      "5.0": {
+        "measured_rt60_seconds": 4.695,
+        "fit_slope_db_per_second": -12.779,
+        "fit_sample_count": 140
+      },
+      "30.0": {
+        "measured_rt60_seconds": 35.078,
+        "fit_slope_db_per_second": -1.71,
+        "fit_sample_count": 853
+      }
+    },
+    "fit_range_db": [
+      -5,
+      -24
+    ],
+    "rms_window_ms": 10,
+    "note": "Raw tank response, driven at 500 Hz for 2 s then released; excludes converter, exciter, and output pickup filters. 8-bit max is fitted over a 19 dB window because the 12 s captured tail cannot span 30 dB at the nominal 30 s setting."
+  },
+  "plate_tank_cpu": {
+    "java_ns_per_sample": 439.484,
+    "estimated_percent_of_one_core_at_48khz": 2.11,
+    "scope": "PlateTank.process only; excludes outer module callback and host. Desktop JIT benchmark, not a host guarantee."
+  }
+}

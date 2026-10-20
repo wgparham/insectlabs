@@ -1,6 +1,6 @@
 {
   "collection": "InsectLabs Audio Test Bench",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "seed": 19710510,
   "generator": "generate.py",
   "numpy_version": "2.3.5",
@@ -1847,6 +1847,37 @@
         "bars_4_4": 8,
         "method": "Sample-aligned cut near the 3.2-second phrase boundary. Last 10 ms blended into the original 10 ms immediately preceding the start; duration unchanged."
       }
+    },
+    {
+      "file": "08-module-demos/CED_dimension_ce1_chorus_demo.wav",
+      "frames": 2112000,
+      "seconds": 44.0,
+      "channels": 2,
+      "sample_rate": 48000,
+      "bits": 24,
+      "kind": "module-demo",
+      "loop": "non-looping segmented demonstration",
+      "peak_dbfs": [
+        -3.098,
+        -3.098
+      ],
+      "rms_dbfs": [
+        -22.9787,
+        -23.0065
+      ],
+      "dc_mean": [
+        -2.7256e-05,
+        -2.7486e-05
+      ],
+      "correlation": 0.729122,
+      "boundary_step": [
+        0.024330854,
+        0.024330854
+      ],
+      "purpose": "Listening reference for CED Dimension-style ensemble programs and CE-1-style chorus/vibrato; compare routing, stereo movement and mode character.",
+      "notes": "Deterministic 44-second, 48 kHz stereo PCM render from the CED 1.0.0 ChorusCoreTest. Eleven 4-second sections: dry, four Dimension programs, three combination laws, all-program summed LFOs, CE-style chorus, and CE-style vibrato. Section boundaries are intentional; not a seamless loop.",
+      "sha256": "be604e950629292188a2e720a1d593d66249ae7f56d874a83372838b4bcae180",
+      "license": "CC0-1.0"
     }
   ],
   "sources": [

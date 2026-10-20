@@ -1,6 +1,6 @@
 # Teletape Workshop
 
-Teletape Workshop is the new name for the planned Radiophonic series. It follows the completed Wardenclyffe Station collection and shifts toward electronic-music studio equipment rooted in the mid-1960s through mid-1970s. RVG, TSL, OFB, b08, SVF, TRM, ZOID and N02 are canonized. The complete series inventory is not yet locked.
+Teletape Workshop is the new name for the planned Radiophonic series. It follows the completed Wardenclyffe Station collection and shifts toward electronic-music studio equipment rooted in the mid-1960s through mid-1970s. RVG, TSL, OFB, b08, CXL, SVF, TRM, ZOID, N02, OSC and CED are canonized. The complete series inventory is not yet locked.
 
 ## Accepted directions to explore
 
@@ -11,7 +11,11 @@ Teletape Workshop is the new name for the planned Radiophonic series. It follows
 - Additional sample-and-hold capacity beyond the track-and-hold already present on TSL channel 3, and tape/delay/reverb instruments.
 - Further random, sample-and-hold and performance instruments informed by studio workflows.
 
-[N02 Dual Noise Generator](n02/README.md) is canonical at v1.0.0, with an EMS-inspired analog voice and a clocked digital source that automatically selects 7/15/31-bit sequences with SPEED. The next module brief remains open.
+[N02 Dual Noise Generator](n02/README.md) is canonical at v1.0.0, with an EMS-inspired analog voice and a clocked digital source that automatically selects 7/15/31-bit sequences with SPEED. [OSC Primary Oscillator](OSC/README.md) is canonical at v1.0.0, with shaped waveform outputs, dedicated V/oct pitch and through-zero linear FM. The next module brief remains open.
+
+[CXL Algorithmic Reverberation](CXL/README.md) is canonical at v1.0.0, with an EMT/Dattorro-inspired shared plate tank and user-approved 8.5-bit extended converter character. Publication remains deferred.
+
+[CED Chorus Ensemble Device](CED/README.md) is canonical at v1.0.0, combining four Dimension-style ensemble programs with a CE-1-style chorus/vibrato voice. Its mode combination laws and tonal controls are original workflow extensions; publication remains deferred.
 
 These are design directions, not a committed product list. Keep the general CV reference at +5 V unless a future module brief establishes a specific reason to use another scale.
 
@@ -21,12 +25,15 @@ These are design directions, not a committed product list. Keep the general CV r
 | --- | ---: | --- | --- |
 | [RVG Random Voltage Generator](RVG/versions/2.0.1/) | 2.0.1 | Shaped dual stepped random voltage with variable event timing, manual/external selection and selectable hold drift | [User manual](RVG/versions/2.0.1/USER-MANUAL.md) |
 | [b08 Blanking Panel](b08/versions/1.0.0/) | 1.0.0 | 8 HP visual blanking panel; no custom DSP | [User manual](b08/versions/1.0.0/USER-MANUAL.md) |
+| [CED Chorus Ensemble Device](CED/versions/1.0.0/) | 1.0.0 | Four-program stereo ensemble and CE-1-style chorus/vibrato | [User manual](CED/versions/1.0.0/USER-MANUAL.md) |
+| [CXL Algorithmic Reverberation](CXL/versions/1.0.0/) | 1.0.0 | Dark cross-coupled plate-style reverb with 12-bit and grainy extended modes | [User manual](CXL/versions/1.0.0/USER-MANUAL.md) |
 | [TSL Triple Slew Limiter](TSL/versions/1.0.0/) | 1.0.0 | Two CV slew channels and one slew/track-and-hold channel | [User manual](TSL/versions/1.0.0/USER-MANUAL.md) |
 | [OFB 8 Octave Filter Bank](OFB/versions/1.0.0/) | 1.0.0 | Eight fixed bands, level CV, clean taps and warm mix | [User manual](OFB/versions/1.0.0/USER-MANUAL.md) |
 | [SVF Dual State Variable Filter](SVF/versions/1.0.1/) | 1.0.1 | Dual Synthi 100-derived core with simultaneous HIGH/BAND/LOW outputs and selectable routing | [User manual](SVF/versions/1.0.1/USER-MANUAL.md) |
 | [TRM Triple Ring Modulator](TRM/versions/1.0.0/) | 1.0.0 | Three independent gain-staged ring-modulator lanes with four distinct voices | [User manual](TRM/versions/1.0.0/USER-MANUAL.md) |
 | [ZOID Trapezoid Generator](ZOID/versions/1.0.0/) | 1.0.0 | One four-stage envelope drives two segment-rotated control outputs and a logarithmic VCA | [User manual](ZOID/versions/1.0.0/USER-MANUAL.md) |
 | [N02 Dual Noise Generator](n02/versions/1.0.0/) | 1.0.0 | Independent analog/digital noise, automatic 7/15/31-bit sequence lengths, colour and level controls, and equal-power blend | [User manual](n02/versions/1.0.0/USER-MANUAL.md) |
+| [OSC Primary Oscillator](OSC/versions/1.0.0/) | 1.0.0 | Shared-phase shaped sine, triangle/ramp and pulse, V/oct pitch and through-zero linear FM | [User manual](OSC/versions/1.0.0/USER-MANUAL.md) |
 
 The RVG's [developer notes](RVG/DEVELOPER-NOTES.md), [release review](RVG/versions/2.0.0/REVIEW.md), and [shared references](references/README.md) record implementation, validation and research. The RVG models EMS workflow and feel; it is not an exact circuit reconstruction. The b08's [developer notes](b08/DEVELOPER-NOTES.md) and [release review](b08/versions/1.0.0/REVIEW.md) document its artwork-only panel and validation.
 

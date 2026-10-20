@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-17",
+  "scope": "OSC 1.0.0 and staged documentation/primitives; no commit or push requested",
+  "release_snapshot": {
+    "counts": {
+      "manifests": 88,
+      "hashed_files": 699,
+      "pairs": 72,
+      "canonical_modules": 43,
+      "local_links": 1053
+    },
+    "errors": []
+  },
+  "snapshot_method": "Run tools/check_repository.py read-only using staged blobs for release changes and index blobs for four excluded pre-existing blank-template/Sectronix modifications; omit untracked drafts. No unrelated working bytes changed.",
+  "working_tree": {
+    "counts": {
+      "manifests": 88,
+      "hashed_files": 699,
+      "pairs": 72,
+      "canonical_modules": 43,
+      "local_links": 1053
+    },
+    "errors": [
+      "Hash mismatch: C:\\Users\\wgparham\\Dropbox\\git\\insectlabs\\voltage-modular\\Teletape Workshop\\designResources\\blank-template\\blank.java",
+      "Hash mismatch: C:\\Users\\wgparham\\Dropbox\\git\\insectlabs\\voltage-modular\\Teletape Workshop\\designResources\\blank-template\\blank.vmod"
+    ]
+  },
+  "cleanup": "Obsolete working/comparison files and .bak files removed; empty locked comparison/development test directories remain, outside version archives.",
+  "publication": "Deferred until complete collection is locked and canonized."
+}

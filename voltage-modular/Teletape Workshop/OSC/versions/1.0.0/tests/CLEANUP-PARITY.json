@@ -1,0 +1,8 @@
+{
+  "frames": 240000,
+  "outputs": 4,
+  "test": "Deterministic audio-rate pitch/linear FM/shape CV, ranges, destinations, manual controls, drift, recall, bypass/resume",
+  "approved_source_sha256": "3ab318734416e4fd859e27e99a9a1e1956b80e7d8b21eac7944b4e70dd635209",
+  "result": "PARITY 240000 frames / four outputs: d8b37ceb27425c0b",
+  "exact_match": true
+}

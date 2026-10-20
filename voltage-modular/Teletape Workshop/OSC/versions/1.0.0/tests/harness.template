@@ -1,0 +1,226 @@
+import java.io.*;
+import java.nio.file.*;
+
+class VoltageComponent {
+    double value;
+    double GetValue() { return value; }
+    void SetValue(double v) { value = v; }
+}
+class ModuleStub {
+    String GetTooltipText(VoltageComponent c) { return ""; }
+    void EditComponentValue(VoltageComponent c, double v, String t) { c.value = v; }
+}
+public final class OscChecks extends ModuleStub {
+    private final VoltageComponent knobFrequency = new VoltageComponent();
+    private final VoltageComponent knobSineShape = new VoltageComponent(), knobTriangleShape = new VoltageComponent(), knobPulseShape = new VoltageComponent();
+    private final VoltageComponent knobSineLevel = new VoltageComponent(), knobTriangleLevel = new VoltageComponent(), knobPulseLevel = new VoltageComponent();
+    private final VoltageComponent switchRange = new VoltageComponent(), switchCvDestination = new VoltageComponent();
+    private final VoltageComponent inputPitch = new VoltageComponent();
+    private final VoltageComponent inputLinearFm = new VoltageComponent(), inputSineCv = new VoltageComponent(), inputTriangleCv = new VoltageComponent(), inputPulseCv = new VoltageComponent();
+    private final VoltageComponent outputSine = new VoltageComponent(), outputTriangle = new VoltageComponent(), outputPulse = new VoltageComponent(), outputMix = new VoltageComponent();
+    @@CORE@@
+    private void process() { @@PROCESS@@ }
+    private void bypass() { @@BYPASS@@ }
+    private void recall() { @@RECALL@@ }
+    private String tooltip(VoltageComponent component) { @@TOOLTIP@@ }
+    private void edit(VoltageComponent component, double newValue, String newText) { @@EDIT@@ }
+    private void setup(double hz, double amount) {
+        switchRange.value = 1; switchCvDestination.value = 2;
+        knobFrequency.value = Math.log(Math.min(15000, hz))/AUDIO_LOG_SPAN;
+        inputPitch.value = Math.log(hz / Math.min(15000,hz))/Math.log(2);
+        inputLinearFm.value = 0;
+        knobSineShape.value=amount; knobTriangleShape.value=amount; knobPulseShape.value=amount;
+        knobSineLevel.value=1; knobTriangleLevel.value=1; knobPulseLevel.value=1;
+        driftDepthCents=0; shapePitchCents=0;
+        adoptPending.set(true);
+    }
+    private static void check(boolean ok, String message) { if (!ok) throw new AssertionError(message); }
+    private static void near(double a,double b,double e,String message) { check(Double.isFinite(a) && Math.abs(a-b)<=e,message+": "+a); }
+    private static volatile double checksum;
+
+    private static void functional() {
+        near(wrap(-1e-30),0,0,"negative sub-ulp phase wraps canonically");
+        OscChecks n = new OscChecks(); n.setup(C4_HZ,0); n.process();
+        near(frequencyFor(Math.log(C4_HZ)/AUDIO_LOG_SPAN,1),C4_HZ,1e-9,"C4 default");
+        near(frequencyFor(0,1),1,1e-12,"VCO minimum"); near(frequencyFor(1,1),15000,1e-8,"VCO maximum");
+        near(frequencyFor(0,0),0.05,1e-12,"LFO minimum"); near(frequencyFor(1,0),500,1e-9,"LFO maximum");
+        for (double pitch:new double[]{-2,-1,0,1,2}) {
+            n.setup(100,0);n.inputPitch.value=pitch;n.phase=0;n.recall();n.process();
+            near(n.phase,100*Math.pow(2,pitch)/HOST_RATE,1e-12,"V/oct phase increment");
+        }
+        for (double fm:new double[]{-15,-10,-7.5,-5,-2.5,0,2.5,5,10}) {
+            n.setup(100,0);n.inputLinearFm.value=fm;n.phase=0.37;n.recall();n.process();
+            near(n.phase,wrap(0.37+100*(1+fm/5)/HOST_RATE),1e-12,"signed linear FM phase increment");
+        }
+        n.setup(100,0);n.inputLinearFm.value=-5;n.phase=0.37;n.recall();
+        for(int i=0;i<4096;++i)n.process();
+        near(n.phase,0.37,0,"exact stop at -5 V");
+        n.inputLinearFm.value=-10;n.process();
+        check(n.phase<0.37,"smooth forward-to-reverse crossing");
+        near(linearFmMean(100,100,1,-1),0,1e-12,"zero-crossing integrated area");
+        near(linearFmMean(100,200,1,1),100/Math.log(2),1e-10,"exp pitch integral");
+        n.setup(C4_HZ,0);n.process();
+        n.edit(n.knobFrequency,440,"440"); near(frequencyFor(n.knobFrequency.value,1),440,1e-9,"Hz entry");
+        n.edit(n.knobPulseShape,20,"20"); near(50+49*n.knobPulseShape.value,20,1e-10,"duty entry");
+        for (double amount : new double[]{-1,-0.5,0,0.5,1}) {
+            n.setup(317,amount); n.phase=0; n.adoptPending.set(true);
+            for(int i=0;i<4096;++i) {
+                n.process();
+                check(Math.abs(n.outputSine.value)<8 && Math.abs(n.outputTriangle.value)<8 && Math.abs(n.outputPulse.value)<8,"bounded outputs");
+                near(n.outputMix.value,n.outputSine.value+n.outputTriangle.value+n.outputPulse.value,1e-12,"mix is exact sum");
+            }
+        }
+        // DC survives the complete output path, including extreme pulse widths.
+        n.setup(375,1); double mean=0;
+        for(int i=0;i<2048;++i)n.process();
+        for(int i=0;i<48000;++i){n.process();mean+=n.outputPulse.value;}
+        near(mean/48000,4.9,1e-6,"99 percent pulse DC");
+        double frozen=n.phase, smooth=n.frequencyControl; n.bypass();
+        near(n.phase,frozen,0,"bypass phase frozen"); near(n.frequencyControl,smooth,0,"bypass smoother frozen");
+        near(n.outputMix.value,0,0,"bypass silence");
+        n.knobFrequency.value=0; n.process(); near(n.frequencyControl,0,0,"resume adopts controls");
+        n.knobSineLevel.value=Double.NaN; n.inputLinearFm.value=Double.POSITIVE_INFINITY; n.inputPitch.value=Double.NaN;
+        n.inputTriangleCv.value=Double.NaN; n.knobPulseShape.value=Double.NEGATIVE_INFINITY;
+        for(int i=0;i<4096;++i){n.process();check(Double.isFinite(n.outputMix.value),"invalid input finite");}
+        for (int route=0;route<3;++route) {
+            n.setup(200,0);n.switchCvDestination.value=route;n.knobSineLevel.value=0;n.inputSineCv.value=5;n.recall();
+            for(int i=0;i<2048;++i)n.process();
+            if(route==2) near(n.outputSine.value,0,1e-12,"shape-only cannot raise level");
+            else check(Math.abs(n.outputSine.value)>0.001,"level CV raises level");
+        }
+        n.setup(100,0); n.driftDepthCents=1.2;n.shapePitchCents=0.35;n.driftRandom=12345;
+        for(int i=0;i<480000;++i){n.process();check(Math.abs(n.driftSecond)<=1.2,"bounded slow drift");}
+        System.out.println("PASS: endpoints, typed entry, bounds, DC, mixing, CV routes, invalid recovery, bypass/resume and drift; separate V/oct and through-zero linear FM");
+    }
+
+    private static void staticCaptures(Path root) throws IOException {
+        int count=32768;
+        int[] bins={31,171,683,1365,3413,6827,10239,12287};
+        try(DataOutputStream out=new DataOutputStream(new BufferedOutputStream(Files.newOutputStream(root.resolve("static.bin"))))) {
+            out.writeInt(count);out.writeInt(bins.length*5);
+            for(int bin:bins)for(double amount:new double[]{-1,-0.5,0,0.5,1}) {
+                double hz=HOST_RATE*bin/count;
+                OscChecks n=new OscChecks();n.setup(hz,amount);
+                for(int i=0;i<2048;++i)n.process();
+                out.writeInt(bin);out.writeDouble(amount);
+                for(int i=0;i<count;++i){n.process();out.writeDouble(n.outputSine.value);out.writeDouble(n.outputTriangle.value);out.writeDouble(n.outputPulse.value);}
+            }
+        }
+    }
+
+    private static void benchmark() {
+        OscChecks[] voices=new OscChecks[8];
+        for(int i=0;i<8;++i){voices[i]=new OscChecks();voices[i].setup(150+i*123,0.35);}
+        for(int j=0;j<100000;++j)for(OscChecks voice:voices)voice.process();
+        long start=System.nanoTime();double sum=0;
+        for(int j=0;j<240000;++j)for(OscChecks voice:voices){voice.process();sum+=voice.outputMix.value;}
+        double elapsed=(System.nanoTime()-start)*1e-9;checksum=sum;
+        System.out.printf(java.util.Locale.ROOT,"BENCH: eight voices, 5 simulated seconds each: %.4f wall seconds; %.4f ms/voice/audio-second; checksum %.3f%n",elapsed,elapsed*1000/40,checksum);
+        for(OscChecks voice:voices) {
+            voice.knobTriangleLevel.value=0;voice.knobPulseLevel.value=0;voice.adoptControls();
+        }
+        for(int j=0;j<100000;++j)for(OscChecks voice:voices)voice.process();
+        start=System.nanoTime();sum=0;
+        for(int j=0;j<240000;++j)for(OscChecks voice:voices){voice.process();sum+=voice.outputSine.value;}
+        elapsed=(System.nanoTime()-start)*1e-9;checksum=sum;
+        System.out.printf(java.util.Locale.ROOT,"BENCH SINGLE WAVE: eight voices, 5 simulated seconds each: %.4f wall seconds; %.4f ms/voice/audio-second; checksum %.3f%n",elapsed,elapsed*1000/40,checksum);
+    }
+    private static void modulationCaptures(Path root) throws IOException {
+        int count=49152, referenceFactor=32;
+        // carrier Hz, modulator Hz, linear FM peak volts, shape CV volts
+        double[][] settings={{1000,200,0.1,0},{4000,2000,0.5,0},{1000,2000,0,2},{4000,3000,0.25,1},{8000,6000,0.5,2},{1000,200,7.5,0},{4000,2000,7.5,0},{4000,3000,7.5,1}};
+        for(int test=0;test<settings.length;++test) {
+            double base=settings[test][0], mod=settings[test][1], fmDepth=settings[test][2], cvDepth=settings[test][3];
+            OscChecks actual=new OscChecks(), ref=new OscChecks();actual.setup(base,0);ref.setup(base,0);
+            actual.adoptControls();ref.adoptControls();
+            double previousPitch=0,previousShape=0,previousRate=0;
+            try(DataOutputStream out=new DataOutputStream(new BufferedOutputStream(Files.newOutputStream(root.resolve("mod-"+test+".bin"))));
+                DataOutputStream high=new DataOutputStream(new BufferedOutputStream(Files.newOutputStream(root.resolve("reference-"+test+".bin"))))) {
+                out.writeInt(count);out.writeInt(referenceFactor);
+                for(double setting:settings[test])out.writeDouble(setting);
+                for(int i=0;i<count;++i) {
+                    double pitch=fmDepth*Math.sin(2*Math.PI*mod*i/HOST_RATE);
+                    double cv=cvDepth*Math.sin(2*Math.PI*mod*i/HOST_RATE);
+                    actual.inputLinearFm.value=pitch;actual.inputSineCv.value=cv;actual.inputTriangleCv.value=cv;actual.inputPulseCv.value=cv;
+                    actual.process();out.writeDouble(actual.outputSine.value);out.writeDouble(actual.outputTriangle.value);out.writeDouble(actual.outputPulse.value);
+                    
+                    double oldS=safe(0.4*previousShape,-1,1,0);
+                    double rate=0.49*Math.abs(safe(0.4*cv,-1,1,0)-oldS)*HOST_RATE;
+                    for(int sub=0;sub<referenceFactor;++sub) {
+                        double fraction=(sub+1.0)/referenceFactor;
+                        double multiplier=1+(previousPitch+fraction*(pitch-previousPitch))/5.0;
+                        double oldMultiplier=1+(previousPitch+(sub/(double)referenceFactor)*(pitch-previousPitch))/5.0;
+                        double hz=Math.abs(base*multiplier);
+                        double mean=linearFmMean(base,base,oldMultiplier,multiplier);
+                        ref.phase=wrap(ref.phase+mean/(referenceFactor*HOST_RATE));
+                        ref.selectBandwidth(hz);
+                        double s=safe(0.4*(previousShape+fraction*(cv-previousShape)),-1,1,0);
+                        high.writeDouble(5*ref.sineWave(ref.phase,s,hz));
+                        ref.selectBandwidth(hz+previousRate+fraction*(rate-previousRate));
+                        high.writeDouble(5*ref.triangleWave(ref.phase,s));
+                        high.writeDouble(5*ref.pulseWave(ref.phase,s));
+                        oldS=s;
+                    }
+                    previousPitch=pitch;previousShape=cv;previousRate=rate;
+                }
+            }
+        }
+    }
+    public static void main(String[] args) throws IOException {
+        if(args.length>1 && args[1].equals("parity")){cleanupParity();return;}
+        if(args.length>1 && args[1].equals("cpu-tz")){throughZeroBenchmark();return;}
+        functional();primitiveParity();staticCaptures(Path.of(args[0]));modulationCaptures(Path.of(args[0]));benchmark();
+    }
+    private static void primitiveParity() {
+        OscChecks n=new OscChecks();
+        com.insectlabs.dsp.oscillators.HybridWaveforms48 reusable=new com.insectlabs.dsp.oscillators.HybridWaveforms48();
+        for(double hz:new double[]{0,0.05,1,49,261.6255653,1000,4000,15000,18000,-4000}) {
+            n.selectBandwidth(hz);reusable.selectBandwidth(hz);
+            for(double shape:new double[]{-1,-0.5,0,0.5,1})for(int index=0;index<128;++index) {
+                double phase=index/128.0;
+                near(n.sineWave(phase,shape,hz),reusable.sineWave(phase,shape,hz),0,"primitive sine exact");
+                near(n.triangleWave(phase,shape),reusable.triangleWave(phase,shape),0,"primitive triangle exact");
+                near(n.pulseWave(phase,shape),reusable.pulseWave(phase,shape),0,"primitive pulse exact");
+            }
+        }
+        near(linearFmMean(100,200,1,-1),com.insectlabs.dsp.oscillators.HybridWaveforms48.linearFmMean(100,200,1,-1),0,"primitive signed integral exact");
+        System.out.println("PASS: reusable waveform/helper exact parity");
+    }
+    private static void cleanupParity() {
+        OscChecks n=new OscChecks();n.setup(261.6255653,0);n.driftRandom=123456;n.driftDepthCents=1.2;n.shapePitchCents=0.35;
+        long hash=0xcbf29ce484222325L;
+        for(int i=0;i<240000;++i) {
+            n.inputPitch.value=2*Math.sin(i*0.00017);
+            n.inputLinearFm.value=9*Math.sin(i*0.19);
+            n.inputSineCv.value=3*Math.sin(i*0.13);
+            n.inputTriangleCv.value=3*Math.cos(i*0.07);
+            n.inputPulseCv.value=3*Math.sin(i*0.11);
+            n.switchCvDestination.value=(i/12000)%3;
+            n.switchRange.value=(i/48000)%2;
+            n.knobFrequency.value=(i/17000)%2==0?0.3:0.75;
+            if(i%19001==0)n.recall();
+            if(i%7000<100)n.bypass();else n.process();
+            for(double value:new double[]{n.outputSine.value,n.outputTriangle.value,n.outputPulse.value,n.outputMix.value}) {
+                long bits=Double.doubleToRawLongBits(value);
+                hash=(hash^bits)*0x100000001b3L;
+            }
+        }
+        System.out.printf("PARITY 240000 frames / four outputs: %016x%n",hash);
+    }
+    private static void throughZeroBenchmark() {
+        java.lang.management.ThreadMXBean clock=java.lang.management.ManagementFactory.getThreadMXBean();
+        OscChecks[] voices=new OscChecks[8];
+        for(int i=0;i<8;++i){voices[i]=new OscChecks();voices[i].setup(400+i*123,0.35);voices[i].adoptControls();}
+        for(double depth:new double[]{2.5,7.5,2.5,7.5}) {
+            for(int j=0;j<24000;++j)for(OscChecks voice:voices)voice.process();
+            long start=clock.getCurrentThreadCpuTime();double sum=0;
+            for(int j=0;j<96000;++j) {
+                double cv=depth*Math.sin(2*Math.PI*2000*j/HOST_RATE);
+                for(OscChecks voice:voices){voice.inputLinearFm.value=cv;voice.process();sum+=voice.outputMix.value;}
+            }
+            checksum=sum;
+            double seconds=(clock.getCurrentThreadCpuTime()-start)*1e-9;
+            System.out.printf(java.util.Locale.ROOT,"CPU FM peak %.1f V (%s): %.3f ms/voice/audio-second; checksum %.3f%n",depth,depth>5?"through zero":"forward only",seconds*1000/16,checksum);
+        }
+    }
+}
