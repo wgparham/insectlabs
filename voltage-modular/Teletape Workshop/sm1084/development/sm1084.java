@@ -1,0 +1,3477 @@
+package com.insectlabs.sm1084;
+
+
+import voltage.controllers.*;
+import voltage.core.*;
+import voltage.core.Jack.JackType;
+import voltage.sources.*;
+import voltage.utility.*;
+import voltage.processors.*;
+import voltage.effects.*;
+import java.awt.*;
+
+//[user-imports]   Add your own imports here
+//[/user-imports]
+
+
+public class sm1084 extends VoltageModule
+//[user-inheritance]
+//[/user-inheritance]
+{
+
+    @SuppressWarnings("this-escape") 
+    public sm1084( long moduleID, VoltageObjects voltageObjects )
+    {
+        super( moduleID, voltageObjects, "sm1084 - studio mixer", ModuleType.ModuleType_Mixers, 11.2 );
+
+        InitializeControls();
+        InitializeControls2();
+        InitializeControls3();
+        InitializeControls4();
+
+
+        canBeBypassed = true;
+        SetSkin( "ca5ae2d7465248b1af1c1d6959ffb031" );
+    }
+
+void InitializeControls()
+{
+
+        fader17 = new VoltageSlider( "fader17", "Fader Channel 17", this, true, 0.0, 2.0, 0.0, 0 );
+        AddComponent( fader17 );
+        fader17.SetWantsMouseNotifications( false );
+        fader17.SetPosition( 668, 241 );
+        fader17.SetSize( 11, 95 );
+        fader17.SetSkin( "Juno Ext Yellow" );
+        fader17.DisplayValueInPercent( true );
+
+        fader18 = new VoltageSlider( "fader18", "Fader Channel 18", this, true, 0.0, 2.0, 0.0, 0 );
+        AddComponent( fader18 );
+        fader18.SetWantsMouseNotifications( false );
+        fader18.SetPosition( 695, 241 );
+        fader18.SetSize( 11, 95 );
+        fader18.SetSkin( "Juno Ext Yellow" );
+        fader18.DisplayValueInPercent( true );
+
+        fader16 = new VoltageSlider( "fader16", "Fader Channel 16", this, true, 0.0, 2.0, 0.0, 0 );
+        AddComponent( fader16 );
+        fader16.SetWantsMouseNotifications( false );
+        fader16.SetPosition( 641, 241 );
+        fader16.SetSize( 11, 95 );
+        fader16.SetSkin( "Juno Ext Tan" );
+        fader16.DisplayValueInPercent( true );
+
+        fader15 = new VoltageSlider( "fader15", "Fader Channel 15", this, true, 0.0, 2.0, 0.0, 0 );
+        AddComponent( fader15 );
+        fader15.SetWantsMouseNotifications( false );
+        fader15.SetPosition( 614, 241 );
+        fader15.SetSize( 11, 95 );
+        fader15.SetSkin( "Juno Ext Tan" );
+        fader15.DisplayValueInPercent( true );
+
+        fader14 = new VoltageSlider( "fader14", "Fader Channel 14", this, true, 0.0, 2.0, 0.0, 0 );
+        AddComponent( fader14 );
+        fader14.SetWantsMouseNotifications( false );
+        fader14.SetPosition( 587, 241 );
+        fader14.SetSize( 11, 95 );
+        fader14.SetSkin( "Juno Ext Blue" );
+        fader14.DisplayValueInPercent( true );
+
+        fader13 = new VoltageSlider( "fader13", "Fader Channel 13", this, true, 0.0, 2.0, 0.0, 0 );
+        AddComponent( fader13 );
+        fader13.SetWantsMouseNotifications( false );
+        fader13.SetPosition( 560, 241 );
+        fader13.SetSize( 11, 95 );
+        fader13.SetSkin( "Juno Ext Blue" );
+        fader13.DisplayValueInPercent( true );
+
+        fader12 = new VoltageSlider( "fader12", "Fader Channel 12", this, true, 0.0, 2.0, 0.0, 0 );
+        AddComponent( fader12 );
+        fader12.SetWantsMouseNotifications( false );
+        fader12.SetPosition( 533, 241 );
+        fader12.SetSize( 11, 95 );
+        fader12.SetSkin( "Juno Ext Blue" );
+        fader12.DisplayValueInPercent( true );
+
+        fader11 = new VoltageSlider( "fader11", "Fader Channel 11", this, true, 0.0, 2.0, 0.0, 0 );
+        AddComponent( fader11 );
+        fader11.SetWantsMouseNotifications( false );
+        fader11.SetPosition( 505, 241 );
+        fader11.SetSize( 11, 95 );
+        fader11.SetSkin( "Juno Ext Blue" );
+        fader11.DisplayValueInPercent( true );
+        fader11.SetTrackSize( 11 );
+        fader11.SetSliderSize( 15, 25 );
+
+        labelChSND = new VoltageLabel( "labelChSND", "Channel Send Label", this, "SND" );
+        AddComponent( labelChSND );
+        labelChSND.SetWantsMouseNotifications( false );
+        labelChSND.SetPosition( 279, 90 );
+        labelChSND.SetSize( 30, 13 );
+        labelChSND.SetEditable( false, false );
+        labelChSND.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelChSND.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelChSND.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelChSND.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelChSND.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelChSND.SetBorderSize( 0 );
+        labelChSND.SetMultiLineEdit( false );
+        labelChSND.SetIsNumberEditor( false );
+        labelChSND.SetNumberEditorRange( 0, 100 );
+        labelChSND.SetNumberEditorInterval( 1 );
+        labelChSND.SetNumberEditorUsesMouseWheel( false );
+        labelChSND.SetHasCustomTextHoverColor( false );
+        labelChSND.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelChSND.SetFont( "Courier New", 7, true, false );
+
+        labelSNDmono = new VoltageLabel( "labelSNDmono", "SND Mono Label", this, "M" );
+        AddComponent( labelSNDmono );
+        labelSNDmono.SetWantsMouseNotifications( false );
+        labelSNDmono.SetPosition( 23, 70 );
+        labelSNDmono.SetSize( 29, 13 );
+        labelSNDmono.SetEditable( false, false );
+        labelSNDmono.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelSNDmono.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelSNDmono.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelSNDmono.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelSNDmono.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelSNDmono.SetBorderSize( 0 );
+        labelSNDmono.SetMultiLineEdit( false );
+        labelSNDmono.SetIsNumberEditor( false );
+        labelSNDmono.SetNumberEditorRange( 0, 100 );
+        labelSNDmono.SetNumberEditorInterval( 1 );
+        labelSNDmono.SetNumberEditorUsesMouseWheel( false );
+        labelSNDmono.SetHasCustomTextHoverColor( false );
+        labelSNDmono.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelSNDmono.SetFont( "Courier New", 7, true, false );
+
+        labelTRK1 = new VoltageLabel( "labelTRK1", "TRK 1 Label", this, "TRK1" );
+        AddComponent( labelTRK1 );
+        labelTRK1.SetWantsMouseNotifications( false );
+        labelTRK1.SetPosition( 499, 237 );
+        labelTRK1.SetSize( 21, 11 );
+        labelTRK1.SetEditable( false, false );
+        labelTRK1.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelTRK1.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelTRK1.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelTRK1.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelTRK1.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelTRK1.SetBorderSize( 1 );
+        labelTRK1.SetMultiLineEdit( false );
+        labelTRK1.SetIsNumberEditor( false );
+        labelTRK1.SetNumberEditorRange( 0, 100 );
+        labelTRK1.SetNumberEditorInterval( 1 );
+        labelTRK1.SetNumberEditorUsesMouseWheel( false );
+        labelTRK1.SetHasCustomTextHoverColor( false );
+        labelTRK1.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelTRK1.SetFont( "Courier New", 7, true, false );
+
+        labelLoop2 = new VoltageLabel( "labelLoop2", "Loop 2 Label", this, "LOOP2" );
+        AddComponent( labelLoop2 );
+        labelLoop2.SetWantsMouseNotifications( false );
+        labelLoop2.SetPosition( 688, 237 );
+        labelLoop2.SetSize( 21, 11 );
+        labelLoop2.SetEditable( false, false );
+        labelLoop2.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelLoop2.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelLoop2.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelLoop2.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelLoop2.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelLoop2.SetBorderSize( 1 );
+        labelLoop2.SetMultiLineEdit( false );
+        labelLoop2.SetIsNumberEditor( false );
+        labelLoop2.SetNumberEditorRange( 0, 100 );
+        labelLoop2.SetNumberEditorInterval( 1 );
+        labelLoop2.SetNumberEditorUsesMouseWheel( false );
+        labelLoop2.SetHasCustomTextHoverColor( false );
+        labelLoop2.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelLoop2.SetFont( "Courier New", 7, true, false );
+
+        labelLoop1 = new VoltageLabel( "labelLoop1", "Loop 1 Label", this, "LOOP1" );
+        AddComponent( labelLoop1 );
+        labelLoop1.SetWantsMouseNotifications( false );
+        labelLoop1.SetPosition( 661, 237 );
+        labelLoop1.SetSize( 21, 11 );
+        labelLoop1.SetEditable( false, false );
+        labelLoop1.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelLoop1.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelLoop1.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelLoop1.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelLoop1.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelLoop1.SetBorderSize( 1 );
+        labelLoop1.SetMultiLineEdit( false );
+        labelLoop1.SetIsNumberEditor( false );
+        labelLoop1.SetNumberEditorRange( 0, 100 );
+        labelLoop1.SetNumberEditorInterval( 1 );
+        labelLoop1.SetNumberEditorUsesMouseWheel( false );
+        labelLoop1.SetHasCustomTextHoverColor( false );
+        labelLoop1.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelLoop1.SetFont( "Courier New", 7, true, false );
+
+        labelWire2 = new VoltageLabel( "labelWire2", "Wire 2 Label", this, "WIRE2" );
+        AddComponent( labelWire2 );
+        labelWire2.SetWantsMouseNotifications( false );
+        labelWire2.SetPosition( 634, 237 );
+        labelWire2.SetSize( 21, 11 );
+        labelWire2.SetEditable( false, false );
+        labelWire2.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelWire2.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelWire2.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelWire2.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelWire2.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelWire2.SetBorderSize( 1 );
+        labelWire2.SetMultiLineEdit( false );
+        labelWire2.SetIsNumberEditor( false );
+        labelWire2.SetNumberEditorRange( 0, 100 );
+        labelWire2.SetNumberEditorInterval( 1 );
+        labelWire2.SetNumberEditorUsesMouseWheel( false );
+        labelWire2.SetHasCustomTextHoverColor( false );
+        labelWire2.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelWire2.SetFont( "Courier New", 7, true, false );
+
+        labelWire1 = new VoltageLabel( "labelWire1", "Wire 1 Label", this, "WIRE1" );
+        AddComponent( labelWire1 );
+        labelWire1.SetWantsMouseNotifications( false );
+        labelWire1.SetPosition( 607, 237 );
+        labelWire1.SetSize( 21, 11 );
+        labelWire1.SetEditable( false, false );
+        labelWire1.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelWire1.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelWire1.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelWire1.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelWire1.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelWire1.SetBorderSize( 1 );
+        labelWire1.SetMultiLineEdit( false );
+        labelWire1.SetIsNumberEditor( false );
+        labelWire1.SetNumberEditorRange( 0, 100 );
+        labelWire1.SetNumberEditorInterval( 1 );
+        labelWire1.SetNumberEditorUsesMouseWheel( false );
+        labelWire1.SetHasCustomTextHoverColor( false );
+        labelWire1.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelWire1.SetFont( "Courier New", 7, true, false );
+
+        labelTRK4 = new VoltageLabel( "labelTRK4", "TRK 4 Label", this, "TRK4" );
+        AddComponent( labelTRK4 );
+        labelTRK4.SetWantsMouseNotifications( false );
+        labelTRK4.SetPosition( 580, 237 );
+        labelTRK4.SetSize( 21, 11 );
+        labelTRK4.SetEditable( false, false );
+        labelTRK4.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelTRK4.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelTRK4.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelTRK4.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelTRK4.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelTRK4.SetBorderSize( 1 );
+        labelTRK4.SetMultiLineEdit( false );
+        labelTRK4.SetIsNumberEditor( false );
+        labelTRK4.SetNumberEditorRange( 0, 100 );
+        labelTRK4.SetNumberEditorInterval( 1 );
+        labelTRK4.SetNumberEditorUsesMouseWheel( false );
+        labelTRK4.SetHasCustomTextHoverColor( false );
+        labelTRK4.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelTRK4.SetFont( "Courier New", 7, true, false );
+
+        labelTRK3 = new VoltageLabel( "labelTRK3", "TRK 3 Label", this, "TRK3" );
+        AddComponent( labelTRK3 );
+        labelTRK3.SetWantsMouseNotifications( false );
+        labelTRK3.SetPosition( 553, 237 );
+        labelTRK3.SetSize( 21, 11 );
+        labelTRK3.SetEditable( false, false );
+        labelTRK3.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelTRK3.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelTRK3.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelTRK3.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelTRK3.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelTRK3.SetBorderSize( 1 );
+        labelTRK3.SetMultiLineEdit( false );
+        labelTRK3.SetIsNumberEditor( false );
+        labelTRK3.SetNumberEditorRange( 0, 100 );
+        labelTRK3.SetNumberEditorInterval( 1 );
+        labelTRK3.SetNumberEditorUsesMouseWheel( false );
+        labelTRK3.SetHasCustomTextHoverColor( false );
+        labelTRK3.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelTRK3.SetFont( "Courier New", 7, true, false );
+
+        labelTRK2 = new VoltageLabel( "labelTRK2", "TRK 2 Label", this, "TRK2" );
+        AddComponent( labelTRK2 );
+        labelTRK2.SetWantsMouseNotifications( false );
+        labelTRK2.SetPosition( 526, 237 );
+        labelTRK2.SetSize( 21, 11 );
+        labelTRK2.SetEditable( false, false );
+        labelTRK2.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelTRK2.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelTRK2.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelTRK2.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelTRK2.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelTRK2.SetBorderSize( 1 );
+        labelTRK2.SetMultiLineEdit( false );
+        labelTRK2.SetIsNumberEditor( false );
+        labelTRK2.SetNumberEditorRange( 0, 100 );
+        labelTRK2.SetNumberEditorInterval( 1 );
+        labelTRK2.SetNumberEditorUsesMouseWheel( false );
+        labelTRK2.SetHasCustomTextHoverColor( false );
+        labelTRK2.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelTRK2.SetFont( "Courier New", 7, true, false );
+
+        labelCh8 = new VoltageLabel( "labelCh8", "Label for Channel 8", this, "CH8" );
+        AddComponent( labelCh8 );
+        labelCh8.SetWantsMouseNotifications( false );
+        labelCh8.SetPosition( 259, 237 );
+        labelCh8.SetSize( 21, 11 );
+        labelCh8.SetEditable( false, false );
+        labelCh8.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelCh8.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelCh8.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelCh8.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelCh8.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelCh8.SetBorderSize( 1 );
+        labelCh8.SetMultiLineEdit( false );
+        labelCh8.SetIsNumberEditor( false );
+        labelCh8.SetNumberEditorRange( 0, 100 );
+        labelCh8.SetNumberEditorInterval( 1 );
+        labelCh8.SetNumberEditorUsesMouseWheel( false );
+        labelCh8.SetHasCustomTextHoverColor( false );
+        labelCh8.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelCh8.SetFont( "Courier New", 7, true, false );
+
+        labelCh7 = new VoltageLabel( "labelCh7", "Label for Channel 7", this, "CH7" );
+        AddComponent( labelCh7 );
+        labelCh7.SetWantsMouseNotifications( false );
+        labelCh7.SetPosition( 232, 237 );
+        labelCh7.SetSize( 21, 11 );
+        labelCh7.SetEditable( false, false );
+        labelCh7.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelCh7.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelCh7.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelCh7.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelCh7.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelCh7.SetBorderSize( 1 );
+        labelCh7.SetMultiLineEdit( false );
+        labelCh7.SetIsNumberEditor( false );
+        labelCh7.SetNumberEditorRange( 0, 100 );
+        labelCh7.SetNumberEditorInterval( 1 );
+        labelCh7.SetNumberEditorUsesMouseWheel( false );
+        labelCh7.SetHasCustomTextHoverColor( false );
+        labelCh7.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelCh7.SetFont( "Courier New", 7, true, false );
+
+        labelCh6 = new VoltageLabel( "labelCh6", "Label for Channel 6", this, "CH6" );
+        AddComponent( labelCh6 );
+        labelCh6.SetWantsMouseNotifications( false );
+        labelCh6.SetPosition( 205, 237 );
+        labelCh6.SetSize( 21, 11 );
+        labelCh6.SetEditable( false, false );
+        labelCh6.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelCh6.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelCh6.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelCh6.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelCh6.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelCh6.SetBorderSize( 1 );
+        labelCh6.SetMultiLineEdit( false );
+        labelCh6.SetIsNumberEditor( false );
+        labelCh6.SetNumberEditorRange( 0, 100 );
+        labelCh6.SetNumberEditorInterval( 1 );
+        labelCh6.SetNumberEditorUsesMouseWheel( false );
+        labelCh6.SetHasCustomTextHoverColor( false );
+        labelCh6.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelCh6.SetFont( "Courier New", 7, true, false );
+
+        labelCh5 = new VoltageLabel( "labelCh5", "Label for Channel 5", this, "CH5" );
+        AddComponent( labelCh5 );
+        labelCh5.SetWantsMouseNotifications( false );
+        labelCh5.SetPosition( 178, 237 );
+        labelCh5.SetSize( 21, 11 );
+        labelCh5.SetEditable( false, false );
+        labelCh5.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelCh5.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelCh5.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelCh5.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelCh5.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelCh5.SetBorderSize( 1 );
+        labelCh5.SetMultiLineEdit( false );
+        labelCh5.SetIsNumberEditor( false );
+        labelCh5.SetNumberEditorRange( 0, 100 );
+        labelCh5.SetNumberEditorInterval( 1 );
+        labelCh5.SetNumberEditorUsesMouseWheel( false );
+        labelCh5.SetHasCustomTextHoverColor( false );
+        labelCh5.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelCh5.SetFont( "Courier New", 7, true, false );
+
+        labelCh4 = new VoltageLabel( "labelCh4", "Label for Channel 4", this, "CH4" );
+        AddComponent( labelCh4 );
+        labelCh4.SetWantsMouseNotifications( false );
+        labelCh4.SetPosition( 151, 237 );
+        labelCh4.SetSize( 21, 11 );
+        labelCh4.SetEditable( false, false );
+        labelCh4.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelCh4.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelCh4.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelCh4.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelCh4.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelCh4.SetBorderSize( 1 );
+        labelCh4.SetMultiLineEdit( false );
+        labelCh4.SetIsNumberEditor( false );
+        labelCh4.SetNumberEditorRange( 0, 100 );
+        labelCh4.SetNumberEditorInterval( 1 );
+        labelCh4.SetNumberEditorUsesMouseWheel( false );
+        labelCh4.SetHasCustomTextHoverColor( false );
+        labelCh4.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelCh4.SetFont( "Courier New", 7, true, false );
+
+        labelCh3 = new VoltageLabel( "labelCh3", "Label for Channel 3", this, "CH3" );
+        AddComponent( labelCh3 );
+        labelCh3.SetWantsMouseNotifications( false );
+        labelCh3.SetPosition( 124, 237 );
+        labelCh3.SetSize( 21, 11 );
+        labelCh3.SetEditable( false, false );
+        labelCh3.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelCh3.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelCh3.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelCh3.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelCh3.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelCh3.SetBorderSize( 1 );
+        labelCh3.SetMultiLineEdit( false );
+        labelCh3.SetIsNumberEditor( false );
+        labelCh3.SetNumberEditorRange( 0, 100 );
+        labelCh3.SetNumberEditorInterval( 1 );
+        labelCh3.SetNumberEditorUsesMouseWheel( false );
+        labelCh3.SetHasCustomTextHoverColor( false );
+        labelCh3.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelCh3.SetFont( "Courier New", 7, true, false );
+
+        labelCh2 = new VoltageLabel( "labelCh2", "Label for Channel 2", this, "CH2" );
+        AddComponent( labelCh2 );
+        labelCh2.SetWantsMouseNotifications( false );
+        labelCh2.SetPosition( 97, 237 );
+        labelCh2.SetSize( 21, 11 );
+        labelCh2.SetEditable( false, false );
+        labelCh2.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelCh2.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelCh2.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelCh2.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelCh2.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelCh2.SetBorderSize( 1 );
+        labelCh2.SetMultiLineEdit( false );
+        labelCh2.SetIsNumberEditor( false );
+        labelCh2.SetNumberEditorRange( 0, 100 );
+        labelCh2.SetNumberEditorInterval( 1 );
+        labelCh2.SetNumberEditorUsesMouseWheel( false );
+        labelCh2.SetHasCustomTextHoverColor( false );
+        labelCh2.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelCh2.SetFont( "Courier New", 7, true, false );
+
+        labelCh1 = new VoltageLabel( "labelCh1", "Label for Channel 1", this, "CH1" );
+        AddComponent( labelCh1 );
+        labelCh1.SetWantsMouseNotifications( false );
+        labelCh1.SetPosition( 70, 237 );
+        labelCh1.SetSize( 21, 11 );
+        labelCh1.SetEditable( false, false );
+        labelCh1.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelCh1.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelCh1.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelCh1.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelCh1.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelCh1.SetBorderSize( 1 );
+        labelCh1.SetMultiLineEdit( false );
+        labelCh1.SetIsNumberEditor( false );
+        labelCh1.SetNumberEditorRange( 0, 100 );
+        labelCh1.SetNumberEditorInterval( 1 );
+        labelCh1.SetNumberEditorUsesMouseWheel( false );
+        labelCh1.SetHasCustomTextHoverColor( false );
+        labelCh1.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelCh1.SetFont( "Courier New", 7, true, false );
+
+        label2bus = new VoltageLabel( "label2bus", "2bus Label", this, "2BUS" );
+        AddComponent( label2bus );
+        label2bus.SetWantsMouseNotifications( false );
+        label2bus.SetPosition( 352, 337 );
+        label2bus.SetSize( 28, 11 );
+        label2bus.SetEditable( false, false );
+        label2bus.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        label2bus.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        label2bus.SetColor( new Color( 232, 232, 232, 255 ) );
+        label2bus.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        label2bus.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        label2bus.SetBorderSize( 1 );
+        label2bus.SetMultiLineEdit( false );
+        label2bus.SetIsNumberEditor( false );
+        label2bus.SetNumberEditorRange( 0, 100 );
+        label2bus.SetNumberEditorInterval( 1 );
+        label2bus.SetNumberEditorUsesMouseWheel( false );
+        label2bus.SetHasCustomTextHoverColor( false );
+        label2bus.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        label2bus.SetFont( "Courier New", 7, true, false );
+
+        label2trk = new VoltageLabel( "label2trk", "2trk Label", this, "2TRK" );
+        AddComponent( label2trk );
+        label2trk.SetWantsMouseNotifications( false );
+        label2trk.SetPosition( 402, 337 );
+        label2trk.SetSize( 28, 11 );
+        label2trk.SetEditable( false, false );
+        label2trk.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        label2trk.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        label2trk.SetColor( new Color( 232, 232, 232, 255 ) );
+        label2trk.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        label2trk.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        label2trk.SetBorderSize( 1 );
+        label2trk.SetMultiLineEdit( false );
+        label2trk.SetIsNumberEditor( false );
+        label2trk.SetNumberEditorRange( 0, 100 );
+        label2trk.SetNumberEditorInterval( 1 );
+        label2trk.SetNumberEditorUsesMouseWheel( false );
+        label2trk.SetHasCustomTextHoverColor( false );
+        label2trk.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        label2trk.SetFont( "Courier New", 7, true, false );
+
+        imageTTW = new VoltageImage( "imageTTW", "TTW Imagemark", this, false );
+        AddComponent( imageTTW );
+        imageTTW.SetWantsMouseNotifications( false );
+        imageTTW.SetPosition( 352, 10 );
+        imageTTW.SetSize( 81, 25 );
+        imageTTW.SetCurrentImage( "image image(3).svg" );
+
+        labelNumber = new VoltageLabel( "labelNumber", "Model Number Label", this, "sm1084" );
+        AddComponent( labelNumber );
+        labelNumber.SetWantsMouseNotifications( false );
+        labelNumber.SetPosition( 757, 5 );
+        labelNumber.SetSize( 44, 13 );
+        labelNumber.SetEditable( false, false );
+        labelNumber.SetJustificationFlags( VoltageLabel.Justification.Right );
+        labelNumber.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelNumber.SetColor( new Color( 166, 36, 36, 255 ) );
+        labelNumber.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        labelNumber.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        labelNumber.SetBorderSize( 1 );
+        labelNumber.SetMultiLineEdit( false );
+        labelNumber.SetIsNumberEditor( false );
+        labelNumber.SetNumberEditorRange( 0, 100 );
+        labelNumber.SetNumberEditorInterval( 1 );
+        labelNumber.SetNumberEditorUsesMouseWheel( false );
+        labelNumber.SetHasCustomTextHoverColor( false );
+        labelNumber.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelNumber.SetFont( "Courier New", 13, true, false );
+
+        labelLocation = new VoltageLabel( "labelLocation", "Location Mark", this, "(Seattle)" );
+        AddComponent( labelLocation );
+        labelLocation.SetWantsMouseNotifications( false );
+        labelLocation.SetPosition( 10, 28 );
+        labelLocation.SetSize( 32, 9 );
+        labelLocation.SetEditable( false, false );
+        labelLocation.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelLocation.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelLocation.SetColor( new Color( 164, 34, 34, 255 ) );
+        labelLocation.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        labelLocation.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        labelLocation.SetBorderSize( 1 );
+        labelLocation.SetMultiLineEdit( false );
+        labelLocation.SetIsNumberEditor( false );
+        labelLocation.SetNumberEditorRange( 0, 100 );
+        labelLocation.SetNumberEditorInterval( 1 );
+        labelLocation.SetNumberEditorUsesMouseWheel( false );
+        labelLocation.SetHasCustomTextHoverColor( false );
+        labelLocation.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelLocation.SetFont( "Arial", 8, true, false );
+
+        knobPan1 = new VoltageKnob( "knobPan1", "Pan 1", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobPan1 );
+        knobPan1.SetWantsMouseNotifications( false );
+        knobPan1.SetPosition( 68, 210 );
+        knobPan1.SetSize( 25, 25 );
+        knobPan1.SetSkin( "Cosmo Large Black" );
+        knobPan1.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobPan1.SetKnobParams( 215, 145 );
+        knobPan1.DisplayValueInPercent( false );
+        knobPan1.SetKnobAdjustsRing( true );
+
+        knobPan2 = new VoltageKnob( "knobPan2", "Pan 2", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobPan2 );
+        knobPan2.SetWantsMouseNotifications( false );
+        knobPan2.SetPosition( 95, 210 );
+        knobPan2.SetSize( 25, 25 );
+        knobPan2.SetSkin( "Cosmo Large Black" );
+        knobPan2.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobPan2.SetKnobParams( 215, 145 );
+        knobPan2.DisplayValueInPercent( false );
+        knobPan2.SetKnobAdjustsRing( true );
+
+        knobPan3 = new VoltageKnob( "knobPan3", "Pan 3", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobPan3 );
+        knobPan3.SetWantsMouseNotifications( false );
+        knobPan3.SetPosition( 122, 210 );
+        knobPan3.SetSize( 25, 25 );
+        knobPan3.SetSkin( "Cosmo Large Black" );
+        knobPan3.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobPan3.SetKnobParams( 215, 145 );
+        knobPan3.DisplayValueInPercent( false );
+        knobPan3.SetKnobAdjustsRing( true );
+
+        knobPan4 = new VoltageKnob( "knobPan4", "Pan 4", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobPan4 );
+        knobPan4.SetWantsMouseNotifications( false );
+        knobPan4.SetPosition( 149, 210 );
+        knobPan4.SetSize( 25, 25 );
+        knobPan4.SetSkin( "Cosmo Large Black" );
+        knobPan4.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobPan4.SetKnobParams( 215, 145 );
+        knobPan4.DisplayValueInPercent( false );
+        knobPan4.SetKnobAdjustsRing( true );
+
+        knobPan5 = new VoltageKnob( "knobPan5", "Pan 5", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobPan5 );
+        knobPan5.SetWantsMouseNotifications( false );
+        knobPan5.SetPosition( 176, 210 );
+        knobPan5.SetSize( 25, 25 );
+        knobPan5.SetSkin( "Cosmo Large Black" );
+        knobPan5.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobPan5.SetKnobParams( 215, 145 );
+        knobPan5.DisplayValueInPercent( false );
+        knobPan5.SetKnobAdjustsRing( true );
+
+        knobPan6 = new VoltageKnob( "knobPan6", "Pan 6", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobPan6 );
+        knobPan6.SetWantsMouseNotifications( false );
+        knobPan6.SetPosition( 203, 210 );
+        knobPan6.SetSize( 25, 25 );
+        knobPan6.SetSkin( "Cosmo Large Black" );
+        knobPan6.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobPan6.SetKnobParams( 215, 145 );
+        knobPan6.DisplayValueInPercent( false );
+        knobPan6.SetKnobAdjustsRing( true );
+
+        knobPan7 = new VoltageKnob( "knobPan7", "Pan 7", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobPan7 );
+        knobPan7.SetWantsMouseNotifications( false );
+        knobPan7.SetPosition( 231, 210 );
+        knobPan7.SetSize( 25, 25 );
+        knobPan7.SetSkin( "Cosmo Large Black" );
+        knobPan7.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobPan7.SetKnobParams( 215, 145 );
+        knobPan7.DisplayValueInPercent( false );
+        knobPan7.SetKnobAdjustsRing( true );
+
+        knobPan8 = new VoltageKnob( "knobPan8", "Pan 8", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobPan8 );
+        knobPan8.SetWantsMouseNotifications( false );
+        knobPan8.SetPosition( 259, 210 );
+        knobPan8.SetSize( 25, 25 );
+        knobPan8.SetSkin( "Cosmo Large Black" );
+        knobPan8.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobPan8.SetKnobParams( 215, 145 );
+        knobPan8.DisplayValueInPercent( false );
+        knobPan8.SetKnobAdjustsRing( true );
+
+        knobPan9 = new VoltageKnob( "knobPan9", "Pan 9", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobPan9 );
+        knobPan9.SetWantsMouseNotifications( false );
+        knobPan9.SetPosition( 500, 210 );
+        knobPan9.SetSize( 25, 25 );
+        knobPan9.SetSkin( "Cosmo Large Black" );
+        knobPan9.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobPan9.SetKnobParams( 215, 145 );
+        knobPan9.DisplayValueInPercent( false );
+        knobPan9.SetKnobAdjustsRing( true );
+
+        knobPan10 = new VoltageKnob( "knobPan10", "Pan 10", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobPan10 );
+        knobPan10.SetWantsMouseNotifications( false );
+        knobPan10.SetPosition( 528, 210 );
+        knobPan10.SetSize( 25, 25 );
+        knobPan10.SetSkin( "Cosmo Large Black" );
+        knobPan10.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobPan10.SetKnobParams( 215, 145 );
+        knobPan10.DisplayValueInPercent( false );
+        knobPan10.SetKnobAdjustsRing( true );
+
+        knobPan11 = new VoltageKnob( "knobPan11", "Pan 11", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobPan11 );
+        knobPan11.SetWantsMouseNotifications( false );
+        knobPan11.SetPosition( 555, 210 );
+        knobPan11.SetSize( 25, 25 );
+        knobPan11.SetSkin( "Cosmo Large Black" );
+        knobPan11.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobPan11.SetKnobParams( 215, 145 );
+        knobPan11.DisplayValueInPercent( false );
+        knobPan11.SetKnobAdjustsRing( true );
+
+        knobPan12 = new VoltageKnob( "knobPan12", "Pan 12", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobPan12 );
+        knobPan12.SetWantsMouseNotifications( false );
+        knobPan12.SetPosition( 582, 210 );
+        knobPan12.SetSize( 25, 25 );
+        knobPan12.SetSkin( "Cosmo Large Black" );
+        knobPan12.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobPan12.SetKnobParams( 215, 145 );
+        knobPan12.DisplayValueInPercent( false );
+        knobPan12.SetKnobAdjustsRing( true );
+
+        knobPan13 = new VoltageKnob( "knobPan13", "Pan 13", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobPan13 );
+        knobPan13.SetWantsMouseNotifications( false );
+        knobPan13.SetPosition( 609, 210 );
+        knobPan13.SetSize( 25, 25 );
+        knobPan13.SetSkin( "Cosmo Large Black" );
+        knobPan13.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobPan13.SetKnobParams( 215, 145 );
+        knobPan13.DisplayValueInPercent( false );
+        knobPan13.SetKnobAdjustsRing( true );
+
+        knobPan14 = new VoltageKnob( "knobPan14", "Pan 14", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobPan14 );
+        knobPan14.SetWantsMouseNotifications( false );
+        knobPan14.SetPosition( 636, 210 );
+        knobPan14.SetSize( 25, 25 );
+        knobPan14.SetSkin( "Cosmo Large Black" );
+        knobPan14.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobPan14.SetKnobParams( 215, 145 );
+        knobPan14.DisplayValueInPercent( false );
+        knobPan14.SetKnobAdjustsRing( true );
+
+        knobPan15 = new VoltageKnob( "knobPan15", "Pan 15", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobPan15 );
+        knobPan15.SetWantsMouseNotifications( false );
+        knobPan15.SetPosition( 663, 210 );
+        knobPan15.SetSize( 25, 25 );
+        knobPan15.SetSkin( "Cosmo Large Black" );
+        knobPan15.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobPan15.SetKnobParams( 215, 145 );
+        knobPan15.DisplayValueInPercent( false );
+        knobPan15.SetKnobAdjustsRing( true );
+
+        knobPan16 = new VoltageKnob( "knobPan16", "Pan 16", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobPan16 );
+        knobPan16.SetWantsMouseNotifications( false );
+        knobPan16.SetPosition( 690, 210 );
+        knobPan16.SetSize( 25, 25 );
+        knobPan16.SetSkin( "Cosmo Large Black" );
+        knobPan16.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobPan16.SetKnobParams( 215, 145 );
+        knobPan16.DisplayValueInPercent( false );
+        knobPan16.SetKnobAdjustsRing( true );
+
+        knobEQ2 = new VoltageKnob( "knobEQ1", "Tilt EQ 1", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobEQ2 );
+        knobEQ2.SetWantsMouseNotifications( false );
+        knobEQ2.SetPosition( 68, 180 );
+        knobEQ2.SetSize( 25, 25 );
+        knobEQ2.SetSkin( "Cosmo Large Black" );
+        knobEQ2.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobEQ2.SetKnobParams( 215, 145 );
+        knobEQ2.DisplayValueInPercent( false );
+        knobEQ2.SetKnobAdjustsRing( true );
+
+        knobEQ3 = new VoltageKnob( "knobEQ2", "Tilt EQ 2", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobEQ3 );
+        knobEQ3.SetWantsMouseNotifications( false );
+        knobEQ3.SetPosition( 95, 180 );
+        knobEQ3.SetSize( 25, 25 );
+        knobEQ3.SetSkin( "Cosmo Large Black" );
+        knobEQ3.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobEQ3.SetKnobParams( 215, 145 );
+        knobEQ3.DisplayValueInPercent( false );
+        knobEQ3.SetKnobAdjustsRing( true );
+
+        knobEQ4 = new VoltageKnob( "knobEQ3", "Tilt EQ 3", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobEQ4 );
+        knobEQ4.SetWantsMouseNotifications( false );
+        knobEQ4.SetPosition( 122, 180 );
+        knobEQ4.SetSize( 25, 25 );
+        knobEQ4.SetSkin( "Cosmo Large Black" );
+        knobEQ4.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobEQ4.SetKnobParams( 215, 145 );
+        knobEQ4.DisplayValueInPercent( false );
+        knobEQ4.SetKnobAdjustsRing( true );
+
+        knobEQ5 = new VoltageKnob( "knobEQ4", "Tilt EQ 4", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobEQ5 );
+        knobEQ5.SetWantsMouseNotifications( false );
+        knobEQ5.SetPosition( 150, 180 );
+        knobEQ5.SetSize( 25, 25 );
+        knobEQ5.SetSkin( "Cosmo Large Black" );
+        knobEQ5.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobEQ5.SetKnobParams( 215, 145 );
+        knobEQ5.DisplayValueInPercent( false );
+        knobEQ5.SetKnobAdjustsRing( true );
+
+        knobEQ6 = new VoltageKnob( "knobEQ5", "Tilt EQ 5", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobEQ6 );
+        knobEQ6.SetWantsMouseNotifications( false );
+        knobEQ6.SetPosition( 176, 180 );
+        knobEQ6.SetSize( 25, 25 );
+        knobEQ6.SetSkin( "Cosmo Large Black" );
+        knobEQ6.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobEQ6.SetKnobParams( 215, 145 );
+        knobEQ6.DisplayValueInPercent( false );
+        knobEQ6.SetKnobAdjustsRing( true );
+
+        knobEQ7 = new VoltageKnob( "knobEQ6", "Tilt EQ 6", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobEQ7 );
+        knobEQ7.SetWantsMouseNotifications( false );
+        knobEQ7.SetPosition( 203, 180 );
+        knobEQ7.SetSize( 25, 25 );
+        knobEQ7.SetSkin( "Cosmo Large Black" );
+        knobEQ7.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobEQ7.SetKnobParams( 215, 145 );
+        knobEQ7.DisplayValueInPercent( false );
+        knobEQ7.SetKnobAdjustsRing( true );
+
+        knobEQ8 = new VoltageKnob( "knobEQ7", "Tilt EQ 7", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobEQ8 );
+        knobEQ8.SetWantsMouseNotifications( false );
+        knobEQ8.SetPosition( 231, 180 );
+        knobEQ8.SetSize( 25, 25 );
+        knobEQ8.SetSkin( "Cosmo Large Black" );
+        knobEQ8.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobEQ8.SetKnobParams( 215, 145 );
+        knobEQ8.DisplayValueInPercent( false );
+        knobEQ8.SetKnobAdjustsRing( true );
+
+        knobEQ9 = new VoltageKnob( "knobEQ8", "Tilt EQ 8", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobEQ9 );
+        knobEQ9.SetWantsMouseNotifications( false );
+        knobEQ9.SetPosition( 259, 180 );
+        knobEQ9.SetSize( 25, 25 );
+        knobEQ9.SetSkin( "Cosmo Large Black" );
+        knobEQ9.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobEQ9.SetKnobParams( 215, 145 );
+        knobEQ9.DisplayValueInPercent( false );
+        knobEQ9.SetKnobAdjustsRing( true );
+
+        knobEQ10 = new VoltageKnob( "knobEQ9", "Tilt EQ 9", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobEQ10 );
+        knobEQ10.SetWantsMouseNotifications( false );
+        knobEQ10.SetPosition( 500, 180 );
+        knobEQ10.SetSize( 25, 25 );
+        knobEQ10.SetSkin( "Cosmo Large Black" );
+        knobEQ10.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobEQ10.SetKnobParams( 215, 145 );
+        knobEQ10.DisplayValueInPercent( false );
+        knobEQ10.SetKnobAdjustsRing( true );
+
+        knobEQ11 = new VoltageKnob( "knobEQ10", "Tilt EQ 10", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobEQ11 );
+        knobEQ11.SetWantsMouseNotifications( false );
+        knobEQ11.SetPosition( 528, 180 );
+        knobEQ11.SetSize( 25, 25 );
+        knobEQ11.SetSkin( "Cosmo Large Black" );
+        knobEQ11.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobEQ11.SetKnobParams( 215, 145 );
+        knobEQ11.DisplayValueInPercent( false );
+        knobEQ11.SetKnobAdjustsRing( true );
+
+        knobEQ12 = new VoltageKnob( "knobEQ11", "Tilt EQ 11", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobEQ12 );
+        knobEQ12.SetWantsMouseNotifications( false );
+        knobEQ12.SetPosition( 555, 180 );
+        knobEQ12.SetSize( 25, 25 );
+        knobEQ12.SetSkin( "Cosmo Large Black" );
+        knobEQ12.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobEQ12.SetKnobParams( 215, 145 );
+        knobEQ12.DisplayValueInPercent( false );
+        knobEQ12.SetKnobAdjustsRing( true );
+
+        knobEQ13 = new VoltageKnob( "knobEQ12", "Tilt EQ 12", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobEQ13 );
+        knobEQ13.SetWantsMouseNotifications( false );
+        knobEQ13.SetPosition( 582, 180 );
+        knobEQ13.SetSize( 25, 25 );
+        knobEQ13.SetSkin( "Cosmo Large Black" );
+        knobEQ13.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobEQ13.SetKnobParams( 215, 145 );
+        knobEQ13.DisplayValueInPercent( false );
+        knobEQ13.SetKnobAdjustsRing( true );
+
+        knobEQ14 = new VoltageKnob( "knobEQ13", "Tilt EQ 13", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobEQ14 );
+        knobEQ14.SetWantsMouseNotifications( false );
+        knobEQ14.SetPosition( 609, 180 );
+        knobEQ14.SetSize( 25, 25 );
+        knobEQ14.SetSkin( "Cosmo Large Black" );
+        knobEQ14.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobEQ14.SetKnobParams( 215, 145 );
+        knobEQ14.DisplayValueInPercent( false );
+        knobEQ14.SetKnobAdjustsRing( true );
+
+        knobEQ15 = new VoltageKnob( "knobEQ14", "Tilt EQ 14", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobEQ15 );
+        knobEQ15.SetWantsMouseNotifications( false );
+        knobEQ15.SetPosition( 636, 180 );
+        knobEQ15.SetSize( 25, 25 );
+        knobEQ15.SetSkin( "Cosmo Large Black" );
+        knobEQ15.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobEQ15.SetKnobParams( 215, 145 );
+        knobEQ15.DisplayValueInPercent( false );
+        knobEQ15.SetKnobAdjustsRing( true );
+
+        knobEQ16 = new VoltageKnob( "knobEQ15", "Tilt EQ 15", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobEQ16 );
+        knobEQ16.SetWantsMouseNotifications( false );
+        knobEQ16.SetPosition( 663, 180 );
+        knobEQ16.SetSize( 25, 25 );
+        knobEQ16.SetSkin( "Cosmo Large Black" );
+        knobEQ16.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobEQ16.SetKnobParams( 215, 145 );
+        knobEQ16.DisplayValueInPercent( false );
+        knobEQ16.SetKnobAdjustsRing( true );
+
+        knobEQ17 = new VoltageKnob( "knobEQ16", "Tilt EQ 16", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobEQ17 );
+        knobEQ17.SetWantsMouseNotifications( false );
+        knobEQ17.SetPosition( 690, 180 );
+        knobEQ17.SetSize( 25, 25 );
+        knobEQ17.SetSkin( "Cosmo Large Black" );
+        knobEQ17.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobEQ17.SetKnobParams( 215, 145 );
+        knobEQ17.DisplayValueInPercent( false );
+        knobEQ17.SetKnobAdjustsRing( true );
+
+        knobSendC1 = new VoltageKnob( "knobSendC1", "Send C 1", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendC1 );
+        knobSendC1.SetWantsMouseNotifications( false );
+        knobSendC1.SetPosition( 68, 150 );
+        knobSendC1.SetSize( 25, 25 );
+        knobSendC1.SetSkin( "Cosmo Large Black" );
+        knobSendC1.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendC1.SetKnobParams( 215, 145 );
+        knobSendC1.DisplayValueInPercent( true );
+        knobSendC1.SetKnobAdjustsRing( true );
+
+        knobSendC2 = new VoltageKnob( "knobSendC2", "Send C 2", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendC2 );
+        knobSendC2.SetWantsMouseNotifications( false );
+        knobSendC2.SetPosition( 95, 150 );
+        knobSendC2.SetSize( 25, 25 );
+        knobSendC2.SetSkin( "Cosmo Large Black" );
+        knobSendC2.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendC2.SetKnobParams( 215, 145 );
+        knobSendC2.DisplayValueInPercent( true );
+        knobSendC2.SetKnobAdjustsRing( true );
+
+        knobSendC3 = new VoltageKnob( "knobSendC3", "Send C 3", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendC3 );
+        knobSendC3.SetWantsMouseNotifications( false );
+        knobSendC3.SetPosition( 122, 150 );
+        knobSendC3.SetSize( 25, 25 );
+        knobSendC3.SetSkin( "Cosmo Large Black" );
+        knobSendC3.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendC3.SetKnobParams( 215, 145 );
+        knobSendC3.DisplayValueInPercent( true );
+        knobSendC3.SetKnobAdjustsRing( true );
+
+        knobSendC4 = new VoltageKnob( "knobSendC4", "Send C 4", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendC4 );
+        knobSendC4.SetWantsMouseNotifications( false );
+        knobSendC4.SetPosition( 150, 150 );
+        knobSendC4.SetSize( 25, 25 );
+        knobSendC4.SetSkin( "Cosmo Large Black" );
+        knobSendC4.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendC4.SetKnobParams( 215, 145 );
+        knobSendC4.DisplayValueInPercent( true );
+        knobSendC4.SetKnobAdjustsRing( true );
+
+        knobSendC5 = new VoltageKnob( "knobSendC5", "Send C 5", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendC5 );
+        knobSendC5.SetWantsMouseNotifications( false );
+        knobSendC5.SetPosition( 176, 150 );
+        knobSendC5.SetSize( 25, 25 );
+        knobSendC5.SetSkin( "Cosmo Large Black" );
+        knobSendC5.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendC5.SetKnobParams( 215, 145 );
+        knobSendC5.DisplayValueInPercent( true );
+        knobSendC5.SetKnobAdjustsRing( true );
+
+        knobSendC6 = new VoltageKnob( "knobSendC6", "Send C 6", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendC6 );
+        knobSendC6.SetWantsMouseNotifications( false );
+        knobSendC6.SetPosition( 203, 150 );
+        knobSendC6.SetSize( 25, 25 );
+        knobSendC6.SetSkin( "Cosmo Large Black" );
+        knobSendC6.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendC6.SetKnobParams( 215, 145 );
+        knobSendC6.DisplayValueInPercent( true );
+        knobSendC6.SetKnobAdjustsRing( true );
+
+        knobSendC7 = new VoltageKnob( "knobSendC7", "Send C 7", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendC7 );
+        knobSendC7.SetWantsMouseNotifications( false );
+        knobSendC7.SetPosition( 231, 150 );
+        knobSendC7.SetSize( 25, 25 );
+        knobSendC7.SetSkin( "Cosmo Large Black" );
+        knobSendC7.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendC7.SetKnobParams( 215, 145 );
+        knobSendC7.DisplayValueInPercent( true );
+        knobSendC7.SetKnobAdjustsRing( true );
+
+        knobSendC8 = new VoltageKnob( "knobSendC8", "Send C 8", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendC8 );
+        knobSendC8.SetWantsMouseNotifications( false );
+        knobSendC8.SetPosition( 259, 150 );
+        knobSendC8.SetSize( 25, 25 );
+        knobSendC8.SetSkin( "Cosmo Large Black" );
+        knobSendC8.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendC8.SetKnobParams( 215, 145 );
+        knobSendC8.DisplayValueInPercent( true );
+        knobSendC8.SetKnobAdjustsRing( true );
+
+        knobSendC9 = new VoltageKnob( "knobSendC9", "Send C 9", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendC9 );
+        knobSendC9.SetWantsMouseNotifications( false );
+        knobSendC9.SetPosition( 500, 150 );
+        knobSendC9.SetSize( 25, 25 );
+        knobSendC9.SetSkin( "Cosmo Large Black" );
+        knobSendC9.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendC9.SetKnobParams( 215, 145 );
+        knobSendC9.DisplayValueInPercent( true );
+        knobSendC9.SetKnobAdjustsRing( true );
+
+        knobSendC10 = new VoltageKnob( "knobSendC10", "Send C 10", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendC10 );
+        knobSendC10.SetWantsMouseNotifications( false );
+        knobSendC10.SetPosition( 528, 150 );
+        knobSendC10.SetSize( 25, 25 );
+        knobSendC10.SetSkin( "Cosmo Large Black" );
+        knobSendC10.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendC10.SetKnobParams( 215, 145 );
+        knobSendC10.DisplayValueInPercent( true );
+        knobSendC10.SetKnobAdjustsRing( true );
+
+        knobSendC11 = new VoltageKnob( "knobSendC11", "Send C 11", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendC11 );
+        knobSendC11.SetWantsMouseNotifications( false );
+        knobSendC11.SetPosition( 555, 150 );
+        knobSendC11.SetSize( 25, 25 );
+        knobSendC11.SetSkin( "Cosmo Large Black" );
+        knobSendC11.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendC11.SetKnobParams( 215, 145 );
+        knobSendC11.DisplayValueInPercent( true );
+        knobSendC11.SetKnobAdjustsRing( true );
+
+        knobSendC12 = new VoltageKnob( "knobSendC12", "Send C 12", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendC12 );
+        knobSendC12.SetWantsMouseNotifications( false );
+        knobSendC12.SetPosition( 582, 150 );
+        knobSendC12.SetSize( 25, 25 );
+        knobSendC12.SetSkin( "Cosmo Large Black" );
+        knobSendC12.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendC12.SetKnobParams( 215, 145 );
+        knobSendC12.DisplayValueInPercent( true );
+        knobSendC12.SetKnobAdjustsRing( true );
+}
+
+void InitializeControls2()
+{
+
+        knobSendC13 = new VoltageKnob( "knobSendC13", "Send C 13", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendC13 );
+        knobSendC13.SetWantsMouseNotifications( false );
+        knobSendC13.SetPosition( 609, 150 );
+        knobSendC13.SetSize( 25, 25 );
+        knobSendC13.SetSkin( "Cosmo Large Black" );
+        knobSendC13.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendC13.SetKnobParams( 215, 145 );
+        knobSendC13.DisplayValueInPercent( true );
+        knobSendC13.SetKnobAdjustsRing( true );
+
+        knobSendC14 = new VoltageKnob( "knobSendC14", "Send C 14", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendC14 );
+        knobSendC14.SetWantsMouseNotifications( false );
+        knobSendC14.SetPosition( 636, 150 );
+        knobSendC14.SetSize( 25, 25 );
+        knobSendC14.SetSkin( "Cosmo Large Black" );
+        knobSendC14.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendC14.SetKnobParams( 215, 145 );
+        knobSendC14.DisplayValueInPercent( true );
+        knobSendC14.SetKnobAdjustsRing( true );
+
+        knobSendC15 = new VoltageKnob( "knobSendC15", "Send C 15", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendC15 );
+        knobSendC15.SetWantsMouseNotifications( false );
+        knobSendC15.SetPosition( 663, 150 );
+        knobSendC15.SetSize( 25, 25 );
+        knobSendC15.SetSkin( "Cosmo Large Black" );
+        knobSendC15.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendC15.SetKnobParams( 215, 145 );
+        knobSendC15.DisplayValueInPercent( true );
+        knobSendC15.SetKnobAdjustsRing( true );
+
+        knobSendC16 = new VoltageKnob( "knobSendC16", "Send C 16", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendC16 );
+        knobSendC16.SetWantsMouseNotifications( false );
+        knobSendC16.SetPosition( 690, 150 );
+        knobSendC16.SetSize( 25, 25 );
+        knobSendC16.SetSkin( "Cosmo Large Black" );
+        knobSendC16.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendC16.SetKnobParams( 215, 145 );
+        knobSendC16.DisplayValueInPercent( true );
+        knobSendC16.SetKnobAdjustsRing( true );
+
+        knobSendB1 = new VoltageKnob( "knobSendB1", "Send B 1", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendB1 );
+        knobSendB1.SetWantsMouseNotifications( false );
+        knobSendB1.SetPosition( 68, 120 );
+        knobSendB1.SetSize( 25, 25 );
+        knobSendB1.SetSkin( "Cosmo Large Black" );
+        knobSendB1.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendB1.SetKnobParams( 215, 145 );
+        knobSendB1.DisplayValueInPercent( true );
+        knobSendB1.SetKnobAdjustsRing( true );
+
+        knobSendB2 = new VoltageKnob( "knobSendB2", "Send B 2", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendB2 );
+        knobSendB2.SetWantsMouseNotifications( false );
+        knobSendB2.SetPosition( 95, 120 );
+        knobSendB2.SetSize( 25, 25 );
+        knobSendB2.SetSkin( "Cosmo Large Black" );
+        knobSendB2.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendB2.SetKnobParams( 215, 145 );
+        knobSendB2.DisplayValueInPercent( true );
+        knobSendB2.SetKnobAdjustsRing( true );
+
+        knobSendB3 = new VoltageKnob( "knobSendB3", "Send B 3", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendB3 );
+        knobSendB3.SetWantsMouseNotifications( false );
+        knobSendB3.SetPosition( 122, 120 );
+        knobSendB3.SetSize( 25, 25 );
+        knobSendB3.SetSkin( "Cosmo Large Black" );
+        knobSendB3.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendB3.SetKnobParams( 215, 145 );
+        knobSendB3.DisplayValueInPercent( true );
+        knobSendB3.SetKnobAdjustsRing( true );
+
+        knobSendB4 = new VoltageKnob( "knobSendB4", "Send B 4", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendB4 );
+        knobSendB4.SetWantsMouseNotifications( false );
+        knobSendB4.SetPosition( 150, 120 );
+        knobSendB4.SetSize( 25, 25 );
+        knobSendB4.SetSkin( "Cosmo Large Black" );
+        knobSendB4.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendB4.SetKnobParams( 215, 145 );
+        knobSendB4.DisplayValueInPercent( true );
+        knobSendB4.SetKnobAdjustsRing( true );
+
+        knobSendB5 = new VoltageKnob( "knobSendB5", "Send B 5", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendB5 );
+        knobSendB5.SetWantsMouseNotifications( false );
+        knobSendB5.SetPosition( 176, 120 );
+        knobSendB5.SetSize( 25, 25 );
+        knobSendB5.SetSkin( "Cosmo Large Black" );
+        knobSendB5.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendB5.SetKnobParams( 215, 145 );
+        knobSendB5.DisplayValueInPercent( true );
+        knobSendB5.SetKnobAdjustsRing( true );
+
+        knobSendB6 = new VoltageKnob( "knobSendB6", "Send B 6", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendB6 );
+        knobSendB6.SetWantsMouseNotifications( false );
+        knobSendB6.SetPosition( 203, 120 );
+        knobSendB6.SetSize( 25, 25 );
+        knobSendB6.SetSkin( "Cosmo Large Black" );
+        knobSendB6.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendB6.SetKnobParams( 215, 145 );
+        knobSendB6.DisplayValueInPercent( true );
+        knobSendB6.SetKnobAdjustsRing( true );
+
+        knobSendB7 = new VoltageKnob( "knobSendB7", "Send B 7", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendB7 );
+        knobSendB7.SetWantsMouseNotifications( false );
+        knobSendB7.SetPosition( 231, 120 );
+        knobSendB7.SetSize( 25, 25 );
+        knobSendB7.SetSkin( "Cosmo Large Black" );
+        knobSendB7.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendB7.SetKnobParams( 215, 145 );
+        knobSendB7.DisplayValueInPercent( true );
+        knobSendB7.SetKnobAdjustsRing( true );
+
+        knobSendB8 = new VoltageKnob( "knobSendB8", "Send B 8", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendB8 );
+        knobSendB8.SetWantsMouseNotifications( false );
+        knobSendB8.SetPosition( 259, 120 );
+        knobSendB8.SetSize( 25, 25 );
+        knobSendB8.SetSkin( "Cosmo Large Black" );
+        knobSendB8.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendB8.SetKnobParams( 215, 145 );
+        knobSendB8.DisplayValueInPercent( true );
+        knobSendB8.SetKnobAdjustsRing( true );
+
+        knobSendB9 = new VoltageKnob( "knobSendB9", "Send B 9", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendB9 );
+        knobSendB9.SetWantsMouseNotifications( false );
+        knobSendB9.SetPosition( 500, 120 );
+        knobSendB9.SetSize( 25, 25 );
+        knobSendB9.SetSkin( "Cosmo Large Black" );
+        knobSendB9.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendB9.SetKnobParams( 215, 145 );
+        knobSendB9.DisplayValueInPercent( true );
+        knobSendB9.SetKnobAdjustsRing( true );
+
+        knobSendB10 = new VoltageKnob( "knobSendB10", "Send B 10", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendB10 );
+        knobSendB10.SetWantsMouseNotifications( false );
+        knobSendB10.SetPosition( 528, 120 );
+        knobSendB10.SetSize( 25, 25 );
+        knobSendB10.SetSkin( "Cosmo Large Black" );
+        knobSendB10.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendB10.SetKnobParams( 215, 145 );
+        knobSendB10.DisplayValueInPercent( true );
+        knobSendB10.SetKnobAdjustsRing( true );
+
+        knobSendB11 = new VoltageKnob( "knobSendB11", "Send B 11", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendB11 );
+        knobSendB11.SetWantsMouseNotifications( false );
+        knobSendB11.SetPosition( 555, 120 );
+        knobSendB11.SetSize( 25, 25 );
+        knobSendB11.SetSkin( "Cosmo Large Black" );
+        knobSendB11.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendB11.SetKnobParams( 215, 145 );
+        knobSendB11.DisplayValueInPercent( true );
+        knobSendB11.SetKnobAdjustsRing( true );
+
+        knobSendB12 = new VoltageKnob( "knobSendB12", "Send B 12", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendB12 );
+        knobSendB12.SetWantsMouseNotifications( false );
+        knobSendB12.SetPosition( 582, 120 );
+        knobSendB12.SetSize( 25, 25 );
+        knobSendB12.SetSkin( "Cosmo Large Black" );
+        knobSendB12.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendB12.SetKnobParams( 215, 145 );
+        knobSendB12.DisplayValueInPercent( true );
+        knobSendB12.SetKnobAdjustsRing( true );
+
+        knobSendB13 = new VoltageKnob( "knobSendB13", "Send B 13", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendB13 );
+        knobSendB13.SetWantsMouseNotifications( false );
+        knobSendB13.SetPosition( 609, 120 );
+        knobSendB13.SetSize( 25, 25 );
+        knobSendB13.SetSkin( "Cosmo Large Black" );
+        knobSendB13.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendB13.SetKnobParams( 215, 145 );
+        knobSendB13.DisplayValueInPercent( true );
+        knobSendB13.SetKnobAdjustsRing( true );
+
+        knobSendB14 = new VoltageKnob( "knobSendB14", "Send B 14", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendB14 );
+        knobSendB14.SetWantsMouseNotifications( false );
+        knobSendB14.SetPosition( 636, 120 );
+        knobSendB14.SetSize( 25, 25 );
+        knobSendB14.SetSkin( "Cosmo Large Black" );
+        knobSendB14.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendB14.SetKnobParams( 215, 145 );
+        knobSendB14.DisplayValueInPercent( true );
+        knobSendB14.SetKnobAdjustsRing( true );
+
+        knobSendB15 = new VoltageKnob( "knobSendB15", "Send B 15", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendB15 );
+        knobSendB15.SetWantsMouseNotifications( false );
+        knobSendB15.SetPosition( 663, 120 );
+        knobSendB15.SetSize( 25, 25 );
+        knobSendB15.SetSkin( "Cosmo Large Black" );
+        knobSendB15.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendB15.SetKnobParams( 215, 145 );
+        knobSendB15.DisplayValueInPercent( true );
+        knobSendB15.SetKnobAdjustsRing( true );
+
+        knobSendB16 = new VoltageKnob( "knobSendB16", "Send B 16", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendB16 );
+        knobSendB16.SetWantsMouseNotifications( false );
+        knobSendB16.SetPosition( 690, 120 );
+        knobSendB16.SetSize( 25, 25 );
+        knobSendB16.SetSkin( "Cosmo Large Black" );
+        knobSendB16.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendB16.SetKnobParams( 215, 145 );
+        knobSendB16.DisplayValueInPercent( true );
+        knobSendB16.SetKnobAdjustsRing( true );
+
+        knobSendA1 = new VoltageKnob( "knobSendA1", "Send A 1", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendA1 );
+        knobSendA1.SetWantsMouseNotifications( false );
+        knobSendA1.SetPosition( 68, 90 );
+        knobSendA1.SetSize( 25, 25 );
+        knobSendA1.SetSkin( "Cosmo Large Black" );
+        knobSendA1.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendA1.SetKnobParams( 215, 145 );
+        knobSendA1.DisplayValueInPercent( true );
+        knobSendA1.SetKnobAdjustsRing( true );
+
+        knobSendA2 = new VoltageKnob( "knobSendA2", "Send A 2", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendA2 );
+        knobSendA2.SetWantsMouseNotifications( false );
+        knobSendA2.SetPosition( 95, 90 );
+        knobSendA2.SetSize( 25, 25 );
+        knobSendA2.SetSkin( "Cosmo Large Black" );
+        knobSendA2.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendA2.SetKnobParams( 215, 145 );
+        knobSendA2.DisplayValueInPercent( true );
+        knobSendA2.SetKnobAdjustsRing( true );
+
+        knobSendA3 = new VoltageKnob( "knobSendA3", "Send A 3", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendA3 );
+        knobSendA3.SetWantsMouseNotifications( false );
+        knobSendA3.SetPosition( 122, 90 );
+        knobSendA3.SetSize( 25, 25 );
+        knobSendA3.SetSkin( "Cosmo Large Black" );
+        knobSendA3.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendA3.SetKnobParams( 215, 145 );
+        knobSendA3.DisplayValueInPercent( true );
+        knobSendA3.SetKnobAdjustsRing( true );
+
+        knobSendA4 = new VoltageKnob( "knobSendA4", "Send A 4", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendA4 );
+        knobSendA4.SetWantsMouseNotifications( false );
+        knobSendA4.SetPosition( 150, 90 );
+        knobSendA4.SetSize( 25, 25 );
+        knobSendA4.SetSkin( "Cosmo Large Black" );
+        knobSendA4.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendA4.SetKnobParams( 215, 145 );
+        knobSendA4.DisplayValueInPercent( true );
+        knobSendA4.SetKnobAdjustsRing( true );
+
+        labelNumber_1 = new VoltageLabel( "labelNumber_1", "Model Number Label_1", this, "" );
+        AddComponent( labelNumber_1 );
+        labelNumber_1.SetWantsMouseNotifications( false );
+        labelNumber_1.SetPosition( 205, 5 );
+        labelNumber_1.SetSize( 25, 13 );
+        labelNumber_1.SetEditable( false, false );
+        labelNumber_1.SetJustificationFlags( VoltageLabel.Justification.Right );
+        labelNumber_1.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelNumber_1.SetColor( new Color( 166, 36, 36, 255 ) );
+        labelNumber_1.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        labelNumber_1.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        labelNumber_1.SetBorderSize( 1 );
+        labelNumber_1.SetMultiLineEdit( false );
+        labelNumber_1.SetIsNumberEditor( false );
+        labelNumber_1.SetNumberEditorRange( 0, 100 );
+        labelNumber_1.SetNumberEditorInterval( 1 );
+        labelNumber_1.SetNumberEditorUsesMouseWheel( false );
+        labelNumber_1.SetHasCustomTextHoverColor( false );
+        labelNumber_1.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelNumber_1.SetFont( "Courier New", 13, true, false );
+
+        knobSendA5 = new VoltageKnob( "knobSendA5", "Send A 5", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendA5 );
+        knobSendA5.SetWantsMouseNotifications( false );
+        knobSendA5.SetPosition( 176, 90 );
+        knobSendA5.SetSize( 25, 25 );
+        knobSendA5.SetSkin( "Cosmo Large Black" );
+        knobSendA5.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendA5.SetKnobParams( 215, 145 );
+        knobSendA5.DisplayValueInPercent( true );
+        knobSendA5.SetKnobAdjustsRing( true );
+
+        knobSendA6 = new VoltageKnob( "knobSendA6", "Send A 6", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendA6 );
+        knobSendA6.SetWantsMouseNotifications( false );
+        knobSendA6.SetPosition( 203, 90 );
+        knobSendA6.SetSize( 25, 25 );
+        knobSendA6.SetSkin( "Cosmo Large Black" );
+        knobSendA6.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendA6.SetKnobParams( 215, 145 );
+        knobSendA6.DisplayValueInPercent( true );
+        knobSendA6.SetKnobAdjustsRing( true );
+
+        knobSendA7 = new VoltageKnob( "knobSendA7", "Send A 7", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendA7 );
+        knobSendA7.SetWantsMouseNotifications( false );
+        knobSendA7.SetPosition( 231, 90 );
+        knobSendA7.SetSize( 25, 25 );
+        knobSendA7.SetSkin( "Cosmo Large Black" );
+        knobSendA7.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendA7.SetKnobParams( 215, 145 );
+        knobSendA7.DisplayValueInPercent( true );
+        knobSendA7.SetKnobAdjustsRing( true );
+
+        knobSendA8 = new VoltageKnob( "knobSendA8", "Send A 8", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendA8 );
+        knobSendA8.SetWantsMouseNotifications( false );
+        knobSendA8.SetPosition( 259, 90 );
+        knobSendA8.SetSize( 25, 25 );
+        knobSendA8.SetSkin( "Cosmo Large Black" );
+        knobSendA8.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendA8.SetKnobParams( 215, 145 );
+        knobSendA8.DisplayValueInPercent( true );
+        knobSendA8.SetKnobAdjustsRing( true );
+
+        labelNumber_3 = new VoltageLabel( "labelNumber_3", "Model Number Label_3", this, "" );
+        AddComponent( labelNumber_3 );
+        labelNumber_3.SetWantsMouseNotifications( false );
+        labelNumber_3.SetPosition( 655, 10 );
+        labelNumber_3.SetSize( 25, 13 );
+        labelNumber_3.SetEditable( false, false );
+        labelNumber_3.SetJustificationFlags( VoltageLabel.Justification.Right );
+        labelNumber_3.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelNumber_3.SetColor( new Color( 166, 36, 36, 255 ) );
+        labelNumber_3.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        labelNumber_3.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        labelNumber_3.SetBorderSize( 1 );
+        labelNumber_3.SetMultiLineEdit( false );
+        labelNumber_3.SetIsNumberEditor( false );
+        labelNumber_3.SetNumberEditorRange( 0, 100 );
+        labelNumber_3.SetNumberEditorInterval( 1 );
+        labelNumber_3.SetNumberEditorUsesMouseWheel( false );
+        labelNumber_3.SetHasCustomTextHoverColor( false );
+        labelNumber_3.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelNumber_3.SetFont( "Courier New", 13, true, false );
+
+        knobSendA9 = new VoltageKnob( "knobSendA9", "Send A 9", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendA9 );
+        knobSendA9.SetWantsMouseNotifications( false );
+        knobSendA9.SetPosition( 500, 90 );
+        knobSendA9.SetSize( 25, 25 );
+        knobSendA9.SetSkin( "Cosmo Large Black" );
+        knobSendA9.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendA9.SetKnobParams( 215, 145 );
+        knobSendA9.DisplayValueInPercent( true );
+        knobSendA9.SetKnobAdjustsRing( true );
+
+        knobSendA10 = new VoltageKnob( "knobSendA10", "Send A 10", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendA10 );
+        knobSendA10.SetWantsMouseNotifications( false );
+        knobSendA10.SetPosition( 528, 90 );
+        knobSendA10.SetSize( 25, 25 );
+        knobSendA10.SetSkin( "Cosmo Large Black" );
+        knobSendA10.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendA10.SetKnobParams( 215, 145 );
+        knobSendA10.DisplayValueInPercent( true );
+        knobSendA10.SetKnobAdjustsRing( true );
+
+        knobSendA11 = new VoltageKnob( "knobSendA11", "Send A 11", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendA11 );
+        knobSendA11.SetWantsMouseNotifications( false );
+        knobSendA11.SetPosition( 555, 90 );
+        knobSendA11.SetSize( 25, 25 );
+        knobSendA11.SetSkin( "Cosmo Large Black" );
+        knobSendA11.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendA11.SetKnobParams( 215, 145 );
+        knobSendA11.DisplayValueInPercent( true );
+        knobSendA11.SetKnobAdjustsRing( true );
+
+        knobSendA12 = new VoltageKnob( "knobSendA12", "Send A 12", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendA12 );
+        knobSendA12.SetWantsMouseNotifications( false );
+        knobSendA12.SetPosition( 582, 90 );
+        knobSendA12.SetSize( 25, 25 );
+        knobSendA12.SetSkin( "Cosmo Large Black" );
+        knobSendA12.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendA12.SetKnobParams( 215, 145 );
+        knobSendA12.DisplayValueInPercent( true );
+        knobSendA12.SetKnobAdjustsRing( true );
+
+        knobSendA13 = new VoltageKnob( "knobSendA13", "Send A 13", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendA13 );
+        knobSendA13.SetWantsMouseNotifications( false );
+        knobSendA13.SetPosition( 609, 90 );
+        knobSendA13.SetSize( 25, 25 );
+        knobSendA13.SetSkin( "Cosmo Large Black" );
+        knobSendA13.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendA13.SetKnobParams( 215, 145 );
+        knobSendA13.DisplayValueInPercent( true );
+        knobSendA13.SetKnobAdjustsRing( true );
+
+        knobSendA14 = new VoltageKnob( "knobSendA14", "Send A 14", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendA14 );
+        knobSendA14.SetWantsMouseNotifications( false );
+        knobSendA14.SetPosition( 636, 90 );
+        knobSendA14.SetSize( 25, 25 );
+        knobSendA14.SetSkin( "Cosmo Large Black" );
+        knobSendA14.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendA14.SetKnobParams( 215, 145 );
+        knobSendA14.DisplayValueInPercent( true );
+        knobSendA14.SetKnobAdjustsRing( true );
+
+        knobSendA15 = new VoltageKnob( "knobSendA15", "Send A 15", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendA15 );
+        knobSendA15.SetWantsMouseNotifications( false );
+        knobSendA15.SetPosition( 663, 90 );
+        knobSendA15.SetSize( 25, 25 );
+        knobSendA15.SetSkin( "Cosmo Large Black" );
+        knobSendA15.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendA15.SetKnobParams( 215, 145 );
+        knobSendA15.DisplayValueInPercent( true );
+        knobSendA15.SetKnobAdjustsRing( true );
+
+        knobSendA16 = new VoltageKnob( "knobSendA16", "Send A 16", this, 0.0, 1.0, 0.0 );
+        AddComponent( knobSendA16 );
+        knobSendA16.SetWantsMouseNotifications( false );
+        knobSendA16.SetPosition( 690, 90 );
+        knobSendA16.SetSize( 25, 25 );
+        knobSendA16.SetSkin( "Cosmo Large Black" );
+        knobSendA16.SetRange( 0.0, 1.0, 0.0, false, 0 );
+        knobSendA16.SetKnobParams( 215, 145 );
+        knobSendA16.DisplayValueInPercent( true );
+        knobSendA16.SetKnobAdjustsRing( true );
+
+        analogMeter1 = new VoltageAnalogVUMeter( "analogMeter1", "VU Left", this );
+        AddComponent( analogMeter1 );
+        analogMeter1.SetWantsMouseNotifications( false );
+        analogMeter1.SetPosition( 310, 42 );
+        analogMeter1.SetSize( 80, 50 );
+        analogMeter1.SetSkin( "Analog Black" );
+
+        analogMeter2 = new VoltageAnalogVUMeter( "analogMeter2", "VU Right", this );
+        AddComponent( analogMeter2 );
+        analogMeter2.SetWantsMouseNotifications( false );
+        analogMeter2.SetPosition( 393, 42 );
+        analogMeter2.SetSize( 80, 50 );
+        analogMeter2.SetSkin( "Analog Black" );
+
+        inputCh1 = new VoltageAudioJack( "inputCh1", "Channel 1", this, JackType.JackType_AudioInput );
+        AddComponent( inputCh1 );
+        inputCh1.SetWantsMouseNotifications( false );
+        inputCh1.SetPosition( 68, 30 );
+        inputCh1.SetSize( 25, 25 );
+        inputCh1.SetSkin( "Dark Jack Straight" );
+
+        inputCh2 = new VoltageAudioJack( "inputCh2", "Channel 2", this, JackType.JackType_AudioInput );
+        AddComponent( inputCh2 );
+        inputCh2.SetWantsMouseNotifications( false );
+        inputCh2.SetPosition( 95, 30 );
+        inputCh2.SetSize( 25, 25 );
+        inputCh2.SetSkin( "Dark Jack Straight" );
+
+        inputCh3 = new VoltageAudioJack( "inputCh3", "Channel 3", this, JackType.JackType_AudioInput );
+        AddComponent( inputCh3 );
+        inputCh3.SetWantsMouseNotifications( false );
+        inputCh3.SetPosition( 122, 30 );
+        inputCh3.SetSize( 25, 25 );
+        inputCh3.SetSkin( "Dark Jack Straight" );
+
+        inputCh4 = new VoltageAudioJack( "inputCh4", "Channel 4", this, JackType.JackType_AudioInput );
+        AddComponent( inputCh4 );
+        inputCh4.SetWantsMouseNotifications( false );
+        inputCh4.SetPosition( 150, 30 );
+        inputCh4.SetSize( 25, 25 );
+        inputCh4.SetSkin( "Dark Jack Straight" );
+
+        inputCh5 = new VoltageAudioJack( "inputCh5", "Channel 5", this, JackType.JackType_AudioInput );
+        AddComponent( inputCh5 );
+        inputCh5.SetWantsMouseNotifications( false );
+        inputCh5.SetPosition( 176, 30 );
+        inputCh5.SetSize( 25, 25 );
+        inputCh5.SetSkin( "Dark Jack Straight" );
+
+        inputCh6 = new VoltageAudioJack( "inputCh6", "Channel 6", this, JackType.JackType_AudioInput );
+        AddComponent( inputCh6 );
+        inputCh6.SetWantsMouseNotifications( false );
+        inputCh6.SetPosition( 203, 30 );
+        inputCh6.SetSize( 25, 25 );
+        inputCh6.SetSkin( "Dark Jack Straight" );
+
+        inputCh7 = new VoltageAudioJack( "inputCh7", "Channel 7", this, JackType.JackType_AudioInput );
+        AddComponent( inputCh7 );
+        inputCh7.SetWantsMouseNotifications( false );
+        inputCh7.SetPosition( 231, 30 );
+        inputCh7.SetSize( 25, 25 );
+        inputCh7.SetSkin( "Dark Jack Straight" );
+
+        inputCh8 = new VoltageAudioJack( "inputCh8", "Channel 8", this, JackType.JackType_AudioInput );
+        AddComponent( inputCh8 );
+        inputCh8.SetWantsMouseNotifications( false );
+        inputCh8.SetPosition( 259, 30 );
+        inputCh8.SetSize( 25, 25 );
+        inputCh8.SetSkin( "Dark Jack Straight" );
+
+        output4Track1 = new VoltageAudioJack( "output4Track1", "To 4-Track 1", this, JackType.JackType_AudioOutput );
+        AddComponent( output4Track1 );
+        output4Track1.SetWantsMouseNotifications( false );
+        output4Track1.SetPosition( 500, 30 );
+        output4Track1.SetSize( 25, 25 );
+        output4Track1.SetSkin( "Rotated Half" );
+
+        output4Track2 = new VoltageAudioJack( "output4Track2", "To 4-Track 2", this, JackType.JackType_AudioOutput );
+        AddComponent( output4Track2 );
+        output4Track2.SetWantsMouseNotifications( false );
+        output4Track2.SetPosition( 528, 30 );
+        output4Track2.SetSize( 25, 25 );
+        output4Track2.SetSkin( "Rotated Half" );
+
+        output4Track3 = new VoltageAudioJack( "output4Track3", "To 4-Track 3", this, JackType.JackType_AudioOutput );
+        AddComponent( output4Track3 );
+        output4Track3.SetWantsMouseNotifications( false );
+        output4Track3.SetPosition( 555, 30 );
+        output4Track3.SetSize( 25, 25 );
+        output4Track3.SetSkin( "Rotated Half" );
+
+        output4Track4 = new VoltageAudioJack( "output4Track4", "To 4-Track 4", this, JackType.JackType_AudioOutput );
+        AddComponent( output4Track4 );
+        output4Track4.SetWantsMouseNotifications( false );
+        output4Track4.SetPosition( 582, 30 );
+        output4Track4.SetSize( 25, 25 );
+        output4Track4.SetSkin( "Rotated Half" );
+
+        outputLoop1 = new VoltageAudioJack( "outputLoop1", "To Loop 1", this, JackType.JackType_AudioOutput );
+        AddComponent( outputLoop1 );
+        outputLoop1.SetWantsMouseNotifications( false );
+        outputLoop1.SetPosition( 609, 30 );
+        outputLoop1.SetSize( 25, 25 );
+        outputLoop1.SetSkin( "Rotated Half" );
+
+        outputLoop2 = new VoltageAudioJack( "outputLoop2", "To Loop 2", this, JackType.JackType_AudioOutput );
+        AddComponent( outputLoop2 );
+        outputLoop2.SetWantsMouseNotifications( false );
+        outputLoop2.SetPosition( 636, 30 );
+        outputLoop2.SetSize( 25, 25 );
+        outputLoop2.SetSkin( "Rotated Half" );
+
+        outputLoop3 = new VoltageAudioJack( "outputLoop3", "To Loop 3", this, JackType.JackType_AudioOutput );
+        AddComponent( outputLoop3 );
+        outputLoop3.SetWantsMouseNotifications( false );
+        outputLoop3.SetPosition( 663, 30 );
+        outputLoop3.SetSize( 25, 25 );
+        outputLoop3.SetSkin( "Rotated Half" );
+
+        outputLoop4 = new VoltageAudioJack( "outputLoop4", "To Loop 4", this, JackType.JackType_AudioOutput );
+        AddComponent( outputLoop4 );
+        outputLoop4.SetWantsMouseNotifications( false );
+        outputLoop4.SetPosition( 690, 30 );
+        outputLoop4.SetSize( 25, 25 );
+        outputLoop4.SetSkin( "Rotated Half" );
+
+        input4Track1 = new VoltageAudioJack( "input4Track1", "4-Track Input 1", this, JackType.JackType_AudioInput );
+        AddComponent( input4Track1 );
+        input4Track1.SetWantsMouseNotifications( false );
+        input4Track1.SetPosition( 500, 60 );
+        input4Track1.SetSize( 25, 25 );
+        input4Track1.SetSkin( "Dark Jack Straight" );
+
+        input4Track2 = new VoltageAudioJack( "input4Track2", "4-Track Input 2", this, JackType.JackType_AudioInput );
+        AddComponent( input4Track2 );
+        input4Track2.SetWantsMouseNotifications( false );
+        input4Track2.SetPosition( 528, 60 );
+        input4Track2.SetSize( 25, 25 );
+        input4Track2.SetSkin( "Dark Jack Straight" );
+
+        input4Track3 = new VoltageAudioJack( "input4Track3", "4-Track Input 3", this, JackType.JackType_AudioInput );
+        AddComponent( input4Track3 );
+        input4Track3.SetWantsMouseNotifications( false );
+        input4Track3.SetPosition( 555, 60 );
+        input4Track3.SetSize( 25, 25 );
+        input4Track3.SetSkin( "Dark Jack Straight" );
+
+        input4Track4 = new VoltageAudioJack( "input4Track4", "4-Track Input 4", this, JackType.JackType_AudioInput );
+        AddComponent( input4Track4 );
+        input4Track4.SetWantsMouseNotifications( false );
+        input4Track4.SetPosition( 582, 60 );
+        input4Track4.SetSize( 25, 25 );
+        input4Track4.SetSkin( "Dark Jack Straight" );
+
+        inputLoop1 = new VoltageAudioJack( "inputLoop1", "Loop Input 1", this, JackType.JackType_AudioInput );
+        AddComponent( inputLoop1 );
+        inputLoop1.SetWantsMouseNotifications( false );
+        inputLoop1.SetPosition( 609, 60 );
+        inputLoop1.SetSize( 25, 25 );
+        inputLoop1.SetSkin( "Dark Jack Straight" );
+
+        inputLoop2 = new VoltageAudioJack( "inputLoop2", "Loop Input 2", this, JackType.JackType_AudioInput );
+        AddComponent( inputLoop2 );
+        inputLoop2.SetWantsMouseNotifications( false );
+        inputLoop2.SetPosition( 636, 60 );
+        inputLoop2.SetSize( 25, 25 );
+        inputLoop2.SetSkin( "Dark Jack Straight" );
+
+        inputLoop3 = new VoltageAudioJack( "inputLoop3", "Loop Input 3", this, JackType.JackType_AudioInput );
+        AddComponent( inputLoop3 );
+        inputLoop3.SetWantsMouseNotifications( false );
+        inputLoop3.SetPosition( 663, 60 );
+        inputLoop3.SetSize( 25, 25 );
+        inputLoop3.SetSkin( "Dark Jack Straight" );
+
+        inputLoop4 = new VoltageAudioJack( "inputLoop4", "Loop Input 4", this, JackType.JackType_AudioInput );
+        AddComponent( inputLoop4 );
+        inputLoop4.SetWantsMouseNotifications( false );
+        inputLoop4.SetPosition( 690, 60 );
+        inputLoop4.SetSize( 25, 25 );
+        inputLoop4.SetSkin( "Dark Jack Straight" );
+
+        toTapeLeft = new VoltageAudioJack( "toTapeLeft", "To Tape Left", this, JackType.JackType_AudioOutput );
+        AddComponent( toTapeLeft );
+        toTapeLeft.SetWantsMouseNotifications( false );
+        toTapeLeft.SetPosition( 758, 275 );
+        toTapeLeft.SetSize( 25, 25 );
+        toTapeLeft.SetSkin( "Jack Round White Ring" );
+
+        toTapeRight = new VoltageAudioJack( "toTapeRight", "To Tape Right", this, JackType.JackType_AudioOutput );
+        AddComponent( toTapeRight );
+        toTapeRight.SetWantsMouseNotifications( false );
+        toTapeRight.SetPosition( 758, 315 );
+        toTapeRight.SetSize( 25, 25 );
+        toTapeRight.SetSkin( "Jack Round Cherry Ring" );
+
+        fromTapeLeft = new VoltageAudioJack( "fromTapeLeft", "From Tape Left", this, JackType.JackType_AudioOutput );
+        AddComponent( fromTapeLeft );
+        fromTapeLeft.SetWantsMouseNotifications( false );
+        fromTapeLeft.SetPosition( 728, 275 );
+        fromTapeLeft.SetSize( 25, 25 );
+        fromTapeLeft.SetSkin( "Jack Round White Ring" );
+
+        fromTapeRight = new VoltageAudioJack( "fromTapeRight", "From Tape Right", this, JackType.JackType_AudioOutput );
+        AddComponent( fromTapeRight );
+        fromTapeRight.SetWantsMouseNotifications( false );
+        fromTapeRight.SetPosition( 728, 315 );
+        fromTapeRight.SetSize( 25, 25 );
+        fromTapeRight.SetSkin( "Jack Round Cherry Ring" );
+
+        linkInputX = new VoltageAudioJack( "linkInputX", "Link Input X", this, JackType.JackType_AudioInput );
+        AddComponent( linkInputX );
+        linkInputX.SetWantsMouseNotifications( false );
+        linkInputX.SetPosition( 733, 190 );
+        linkInputX.SetSize( 25, 25 );
+        linkInputX.SetSkin( "Dark Jack Straight" );
+
+        linkLabel = new VoltageLabel( "linkLabel", "Link Label", this, "X" );
+        AddComponent( linkLabel );
+        linkLabel.SetWantsMouseNotifications( false );
+        linkLabel.SetPosition( 735, 210 );
+        linkLabel.SetSize( 21, 20 );
+        linkLabel.SetEditable( false, false );
+        linkLabel.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        linkLabel.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        linkLabel.SetColor( new Color( 232, 232, 232, 255 ) );
+        linkLabel.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        linkLabel.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        linkLabel.SetBorderSize( 1 );
+        linkLabel.SetMultiLineEdit( false );
+        linkLabel.SetIsNumberEditor( false );
+        linkLabel.SetNumberEditorRange( 0, 100 );
+        linkLabel.SetNumberEditorInterval( 1 );
+        linkLabel.SetNumberEditorUsesMouseWheel( false );
+        linkLabel.SetHasCustomTextHoverColor( false );
+        linkLabel.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        linkLabel.SetFont( "Courier New", 9, true, false );
+
+        linkInputY = new VoltageAudioJack( "linkInputY", "Link Input Y", this, JackType.JackType_AudioInput );
+        AddComponent( linkInputY );
+        linkInputY.SetWantsMouseNotifications( false );
+        linkInputY.SetPosition( 753, 190 );
+        linkInputY.SetSize( 25, 25 );
+        linkInputY.SetSkin( "Dark Jack Straight" );
+
+        linkLabel_1 = new VoltageLabel( "linkLabel_1", "Link Label_1", this, "Y" );
+        AddComponent( linkLabel_1 );
+        linkLabel_1.SetWantsMouseNotifications( false );
+        linkLabel_1.SetPosition( 756, 210 );
+        linkLabel_1.SetSize( 21, 20 );
+        linkLabel_1.SetEditable( false, false );
+        linkLabel_1.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        linkLabel_1.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        linkLabel_1.SetColor( new Color( 232, 232, 232, 255 ) );
+        linkLabel_1.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        linkLabel_1.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        linkLabel_1.SetBorderSize( 1 );
+        linkLabel_1.SetMultiLineEdit( false );
+        linkLabel_1.SetIsNumberEditor( false );
+        linkLabel_1.SetNumberEditorRange( 0, 100 );
+        linkLabel_1.SetNumberEditorInterval( 1 );
+        linkLabel_1.SetNumberEditorUsesMouseWheel( false );
+        linkLabel_1.SetHasCustomTextHoverColor( false );
+        linkLabel_1.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        linkLabel_1.SetFont( "Courier New", 9, true, false );
+
+        buttonStereo = new VoltageToggle( "buttonStereo", "Stereo / Dual Mono Button", this, false, 0 );
+        AddComponent( buttonStereo );
+        buttonStereo.SetWantsMouseNotifications( false );
+        buttonStereo.SetPosition( 743, 226 );
+        buttonStereo.SetSize( 28, 28 );
+        buttonStereo.SetSkin( "2500 Square Big" );
+        buttonStereo.ShowOverlay( true );
+        buttonStereo.SetButtonStateImageOverlay( "button-label-stereo-icon.svg", VoltageButton.ButtonState.Pushed );
+        buttonStereo.SetButtonToggledStateImageOverlay( "button-label-mono-icon.svg", VoltageButton.ButtonState.Normal );
+        buttonStereo.SetButtonToggledStateImageOverlay( "button-label-stereo-icon.svg", VoltageButton.ButtonState.Pushed );
+        buttonStereo.SetOverlayText( "" );
+        buttonStereo.SetOverlayArea( 0, 0, 0, 0 );
+        buttonStereo.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        outputLeft = new VoltageAudioJack( "outputLeft", "Main Output Left", this, JackType.JackType_AudioOutput );
+        AddComponent( outputLeft );
+        outputLeft.SetWantsMouseNotifications( false );
+        outputLeft.SetPosition( 738, 30 );
+        outputLeft.SetSize( 37, 37 );
+        outputLeft.SetSkin( "Rotated Half" );
+
+        outputRight = new VoltageAudioJack( "outputRight", "Main Output Right", this, JackType.JackType_AudioOutput );
+        AddComponent( outputRight );
+        outputRight.SetWantsMouseNotifications( false );
+        outputRight.SetPosition( 738, 80 );
+        outputRight.SetSize( 37, 37 );
+        outputRight.SetSkin( "Rotated Half" );
+}
+
+void InitializeControls3()
+{
+
+        outputMono = new VoltageAudioJack( "outputMono", "Main Mono Output", this, JackType.JackType_AudioOutput );
+        AddComponent( outputMono );
+        outputMono.SetWantsMouseNotifications( false );
+        outputMono.SetPosition( 737, 130 );
+        outputMono.SetSize( 37, 37 );
+        outputMono.SetSkin( "Rotated Half" );
+
+        labelChPAN = new VoltageLabel( "labelChPAN", "Channel Pan Label", this, "PAN" );
+        AddComponent( labelChPAN );
+        labelChPAN.SetWantsMouseNotifications( false );
+        labelChPAN.SetPosition( 279, 210 );
+        labelChPAN.SetSize( 30, 13 );
+        labelChPAN.SetEditable( false, false );
+        labelChPAN.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelChPAN.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelChPAN.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelChPAN.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelChPAN.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelChPAN.SetBorderSize( 0 );
+        labelChPAN.SetMultiLineEdit( false );
+        labelChPAN.SetIsNumberEditor( false );
+        labelChPAN.SetNumberEditorRange( 0, 100 );
+        labelChPAN.SetNumberEditorInterval( 1 );
+        labelChPAN.SetNumberEditorUsesMouseWheel( false );
+        labelChPAN.SetHasCustomTextHoverColor( false );
+        labelChPAN.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelChPAN.SetFont( "Courier New", 7, true, false );
+
+        labelChTLT = new VoltageLabel( "labelChTLT", "Channel Tilt EQ Label", this, "TLT" );
+        AddComponent( labelChTLT );
+        labelChTLT.SetWantsMouseNotifications( false );
+        labelChTLT.SetPosition( 279, 180 );
+        labelChTLT.SetSize( 30, 13 );
+        labelChTLT.SetEditable( false, false );
+        labelChTLT.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelChTLT.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelChTLT.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelChTLT.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelChTLT.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelChTLT.SetBorderSize( 0 );
+        labelChTLT.SetMultiLineEdit( false );
+        labelChTLT.SetIsNumberEditor( false );
+        labelChTLT.SetNumberEditorRange( 0, 100 );
+        labelChTLT.SetNumberEditorInterval( 1 );
+        labelChTLT.SetNumberEditorUsesMouseWheel( false );
+        labelChTLT.SetHasCustomTextHoverColor( false );
+        labelChTLT.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelChTLT.SetFont( "Courier New", 7, true, false );
+
+        labelChREV = new VoltageLabel( "labelChREV", "Channel Reverb Label", this, "REV" );
+        AddComponent( labelChREV );
+        labelChREV.SetWantsMouseNotifications( false );
+        labelChREV.SetPosition( 279, 150 );
+        labelChREV.SetSize( 30, 13 );
+        labelChREV.SetEditable( false, false );
+        labelChREV.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelChREV.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelChREV.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelChREV.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelChREV.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelChREV.SetBorderSize( 0 );
+        labelChREV.SetMultiLineEdit( false );
+        labelChREV.SetIsNumberEditor( false );
+        labelChREV.SetNumberEditorRange( 0, 100 );
+        labelChREV.SetNumberEditorInterval( 1 );
+        labelChREV.SetNumberEditorUsesMouseWheel( false );
+        labelChREV.SetHasCustomTextHoverColor( false );
+        labelChREV.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelChREV.SetFont( "Courier New", 7, true, false );
+
+        labelChDLY = new VoltageLabel( "labelChDLY", "Channel Delay Label", this, "DLY" );
+        AddComponent( labelChDLY );
+        labelChDLY.SetWantsMouseNotifications( false );
+        labelChDLY.SetPosition( 279, 120 );
+        labelChDLY.SetSize( 30, 13 );
+        labelChDLY.SetEditable( false, false );
+        labelChDLY.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelChDLY.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelChDLY.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelChDLY.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelChDLY.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelChDLY.SetBorderSize( 0 );
+        labelChDLY.SetMultiLineEdit( false );
+        labelChDLY.SetIsNumberEditor( false );
+        labelChDLY.SetNumberEditorRange( 0, 100 );
+        labelChDLY.SetNumberEditorInterval( 1 );
+        labelChDLY.SetNumberEditorUsesMouseWheel( false );
+        labelChDLY.SetHasCustomTextHoverColor( false );
+        labelChDLY.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelChDLY.SetFont( "Courier New", 7, true, false );
+
+        labelChSigIn = new VoltageLabel( "labelChSigIn", "Channel Signal In Label", this, "SIG" );
+        AddComponent( labelChSigIn );
+        labelChSigIn.SetWantsMouseNotifications( false );
+        labelChSigIn.SetPosition( 279, 30 );
+        labelChSigIn.SetSize( 30, 13 );
+        labelChSigIn.SetEditable( false, false );
+        labelChSigIn.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelChSigIn.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelChSigIn.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelChSigIn.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelChSigIn.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelChSigIn.SetBorderSize( 0 );
+        labelChSigIn.SetMultiLineEdit( false );
+        labelChSigIn.SetIsNumberEditor( false );
+        labelChSigIn.SetNumberEditorRange( 0, 100 );
+        labelChSigIn.SetNumberEditorInterval( 1 );
+        labelChSigIn.SetNumberEditorUsesMouseWheel( false );
+        labelChSigIn.SetHasCustomTextHoverColor( false );
+        labelChSigIn.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelChSigIn.SetFont( "Courier New", 7, true, false );
+
+        labelRecPAN = new VoltageLabel( "labelRecPAN", "Recorders Pan Label", this, "PAN" );
+        AddComponent( labelRecPAN );
+        labelRecPAN.SetWantsMouseNotifications( false );
+        labelRecPAN.SetPosition( 473, 210 );
+        labelRecPAN.SetSize( 30, 13 );
+        labelRecPAN.SetEditable( false, false );
+        labelRecPAN.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelRecPAN.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelRecPAN.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelRecPAN.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelRecPAN.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelRecPAN.SetBorderSize( 0 );
+        labelRecPAN.SetMultiLineEdit( false );
+        labelRecPAN.SetIsNumberEditor( false );
+        labelRecPAN.SetNumberEditorRange( 0, 100 );
+        labelRecPAN.SetNumberEditorInterval( 1 );
+        labelRecPAN.SetNumberEditorUsesMouseWheel( false );
+        labelRecPAN.SetHasCustomTextHoverColor( false );
+        labelRecPAN.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelRecPAN.SetFont( "Courier New", 7, true, false );
+
+        labelRecTLT = new VoltageLabel( "labelRecTLT", "Recorders Tilt EQ Label", this, "TLT" );
+        AddComponent( labelRecTLT );
+        labelRecTLT.SetWantsMouseNotifications( false );
+        labelRecTLT.SetPosition( 473, 180 );
+        labelRecTLT.SetSize( 30, 13 );
+        labelRecTLT.SetEditable( false, false );
+        labelRecTLT.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelRecTLT.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelRecTLT.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelRecTLT.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelRecTLT.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelRecTLT.SetBorderSize( 0 );
+        labelRecTLT.SetMultiLineEdit( false );
+        labelRecTLT.SetIsNumberEditor( false );
+        labelRecTLT.SetNumberEditorRange( 0, 100 );
+        labelRecTLT.SetNumberEditorInterval( 1 );
+        labelRecTLT.SetNumberEditorUsesMouseWheel( false );
+        labelRecTLT.SetHasCustomTextHoverColor( false );
+        labelRecTLT.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelRecTLT.SetFont( "Courier New", 7, true, false );
+
+        labelRecREV = new VoltageLabel( "labelRecREV", "Recorders Reverb Label", this, "REV" );
+        AddComponent( labelRecREV );
+        labelRecREV.SetWantsMouseNotifications( false );
+        labelRecREV.SetPosition( 473, 150 );
+        labelRecREV.SetSize( 30, 13 );
+        labelRecREV.SetEditable( false, false );
+        labelRecREV.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelRecREV.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelRecREV.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelRecREV.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelRecREV.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelRecREV.SetBorderSize( 0 );
+        labelRecREV.SetMultiLineEdit( false );
+        labelRecREV.SetIsNumberEditor( false );
+        labelRecREV.SetNumberEditorRange( 0, 100 );
+        labelRecREV.SetNumberEditorInterval( 1 );
+        labelRecREV.SetNumberEditorUsesMouseWheel( false );
+        labelRecREV.SetHasCustomTextHoverColor( false );
+        labelRecREV.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelRecREV.SetFont( "Courier New", 7, true, false );
+
+        labelRecDLY = new VoltageLabel( "labelRecDLY", "Recorders Delay Label", this, "DLY" );
+        AddComponent( labelRecDLY );
+        labelRecDLY.SetWantsMouseNotifications( false );
+        labelRecDLY.SetPosition( 473, 120 );
+        labelRecDLY.SetSize( 30, 13 );
+        labelRecDLY.SetEditable( false, false );
+        labelRecDLY.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelRecDLY.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelRecDLY.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelRecDLY.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelRecDLY.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelRecDLY.SetBorderSize( 0 );
+        labelRecDLY.SetMultiLineEdit( false );
+        labelRecDLY.SetIsNumberEditor( false );
+        labelRecDLY.SetNumberEditorRange( 0, 100 );
+        labelRecDLY.SetNumberEditorInterval( 1 );
+        labelRecDLY.SetNumberEditorUsesMouseWheel( false );
+        labelRecDLY.SetHasCustomTextHoverColor( false );
+        labelRecDLY.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelRecDLY.SetFont( "Courier New", 7, true, false );
+
+        labelRecSND = new VoltageLabel( "labelRecSND", "Recorders Send Label", this, "SND" );
+        AddComponent( labelRecSND );
+        labelRecSND.SetWantsMouseNotifications( false );
+        labelRecSND.SetPosition( 473, 90 );
+        labelRecSND.SetSize( 30, 13 );
+        labelRecSND.SetEditable( false, false );
+        labelRecSND.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelRecSND.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelRecSND.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelRecSND.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelRecSND.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelRecSND.SetBorderSize( 0 );
+        labelRecSND.SetMultiLineEdit( false );
+        labelRecSND.SetIsNumberEditor( false );
+        labelRecSND.SetNumberEditorRange( 0, 100 );
+        labelRecSND.SetNumberEditorInterval( 1 );
+        labelRecSND.SetNumberEditorUsesMouseWheel( false );
+        labelRecSND.SetHasCustomTextHoverColor( false );
+        labelRecSND.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelRecSND.SetFont( "Courier New", 7, true, false );
+
+        labelRecSigIn = new VoltageLabel( "labelRecSigIn", "Recorders Signal Input Label", this, "SIG" );
+        AddComponent( labelRecSigIn );
+        labelRecSigIn.SetWantsMouseNotifications( false );
+        labelRecSigIn.SetPosition( 473, 60 );
+        labelRecSigIn.SetSize( 30, 13 );
+        labelRecSigIn.SetEditable( false, false );
+        labelRecSigIn.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelRecSigIn.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelRecSigIn.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelRecSigIn.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelRecSigIn.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelRecSigIn.SetBorderSize( 0 );
+        labelRecSigIn.SetMultiLineEdit( false );
+        labelRecSigIn.SetIsNumberEditor( false );
+        labelRecSigIn.SetNumberEditorRange( 0, 100 );
+        labelRecSigIn.SetNumberEditorInterval( 1 );
+        labelRecSigIn.SetNumberEditorUsesMouseWheel( false );
+        labelRecSigIn.SetHasCustomTextHoverColor( false );
+        labelRecSigIn.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelRecSigIn.SetFont( "Courier New", 7, true, false );
+
+        labelRecSigOut = new VoltageLabel( "labelRecSigOut", "Recorders Channel Signal Out Label", this, "OUT" );
+        AddComponent( labelRecSigOut );
+        labelRecSigOut.SetWantsMouseNotifications( false );
+        labelRecSigOut.SetPosition( 473, 30 );
+        labelRecSigOut.SetSize( 30, 13 );
+        labelRecSigOut.SetEditable( false, false );
+        labelRecSigOut.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelRecSigOut.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelRecSigOut.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelRecSigOut.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelRecSigOut.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelRecSigOut.SetBorderSize( 0 );
+        labelRecSigOut.SetMultiLineEdit( false );
+        labelRecSigOut.SetIsNumberEditor( false );
+        labelRecSigOut.SetNumberEditorRange( 0, 100 );
+        labelRecSigOut.SetNumberEditorInterval( 1 );
+        labelRecSigOut.SetNumberEditorUsesMouseWheel( false );
+        labelRecSigOut.SetHasCustomTextHoverColor( false );
+        labelRecSigOut.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelRecSigOut.SetFont( "Courier New", 7, true, false );
+
+        scale1A30DeepToneGenModLabel15 = new VoltageLabel( "scale1A30DeepToneGenModLabel15", "1A-30 deep tone gen/mod Label_13", this, "4-TRACK" );
+        AddComponent( scale1A30DeepToneGenModLabel15 );
+        scale1A30DeepToneGenModLabel15.SetWantsMouseNotifications( false );
+        scale1A30DeepToneGenModLabel15.SetPosition( 529, 12 );
+        scale1A30DeepToneGenModLabel15.SetSize( 50, 13 );
+        scale1A30DeepToneGenModLabel15.SetEditable( false, false );
+        scale1A30DeepToneGenModLabel15.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        scale1A30DeepToneGenModLabel15.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        scale1A30DeepToneGenModLabel15.SetColor( new Color( 232, 232, 232, 255 ) );
+        scale1A30DeepToneGenModLabel15.SetBkColor( new Color( 26, 34, 34, 255 ) );
+        scale1A30DeepToneGenModLabel15.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        scale1A30DeepToneGenModLabel15.SetBorderSize( 1 );
+        scale1A30DeepToneGenModLabel15.SetMultiLineEdit( false );
+        scale1A30DeepToneGenModLabel15.SetIsNumberEditor( false );
+        scale1A30DeepToneGenModLabel15.SetNumberEditorRange( 0, 100 );
+        scale1A30DeepToneGenModLabel15.SetNumberEditorInterval( 1 );
+        scale1A30DeepToneGenModLabel15.SetNumberEditorUsesMouseWheel( false );
+        scale1A30DeepToneGenModLabel15.SetHasCustomTextHoverColor( false );
+        scale1A30DeepToneGenModLabel15.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        scale1A30DeepToneGenModLabel15.SetFont( "Courier New", 10, true, false );
+
+        scale1A30DeepToneGenModLabel16 = new VoltageLabel( "scale1A30DeepToneGenModLabel16", "1A-30 deep tone gen/mod Label_14", this, "LOOP A : B : C : D" );
+        AddComponent( scale1A30DeepToneGenModLabel16 );
+        scale1A30DeepToneGenModLabel16.SetWantsMouseNotifications( false );
+        scale1A30DeepToneGenModLabel16.SetPosition( 612, 12 );
+        scale1A30DeepToneGenModLabel16.SetSize( 100, 13 );
+        scale1A30DeepToneGenModLabel16.SetEditable( false, false );
+        scale1A30DeepToneGenModLabel16.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        scale1A30DeepToneGenModLabel16.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        scale1A30DeepToneGenModLabel16.SetColor( new Color( 232, 232, 232, 255 ) );
+        scale1A30DeepToneGenModLabel16.SetBkColor( new Color( 26, 34, 34, 255 ) );
+        scale1A30DeepToneGenModLabel16.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        scale1A30DeepToneGenModLabel16.SetBorderSize( 1 );
+        scale1A30DeepToneGenModLabel16.SetMultiLineEdit( false );
+        scale1A30DeepToneGenModLabel16.SetIsNumberEditor( false );
+        scale1A30DeepToneGenModLabel16.SetNumberEditorRange( 0, 100 );
+        scale1A30DeepToneGenModLabel16.SetNumberEditorInterval( 1 );
+        scale1A30DeepToneGenModLabel16.SetNumberEditorUsesMouseWheel( false );
+        scale1A30DeepToneGenModLabel16.SetHasCustomTextHoverColor( false );
+        scale1A30DeepToneGenModLabel16.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        scale1A30DeepToneGenModLabel16.SetFont( "Courier New", 10, true, false );
+
+        knobDLYreturn = new VoltageKnob( "knobDLYreturn", "Delay Return Level", this, 0.0, 2.0, 0.0 );
+        AddComponent( knobDLYreturn );
+        knobDLYreturn.SetWantsMouseNotifications( false );
+        knobDLYreturn.SetPosition( 344, 165 );
+        knobDLYreturn.SetSize( 35, 35 );
+        knobDLYreturn.SetSkin( "Cosmo Large Black" );
+        knobDLYreturn.SetRange( 0.0, 2.0, 0.0, false, 0 );
+        knobDLYreturn.SetKnobParams( 215, 145 );
+        knobDLYreturn.DisplayValueInPercent( true );
+        knobDLYreturn.SetKnobAdjustsRing( true );
+
+        knobREVreturn = new VoltageKnob( "knobREVreturn", "Reverb Return Level", this, 0.0, 2.0, 0.0 );
+        AddComponent( knobREVreturn );
+        knobREVreturn.SetWantsMouseNotifications( false );
+        knobREVreturn.SetPosition( 404, 165 );
+        knobREVreturn.SetSize( 35, 35 );
+        knobREVreturn.SetSkin( "Cosmo Large Black" );
+        knobREVreturn.SetRange( 0.0, 2.0, 0.0, false, 0 );
+        knobREVreturn.SetKnobParams( 215, 145 );
+        knobREVreturn.DisplayValueInPercent( true );
+        knobREVreturn.SetKnobAdjustsRing( true );
+
+        knobSNDreturn = new VoltageKnob( "knobSNDreturn", "Send Return Level", this, 0.0, 2.0, 0.0 );
+        AddComponent( knobSNDreturn );
+        knobSNDreturn.SetWantsMouseNotifications( false );
+        knobSNDreturn.SetPosition( 374, 110 );
+        knobSNDreturn.SetSize( 35, 35 );
+        knobSNDreturn.SetSkin( "Cosmo Large Black" );
+        knobSNDreturn.SetRange( 0.0, 2.0, 0.0, false, 0 );
+        knobSNDreturn.SetKnobParams( 215, 145 );
+        knobSNDreturn.DisplayValueInPercent( true );
+        knobSNDreturn.SetKnobAdjustsRing( true );
+
+        scale1A30DeepToneGenModLabel17 = new VoltageLabel( "scale1A30DeepToneGenModLabel17", "1A-30 deep tone gen/mod Label_15", this, "DLY RTN" );
+        AddComponent( scale1A30DeepToneGenModLabel17 );
+        scale1A30DeepToneGenModLabel17.SetWantsMouseNotifications( false );
+        scale1A30DeepToneGenModLabel17.SetPosition( 345, 151 );
+        scale1A30DeepToneGenModLabel17.SetSize( 33, 13 );
+        scale1A30DeepToneGenModLabel17.SetEditable( false, false );
+        scale1A30DeepToneGenModLabel17.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        scale1A30DeepToneGenModLabel17.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        scale1A30DeepToneGenModLabel17.SetColor( new Color( 232, 232, 232, 255 ) );
+        scale1A30DeepToneGenModLabel17.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        scale1A30DeepToneGenModLabel17.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        scale1A30DeepToneGenModLabel17.SetBorderSize( 0 );
+        scale1A30DeepToneGenModLabel17.SetMultiLineEdit( false );
+        scale1A30DeepToneGenModLabel17.SetIsNumberEditor( false );
+        scale1A30DeepToneGenModLabel17.SetNumberEditorRange( 0, 100 );
+        scale1A30DeepToneGenModLabel17.SetNumberEditorInterval( 1 );
+        scale1A30DeepToneGenModLabel17.SetNumberEditorUsesMouseWheel( false );
+        scale1A30DeepToneGenModLabel17.SetHasCustomTextHoverColor( false );
+        scale1A30DeepToneGenModLabel17.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        scale1A30DeepToneGenModLabel17.SetFont( "Courier New", 7, true, false );
+
+        labelREVreturn = new VoltageLabel( "labelREVreturn", "Reverb Return Label", this, "REV RTN" );
+        AddComponent( labelREVreturn );
+        labelREVreturn.SetWantsMouseNotifications( false );
+        labelREVreturn.SetPosition( 405, 151 );
+        labelREVreturn.SetSize( 33, 13 );
+        labelREVreturn.SetEditable( false, false );
+        labelREVreturn.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelREVreturn.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelREVreturn.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelREVreturn.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelREVreturn.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelREVreturn.SetBorderSize( 0 );
+        labelREVreturn.SetMultiLineEdit( false );
+        labelREVreturn.SetIsNumberEditor( false );
+        labelREVreturn.SetNumberEditorRange( 0, 100 );
+        labelREVreturn.SetNumberEditorInterval( 1 );
+        labelREVreturn.SetNumberEditorUsesMouseWheel( false );
+        labelREVreturn.SetHasCustomTextHoverColor( false );
+        labelREVreturn.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelREVreturn.SetFont( "Courier New", 7, true, false );
+
+        labelSNDreturn = new VoltageLabel( "labelSNDreturn", "Send Return Label", this, "SND RTN" );
+        AddComponent( labelSNDreturn );
+        labelSNDreturn.SetWantsMouseNotifications( false );
+        labelSNDreturn.SetPosition( 375, 96 );
+        labelSNDreturn.SetSize( 33, 13 );
+        labelSNDreturn.SetEditable( false, false );
+        labelSNDreturn.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelSNDreturn.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelSNDreturn.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelSNDreturn.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelSNDreturn.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelSNDreturn.SetBorderSize( 0 );
+        labelSNDreturn.SetMultiLineEdit( false );
+        labelSNDreturn.SetIsNumberEditor( false );
+        labelSNDreturn.SetNumberEditorRange( 0, 100 );
+        labelSNDreturn.SetNumberEditorInterval( 1 );
+        labelSNDreturn.SetNumberEditorUsesMouseWheel( false );
+        labelSNDreturn.SetHasCustomTextHoverColor( false );
+        labelSNDreturn.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelSNDreturn.SetFont( "Courier New", 7, true, false );
+
+        outputSND = new VoltageAudioJack( "outputSND", "Send Send", this, JackType.JackType_AudioOutput );
+        AddComponent( outputSND );
+        outputSND.SetWantsMouseNotifications( false );
+        outputSND.SetPosition( 25, 80 );
+        outputSND.SetSize( 25, 25 );
+        outputSND.SetSkin( "Rotated Half" );
+
+        inputReturnRight = new VoltageAudioJack( "inputReturnRight", "Return Return Right", this, JackType.JackType_AudioInput );
+        AddComponent( inputReturnRight );
+        inputReturnRight.SetWantsMouseNotifications( false );
+        inputReturnRight.SetPosition( 25, 140 );
+        inputReturnRight.SetSize( 25, 25 );
+        inputReturnRight.SetSkin( "Dark Jack Straight" );
+
+        inputReturnMono = new VoltageAudioJack( "inputReturnMono", "Return Return Left/Mono", this, JackType.JackType_AudioInput );
+        AddComponent( inputReturnMono );
+        inputReturnMono.SetWantsMouseNotifications( false );
+        inputReturnMono.SetPosition( 26, 109 );
+        inputReturnMono.SetSize( 25, 25 );
+        inputReturnMono.SetSkin( "Dark Jack Straight" );
+
+        labelRetMono = new VoltageLabel( "labelRetMono", "Return Mono Label", this, "M" );
+        AddComponent( labelRetMono );
+        labelRetMono.SetWantsMouseNotifications( false );
+        labelRetMono.SetPosition( 23, 101 );
+        labelRetMono.SetSize( 29, 13 );
+        labelRetMono.SetEditable( false, false );
+        labelRetMono.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelRetMono.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelRetMono.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelRetMono.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelRetMono.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelRetMono.SetBorderSize( 0 );
+        labelRetMono.SetMultiLineEdit( false );
+        labelRetMono.SetIsNumberEditor( false );
+        labelRetMono.SetNumberEditorRange( 0, 100 );
+        labelRetMono.SetNumberEditorInterval( 1 );
+        labelRetMono.SetNumberEditorUsesMouseWheel( false );
+        labelRetMono.SetHasCustomTextHoverColor( false );
+        labelRetMono.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelRetMono.SetFont( "Courier New", 7, true, false );
+
+        labelRetRight = new VoltageLabel( "labelRetRight", "Return Right Label", this, "R" );
+        AddComponent( labelRetRight );
+        labelRetRight.SetWantsMouseNotifications( false );
+        labelRetRight.SetPosition( 23, 130 );
+        labelRetRight.SetSize( 29, 13 );
+        labelRetRight.SetEditable( false, false );
+        labelRetRight.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelRetRight.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelRetRight.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelRetRight.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelRetRight.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelRetRight.SetBorderSize( 0 );
+        labelRetRight.SetMultiLineEdit( false );
+        labelRetRight.SetIsNumberEditor( false );
+        labelRetRight.SetNumberEditorRange( 0, 100 );
+        labelRetRight.SetNumberEditorInterval( 1 );
+        labelRetRight.SetNumberEditorUsesMouseWheel( false );
+        labelRetRight.SetHasCustomTextHoverColor( false );
+        labelRetRight.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelRetRight.SetFont( "Courier New", 7, true, false );
+
+        scale1A30DeepToneGenModLabel22 = new VoltageLabel( "scale1A30DeepToneGenModLabel22", "1A-30 deep tone gen/mod Label_20", this, "TAPE" );
+        AddComponent( scale1A30DeepToneGenModLabel22 );
+        scale1A30DeepToneGenModLabel22.SetWantsMouseNotifications( false );
+        scale1A30DeepToneGenModLabel22.SetPosition( 739, 301 );
+        scale1A30DeepToneGenModLabel22.SetSize( 33, 13 );
+        scale1A30DeepToneGenModLabel22.SetEditable( false, false );
+        scale1A30DeepToneGenModLabel22.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        scale1A30DeepToneGenModLabel22.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        scale1A30DeepToneGenModLabel22.SetColor( new Color( 232, 232, 232, 255 ) );
+        scale1A30DeepToneGenModLabel22.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        scale1A30DeepToneGenModLabel22.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        scale1A30DeepToneGenModLabel22.SetBorderSize( 0 );
+        scale1A30DeepToneGenModLabel22.SetMultiLineEdit( false );
+        scale1A30DeepToneGenModLabel22.SetIsNumberEditor( false );
+        scale1A30DeepToneGenModLabel22.SetNumberEditorRange( 0, 100 );
+        scale1A30DeepToneGenModLabel22.SetNumberEditorInterval( 1 );
+        scale1A30DeepToneGenModLabel22.SetNumberEditorUsesMouseWheel( false );
+        scale1A30DeepToneGenModLabel22.SetHasCustomTextHoverColor( false );
+        scale1A30DeepToneGenModLabel22.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        scale1A30DeepToneGenModLabel22.SetFont( "Courier New", 9, true, false );
+
+        linkLabel_2 = new VoltageLabel( "linkLabel_2", "Link Label_2", this, "IN" );
+        AddComponent( linkLabel_2 );
+        linkLabel_2.SetWantsMouseNotifications( false );
+        linkLabel_2.SetPosition( 730, 337 );
+        linkLabel_2.SetSize( 21, 20 );
+        linkLabel_2.SetEditable( false, false );
+        linkLabel_2.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        linkLabel_2.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        linkLabel_2.SetColor( new Color( 232, 232, 232, 255 ) );
+        linkLabel_2.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        linkLabel_2.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        linkLabel_2.SetBorderSize( 1 );
+        linkLabel_2.SetMultiLineEdit( false );
+        linkLabel_2.SetIsNumberEditor( false );
+        linkLabel_2.SetNumberEditorRange( 0, 100 );
+        linkLabel_2.SetNumberEditorInterval( 1 );
+        linkLabel_2.SetNumberEditorUsesMouseWheel( false );
+        linkLabel_2.SetHasCustomTextHoverColor( false );
+        linkLabel_2.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        linkLabel_2.SetFont( "Courier New", 7, true, false );
+
+        linkLabel_3 = new VoltageLabel( "linkLabel_3", "Link Label_3", this, "OUT" );
+        AddComponent( linkLabel_3 );
+        linkLabel_3.SetWantsMouseNotifications( false );
+        linkLabel_3.SetPosition( 760, 337 );
+        linkLabel_3.SetSize( 21, 20 );
+        linkLabel_3.SetEditable( false, false );
+        linkLabel_3.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        linkLabel_3.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        linkLabel_3.SetColor( new Color( 232, 232, 232, 255 ) );
+        linkLabel_3.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        linkLabel_3.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        linkLabel_3.SetBorderSize( 1 );
+        linkLabel_3.SetMultiLineEdit( false );
+        linkLabel_3.SetIsNumberEditor( false );
+        linkLabel_3.SetNumberEditorRange( 0, 100 );
+        linkLabel_3.SetNumberEditorInterval( 1 );
+        linkLabel_3.SetNumberEditorUsesMouseWheel( false );
+        linkLabel_3.SetHasCustomTextHoverColor( false );
+        linkLabel_3.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        linkLabel_3.SetFont( "Courier New", 7, true, false );
+
+        labelMainOutLeft = new VoltageLabel( "labelMainOutLeft", "Main Out Left Label", this, "L" );
+        AddComponent( labelMainOutLeft );
+        labelMainOutLeft.SetWantsMouseNotifications( false );
+        labelMainOutLeft.SetPosition( 765, 60 );
+        labelMainOutLeft.SetSize( 21, 20 );
+        labelMainOutLeft.SetEditable( false, false );
+        labelMainOutLeft.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelMainOutLeft.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelMainOutLeft.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelMainOutLeft.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        labelMainOutLeft.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        labelMainOutLeft.SetBorderSize( 1 );
+        labelMainOutLeft.SetMultiLineEdit( false );
+        labelMainOutLeft.SetIsNumberEditor( false );
+        labelMainOutLeft.SetNumberEditorRange( 0, 100 );
+        labelMainOutLeft.SetNumberEditorInterval( 1 );
+        labelMainOutLeft.SetNumberEditorUsesMouseWheel( false );
+        labelMainOutLeft.SetHasCustomTextHoverColor( false );
+        labelMainOutLeft.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelMainOutLeft.SetFont( "Courier New", 13, true, false );
+
+        labelMainOutRight = new VoltageLabel( "labelMainOutRight", "Main Out Right Label", this, "R" );
+        AddComponent( labelMainOutRight );
+        labelMainOutRight.SetWantsMouseNotifications( false );
+        labelMainOutRight.SetPosition( 765, 110 );
+        labelMainOutRight.SetSize( 21, 20 );
+        labelMainOutRight.SetEditable( false, false );
+        labelMainOutRight.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelMainOutRight.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelMainOutRight.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelMainOutRight.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        labelMainOutRight.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        labelMainOutRight.SetBorderSize( 1 );
+        labelMainOutRight.SetMultiLineEdit( false );
+        labelMainOutRight.SetIsNumberEditor( false );
+        labelMainOutRight.SetNumberEditorRange( 0, 100 );
+        labelMainOutRight.SetNumberEditorInterval( 1 );
+        labelMainOutRight.SetNumberEditorUsesMouseWheel( false );
+        labelMainOutRight.SetHasCustomTextHoverColor( false );
+        labelMainOutRight.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelMainOutRight.SetFont( "Courier New", 13, true, false );
+
+        labelMainOutMono = new VoltageLabel( "labelMainOutMono", "Main Out Mono Label", this, "M" );
+        AddComponent( labelMainOutMono );
+        labelMainOutMono.SetWantsMouseNotifications( false );
+        labelMainOutMono.SetPosition( 765, 160 );
+        labelMainOutMono.SetSize( 21, 20 );
+        labelMainOutMono.SetEditable( false, false );
+        labelMainOutMono.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelMainOutMono.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelMainOutMono.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelMainOutMono.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        labelMainOutMono.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        labelMainOutMono.SetBorderSize( 1 );
+        labelMainOutMono.SetMultiLineEdit( false );
+        labelMainOutMono.SetIsNumberEditor( false );
+        labelMainOutMono.SetNumberEditorRange( 0, 100 );
+        labelMainOutMono.SetNumberEditorInterval( 1 );
+        labelMainOutMono.SetNumberEditorUsesMouseWheel( false );
+        labelMainOutMono.SetHasCustomTextHoverColor( false );
+        labelMainOutMono.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelMainOutMono.SetFont( "Courier New", 13, true, false );
+
+        knobPreDelay = new VoltageKnob( "knobPreDelay", "Pre Delay Knob", this, 0.0, 1.0, 0.5 );
+        AddComponent( knobPreDelay );
+        knobPreDelay.SetWantsMouseNotifications( false );
+        knobPreDelay.SetPosition( 18, 235 );
+        knobPreDelay.SetSize( 15, 15 );
+        knobPreDelay.SetSkin( "Plastic Dark Blue" );
+        knobPreDelay.SetRange( 0.0, 1.0, 0.5, false, 0 );
+        knobPreDelay.SetKnobParams( 215, 145 );
+        knobPreDelay.DisplayValueInPercent( false );
+        knobPreDelay.SetKnobAdjustsRing( true );
+
+        knobREVdecay = new VoltageKnob( "knobREVdecay", "Reverb Decay Knob", this, 0.0, 1.0, 0.5 );
+        AddComponent( knobREVdecay );
+        knobREVdecay.SetWantsMouseNotifications( false );
+        knobREVdecay.SetPosition( 38, 234 );
+        knobREVdecay.SetSize( 15, 15 );
+        knobREVdecay.SetSkin( "Plastic Dark Blue" );
+        knobREVdecay.SetRange( 0.0, 1.0, 0.5, false, 0 );
+        knobREVdecay.SetKnobParams( 215, 145 );
+        knobREVdecay.DisplayValueInPercent( false );
+        knobREVdecay.SetKnobAdjustsRing( true );
+
+        knobREVdamp = new VoltageKnob( "knobREVdamp", "Reverb Damping Knob", this, 0.0, 1.0, 0.5 );
+        AddComponent( knobREVdamp );
+        knobREVdamp.SetWantsMouseNotifications( false );
+        knobREVdamp.SetPosition( 28, 265 );
+        knobREVdamp.SetSize( 15, 15 );
+        knobREVdamp.SetSkin( "Plastic Yellow" );
+        knobREVdamp.SetRange( 0.0, 1.0, 0.5, false, 0 );
+        knobREVdamp.SetKnobParams( 215, 145 );
+        knobREVdamp.DisplayValueInPercent( false );
+        knobREVdamp.SetKnobAdjustsRing( true );
+
+        labelREVdecay = new VoltageLabel( "labelREVdecay", "Reverb Decay Label", this, "DCY" );
+        AddComponent( labelREVdecay );
+        labelREVdecay.SetWantsMouseNotifications( false );
+        labelREVdecay.SetPosition( 30, 249 );
+        labelREVdecay.SetSize( 30, 13 );
+        labelREVdecay.SetEditable( false, false );
+        labelREVdecay.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelREVdecay.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelREVdecay.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelREVdecay.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelREVdecay.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelREVdecay.SetBorderSize( 0 );
+        labelREVdecay.SetMultiLineEdit( false );
+        labelREVdecay.SetIsNumberEditor( false );
+        labelREVdecay.SetNumberEditorRange( 0, 100 );
+        labelREVdecay.SetNumberEditorInterval( 1 );
+        labelREVdecay.SetNumberEditorUsesMouseWheel( false );
+        labelREVdecay.SetHasCustomTextHoverColor( false );
+        labelREVdecay.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelREVdecay.SetFont( "Courier New", 7, true, false );
+
+        labelREVpredelay = new VoltageLabel( "labelREVpredelay", "Reverb Pre Delay Label", this, "PRE" );
+        AddComponent( labelREVpredelay );
+        labelREVpredelay.SetWantsMouseNotifications( false );
+        labelREVpredelay.SetPosition( 10, 250 );
+        labelREVpredelay.SetSize( 30, 13 );
+        labelREVpredelay.SetEditable( false, false );
+        labelREVpredelay.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelREVpredelay.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelREVpredelay.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelREVpredelay.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelREVpredelay.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelREVpredelay.SetBorderSize( 0 );
+        labelREVpredelay.SetMultiLineEdit( false );
+        labelREVpredelay.SetIsNumberEditor( false );
+        labelREVpredelay.SetNumberEditorRange( 0, 100 );
+        labelREVpredelay.SetNumberEditorInterval( 1 );
+        labelREVpredelay.SetNumberEditorUsesMouseWheel( false );
+        labelREVpredelay.SetHasCustomTextHoverColor( false );
+        labelREVpredelay.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelREVpredelay.SetFont( "Courier New", 7, true, false );
+
+        logoInsect = new VoltageImage( "logoInsect", "Insect Logo", this, false );
+        AddComponent( logoInsect );
+        logoInsect.SetWantsMouseNotifications( false );
+        logoInsect.SetPosition( 15, 10 );
+        logoInsect.SetSize( 24, 20 );
+        logoInsect.SetCurrentImage( "image image(4).svg" );
+
+        knobDLYrate = new VoltageKnob( "knobDLYrate", "Delay Rate Knob", this, 0.0, 1.0, 0.5 );
+        AddComponent( knobDLYrate );
+        knobDLYrate.SetWantsMouseNotifications( false );
+        knobDLYrate.SetPosition( 18, 185 );
+        knobDLYrate.SetSize( 15, 15 );
+        knobDLYrate.SetSkin( "Plastic Dark Blue" );
+        knobDLYrate.SetRange( 0.0, 1.0, 0.5, false, 0 );
+        knobDLYrate.SetKnobParams( 215, 145 );
+        knobDLYrate.DisplayValueInPercent( false );
+        knobDLYrate.SetKnobAdjustsRing( true );
+
+        knobDLYrepeat = new VoltageKnob( "knobDLYrepeat", "Delay Repeat/Feedback Knob", this, 0.0, 1.0, 0.5 );
+        AddComponent( knobDLYrepeat );
+        knobDLYrepeat.SetWantsMouseNotifications( false );
+        knobDLYrepeat.SetPosition( 38, 185 );
+        knobDLYrepeat.SetSize( 15, 15 );
+        knobDLYrepeat.SetSkin( "Plastic Dark Blue" );
+        knobDLYrepeat.SetRange( 0.0, 1.0, 0.5, false, 0 );
+        knobDLYrepeat.SetKnobParams( 215, 145 );
+        knobDLYrepeat.DisplayValueInPercent( false );
+        knobDLYrepeat.SetKnobAdjustsRing( true );
+
+        labelDLYrepeat = new VoltageLabel( "labelDLYrepeat", "Delay Repeat Label", this, "RPT" );
+        AddComponent( labelDLYrepeat );
+        labelDLYrepeat.SetWantsMouseNotifications( false );
+        labelDLYrepeat.SetPosition( 30, 200 );
+        labelDLYrepeat.SetSize( 30, 13 );
+        labelDLYrepeat.SetEditable( false, false );
+        labelDLYrepeat.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelDLYrepeat.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelDLYrepeat.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelDLYrepeat.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelDLYrepeat.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelDLYrepeat.SetBorderSize( 0 );
+        labelDLYrepeat.SetMultiLineEdit( false );
+        labelDLYrepeat.SetIsNumberEditor( false );
+        labelDLYrepeat.SetNumberEditorRange( 0, 100 );
+        labelDLYrepeat.SetNumberEditorInterval( 1 );
+        labelDLYrepeat.SetNumberEditorUsesMouseWheel( false );
+        labelDLYrepeat.SetHasCustomTextHoverColor( false );
+        labelDLYrepeat.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelDLYrepeat.SetFont( "Courier New", 7, true, false );
+
+        labelDLYrate = new VoltageLabel( "labelDLYrate", "Delay Rate Knob Label", this, "RTE" );
+        AddComponent( labelDLYrate );
+        labelDLYrate.SetWantsMouseNotifications( false );
+        labelDLYrate.SetPosition( 10, 200 );
+        labelDLYrate.SetSize( 30, 13 );
+        labelDLYrate.SetEditable( false, false );
+        labelDLYrate.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelDLYrate.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelDLYrate.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelDLYrate.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelDLYrate.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelDLYrate.SetBorderSize( 0 );
+        labelDLYrate.SetMultiLineEdit( false );
+        labelDLYrate.SetIsNumberEditor( false );
+        labelDLYrate.SetNumberEditorRange( 0, 100 );
+        labelDLYrate.SetNumberEditorInterval( 1 );
+        labelDLYrate.SetNumberEditorUsesMouseWheel( false );
+        labelDLYrate.SetHasCustomTextHoverColor( false );
+        labelDLYrate.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelDLYrate.SetFont( "Courier New", 7, true, false );
+
+        labelREVsection = new VoltageLabel( "labelREVsection", "Reverb Section Label", this, "REV" );
+        AddComponent( labelREVsection );
+        labelREVsection.SetWantsMouseNotifications( false );
+        labelREVsection.SetPosition( 25, 221 );
+        labelREVsection.SetSize( 21, 11 );
+        labelREVsection.SetEditable( false, false );
+        labelREVsection.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelREVsection.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelREVsection.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelREVsection.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelREVsection.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelREVsection.SetBorderSize( 1 );
+        labelREVsection.SetMultiLineEdit( false );
+        labelREVsection.SetIsNumberEditor( false );
+        labelREVsection.SetNumberEditorRange( 0, 100 );
+        labelREVsection.SetNumberEditorInterval( 1 );
+        labelREVsection.SetNumberEditorUsesMouseWheel( false );
+        labelREVsection.SetHasCustomTextHoverColor( false );
+        labelREVsection.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelREVsection.SetFont( "Courier New", 7, true, false );
+
+        labelDLYsection = new VoltageLabel( "labelDLYsection", "Delay Section Label", this, "DLY" );
+        AddComponent( labelDLYsection );
+        labelDLYsection.SetWantsMouseNotifications( false );
+        labelDLYsection.SetPosition( 25, 171 );
+        labelDLYsection.SetSize( 21, 11 );
+        labelDLYsection.SetEditable( false, false );
+        labelDLYsection.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelDLYsection.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelDLYsection.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelDLYsection.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelDLYsection.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelDLYsection.SetBorderSize( 1 );
+        labelDLYsection.SetMultiLineEdit( false );
+        labelDLYsection.SetIsNumberEditor( false );
+        labelDLYsection.SetNumberEditorRange( 0, 100 );
+        labelDLYsection.SetNumberEditorInterval( 1 );
+        labelDLYsection.SetNumberEditorUsesMouseWheel( false );
+        labelDLYsection.SetHasCustomTextHoverColor( false );
+        labelDLYsection.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelDLYsection.SetFont( "Courier New", 7, true, false );
+
+        colophon = new VoltageLabel( "colophon", "colophon", this, "manufactured for                  thee teletape workshop                  by insect laboratories       pittsburgh, PA                       united states & beyond" );
+        AddComponent( colophon );
+        colophon.SetWantsMouseNotifications( false );
+        colophon.SetPosition( 5, 315 );
+        colophon.SetSize( 60, 40 );
+        colophon.SetEditable( false, false );
+        colophon.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        colophon.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        colophon.SetColor( new Color( 228, 228, 228, 35 ) );
+        colophon.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        colophon.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        colophon.SetBorderSize( 1 );
+        colophon.SetMultiLineEdit( true );
+        colophon.SetIsNumberEditor( false );
+        colophon.SetNumberEditorRange( 0, 100 );
+        colophon.SetNumberEditorInterval( 1 );
+        colophon.SetNumberEditorUsesMouseWheel( false );
+        colophon.SetHasCustomTextHoverColor( false );
+        colophon.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        colophon.SetFont( "Arial Black", 6, true, false );
+
+        fader01 = new VoltageSlider( "fader01", "Fader Channel 1", this, true, 0.0, 2.0, 0, 0 );
+        AddComponent( fader01 );
+        fader01.SetWantsMouseNotifications( false );
+        fader01.SetPosition( 75, 241 );
+        fader01.SetSize( 11, 95 );
+        fader01.SetSkin( "Juno Ext Dark Gray" );
+        fader01.DisplayValueInPercent( true );
+
+        fader2 = new VoltageSlider( "fader2", "Fader Channel 2", this, true, 0.0, 2.0, 0, 0 );
+        AddComponent( fader2 );
+        fader2.SetWantsMouseNotifications( false );
+        fader2.SetPosition( 102, 241 );
+        fader2.SetSize( 11, 95 );
+        fader2.SetSkin( "Juno Ext Dark Gray" );
+        fader2.DisplayValueInPercent( true );
+
+        fader3 = new VoltageSlider( "fader3", "Fader Channel 3", this, true, 0.0, 2.0, 0, 0 );
+        AddComponent( fader3 );
+        fader3.SetWantsMouseNotifications( false );
+        fader3.SetPosition( 129, 241 );
+        fader3.SetSize( 11, 95 );
+        fader3.SetSkin( "Juno Ext Dark Gray" );
+        fader3.DisplayValueInPercent( true );
+
+        fader4 = new VoltageSlider( "fader4", "Fader Channel 4", this, true, 0.0, 2.0, 0, 0 );
+        AddComponent( fader4 );
+        fader4.SetWantsMouseNotifications( false );
+        fader4.SetPosition( 156, 241 );
+        fader4.SetSize( 11, 95 );
+        fader4.SetSkin( "Juno Ext Dark Gray" );
+        fader4.DisplayValueInPercent( true );
+
+        fader5 = new VoltageSlider( "fader5", "Fader Channel 5", this, true, 0.0, 2.0, 0, 0 );
+        AddComponent( fader5 );
+        fader5.SetWantsMouseNotifications( false );
+        fader5.SetPosition( 183, 241 );
+        fader5.SetSize( 11, 95 );
+        fader5.SetSkin( "Juno Ext Dark Gray" );
+        fader5.DisplayValueInPercent( true );
+
+        fader6 = new VoltageSlider( "fader6", "Fader Channel 6", this, true, 0.0, 2.0, 0, 0 );
+        AddComponent( fader6 );
+        fader6.SetWantsMouseNotifications( false );
+        fader6.SetPosition( 210, 241 );
+        fader6.SetSize( 11, 95 );
+        fader6.SetSkin( "Juno Ext Dark Gray" );
+        fader6.DisplayValueInPercent( true );
+
+        fader7 = new VoltageSlider( "fader7", "Fader Channel 7", this, true, 0.0, 2.0, 0, 0 );
+        AddComponent( fader7 );
+        fader7.SetWantsMouseNotifications( false );
+        fader7.SetPosition( 237, 241 );
+        fader7.SetSize( 11, 95 );
+        fader7.SetSkin( "Juno Ext Dark Gray" );
+        fader7.DisplayValueInPercent( true );
+
+        fader8 = new VoltageSlider( "fader8", "Fader Channel 8", this, true, 0.0, 2.0, 0, 0 );
+        AddComponent( fader8 );
+        fader8.SetWantsMouseNotifications( false );
+        fader8.SetPosition( 264, 241 );
+        fader8.SetSize( 11, 95 );
+        fader8.SetSkin( "Juno Ext Dark Gray" );
+        fader8.DisplayValueInPercent( true );
+        fader8.SetTrackSize( 11 );
+        fader8.SetSliderSize( 15, 25 );
+
+        faderRight = new VoltageSlider( "faderRight", "2bus Right Fader", this, true, 0.0, 2.0, 1.0, 0 );
+        AddComponent( faderRight );
+        faderRight.SetWantsMouseNotifications( false );
+        faderRight.SetPosition( 371, 197 );
+        faderRight.SetSize( 11, 150 );
+        faderRight.SetSkin( "Juno Ext Black" );
+        faderRight.DisplayValueInPercent( true );
+        faderRight.SetTrackSize( 11 );
+        faderRight.SetSliderSize( 33, 23 );
+
+        fader2trkLeft = new VoltageSlider( "fader2trkLeft", "2trk Fader Left", this, true, 0.0, 2.0, 0.0, 0 );
+        AddComponent( fader2trkLeft );
+        fader2trkLeft.SetWantsMouseNotifications( false );
+        fader2trkLeft.SetPosition( 401, 197 );
+        fader2trkLeft.SetSize( 11, 150 );
+        fader2trkLeft.SetSkin( "Juno Ext Blue" );
+        fader2trkLeft.DisplayValueInPercent( true );
+        fader2trkLeft.SetTrackSize( 11 );
+        fader2trkLeft.SetSliderSize( 33, 23 );
+
+        faderLeft = new VoltageSlider( "faderLeft", "2bus Left Fader", this, true, 0.0, 2.0, 1.0, 0 );
+        AddComponent( faderLeft );
+        faderLeft.SetWantsMouseNotifications( false );
+        faderLeft.SetPosition( 351, 197 );
+        faderLeft.SetSize( 11, 150 );
+        faderLeft.SetSkin( "Juno Ext Black" );
+        faderLeft.DisplayValueInPercent( true );
+        faderLeft.SetTrackSize( 11 );
+        faderLeft.SetSliderSize( 33, 23 );
+
+        labelREVdamp = new VoltageLabel( "labelREVdamp", "Reverb Damping Label", this, "DMP" );
+        AddComponent( labelREVdamp );
+        labelREVdamp.SetWantsMouseNotifications( false );
+        labelREVdamp.SetPosition( 20, 280 );
+        labelREVdamp.SetSize( 30, 13 );
+        labelREVdamp.SetEditable( false, false );
+        labelREVdamp.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelREVdamp.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelREVdamp.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelREVdamp.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelREVdamp.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelREVdamp.SetBorderSize( 0 );
+        labelREVdamp.SetMultiLineEdit( false );
+        labelREVdamp.SetIsNumberEditor( false );
+        labelREVdamp.SetNumberEditorRange( 0, 100 );
+        labelREVdamp.SetNumberEditorInterval( 1 );
+        labelREVdamp.SetNumberEditorUsesMouseWheel( false );
+        labelREVdamp.SetHasCustomTextHoverColor( false );
+        labelREVdamp.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelREVdamp.SetFont( "Courier New", 7, true, false );
+
+        fader2trkRight = new VoltageSlider( "fader2trkRight", "2trk Fader Right", this, true, 0.0, 2.0, 0.0, 0 );
+        AddComponent( fader2trkRight );
+        fader2trkRight.SetWantsMouseNotifications( false );
+        fader2trkRight.SetPosition( 421, 197 );
+        fader2trkRight.SetSize( 11, 150 );
+        fader2trkRight.SetSkin( "Juno Ext Blue" );
+        fader2trkRight.DisplayValueInPercent( true );
+        fader2trkRight.SetTrackSize( 11 );
+        fader2trkRight.SetSliderSize( 33, 23 );
+
+        labelSND = new VoltageLabel( "labelSND", "SND Label", this, "SND" );
+        AddComponent( labelSND );
+        labelSND.SetWantsMouseNotifications( true );
+        labelSND.SetPosition( 27, 60 );
+        labelSND.SetSize( 21, 11 );
+        labelSND.SetEditable( false, false );
+        labelSND.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelSND.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelSND.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelSND.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelSND.SetBorderColor( new Color( 164, 34, 34, 255 ) );
+        labelSND.SetBorderSize( 1 );
+        labelSND.SetMultiLineEdit( false );
+        labelSND.SetIsNumberEditor( false );
+        labelSND.SetNumberEditorRange( 0, 100 );
+        labelSND.SetNumberEditorInterval( 1 );
+        labelSND.SetNumberEditorUsesMouseWheel( false );
+        labelSND.SetHasCustomTextHoverColor( false );
+        labelSND.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelSND.SetFont( "Courier New", 7, true, false );
+
+        labelChSigOut = new VoltageLabel( "labelChSigOut", "Channel Signal Out Label", this, "OUT" );
+        AddComponent( labelChSigOut );
+        labelChSigOut.SetWantsMouseNotifications( false );
+        labelChSigOut.SetPosition( 279, 60 );
+        labelChSigOut.SetSize( 30, 13 );
+        labelChSigOut.SetEditable( false, false );
+        labelChSigOut.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelChSigOut.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelChSigOut.SetColor( new Color( 232, 232, 232, 255 ) );
+        labelChSigOut.SetBkColor( new Color( 85, 85, 85, 0 ) );
+        labelChSigOut.SetBorderColor( new Color( 85, 85, 85, 0 ) );
+        labelChSigOut.SetBorderSize( 0 );
+        labelChSigOut.SetMultiLineEdit( false );
+        labelChSigOut.SetIsNumberEditor( false );
+        labelChSigOut.SetNumberEditorRange( 0, 100 );
+        labelChSigOut.SetNumberEditorInterval( 1 );
+        labelChSigOut.SetNumberEditorUsesMouseWheel( false );
+        labelChSigOut.SetHasCustomTextHoverColor( false );
+        labelChSigOut.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelChSigOut.SetFont( "Courier New", 7, true, false );
+
+        outputCh1 = new VoltageAudioJack( "outputCh1", "Output Channel 1", this, JackType.JackType_AudioOutput );
+        AddComponent( outputCh1 );
+        outputCh1.SetWantsMouseNotifications( false );
+        outputCh1.SetPosition( 68, 60 );
+        outputCh1.SetSize( 25, 25 );
+        outputCh1.SetSkin( "Rotated Half" );
+
+        outputCh2 = new VoltageAudioJack( "outputCh2", "Output Channel 2", this, JackType.JackType_AudioOutput );
+        AddComponent( outputCh2 );
+        outputCh2.SetWantsMouseNotifications( false );
+        outputCh2.SetPosition( 95, 60 );
+        outputCh2.SetSize( 25, 25 );
+        outputCh2.SetSkin( "Rotated Half" );
+
+        outputCh3 = new VoltageAudioJack( "outputCh3", "Output Channel 3", this, JackType.JackType_AudioOutput );
+        AddComponent( outputCh3 );
+        outputCh3.SetWantsMouseNotifications( false );
+        outputCh3.SetPosition( 122, 60 );
+        outputCh3.SetSize( 25, 25 );
+        outputCh3.SetSkin( "Rotated Half" );
+
+        outputCh4 = new VoltageAudioJack( "outputCh4", "Output Channel 4", this, JackType.JackType_AudioOutput );
+        AddComponent( outputCh4 );
+        outputCh4.SetWantsMouseNotifications( false );
+        outputCh4.SetPosition( 150, 60 );
+        outputCh4.SetSize( 25, 25 );
+        outputCh4.SetSkin( "Rotated Half" );
+
+        outputCh5 = new VoltageAudioJack( "outputCh5", "Output Channel 5", this, JackType.JackType_AudioOutput );
+        AddComponent( outputCh5 );
+        outputCh5.SetWantsMouseNotifications( false );
+        outputCh5.SetPosition( 231, 60 );
+        outputCh5.SetSize( 25, 25 );
+        outputCh5.SetSkin( "Rotated Half" );
+
+        outputCh6 = new VoltageAudioJack( "outputCh6", "Output Channel 6", this, JackType.JackType_AudioOutput );
+        AddComponent( outputCh6 );
+        outputCh6.SetWantsMouseNotifications( false );
+        outputCh6.SetPosition( 259, 60 );
+        outputCh6.SetSize( 25, 25 );
+        outputCh6.SetSkin( "Rotated Half" );
+
+        outputCh7 = new VoltageAudioJack( "outputCh7", "Output Channel 7", this, JackType.JackType_AudioOutput );
+        AddComponent( outputCh7 );
+        outputCh7.SetWantsMouseNotifications( false );
+        outputCh7.SetPosition( 203, 60 );
+        outputCh7.SetSize( 25, 25 );
+        outputCh7.SetSkin( "Rotated Half" );
+
+        outputCh8 = new VoltageAudioJack( "outputCh8", "Output Channel 8", this, JackType.JackType_AudioOutput );
+        AddComponent( outputCh8 );
+        outputCh8.SetWantsMouseNotifications( false );
+        outputCh8.SetPosition( 176, 60 );
+        outputCh8.SetSize( 25, 25 );
+        outputCh8.SetSkin( "Rotated Half" );
+
+        buttonChMute1 = new VoltageToggle( "buttonChMute1", "Channel Mute 1", this, false, 0 );
+        AddComponent( buttonChMute1 );
+        buttonChMute1.SetWantsMouseNotifications( false );
+        buttonChMute1.SetPosition( 74, 340 );
+        buttonChMute1.SetSize( 13, 13 );
+        buttonChMute1.SetSkin( "2500 Square Big" );
+        buttonChMute1.ShowOverlay( true );
+        buttonChMute1.SetImageOverlay( "button-label-mixer-small-mute.svg" );
+        buttonChMute1.SetOverlayText( "" );
+        buttonChMute1.SetOverlayArea( 0, 0, 0, 0 );
+        buttonChMute1.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonChMute2 = new VoltageToggle( "buttonChMute2", "Channel Mute 2", this, false, 0 );
+        AddComponent( buttonChMute2 );
+        buttonChMute2.SetWantsMouseNotifications( false );
+        buttonChMute2.SetPosition( 101, 340 );
+        buttonChMute2.SetSize( 13, 13 );
+        buttonChMute2.SetSkin( "2500 Square Big" );
+        buttonChMute2.ShowOverlay( true );
+        buttonChMute2.SetImageOverlay( "button-label-mixer-small-mute.svg" );
+        buttonChMute2.SetOverlayText( "" );
+        buttonChMute2.SetOverlayArea( 0, 0, 0, 0 );
+        buttonChMute2.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonChMute3 = new VoltageToggle( "buttonChMute3", "Channel Mute 3", this, false, 0 );
+        AddComponent( buttonChMute3 );
+        buttonChMute3.SetWantsMouseNotifications( false );
+        buttonChMute3.SetPosition( 128, 340 );
+        buttonChMute3.SetSize( 13, 13 );
+        buttonChMute3.SetSkin( "2500 Square Big" );
+        buttonChMute3.ShowOverlay( true );
+        buttonChMute3.SetImageOverlay( "button-label-mixer-small-mute.svg" );
+        buttonChMute3.SetOverlayText( "" );
+        buttonChMute3.SetOverlayArea( 0, 0, 0, 0 );
+        buttonChMute3.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonChMute4 = new VoltageToggle( "buttonChMute4", "Channel Mute 4", this, false, 0 );
+        AddComponent( buttonChMute4 );
+        buttonChMute4.SetWantsMouseNotifications( false );
+        buttonChMute4.SetPosition( 155, 340 );
+        buttonChMute4.SetSize( 13, 13 );
+        buttonChMute4.SetSkin( "2500 Square Big" );
+        buttonChMute4.ShowOverlay( true );
+        buttonChMute4.SetImageOverlay( "button-label-mixer-small-mute.svg" );
+        buttonChMute4.SetOverlayText( "" );
+        buttonChMute4.SetOverlayArea( 0, 0, 0, 0 );
+        buttonChMute4.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonChMute5 = new VoltageToggle( "buttonChMute5", "Channel Mute 5", this, false, 0 );
+        AddComponent( buttonChMute5 );
+        buttonChMute5.SetWantsMouseNotifications( false );
+        buttonChMute5.SetPosition( 182, 340 );
+        buttonChMute5.SetSize( 13, 13 );
+        buttonChMute5.SetSkin( "2500 Square Big" );
+        buttonChMute5.ShowOverlay( true );
+        buttonChMute5.SetImageOverlay( "button-label-mixer-small-mute.svg" );
+        buttonChMute5.SetOverlayText( "" );
+        buttonChMute5.SetOverlayArea( 0, 0, 0, 0 );
+        buttonChMute5.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonChMute6 = new VoltageToggle( "buttonChMute6", "Channel Mute 6", this, false, 0 );
+        AddComponent( buttonChMute6 );
+        buttonChMute6.SetWantsMouseNotifications( false );
+        buttonChMute6.SetPosition( 209, 340 );
+        buttonChMute6.SetSize( 13, 13 );
+        buttonChMute6.SetSkin( "2500 Square Big" );
+        buttonChMute6.ShowOverlay( true );
+        buttonChMute6.SetImageOverlay( "button-label-mixer-small-mute.svg" );
+        buttonChMute6.SetOverlayText( "" );
+        buttonChMute6.SetOverlayArea( 0, 0, 0, 0 );
+        buttonChMute6.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonChMute7 = new VoltageToggle( "buttonChMute7", "Channel Mute 7", this, false, 0 );
+        AddComponent( buttonChMute7 );
+        buttonChMute7.SetWantsMouseNotifications( false );
+        buttonChMute7.SetPosition( 236, 340 );
+        buttonChMute7.SetSize( 13, 13 );
+        buttonChMute7.SetSkin( "2500 Square Big" );
+        buttonChMute7.ShowOverlay( true );
+        buttonChMute7.SetImageOverlay( "button-label-mixer-small-mute.svg" );
+        buttonChMute7.SetOverlayText( "" );
+        buttonChMute7.SetOverlayArea( 0, 0, 0, 0 );
+        buttonChMute7.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+}
+
+void InitializeControls4()
+{
+
+        buttonChMute8 = new VoltageToggle( "buttonChMute8", "Channel Mute 8", this, false, 0 );
+        AddComponent( buttonChMute8 );
+        buttonChMute8.SetWantsMouseNotifications( false );
+        buttonChMute8.SetPosition( 263, 340 );
+        buttonChMute8.SetSize( 13, 13 );
+        buttonChMute8.SetSkin( "2500 Square Big" );
+        buttonChMute8.ShowOverlay( true );
+        buttonChMute8.SetImageOverlay( "button-label-mixer-small-mute.svg" );
+        buttonChMute8.SetOverlayText( "" );
+        buttonChMute8.SetOverlayArea( 0, 0, 0, 0 );
+        buttonChMute8.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonChMute9 = new VoltageToggle( "buttonChMute9", "Channel Mute 9", this, false, 0 );
+        AddComponent( buttonChMute9 );
+        buttonChMute9.SetWantsMouseNotifications( false );
+        buttonChMute9.SetPosition( 505, 340 );
+        buttonChMute9.SetSize( 13, 13 );
+        buttonChMute9.SetSkin( "2500 Square Big" );
+        buttonChMute9.ShowOverlay( true );
+        buttonChMute9.SetImageOverlay( "button-label-mixer-small-mute.svg" );
+        buttonChMute9.SetOverlayText( "" );
+        buttonChMute9.SetOverlayArea( 0, 0, 0, 0 );
+        buttonChMute9.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonChMute10 = new VoltageToggle( "buttonChMute10", "Channel Mute 10", this, false, 0 );
+        AddComponent( buttonChMute10 );
+        buttonChMute10.SetWantsMouseNotifications( false );
+        buttonChMute10.SetPosition( 532, 340 );
+        buttonChMute10.SetSize( 13, 13 );
+        buttonChMute10.SetSkin( "2500 Square Big" );
+        buttonChMute10.ShowOverlay( true );
+        buttonChMute10.SetImageOverlay( "button-label-mixer-small-mute.svg" );
+        buttonChMute10.SetOverlayText( "" );
+        buttonChMute10.SetOverlayArea( 0, 0, 0, 0 );
+        buttonChMute10.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonChMute11 = new VoltageToggle( "buttonChMute11", "Channel Mute 11", this, false, 0 );
+        AddComponent( buttonChMute11 );
+        buttonChMute11.SetWantsMouseNotifications( false );
+        buttonChMute11.SetPosition( 559, 340 );
+        buttonChMute11.SetSize( 13, 13 );
+        buttonChMute11.SetSkin( "2500 Square Big" );
+        buttonChMute11.ShowOverlay( true );
+        buttonChMute11.SetImageOverlay( "button-label-mixer-small-mute.svg" );
+        buttonChMute11.SetOverlayText( "" );
+        buttonChMute11.SetOverlayArea( 0, 0, 0, 0 );
+        buttonChMute11.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonChMute12 = new VoltageToggle( "buttonChMute12", "Channel Mute 12", this, false, 0 );
+        AddComponent( buttonChMute12 );
+        buttonChMute12.SetWantsMouseNotifications( false );
+        buttonChMute12.SetPosition( 586, 340 );
+        buttonChMute12.SetSize( 13, 13 );
+        buttonChMute12.SetSkin( "2500 Square Big" );
+        buttonChMute12.ShowOverlay( true );
+        buttonChMute12.SetImageOverlay( "button-label-mixer-small-mute.svg" );
+        buttonChMute12.SetOverlayText( "" );
+        buttonChMute12.SetOverlayArea( 0, 0, 0, 0 );
+        buttonChMute12.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonChMute13 = new VoltageToggle( "buttonChMute13", "Channel Mute 13", this, false, 0 );
+        AddComponent( buttonChMute13 );
+        buttonChMute13.SetWantsMouseNotifications( false );
+        buttonChMute13.SetPosition( 613, 340 );
+        buttonChMute13.SetSize( 13, 13 );
+        buttonChMute13.SetSkin( "2500 Square Big" );
+        buttonChMute13.ShowOverlay( true );
+        buttonChMute13.SetImageOverlay( "button-label-mixer-small-mute.svg" );
+        buttonChMute13.SetOverlayText( "" );
+        buttonChMute13.SetOverlayArea( 0, 0, 0, 0 );
+        buttonChMute13.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonChMute14 = new VoltageToggle( "buttonChMute14", "Channel Mute 14", this, false, 0 );
+        AddComponent( buttonChMute14 );
+        buttonChMute14.SetWantsMouseNotifications( false );
+        buttonChMute14.SetPosition( 640, 340 );
+        buttonChMute14.SetSize( 13, 13 );
+        buttonChMute14.SetSkin( "2500 Square Big" );
+        buttonChMute14.ShowOverlay( true );
+        buttonChMute14.SetImageOverlay( "button-label-mixer-small-mute.svg" );
+        buttonChMute14.SetOverlayText( "" );
+        buttonChMute14.SetOverlayArea( 0, 0, 0, 0 );
+        buttonChMute14.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonChMute15 = new VoltageToggle( "buttonChMute15", "Channel Mute 15", this, false, 0 );
+        AddComponent( buttonChMute15 );
+        buttonChMute15.SetWantsMouseNotifications( false );
+        buttonChMute15.SetPosition( 667, 340 );
+        buttonChMute15.SetSize( 13, 13 );
+        buttonChMute15.SetSkin( "2500 Square Big" );
+        buttonChMute15.ShowOverlay( true );
+        buttonChMute15.SetImageOverlay( "button-label-mixer-small-mute.svg" );
+        buttonChMute15.SetOverlayText( "" );
+        buttonChMute15.SetOverlayArea( 0, 0, 0, 0 );
+        buttonChMute15.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonChMute16 = new VoltageToggle( "buttonChMute16", "Channel Mute 16", this, false, 0 );
+        AddComponent( buttonChMute16 );
+        buttonChMute16.SetWantsMouseNotifications( false );
+        buttonChMute16.SetPosition( 694, 340 );
+        buttonChMute16.SetSize( 13, 13 );
+        buttonChMute16.SetSkin( "2500 Square Big" );
+        buttonChMute16.ShowOverlay( true );
+        buttonChMute16.SetImageOverlay( "button-label-mixer-small-mute.svg" );
+        buttonChMute16.SetOverlayText( "" );
+        buttonChMute16.SetOverlayArea( 0, 0, 0, 0 );
+        buttonChMute16.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+}
+
+
+
+    //-------------------------------------------------------------------------------
+    //  public void Initialize()
+
+        //  Initialize will get called shortly after your module's constructor runs. You can use it to
+        //  do any initialization that the auto-generated code doesn't handle.
+    //-------------------------------------------------------------------------------
+    @Override
+    public void Initialize()
+    {
+        //[user-Initialize]   Add your own initialization code here
+
+
+
+        //[/user-Initialize]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public void Destroy()
+
+        //  Destroy will get called just before your module gets deleted. You can use it to perform any
+        //  cleanup that's not handled automatically by Java.
+    //-------------------------------------------------------------------------------
+    @Override
+    public void Destroy()
+    {
+        super.Destroy();
+        //[user-Destroy]   Add your own module-getting-deleted code here
+
+
+
+        //[/user-Destroy]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public boolean Notify( VoltageComponent component, ModuleNotifications notification, double doubleValue, long longValue, int x, int y, Object object )
+
+        //  Notify will get called when various events occur - control values changing, timers firing, etc.
+    //-------------------------------------------------------------------------------
+    @Override
+    public boolean Notify( VoltageComponent component, ModuleNotifications notification, double doubleValue, long longValue, int x, int y, Object object )
+    {
+        //[user-Notify]   Add your own notification handling code between this line and the notify-close comment
+
+        return false;
+
+        //[/user-Notify]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public void ProcessSample()
+
+        //  ProcessSample is called once per sample. Usually it's where you read
+        //  from input jacks, process audio, and write it to your output jacks.
+        //  Since ProcesssSample gets called 48,000 times per second, offload CPU-intensive operations
+        //  to other threads when possible and avoid calling native functions.
+    //-------------------------------------------------------------------------------
+    @Override
+    public void ProcessSample()
+    {
+        //[user-ProcessSample]   Add your own process-sampling code here
+
+
+
+        //[/user-ProcessSample]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public void ProcessBypassedSample()
+
+        //  ProcessBypassedSample gets called instead of ProcessSample when you've checked the "Can Be Bypassed" box
+        //  and a user has bypassed your module. If your module processes data from input jacks and then sends it to
+        //  output jack(s), make ProcessBypassedSample just send the data from the input jacks to the output jacks without
+        //  processing it.
+    //-------------------------------------------------------------------------------
+    @Override
+    public void ProcessBypassedSample()
+    {
+        //[user-ProcessBypassedSample]   Add your own code here
+
+
+        //[/user-ProcessBypassedSample]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public String GetTooltipText( VoltageComponent component )
+
+        //  Gets called when a tooltip is about to display for a control. Override it if
+        //  you want to change what the tooltip displays - if you want a knob to work in logarithmic fashion,
+        //  for instance, you can translate the knob's current value to a log-based string and display it here.
+    //-------------------------------------------------------------------------------
+    @Override
+    public String GetTooltipText( VoltageComponent component )
+    {
+        //[user-GetTooltipText]   Add your own code here
+
+        return super.GetTooltipText( component );
+
+        //[/user-GetTooltipText]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public void EditComponentValue( VoltageComponent component, double newValue, String newText )
+
+        //  Gets called after a user clicks on a tooltip and types in a new value for a control. Override this if
+        //  you've changed the default tooltip display (translating a linear value to logarithmic, for instance)
+        //  in GetTooltipText().
+    //-------------------------------------------------------------------------------
+    @Override
+    public void EditComponentValue( VoltageComponent component, double newValue, String newText )
+    {
+        //[user-EditComponentValue]   Add your own code here
+
+
+
+        //[/user-EditComponentValue]
+        super.EditComponentValue( component, newValue, newText );
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public void OnUndoRedo( String undoType, double newValue, Object optionalObject )
+
+        //  If you've created custom undo events via calls to CreateUndoEvent, you'll need to
+        //  process them in this function when they get triggered by undo/redo actions.
+    //-------------------------------------------------------------------------------
+    @Override
+    public void OnUndoRedo( String undoType, double newValue, Object optionalObject )
+    {
+        //[user-OnUndoRedo]   Add your own code here
+
+
+
+        //[/user-OnUndoRedo]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public byte[] GetStateInformation()
+
+        //  Gets called when the module's state gets saved, typically when the user saves a preset with
+        //  this module in it. Voltage Modular will automatically save the states of knobs, sliders, etc.,
+        //  but if you have any custom state information you need to save, return it from this function.
+    //-------------------------------------------------------------------------------
+    @Override
+    public byte[] GetStateInformation()
+    {
+        //[user-GetStateInformation]   Add your own code here
+
+        return null;
+
+        //[/user-GetStateInformation]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public void SetStateInformation(byte[] stateInfo)
+
+        //  Gets called when this module's state is getting restored, typically when a user opens a preset with
+        //  this module in it. The stateInfo parameter will contain whatever custom data you stored in GetStateInformation().
+    //-------------------------------------------------------------------------------
+    @Override
+    public void SetStateInformation(byte[] stateInfo)
+    {
+        //[user-SetStateInformation]   Add your own code here
+
+
+
+        //[/user-SetStateInformation]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public byte[] GetStateInformationForVariations()
+
+        //  Gets called when a user saves a variation with this module in it.
+        //  Voltage Modular will automatically save the states of knobs, sliders, etc.,
+        //  but if you have any custom state information you need to save, return it from this function.
+    //-------------------------------------------------------------------------------
+    @Override
+    public byte[] GetStateInformationForVariations()
+    {
+        //[user-GetStateInformationForVariations]   Add your own code here
+
+        return null;
+
+        //[/user-GetStateInformationForVariations]
+    }
+
+
+    //-------------------------------------------------------------------------------
+    //  public void SetStateInformationForVariations(byte[] stateInfo)
+
+        //  Gets called when a user loads a variation with this module in it.
+        //  The stateInfo parameter will contain whatever custom data you stored in GetStateInformationForVariations().
+    //-------------------------------------------------------------------------------
+    @Override
+    public void SetStateInformationForVariations(byte[] stateInfo)
+    {
+        //[user-SetStateInformationForVariations]   Add your own code here
+        SetStateInformation(stateInfo);
+
+
+
+        //[/user-SetStateInformationForVariations]
+    }
+
+
+    // Auto-generated variables
+    private VoltageToggle buttonChMute16;
+    private VoltageToggle buttonChMute15;
+    private VoltageToggle buttonChMute14;
+    private VoltageToggle buttonChMute13;
+    private VoltageToggle buttonChMute12;
+    private VoltageToggle buttonChMute11;
+    private VoltageToggle buttonChMute10;
+    private VoltageToggle buttonChMute9;
+    private VoltageToggle buttonChMute8;
+    private VoltageToggle buttonChMute7;
+    private VoltageToggle buttonChMute6;
+    private VoltageToggle buttonChMute5;
+    private VoltageToggle buttonChMute4;
+    private VoltageToggle buttonChMute3;
+    private VoltageToggle buttonChMute2;
+    private VoltageToggle buttonChMute1;
+    private VoltageAudioJack outputCh8;
+    private VoltageAudioJack outputCh7;
+    private VoltageAudioJack outputCh6;
+    private VoltageAudioJack outputCh5;
+    private VoltageAudioJack outputCh4;
+    private VoltageAudioJack outputCh3;
+    private VoltageAudioJack outputCh2;
+    private VoltageAudioJack outputCh1;
+    private VoltageLabel labelChSigOut;
+    private VoltageLabel labelSND;
+    private VoltageSlider fader2trkRight;
+    private VoltageLabel labelREVdamp;
+    private VoltageSlider faderLeft;
+    private VoltageSlider fader2trkLeft;
+    private VoltageSlider faderRight;
+    private VoltageSlider fader8;
+    private VoltageSlider fader7;
+    private VoltageSlider fader6;
+    private VoltageSlider fader5;
+    private VoltageSlider fader4;
+    private VoltageSlider fader3;
+    private VoltageSlider fader2;
+    private VoltageSlider fader01;
+    private VoltageLabel colophon;
+    private VoltageLabel labelDLYsection;
+    private VoltageLabel labelREVsection;
+    private VoltageLabel labelDLYrate;
+    private VoltageLabel labelDLYrepeat;
+    private VoltageKnob knobDLYrepeat;
+    private VoltageKnob knobDLYrate;
+    private VoltageImage logoInsect;
+    private VoltageLabel labelREVpredelay;
+    private VoltageLabel labelREVdecay;
+    private VoltageKnob knobREVdamp;
+    private VoltageKnob knobREVdecay;
+    private VoltageKnob knobPreDelay;
+    private VoltageLabel labelMainOutMono;
+    private VoltageLabel labelMainOutRight;
+    private VoltageLabel labelMainOutLeft;
+    private VoltageLabel linkLabel_3;
+    private VoltageLabel linkLabel_2;
+    private VoltageLabel scale1A30DeepToneGenModLabel22;
+    private VoltageLabel labelRetRight;
+    private VoltageLabel labelRetMono;
+    private VoltageAudioJack inputReturnMono;
+    private VoltageAudioJack inputReturnRight;
+    private VoltageAudioJack outputSND;
+    private VoltageLabel labelSNDreturn;
+    private VoltageLabel labelREVreturn;
+    private VoltageLabel scale1A30DeepToneGenModLabel17;
+    private VoltageKnob knobSNDreturn;
+    private VoltageKnob knobREVreturn;
+    private VoltageKnob knobDLYreturn;
+    private VoltageLabel scale1A30DeepToneGenModLabel16;
+    private VoltageLabel scale1A30DeepToneGenModLabel15;
+    private VoltageLabel labelRecSigOut;
+    private VoltageLabel labelRecSigIn;
+    private VoltageLabel labelRecSND;
+    private VoltageLabel labelRecDLY;
+    private VoltageLabel labelRecREV;
+    private VoltageLabel labelRecTLT;
+    private VoltageLabel labelRecPAN;
+    private VoltageLabel labelChSigIn;
+    private VoltageLabel labelChDLY;
+    private VoltageLabel labelChREV;
+    private VoltageLabel labelChTLT;
+    private VoltageLabel labelChPAN;
+    private VoltageAudioJack outputMono;
+    private VoltageAudioJack outputRight;
+    private VoltageAudioJack outputLeft;
+    private VoltageToggle buttonStereo;
+    private VoltageLabel linkLabel_1;
+    private VoltageAudioJack linkInputY;
+    private VoltageLabel linkLabel;
+    private VoltageAudioJack linkInputX;
+    private VoltageAudioJack fromTapeRight;
+    private VoltageAudioJack fromTapeLeft;
+    private VoltageAudioJack toTapeRight;
+    private VoltageAudioJack toTapeLeft;
+    private VoltageAudioJack inputLoop4;
+    private VoltageAudioJack inputLoop3;
+    private VoltageAudioJack inputLoop2;
+    private VoltageAudioJack inputLoop1;
+    private VoltageAudioJack input4Track4;
+    private VoltageAudioJack input4Track3;
+    private VoltageAudioJack input4Track2;
+    private VoltageAudioJack input4Track1;
+    private VoltageAudioJack outputLoop4;
+    private VoltageAudioJack outputLoop3;
+    private VoltageAudioJack outputLoop2;
+    private VoltageAudioJack outputLoop1;
+    private VoltageAudioJack output4Track4;
+    private VoltageAudioJack output4Track3;
+    private VoltageAudioJack output4Track2;
+    private VoltageAudioJack output4Track1;
+    private VoltageAudioJack inputCh8;
+    private VoltageAudioJack inputCh7;
+    private VoltageAudioJack inputCh6;
+    private VoltageAudioJack inputCh5;
+    private VoltageAudioJack inputCh4;
+    private VoltageAudioJack inputCh3;
+    private VoltageAudioJack inputCh2;
+    private VoltageAudioJack inputCh1;
+    private VoltageAnalogVUMeter analogMeter2;
+    private VoltageAnalogVUMeter analogMeter1;
+    private VoltageKnob knobSendA16;
+    private VoltageKnob knobSendA15;
+    private VoltageKnob knobSendA14;
+    private VoltageKnob knobSendA13;
+    private VoltageKnob knobSendA12;
+    private VoltageKnob knobSendA11;
+    private VoltageKnob knobSendA10;
+    private VoltageKnob knobSendA9;
+    private VoltageLabel labelNumber_3;
+    private VoltageKnob knobSendA8;
+    private VoltageKnob knobSendA7;
+    private VoltageKnob knobSendA6;
+    private VoltageKnob knobSendA5;
+    private VoltageLabel labelNumber_1;
+    private VoltageKnob knobSendA4;
+    private VoltageKnob knobSendA3;
+    private VoltageKnob knobSendA2;
+    private VoltageKnob knobSendA1;
+    private VoltageKnob knobSendB16;
+    private VoltageKnob knobSendB15;
+    private VoltageKnob knobSendB14;
+    private VoltageKnob knobSendB13;
+    private VoltageKnob knobSendB12;
+    private VoltageKnob knobSendB11;
+    private VoltageKnob knobSendB10;
+    private VoltageKnob knobSendB9;
+    private VoltageKnob knobSendB8;
+    private VoltageKnob knobSendB7;
+    private VoltageKnob knobSendB6;
+    private VoltageKnob knobSendB5;
+    private VoltageKnob knobSendB4;
+    private VoltageKnob knobSendB3;
+    private VoltageKnob knobSendB2;
+    private VoltageKnob knobSendB1;
+    private VoltageKnob knobSendC16;
+    private VoltageKnob knobSendC15;
+    private VoltageKnob knobSendC14;
+    private VoltageKnob knobSendC13;
+    private VoltageKnob knobSendC12;
+    private VoltageKnob knobSendC11;
+    private VoltageKnob knobSendC10;
+    private VoltageKnob knobSendC9;
+    private VoltageKnob knobSendC8;
+    private VoltageKnob knobSendC7;
+    private VoltageKnob knobSendC6;
+    private VoltageKnob knobSendC5;
+    private VoltageKnob knobSendC4;
+    private VoltageKnob knobSendC3;
+    private VoltageKnob knobSendC2;
+    private VoltageKnob knobSendC1;
+    private VoltageKnob knobEQ17;
+    private VoltageKnob knobEQ16;
+    private VoltageKnob knobEQ15;
+    private VoltageKnob knobEQ14;
+    private VoltageKnob knobEQ13;
+    private VoltageKnob knobEQ12;
+    private VoltageKnob knobEQ11;
+    private VoltageKnob knobEQ10;
+    private VoltageKnob knobEQ9;
+    private VoltageKnob knobEQ8;
+    private VoltageKnob knobEQ7;
+    private VoltageKnob knobEQ6;
+    private VoltageKnob knobEQ5;
+    private VoltageKnob knobEQ4;
+    private VoltageKnob knobEQ3;
+    private VoltageKnob knobEQ2;
+    private VoltageKnob knobPan16;
+    private VoltageKnob knobPan15;
+    private VoltageKnob knobPan14;
+    private VoltageKnob knobPan13;
+    private VoltageKnob knobPan12;
+    private VoltageKnob knobPan11;
+    private VoltageKnob knobPan10;
+    private VoltageKnob knobPan9;
+    private VoltageKnob knobPan8;
+    private VoltageKnob knobPan7;
+    private VoltageKnob knobPan6;
+    private VoltageKnob knobPan5;
+    private VoltageKnob knobPan4;
+    private VoltageKnob knobPan3;
+    private VoltageKnob knobPan2;
+    private VoltageKnob knobPan1;
+    private VoltageLabel labelLocation;
+    private VoltageLabel labelNumber;
+    private VoltageImage imageTTW;
+    private VoltageLabel label2trk;
+    private VoltageLabel label2bus;
+    private VoltageLabel labelCh1;
+    private VoltageLabel labelCh2;
+    private VoltageLabel labelCh3;
+    private VoltageLabel labelCh4;
+    private VoltageLabel labelCh5;
+    private VoltageLabel labelCh6;
+    private VoltageLabel labelCh7;
+    private VoltageLabel labelCh8;
+    private VoltageLabel labelTRK2;
+    private VoltageLabel labelTRK3;
+    private VoltageLabel labelTRK4;
+    private VoltageLabel labelWire1;
+    private VoltageLabel labelWire2;
+    private VoltageLabel labelLoop1;
+    private VoltageLabel labelLoop2;
+    private VoltageLabel labelTRK1;
+    private VoltageLabel labelSNDmono;
+    private VoltageLabel labelChSND;
+    private VoltageSlider fader11;
+    private VoltageSlider fader12;
+    private VoltageSlider fader13;
+    private VoltageSlider fader14;
+    private VoltageSlider fader15;
+    private VoltageSlider fader16;
+    private VoltageSlider fader18;
+    private VoltageSlider fader17;
+
+
+    //[user-code-and-variables]    Add your own variables and functions here
+    //[/user-code-and-variables]
+
+
+
+
+
+}
+
+ 
