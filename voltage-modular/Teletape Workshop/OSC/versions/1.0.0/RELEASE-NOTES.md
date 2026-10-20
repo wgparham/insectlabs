@@ -9,3 +9,5 @@ First canonical release, 2026-10-17. The user approved native operation and soun
 - Canonical pair, final hero, manual, developer notes, design/research evidence, tests and hashes are retained. Reusable waveform helpers are in DSP primitives. Prototype measurements remain research; obsolete working pairs/backups are removed after archive validation.
 
 Cherry Audio publication is deferred until the full Teletape Workshop lineup is locked and canonized. No publication or Git push is implied by this local promotion.
+
+- 2026-10-20: Cosmetic panel refresh updates the logo skin/image references and hero artwork; DSP and control behavior are unchanged.
