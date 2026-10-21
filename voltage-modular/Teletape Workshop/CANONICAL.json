@@ -70,5 +70,11 @@
     "path": "FPA/versions/1.0.0",
     "module": "fpa",
     "name": "FPA Four Pre-Amps"
+  },
+  "hgd": {
+    "version": "1.0.0",
+    "path": "HGD/versions/1.0.0",
+    "module": "hgd",
+    "name": "HGD High Gain Device"
   }
 }

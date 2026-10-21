@@ -85,12 +85,20 @@ def control_line(info, old_number):
         return None
     name = control_names[control_ids[0]]
     old_line = old_lines[old_number]
-    rewritten = re.sub(r'\b(?:knob|inputJack|outputJack|textLabel|line|button|switch|LED)\d+\b',
+    rewritten = re.sub(r'\b(?:knob|inputJack|outputJack|textLabel|line|button|switch|LED|labelTone|gainLine)\d*(?:_\d+)?\b',
                        name, old_line)
     candidates = [index for index, line in enumerate(new_lines)
                   if line == rewritten or line.strip() == rewritten.strip()]
     if candidates:
         return min(candidates, key=lambda index: abs(index - old_number))
+    # Preserve edited generated calls on their matching control when a scalar
+    # argument changes (for example DisplayValueInPercent true -> false).
+    member = re.search(r'\b' + re.escape(name) + r'\.(\w+)\s*\(', rewritten)
+    if member:
+        candidates = [index for index, line in enumerate(new_lines)
+                      if re.search(r'\b' + re.escape(name) + r'\.' + re.escape(member[1]) + r'\s*\(', line)]
+        if candidates:
+            return min(candidates, key=lambda index: abs(index - old_number))
     # Human-readable Display Names may differ from the internal variable name.
     # In that case, preserve the control anchor on its generated constructor line.
     declaration = next((index for index, line in enumerate(new_lines)
@@ -126,15 +134,26 @@ def control_line(info, old_number):
     raise RuntimeError(f'Cannot locate generated control line for {name}: {old_line!r}')
 
 for info in line_properties[2]:
-    old_number = props(info)['line number']
+    # Some older Designer exports have one or two trailing blank-line anchors
+    # beyond the embedded source. Clamp those before indexing the source text;
+    # the explicit class-closing anchor is placed from the exported source below.
+    old_number = min(props(info)['line number'], len(old_lines) - 1)
     ids = {props(child).get('ID') for child in info[2]}
     if 'class closing bracket' in ids:
         number = max(i for i, line in enumerate(new_lines) if line.strip() == '}')
     elif 'user code and variables' in ids:
         number = new_lines.index('// Add your own variables and functions here')
     else:
-        number = control_line(info, old_number)
-        if number is None and old_number not in mapping:
+        # Prefer the ordered whole-file line diff. Applying the control fallback
+        # to every marked property collapses several identical Set* statements
+        # onto one declaration when a generated class is reordered.
+        if 'control.declaration' in ids:
+            number = control_line(info, old_number)
+        else:
+            number = mapping.get(old_number)
+            if number is None:
+                number = control_line(info, old_number)
+        if number is None:
             # Non-control Designer anchors (for example a constructor declaration)
             # survive an export unchanged, but may shift when a user region grows.
             # Recover them by source text before considering the project unsafe.
@@ -145,8 +164,6 @@ for info in line_properties[2]:
                 number = min(candidates, key=lambda index: abs(index - old_number))
             else:
                 raise RuntimeError(f'Cannot preserve Designer section at line {old_number}')
-        if number is None:
-            number = mapping[old_number]
     setprop(info, 'line number', number)
 all_ids = [props(child).get('ID') for info in line_properties[2] for child in info[2]]
 assert all_ids.count('class closing bracket') == 1

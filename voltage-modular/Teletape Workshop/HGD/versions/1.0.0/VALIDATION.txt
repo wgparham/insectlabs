@@ -1,0 +1,17 @@
+HGD 1.0.0 validation record
+===========================
+
+User functional confirmation: 2026-10-21. User reports the working set compiles, loads and passes functional/panel tests in Designer/Voltage Modular.
+
+Automated exact-candidate checks:
+- Exported Java compiles against the installed Voltage SDK, Java 17 target, -Xlint:all -Werror.
+- Java embedded in the VMOD compiles with the same settings.
+- VMOD parse/encode round-trip is byte-identical; embedded/exported source agrees after normalization; Notes is v1.0.0.
+- Control UUID uniqueness, gain/tone ranges and defaults, selector positions, and Designer line-anchor bounds pass.
+- Headless DSP checks cover four distinct voice responses, control/input boundaries, finite and bounded output, non-finite controls, lane independence, repeatable HM noise, and mix scaling.
+- Repository-wide audit checked 1,216 local links and the HGD release manifest. It reports unrelated hash mismatches in the locally edited FPA 1.0.0 Java/VMOD pair; those files were not changed or included in this HGD release.
+
+Limitations:
+- No target-host CPU, latency or alias benchmark was run.
+- User's native Designer confirmation predates the final metadata/source synchronization; automated exact-candidate build and project round-trip pass, but a fresh Designer save/reload after the metadata cleanup is not recorded.
+- Automated testing does not cover visual tooltip rendering, patch save/reload, or listening after these metadata-only changes.

@@ -1,5 +1,9 @@
 # Teletape Workshop changelog
 
+## 2026-10-21 — HGD 1.0.0
+
+Canonized HGD High Gain Device after the user confirmed the working candidate builds, loads and passes functional tests. Synchronized and validated the Designer/source pair, aligned release metadata and control labels, and archived the four-lane DS/FZ/HM/MT processor, panel, manual, developer notes, pedal references and repeatable SDK/DSP checks. HGD references remain module-specific. Thirteen modules are now canonical; Cherry Audio publication remains deferred until the series lineup is locked.
+
 ## 2026-10-20 — FPA 1.0.0
 
 Canonized FPA Four Pre-Amps after the user-authorized signed tone-range correction and passing strict SDK/DSP checks. Tone now follows the existing −1..+1 panel sweep with 0 centered; C/Re/D are neutral at center, while O retains its full logarithmic low-pass sweep. Archived the matched project/source pair, panel artwork, manual, developer notes, research, review and repeatable tests. Roland manual duplicates were removed from FPA working references after matching them byte-for-byte to the existing SM1084 reference archive. Cherry Audio publication remains deferred and the full collection lineup is still open; twelve modules are canonical.
