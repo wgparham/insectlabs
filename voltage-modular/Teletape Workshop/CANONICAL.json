@@ -76,5 +76,11 @@
     "path": "HGD/versions/1.0.0",
     "module": "hgd",
     "name": "HGD High Gain Device"
+  },
+  "fmc": {
+    "version": "1.0.0",
+    "path": "FMC/versions/1.0.0",
+    "module": "fmc",
+    "name": "FMC Four Channel Modulator"
   }
 }

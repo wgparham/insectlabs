@@ -1,5 +1,9 @@
 # Teletape Workshop changelog
 
+## 2026-10-22 — FMC 1.0.0
+
+Canonized FMC Four Channel Modulator after the user-authorized SDK, VMOD, DSP and stub-wiring checks passed. Archived the four-voice/four-lane source pair, panel, manual, developer notes, design research, pedal references, tests, and headless performance measurement. The current release fixes the typed-edit callback duplication and keeps the direct lane bypass and half-sum MIX behavior consistent. Fourteen modules are canonical; Cherry Audio publication remains deferred and the full lineup is still open.
+
 ## 2026-10-21 — HGD 1.0.0
 
 Canonized HGD High Gain Device after the user confirmed the working candidate builds, loads and passes functional tests. Synchronized and validated the Designer/source pair, aligned release metadata and control labels, and archived the four-lane DS/FZ/HM/MT processor, panel, manual, developer notes, pedal references and repeatable SDK/DSP checks. HGD references remain module-specific. Thirteen modules are now canonical; Cherry Audio publication remains deferred until the series lineup is locked.

@@ -1,0 +1,8 @@
+{
+  "fmc": {
+    "version": "1.0.0",
+    "path": "versions/1.0.0",
+    "module": "fmc",
+    "name": "FMC Four Channel Modulator"
+  }
+}

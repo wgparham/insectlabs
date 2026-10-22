@@ -1,0 +1,19 @@
+FMC 1.0.0 validation record
+===========================
+
+Candidate: this version folder's fmc.java, fmc.vmod, and fmc_hero.png.
+Test entry point: tests/validate.py
+Environment: Windows, JDK 27 compiler/runtime targeting Java 17, installed Voltage SDK at C:/ProgramData/Voltage/voltage.jar.
+
+Results:
+- Exported Java compiles against the Voltage SDK with -Xlint:all,-options -Werror.
+- Embedded Java compiles against the Voltage SDK with the same settings.
+- VMOD parse/encode round-trip is byte-identical. Embedded and exported Java agree after newline normalization.
+- Version Notes, module class/package, 230x720 panel artwork, 59 unique controls, metadata/source identities, default selector positions and editor line anchors pass.
+- DSP checks pass for voice behavior, parameter mappings, echo timing, HOLD, hostile input/control boundaries, channel independence, and the half-sum mix law.
+- Stub-SDK module wiring checks pass for control notifications, typed values, per-lane outputs, MIX, bypass, and clean resume.
+- Headless four-voice JDK microbenchmark: 1.13–1.55 μs/frame across four runs; figures vary with JIT warmup and describe this development machine only.
+
+Native-host limitation: no fresh Designer open/run/panel interaction, preset save/reload, or listening check was performed during this automated closeout. The user had not supplied a native functional-test confirmation for the exact metadata-cleaned archive. This file records the scope of the checks rather than claiming those native UI checks ran.
+
+Repository-level audit: 1,254 local Markdown links, 77 embedded/source pairs, and 52 canonical module records were inspected. FMC checks pass. The only reported errors are pre-existing SHA-256 mismatches for the separately edited FPA 1.0.0 Java and VMOD pair, which is outside FMC scope and was not included or altered here.
