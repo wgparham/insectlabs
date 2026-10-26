@@ -1,0 +1,15 @@
+SN93T 1.1.0 automated validation
+
+Command:
+  python tests/validate.py
+
+Result: PASS
+
+- Author confirmed the pair loads, compiles and runs in Voltage Module Designer.
+- Exported and VMOD-embedded Java compile against the Voltage SDK with strict Java 17 linting.
+- Designer serialization round-trip and embedded/exported source parity pass.
+- Module identity/Notes, 103 unique controls, panel geometry parity, required jacks/buttons, and protected-line anchors pass.
+- Deterministic tuner core tests pass for pitch tracking, harmonic mixtures, silence/HOLD/loss behavior, tone, tuning file parsing and calibration.
+- TONE endpoint verified at 5.0 V peak / 440 Hz; user change record reports 52/52 wiring and 216/216 core checks.
+
+These synthetic checks do not replace real-instrument audition, alternate sample-rate validation or native-host CPU measurement.

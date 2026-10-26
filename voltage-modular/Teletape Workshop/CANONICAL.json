@@ -84,9 +84,15 @@
     "name": "FMC Four Channel Modulator"
   },
   "sn93t": {
-    "version": "1.0.0",
-    "path": "sn93t/versions/1.0.0",
+    "version": "1.1.0",
+    "path": "sn93t/versions/1.1.0",
     "module": "sn93t",
     "name": "SN93T Tuner"
+  },
+  "dca": {
+    "version": "1.0.0",
+    "path": "DCA/versions/1.0.0",
+    "module": "dca",
+    "name": "DCA Dual Controlled Amplifier"
   }
 }

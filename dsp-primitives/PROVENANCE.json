@@ -46,6 +46,13 @@
       "date": "2026-10-22",
       "arithmetic": "Exact extraction of the mono wet delay path, including control smoothing, BBD clock-linked filtering, Hermite read, compander/grit, feedback, hold compensation and unpatched-tail cap; mixer routing remains caller-owned",
       "validation": "dsp-primitives/tests/validate.py compiles the archived FMC DM-2 core and compares 288000 samples plus reset behavior bit-for-bit"
+    },
+    {
+      "name": "MidpointOversampler2x",
+      "origin": "voltage-modular/Wardenclyffe Station/type-23/versions/1.0.0/SIGPROC.java; voltage-modular/Wardenclyffe Station/1a-30/versions/2.0.0/deeptone.java; voltage-modular/Wardenclyffe Station/sw2/versions/1.0.0/sw2.java; voltage-modular/Wardenclyffe Station/1947b/versions/2.0.0/nineteenfortyseven.java",
+      "date": "2026-10-26",
+      "arithmetic": "Reusable midpoint interpolation and AVERAGE/SECOND reduction modes; nonlinear laws and processor state remain caller-owned; lightweight approximation, not band-limited resampling",
+      "validation": "MidpointOversampler2xTest checks 2x call ordering, both reduction modes, reset, constant input and processor call count"
     }
   ]
 }

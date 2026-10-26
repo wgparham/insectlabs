@@ -1,8 +1,12 @@
+# Teletape Workshop changelog
+
+## 2026-10-26 — SN93T 1.1.0
+
+Promoted the user-tested tuner revision after strict SDK compilation, VMOD/source parity, metadata and geometry checks, and all deterministic tuner regression tests passed. TONE is now 5 V peak at 0 dB and Cents CV is ±5 V at ±50 cents; detector sensitivity, pitch/CAL CV, panel and DSP core remain unchanged. Version 1.0.0 is preserved. Cherry Audio publication remains deferred.
+
 ## 2026-10-26 — DCA 1.0.0
 
 Canonized the Dual Controlled Amplifier after strict Voltage SDK compilation, Designer binary/source checks and 2,494 headless math/routing assertions passed. Archived the synchronized pair, current hero panel, user/developer documentation, research history and repeatable checks. DCA uses the existing HalfBand19 DSP primitive design without adding a separate DCA primitive. The closeout did not repeat a GUI reload or audition; Cherry Audio publication remains deferred. Sixteen Teletape modules are now canonical.
-
-# Teletape Workshop changelog
 
 ## 2026-10-25 — SN93T 1.0.0
 

@@ -103,6 +103,7 @@ with tempfile.TemporaryDirectory(prefix="insectlabs-primitives-", dir=PROJECT, i
         str(PROJECT / "tests" / "EmsSvfChecks.java"),
         str(PROJECT / "tests" / "ChorusCoreTest.java"),
         str(PROJECT / "tests" / "BbdAnalogDelayParityTest.java"),
+        str(PROJECT / "tests" / "MidpointOversampler2xTest.java"),
     ]
     subprocess.run(
         ["javac", "--release", "17", "-encoding", "utf-8", "-Xlint:all", "-Werror", "-d", tmp, *sources],
@@ -110,6 +111,7 @@ with tempfile.TemporaryDirectory(prefix="insectlabs-primitives-", dir=PROJECT, i
     )
     for test_class in (
         "FilterChecks",
+        "MidpointOversampler2xTest",
         "EmsSvfChecks",
         "com.insectlabs.dsp.chorus.ChorusCoreTest",
         "com.insectlabs.dsp.delay.BbdAnalogDelayParityTest",

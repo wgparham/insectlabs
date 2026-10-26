@@ -8,6 +8,7 @@ References useful across multiple Teletape Workshop instruments belong here. Kee
 
 - [Synthi 100 service index and excerpts](ems_synthi100_sm.pdf) — 12-page service document with a drawing index and circuit excerpts. Earlier identified here as the educational handbook in error; it is not the [Vasulka educational handbook](https://www.vasulka.org/archive/RightsIntrvwInstitMediaPolicies/IntrvwInstitKaldron/Amherst,MassEMS/SynthiEducHandbook.pdf).
 - [Synthi 100 schematic](ems_synthi_100_sch.pdf) — 63-page service schematic PDF.
+- [Synthi 100 VCA and amplifier design reference](Synthi-100-VCA-Amplifier-Design-Reference.pdf) — nine-page research packet with selected brochure, service-manual index and schematic pages for the quad log modulator and related amplifiers.
 - [Synthi 100 Computer Synthi document](EMS%2520%2520Synthi%2520100%2520Computer%2520Synthi.pdf) — four-page PDF retained under its supplied filename.
 - [Synthi AKS service manual](emsa_synthi-aks_sm.pdf) — 88-page reference PDF.
 - [OSC oscillator research](../OSC/RESEARCH.md) — locations of the 100/AKS oscillator drawings, calibration evidence, thermal mechanisms and proposed hybrid DSP consequences.

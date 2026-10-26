@@ -28,7 +28,7 @@ public class osc extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "e0569afc6a0e4b66a2846d52948400d9" );
+        SetSkin( "94b99920099e49828b7f66d6e3321e3f" );
     }
 
 void InitializeControls()
@@ -270,7 +270,7 @@ void InitializeControls()
         imageTTW.SetWantsMouseNotifications( false );
         imageTTW.SetPosition( 5, 5 );
         imageTTW.SetSize( 50, 16 );
-        imageTTW.SetCurrentImage( "image image(5).svg" );
+        imageTTW.SetCurrentImage( "image image(3).svg" );
 
         labelNumber = new VoltageLabel( "labelNumber", "Model Number Label", this, "osc" );
         AddComponent( labelNumber );

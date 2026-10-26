@@ -38,7 +38,7 @@ These are design directions, not a committed product list. Keep the general CV r
 | [FPA Four Pre-Amps](FPA/versions/1.0.0/) | 1.0.0 | Four independent preamp/overdrive voices with individual outputs and a summed mix | [User manual](FPA/versions/1.0.0/USER-MANUAL.md) |
 | [HGD High Gain Device](HGD/versions/1.0.0/) | 1.0.0 | Four independent high-gain voices with individual outputs and a summed mix | [User manual](HGD/versions/1.0.0/USER-MANUAL.md) |
 | [FMC Four Channel Modulator](FMC/versions/1.0.0/) | 1.0.0 | Four selectable flanger, tremolo, analog-delay and digital-delay lanes with individual outputs and a half-sum mix | [User manual](FMC/versions/1.0.0/USER-MANUAL.md) |
-| [SN93T Tuner](sn93t/versions/1.0.0/) | 1.0.0 | Monophonic tuner with custom temperaments, tone, pitch CV and VCO calibration | [User manual](sn93t/versions/1.0.0/USER-MANUAL.md) |
+| [SN93T Tuner](sn93t/versions/1.1.0/) | 1.1.0 | Monophonic tuner with custom temperaments, tone, pitch CV and VCO calibration | [User manual](sn93t/versions/1.1.0/USER-MANUAL.md) |
 
 The RVG's [developer notes](RVG/DEVELOPER-NOTES.md), [release review](RVG/versions/2.0.0/REVIEW.md), and [shared references](references/README.md) record implementation, validation and research. The RVG models EMS workflow and feel; it is not an exact circuit reconstruction. The b08's [developer notes](b08/DEVELOPER-NOTES.md) and [release review](b08/versions/1.0.0/REVIEW.md) document its artwork-only panel and validation. FPA adds four independent preamp/overdrive voices inspired by CE-1, RE-201/301, BD-2 and SD-1 circuits; see its [design research](FPA/references/FPA-Design-Research.md) and [developer notes](FPA/DEVELOPER-NOTES.md).
 

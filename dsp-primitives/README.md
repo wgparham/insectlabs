@@ -8,6 +8,12 @@ SDK-independent reusable audio building blocks, preserved when module developmen
 
 Provenance: unchanged coefficients/arithmetic from Colorbox RGB 4.0.2, extracted from the RM1010 embedded copy on 2026-10-08. The repository license applies. This is not a perfect brick-wall anti-alias filter; preserve the approved performance/CPU compromise when reusing it.
 
+## MidpointOversampler2x
+
+[Source](src/com/insectlabs/dsp/interpolation/MidpointOversampler2x.java): allocation-free, lightweight 2x midpoint processing used by several Wardenclyffe nonlinear stages. After seeding on the first input, it linearly estimates the half-sample between adjacent host samples, calls a caller-supplied processor at the midpoint and endpoint, then either averages those outputs or returns the endpoint. `AVERAGE` suits nonlinear shaping/residual paths; `SECOND` suits a stateful filter that advances twice per host sample. The caller owns processor state and must reset it separately from the interpolation history.
+
+This is a midpoint approximation, not a band-limited or alias-free oversampler. It costs two processor calls per host sample after initialization and does not provide FIR interpolation/decimation. For band-limited 2x conversion, use [HalfBand19](src/com/insectlabs/dsp/filters/HalfBand19.java) instead. The Wardenclyffe precedents include `SIGPROC` in type-23 1.0.0, Deep Tone in 1a-30 2.0.0, SW2 amplifier conditioning, and 1947b's nonlinear residual path; this utility packages the shared midpoint mechanics while leaving each module's nonlinear law and state behavior module-owned.
+
 ## CubicHermite
 
 [Source](src/com/insectlabs/dsp/interpolation/CubicHermite.java): a stateless, allocation-free four-point cubic interpolator using Catmull-Rom tangent estimates and Horner evaluation. It interpolates between the middle samples, `s1` at fraction 0 and `s2` at fraction 1. Derived from the abandoned user-provided `testCode/cubicHermite.java` sketch and archived with the Model 62 release tests as provenance.
