@@ -1,0 +1,11 @@
+DCA 1.0.0 — validation record (2026-10-26)
+
+PASS: exported Java and Designer-embedded Java match after normalization; the Designer binary round-trips byte-for-byte through the project serializer.
+PASS: Designer class/package/notes are dca / com.insectlabs.dca / dca v1.0.0 canon; all control UUIDs are present and unique.
+PASS: exported and embedded module compile against C:\ProgramData\Voltage\voltage.jar using Java 17, --release 17, -Xlint:all and -Werror.
+PASS: 2,494 deterministic DSP and routing assertions cover gain laws, shape endpoints/continuity, limiter bounds, pan, HalfBand19 response, CV scaling, channel idle, IND/SERIAL/ST wiring, mono fold-down, unity LINK sum, bypass routing, nonfinite input sanitation and reproducibility.
+PASS: hero image and release SHA-256 manifest.
+
+Repeat with `python tests/validate.py` from this directory.
+
+The validation is headless. No fresh Designer/Voltage Modular GUI reload, saved-patch migration audit, CPU benchmark, or new audition was performed in this closeout. Cherry Audio publication remains deferred under the series publication plan.

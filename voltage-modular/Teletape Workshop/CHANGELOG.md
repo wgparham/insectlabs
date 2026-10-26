@@ -1,3 +1,7 @@
+## 2026-10-26 — DCA 1.0.0
+
+Canonized the Dual Controlled Amplifier after strict Voltage SDK compilation, Designer binary/source checks and 2,494 headless math/routing assertions passed. Archived the synchronized pair, current hero panel, user/developer documentation, research history and repeatable checks. DCA uses the existing HalfBand19 DSP primitive design without adding a separate DCA primitive. The closeout did not repeat a GUI reload or audition; Cherry Audio publication remains deferred. Sixteen Teletape modules are now canonical.
+
 # Teletape Workshop changelog
 
 ## 2026-10-25 — SN93T 1.0.0

@@ -1,6 +1,6 @@
 # Teletape Workshop
 
-Teletape Workshop is the new name for the planned Radiophonic series. It follows the completed Wardenclyffe Station collection and shifts toward electronic-music studio equipment rooted in the mid-1960s through mid-1970s. RVG, TSL, OFB, b08, CXL, SVF, TRM, ZOID, N02, OSC, CED, FPA, HGD, FMC and SN93T are canonized. The complete series inventory is not yet locked.
+Teletape Workshop is the new name for the planned Radiophonic series. It follows the completed Wardenclyffe Station collection and shifts toward electronic-music studio equipment rooted in the mid-1960s through mid-1970s. RVG, TSL, OFB, b08, CXL, SVF, TRM, ZOID, N02, OSC, CED, FPA, HGD, FMC, SN93T and DCA are canonized. The complete series inventory is not yet locked.
 
 ## Accepted directions to explore
 
@@ -27,6 +27,7 @@ These are design directions, not a committed product list. Keep the general CV r
 | [b08 Blanking Panel](b08/versions/1.0.0/) | 1.0.0 | 8 HP visual blanking panel; no custom DSP | [User manual](b08/versions/1.0.0/USER-MANUAL.md) |
 | [CED Chorus Ensemble Device](CED/versions/1.0.0/) | 1.0.0 | Four-program stereo ensemble and CE-1-style chorus/vibrato | [User manual](CED/versions/1.0.0/USER-MANUAL.md) |
 | [CXL Algorithmic Reverberation](CXL/versions/1.0.0/) | 1.0.0 | Dark cross-coupled plate-style reverb with 12-bit and grainy extended modes | [User manual](CXL/versions/1.0.0/USER-MANUAL.md) |
+| [DCA Dual Controlled Amplifier](DCA/versions/1.0.0/) | 1.0.0 | Two CV-controlled amplifier channels with IND/SERIAL/ST modes, bias, shape, stereo pan and mono fold-down | [User manual](DCA/versions/1.0.0/USER-MANUAL.md) |
 | [TSL Triple Slew Limiter](TSL/versions/1.0.0/) | 1.0.0 | Two CV slew channels and one slew/track-and-hold channel | [User manual](TSL/versions/1.0.0/USER-MANUAL.md) |
 | [OFB 8 Octave Filter Bank](OFB/versions/1.0.0/) | 1.0.0 | Eight fixed bands, level CV, clean taps and warm mix | [User manual](OFB/versions/1.0.0/USER-MANUAL.md) |
 | [SVF Dual State Variable Filter](SVF/versions/1.0.1/) | 1.0.1 | Dual Synthi 100-derived core with simultaneous HIGH/BAND/LOW outputs and selectable routing | [User manual](SVF/versions/1.0.1/USER-MANUAL.md) |
@@ -41,7 +42,7 @@ These are design directions, not a committed product list. Keep the general CV r
 
 The RVG's [developer notes](RVG/DEVELOPER-NOTES.md), [release review](RVG/versions/2.0.0/REVIEW.md), and [shared references](references/README.md) record implementation, validation and research. The RVG models EMS workflow and feel; it is not an exact circuit reconstruction. The b08's [developer notes](b08/DEVELOPER-NOTES.md) and [release review](b08/versions/1.0.0/REVIEW.md) document its artwork-only panel and validation. FPA adds four independent preamp/overdrive voices inspired by CE-1, RE-201/301, BD-2 and SD-1 circuits; see its [design research](FPA/references/FPA-Design-Research.md) and [developer notes](FPA/DEVELOPER-NOTES.md).
 
-Shared [design resources](designResources/README.md) inventory the series artwork and font license. EMS schematics, manuals and broader circuit references are catalogued in the [reference index](references/README.md).
+DCA preserves its [development brief history](DCA/research/Design-Brief-History.md) and [iteration record](DCA/research/Development-History.md). Shared [design resources](designResources/README.md) inventory the series artwork and font license. EMS schematics, manuals and broader circuit references are catalogued in the [reference index](references/README.md).
 
 For current project decisions and optional ideas, see [Voltage Modular documentation](../docs/README.md), [Future Module Proposals](../docs/Future-Module-Proposals.md), and [Cherry Audio Notes](Cherry-Audio-Notes.md).
 
