@@ -1,0 +1,19 @@
+SN93T 1.0.0 automated validation
+
+Command:
+  python tests/validate.py
+
+Result: PASS
+
+- Exported source: strict Java 17 compile against the installed Voltage SDK.
+- VMOD-embedded source: strict Java 17 compile against the installed Voltage SDK.
+- Designer serialization: parser and byte-exact encode round-trip passed.
+- Exported/embedded source parity: passed.
+- Metadata: class/package and v1.0.0 Notes passed; 103 controls have unique UUIDs; seven signal jacks and five buttons present; 2,205 protected-line anchors valid.
+- Pitch detection: 17 fixed-frequency sine tests from 31 Hz through the 2.2 kHz ceiling passed within 0.1 cent in this synthetic setup.
+- Harmonic tracking: four harmonic mixtures with a stronger second harmonic passed.
+- State/output checks: silence, acquisition, HOLD, no-signal timeout, fine response, 5 V peak/440 Hz tone, and NaN/Infinity robustness passed.
+- Tuning files: Harry Partch 43-tone, Wendy Carlos Alpha and Werckmeister III `.tun` files parsed; a Scala `.scl` smoke scale parsed.
+- Calibration: synthetic 65.41 Hz base VCO / 1 V-per-octave sweep returned 0.999996 octave/volt, 0.012 cent residual and 6/7 in-range steps.
+
+The tests are headless. They do not replace native Designer reload, saved-patch recall, real-instrument audition, alternate sample-rate validation or native-host CPU measurement. See REVIEW.md.

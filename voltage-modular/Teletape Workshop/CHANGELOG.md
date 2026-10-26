@@ -1,5 +1,9 @@
 # Teletape Workshop changelog
 
+## 2026-10-25 — SN93T 1.0.0
+
+Canonized SN93T Tuner after strict Voltage SDK compilation, Designer binary/source checks and deterministic detector, tuning, tone, state and calibration tests. The upper-range boundary sweep exposed octave-low readings above roughly 2.13 kHz; lowering the MPM peak threshold to 0.80 restored correct tracking through the 2.2 kHz ceiling while harmonic-rich tests remained stable. Archived the pair, hero, user/developer documentation, test tuning fixtures, screen-state capture and development history. The project passed headless validation; a fresh native Designer reload and real-instrument audition were not part of this closeout. Cherry Audio publication remains deferred; fifteen modules are now canonical.
+
 ## 2026-10-22 — FMC 1.0.0
 
 Canonized FMC Four Channel Modulator after the user-authorized SDK, VMOD, DSP and stub-wiring checks passed. Archived the four-voice/four-lane source pair, panel, manual, developer notes, design research, pedal references, tests, and headless performance measurement. The current release fixes the typed-edit callback duplication and keeps the direct lane bypass and half-sum MIX behavior consistent. Fourteen modules are canonical; Cherry Audio publication remains deferred and the full lineup is still open.

@@ -82,5 +82,11 @@
     "path": "FMC/versions/1.0.0",
     "module": "fmc",
     "name": "FMC Four Channel Modulator"
+  },
+  "sn93t": {
+    "version": "1.0.0",
+    "path": "sn93t/versions/1.0.0",
+    "module": "sn93t",
+    "name": "SN93T Tuner"
   }
 }
