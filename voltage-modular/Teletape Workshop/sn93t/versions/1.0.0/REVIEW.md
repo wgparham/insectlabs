@@ -13,7 +13,7 @@ First canonical archive, promoted from the author's v0.1.10 release candidate. T
 - **PASS** — silence rejection, valid-signal acquisition, HOLD behavior, signal-loss timeout, fine response setting, 5 V peak tone endpoint, 440 Hz tone frequency and finite output under NaN/Infinity inputs.
 - **PASS** — all three archived `.tun` files parse into 128-entry tuning maps; a valid five-note Scala `.scl` parses.
 - **PASS** — seven-step synthetic VCO CAL sweep measured 0.999996 octave/volt, 0.012-cent residual and retained 6 of 7 measurements, correctly excluding the out-of-range step.
-- **LIMITATION** — this closeout did not reopen the project in Designer or run a new native-host patch/session. Prior development notes record the author's Designer operation on v0.1.8 and author-run CAL measurements for v0.1.10; current final files have strict SDK compilation and binary validation only.
+- **PASS** — the author confirmed the final canonical pair loads, compiles and runs in Voltage Module Designer on 2026-10-25. The earlier native-host gap is closed; a real-instrument listening check was not reported in this closeout.
 - **LIMITATION** — synthetic tests do not establish broad real-instrument tracking, alternate sample-rate behavior or native Voltage CPU use. CAL depends on signal quality, oscillator stability and detector range.
 
 The user authorized canonization if the checks passed. Final pair and hero hashes are recorded in `SHA256.json`. Cherry Audio publication remains deferred under the collection plan.

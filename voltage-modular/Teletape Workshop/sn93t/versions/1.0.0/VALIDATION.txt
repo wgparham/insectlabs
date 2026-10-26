@@ -16,4 +16,4 @@ Result: PASS
 - Tuning files: Harry Partch 43-tone, Wendy Carlos Alpha and Werckmeister III `.tun` files parsed; a Scala `.scl` smoke scale parsed.
 - Calibration: synthetic 65.41 Hz base VCO / 1 V-per-octave sweep returned 0.999996 octave/volt, 0.012 cent residual and 6/7 in-range steps.
 
-The tests are headless. They do not replace native Designer reload, saved-patch recall, real-instrument audition, alternate sample-rate validation or native-host CPU measurement. See REVIEW.md.
+The author confirmed that this final pair loads, compiles and runs in Voltage Module Designer (2026-10-25). These deterministic DSP tests do not replace real-instrument audition, saved-patch recall, alternate sample-rate validation or native-host CPU measurement. See REVIEW.md.
