@@ -39,6 +39,13 @@
       "date": "2026-10-20",
       "arithmetic": "Exact extraction of the Dimension-style ensemble and CE-1-style chorus/vibrato shared core; module routing and Voltage controls remain outside the primitive",
       "validation": "CED archived harness compiles the module and primitive, compares module output against this core through stubs, and runs standalone numeric checks"
+    },
+    {
+      "name": "BbdAnalogDelay",
+      "origin": "voltage-modular/Teletape Workshop/FMC/versions/1.0.0/fmc.java (FmcCore DM-2 voice)",
+      "date": "2026-10-22",
+      "arithmetic": "Exact extraction of the mono wet delay path, including control smoothing, BBD clock-linked filtering, Hermite read, compander/grit, feedback, hold compensation and unpatched-tail cap; mixer routing remains caller-owned",
+      "validation": "dsp-primitives/tests/validate.py compiles the archived FMC DM-2 core and compares 288000 samples plus reset behavior bit-for-bit"
     }
   ]
 }

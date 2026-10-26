@@ -622,7 +622,6 @@ Extreme-metal drum loop for fast transient density, cymbal energy, gate response
 
 CC0 source: Original stereo 44.1 kHz 320 kbps MP3. Decoded/resampled to stereo 48 kHz, mean removed, 10 ms wrap-tail blend, linked peak adjusted to -9 dBFS, rounded to 24-bit PCM without dither. No compression or additional coloration. Conversion does not restore source precision or MP3 losses. See ATTRIBUTION.md.
 
-
 ## 08-module-demos/CED_dimension_ce1_chorus_demo.wav
 
 44 seconds; 2 channel(s); module-demo.
@@ -632,3 +631,33 @@ Loop: non-looping segmented demonstration. Peak dBFS: [-3.098, -3.098]; RMS dBFS
 Listening reference for CED Dimension-style ensemble programs and CE-1-style chorus/vibrato; compare routing, stereo movement and mode character.
 
 Deterministic 44-second, 48 kHz stereo PCM render from the CED 1.0.0 ChorusCoreTest. Eleven 4-second sections: dry, four Dimension programs, three combination laws, all-program summed LFOs, CE-style chorus, and CE-style vibrato. Section boundaries are intentional; not a seamless loop.
+
+## 05-musical/synthetic_clean_death_metal_guitar_drop_d_180bpm.wav
+
+10.6667 seconds; 1 channel(s); original synthesized clean electric-guitar performance.
+
+Loop: exact 8-bar 4/4 cycle at 180 BPM; circular note tails; seamless periodic restart. Peak dBFS: [-12.0]; RMS dBFS: [-31.033151].
+
+Dry, high-gain guitar input source for distortion pedals, overdrives, fuzz, preamps, gates, EQ and compression tests.
+
+Drop-D tuning; 180 BPM; eight bars in 4/4. Mono Karplus-Strong plucked-string model with palm-muted sixteenth-note chugs, syncopated fretted notes and open power-chord accents. Clean direct-style source: no amp model, distortion, EQ, compression, reverb or other effects. Exact repeating cycle with note tails wrapped across the boundary. Peak-normalized to -12 dBFS for pedal headroom; WAV level is not an absolute voltage.
+
+## 07-recordings/slide_the_e_sandman_aceinet_mono.wav
+
+29.5 seconds; 1 channel(s); third-party guitar recording.
+
+Loop: 29.5-second complete phrase with 10 ms circular wrap crossfade; no silence; not tempo-locked. Peak dBFS: [-12.000000253286988]; RMS dBFS: [-27.38026578331187].
+
+Recorded electric-guitar phrase for distortion pedals, overdrives, fuzz, preamps, gates, EQ and compression tests.
+
+Complete 29.5-second source phrase; original channels are identical dual mono, delivered as mono. Mean removed, circular 10 ms wrap crossfade, Fourier resampled 44.1 to 48 kHz, and peak adjusted to -12 dBFS for pedal input headroom. No added effects or time stretching. Tempo is not locked. See ATTRIBUTION.md.
+
+## 07-recordings/slip_the_e_to_g_aceinet_mono.wav
+
+24.2623 seconds; 1 channel(s); third-party guitar recording.
+
+Loop: 24.262-second supplied loop cut with 10 ms circular wrap crossfade; no silence; not tempo-locked. Peak dBFS: [-12.000000253286988]; RMS dBFS: [-24.41436198279473].
+
+Recorded electric-guitar phrase for distortion pedals, overdrives, fuzz, preamps, gates, EQ and compression tests.
+
+User-supplied 24.262-second loop cut from aceinet’s Freesound recording. The supplied dual-mono 48 kHz/16-bit PCM was converted to mono 48 kHz/24-bit PCM, mean removed, circularly crossfaded across 10 ms at the wrap, and peak adjusted to -12 dBFS for pedal input headroom. No resampling, time stretching, or added effects. The Freesound listing describes a 44-second stereo original; this supplied loop cut is preserved verbatim in sources/. See ATTRIBUTION.md.

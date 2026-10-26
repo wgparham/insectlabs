@@ -19,7 +19,7 @@ public class sn93t extends VoltageModule
 //[/user-inheritance]
 {
 
-    @SuppressWarnings("this-escape")
+    @SuppressWarnings("this-escape") 
     public sn93t( long moduleID, VoltageObjects voltageObjects )
     {
         super( moduleID, voltageObjects, "sn93t", ModuleType.ModuleType_Utility, 3.2 );
@@ -29,7 +29,7 @@ public class sn93t extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "98e43ae354904f41853bf3ce537ef171" );
+        SetSkin( "db94525b29c746f0b051567bf55cb067" );
     }
 
 void InitializeControls()
@@ -3393,3 +3393,5 @@ void InitializeControls2()
     }
     //[/user-code-and-variables]
 }
+
+ 

@@ -1,6 +1,6 @@
 {
   "collection": "InsectLabs Audio Test Bench",
-  "version": "1.6.0",
+  "version": "1.9.0",
   "seed": 19710510,
   "generator": "generate.py",
   "numpy_version": "2.3.5",
@@ -1878,6 +1878,118 @@
       "notes": "Deterministic 44-second, 48 kHz stereo PCM render from the CED 1.0.0 ChorusCoreTest. Eleven 4-second sections: dry, four Dimension programs, three combination laws, all-program summed LFOs, CE-style chorus, and CE-style vibrato. Section boundaries are intentional; not a seamless loop.",
       "sha256": "be604e950629292188a2e720a1d593d66249ae7f56d874a83372838b4bcae180",
       "license": "CC0-1.0"
+    },
+    {
+      "file": "05-musical/synthetic_clean_death_metal_guitar_drop_d_180bpm.wav",
+      "frames": 512000,
+      "seconds": 10.666666666666666,
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits": 24,
+      "kind": "original synthesized clean electric-guitar performance",
+      "loop": "exact 8-bar 4/4 cycle at 180 BPM; circular note tails; seamless periodic restart",
+      "peak_dbfs": [
+        -12.0
+      ],
+      "rms_dbfs": [
+        -31.033151
+      ],
+      "dc_mean": [
+        0.0001923449
+      ],
+      "correlation": null,
+      "boundary_step": [
+        0.002270937
+      ],
+      "purpose": "Dry, high-gain guitar input source for distortion pedals, overdrives, fuzz, preamps, gates, EQ and compression tests.",
+      "notes": "Drop-D tuning; 180 BPM; eight bars in 4/4. Mono Karplus-Strong plucked-string model with palm-muted sixteenth-note chugs, syncopated fretted notes and open power-chord accents. Clean direct-style source: no amp model, distortion, EQ, compression, reverb or other effects. Exact repeating cycle with note tails wrapped across the boundary. Peak-normalized to -12 dBFS for pedal headroom; WAV level is not an absolute voltage.",
+      "source": "Original deterministic NumPy string-model construction; test-bench/tools/add_clean_metal_guitar_loop.py",
+      "generator_sha256": "8720187b28e198e761c5a1df6e7b2f7ad76af7b61e2621e1eaf13ee06694a1b6",
+      "numpy_version": "2.3.5",
+      "license": "CC0-1.0 (generated audio)",
+      "sha256": "28a95d7b7a501d8850eeb54630154bf9743fb207f032aaab5f4a3dc664e6b89c",
+      "musical_cycle": {
+        "frames": 512000,
+        "sample_rate": 48000,
+        "bpm": 180,
+        "bars_4_4": 8,
+        "tuning": "Drop D (D2 A2 D3 G3 B3 E4)",
+        "wrap_method": "Plucked-string tails are circularly mixed across the exact loop boundary; no fade or silence is inserted."
+      }
+    },
+    {
+      "file": "07-recordings/slide_the_e_sandman_aceinet_mono.wav",
+      "frames": 1416000,
+      "seconds": 29.5,
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits": 24,
+      "kind": "third-party guitar recording",
+      "loop": "29.5-second complete phrase with 10 ms circular wrap crossfade; no silence; not tempo-locked",
+      "peak_dbfs": [
+        -12.000000253286988
+      ],
+      "rms_dbfs": [
+        -27.38026578331187
+      ],
+      "dc_mean": [
+        -3.7701537380110744e-08
+      ],
+      "correlation": null,
+      "boundary_step": [
+        2.0265579223632812e-06
+      ],
+      "purpose": "Recorded electric-guitar phrase for distortion pedals, overdrives, fuzz, preamps, gates, EQ and compression tests.",
+      "notes": "Complete 29.5-second source phrase; original channels are identical dual mono, delivered as mono. Mean removed, circular 10 ms wrap crossfade, Fourier resampled 44.1 to 48 kHz, and peak adjusted to -12 dBFS for pedal input headroom. No added effects or time stretching. Tempo is not locked. See ATTRIBUTION.md.",
+      "license": "CC0-1.0",
+      "sources": [
+        "aceinet_slide_the_e_sandman"
+      ],
+      "source_sha256": "9477bc47f16057cc15521dcdfbc595030f1eb6d23d5de40b83ece21ffcc574ac",
+      "sha256": "8cc6874bb02c00f2d091d1f21954ad25859ac3bc44fb098478d764997dddcf99",
+      "circular_loop": {
+        "frames": 1416000,
+        "sample_rate": 48000,
+        "wrap_crossfade_frames": 480,
+        "wrap_method": "10 ms circular linear crossfade; no inserted silence or endpoint fade"
+      }
+    },
+    {
+      "file": "07-recordings/slip_the_e_to_g_aceinet_mono.wav",
+      "frames": 1164589,
+      "seconds": 24.262270833333332,
+      "channels": 1,
+      "sample_rate": 48000,
+      "bits": 24,
+      "kind": "third-party guitar recording",
+      "loop": "24.262-second supplied loop cut with 10 ms circular wrap crossfade; no silence; not tempo-locked",
+      "peak_dbfs": [
+        -12.000000253286988
+      ],
+      "rms_dbfs": [
+        -24.41436198279473
+      ],
+      "dc_mean": [
+        3.574613261947908e-07
+      ],
+      "correlation": null,
+      "boundary_step": [
+        0.00032961368560791016
+      ],
+      "purpose": "Recorded electric-guitar phrase for distortion pedals, overdrives, fuzz, preamps, gates, EQ and compression tests.",
+      "notes": "User-supplied 24.262-second loop cut from aceinet\u2019s Freesound recording. The supplied dual-mono 48 kHz/16-bit PCM was converted to mono 48 kHz/24-bit PCM, mean removed, circularly crossfaded across 10 ms at the wrap, and peak adjusted to -12 dBFS for pedal input headroom. No resampling, time stretching, or added effects. The Freesound listing describes a 44-second stereo original; this supplied loop cut is preserved verbatim in sources/. See ATTRIBUTION.md.",
+      "license": "CC0-1.0",
+      "sources": [
+        "aceinet_slip_the_e_to_g"
+      ],
+      "source_sha256": "cdcfa517c0dc27431a641b1f1d1b8e36cf2ece4f29aea1f0a0591fd249fc1cc1",
+      "sha256": "fa294da8c4b738648c53d3eb5f1fe7837773dbe2d23e6b8e8bf8e7a0c371f1b2",
+      "circular_loop": {
+        "frames": 1164589,
+        "sample_rate": 48000,
+        "wrap_crossfade_frames": 480,
+        "wrap_method": "10 ms circular linear crossfade; no inserted silence or endpoint fade"
+      }
     }
   ],
   "sources": [
@@ -1973,6 +2085,59 @@
         "bars_4_4": 8,
         "method": "Sample-aligned cut near the 3.2-second phrase boundary. Last 10 ms blended into the original 10 ms immediately preceding the start; duration unchanged."
       }
+    },
+    {
+      "id": "aceinet_slide_the_e_sandman",
+      "title": "slide the e sandman.wav",
+      "author": "aceinet",
+      "user": "aceinet",
+      "sound": 417149,
+      "url": "https://freesound.org/people/aceinet/sounds/417149/",
+      "license": "CC0-1.0",
+      "license_label": "Creative Commons 0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_confirmed": "2026-10-21",
+      "filename": "417149__aceinet__slide-the-e-sandman.wav",
+      "sha256": "9477bc47f16057cc15521dcdfbc595030f1eb6d23d5de40b83ece21ffcc574ac",
+      "source_format": {
+        "channels": 2,
+        "sample_rate": 44100,
+        "bits": 16,
+        "frames": 1300950,
+        "seconds": 29.5
+      },
+      "delivery": "07-recordings/slide_the_e_sandman_aceinet_mono.wav",
+      "purpose": "Recorded electric-guitar phrase for distortion pedals, overdrives, fuzz, preamps, gates, EQ and compression tests."
+    },
+    {
+      "id": "aceinet_slip_the_e_to_g",
+      "title": "slip the e to g.wav",
+      "author": "aceinet",
+      "user": "aceinet",
+      "sound": 417150,
+      "url": "https://freesound.org/people/aceinet/sounds/417150/",
+      "license": "CC0-1.0",
+      "license_label": "Creative Commons 0",
+      "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license_checked": "2026-10-21",
+      "filename": "417150__aceinet__slip-the-e-to-g_loop.wav",
+      "sha256": "cdcfa517c0dc27431a641b1f1d1b8e36cf2ece4f29aea1f0a0591fd249fc1cc1",
+      "source_page_format": {
+        "channels": 2,
+        "sample_rate": 44100,
+        "bits": 16,
+        "seconds": 44.0
+      },
+      "supplied_file_format": {
+        "channels": 2,
+        "sample_rate": 48000,
+        "bits": 16,
+        "frames": 1164589,
+        "seconds": 24.262270833333332
+      },
+      "delivery": "07-recordings/slip_the_e_to_g_aceinet_mono.wav",
+      "purpose": "Recorded electric-guitar phrase for distortion pedals, overdrives, fuzz, preamps, gates, EQ and compression tests.",
+      "note": "The supplied file is a shorter loop cut than the 44-second source described on the Freesound page; the supplied file is archived unchanged."
     }
   ]
 }

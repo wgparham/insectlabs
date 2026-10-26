@@ -28,7 +28,7 @@ public class fpa extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "8e3e490e65554aa7884111a8d6e62609" );
+        SetSkin( "8427003e875e41e28636269d5ac71be8" );
     }
 
 void InitializeControls()
@@ -55,7 +55,7 @@ void InitializeControls()
         labelGain.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelGain.SetFont( "Arial Black", 12, false, false );
 
-        textLabel6 = new VoltageLabel( "textLabel6", "O Voicing Label", this, "—————— O ——————" );
+        textLabel6 = new VoltageLabel( "textLabel6", "O Voicing Label", this, "—————— MT ——————" );
         AddComponent( textLabel6 );
         textLabel6.SetWantsMouseNotifications( false );
         textLabel6.SetPosition( 0, 280 );
@@ -76,7 +76,7 @@ void InitializeControls()
         textLabel6.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         textLabel6.SetFont( "Arial Black", 12, false, false );
 
-        textLabel5 = new VoltageLabel( "textLabel5", "D Voicing Label", this, "—————— D ——————" );
+        textLabel5 = new VoltageLabel( "textLabel5", "D Voicing Label", this, "—————— HM ——————" );
         AddComponent( textLabel5 );
         textLabel5.SetWantsMouseNotifications( false );
         textLabel5.SetPosition( 0, 272 );
@@ -97,7 +97,7 @@ void InitializeControls()
         textLabel5.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         textLabel5.SetFont( "Arial Black", 12, false, false );
 
-        textLabel4 = new VoltageLabel( "textLabel4", "Re Voicing Label", this, "—————— Re ——————" );
+        textLabel4 = new VoltageLabel( "textLabel4", "Re Voicing Label", this, "—————— FZ ——————" );
         AddComponent( textLabel4 );
         textLabel4.SetWantsMouseNotifications( false );
         textLabel4.SetPosition( 0, 263 );
@@ -118,7 +118,7 @@ void InitializeControls()
         textLabel4.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         textLabel4.SetFont( "Arial Black", 12, false, false );
 
-        textLabel3 = new VoltageLabel( "textLabel3", "C Voicing Label", this, "—————— C ——————" );
+        textLabel3 = new VoltageLabel( "textLabel3", "C Voicing Label", this, "—————— DS ——————" );
         AddComponent( textLabel3 );
         textLabel3.SetWantsMouseNotifications( false );
         textLabel3.SetPosition( 0, 255 );
@@ -146,16 +146,16 @@ void InitializeControls()
         imageTTW.SetSize( 41, 13 );
         imageTTW.SetCurrentImage( "image image(3).svg" );
 
-        labelNumber = new VoltageLabel( "labelNumber", "Model Number Label", this, "fpa" );
+        labelNumber = new VoltageLabel( "labelNumber", "Model Number Label", this, "hgd" );
         AddComponent( labelNumber );
         labelNumber.SetWantsMouseNotifications( false );
-        labelNumber.SetPosition( 9, 66 );
+        labelNumber.SetPosition( 9, 176 );
         labelNumber.SetSize( 25, 13 );
         labelNumber.SetEditable( false, false );
         labelNumber.SetJustificationFlags( VoltageLabel.Justification.Right );
         labelNumber.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
         labelNumber.SetColor( new Color( 166, 36, 36, 255 ) );
-        labelNumber.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        labelNumber.SetBkColor( new Color( 26, 42, 58, 255 ) );
         labelNumber.SetBorderColor( new Color( 0, 0, 0, 0 ) );
         labelNumber.SetBorderSize( 1 );
         labelNumber.SetMultiLineEdit( false );
@@ -170,13 +170,13 @@ void InitializeControls()
         labelLocation = new VoltageLabel( "labelLocation", "Location Mark", this, "(r)aza (k)raft" );
         AddComponent( labelLocation );
         labelLocation.SetWantsMouseNotifications( false );
-        labelLocation.SetPosition( 1, 55 );
+        labelLocation.SetPosition( 1, 163 );
         labelLocation.SetSize( 41, 14 );
         labelLocation.SetEditable( false, false );
         labelLocation.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
         labelLocation.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
         labelLocation.SetColor( new Color( 164, 34, 34, 255 ) );
-        labelLocation.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        labelLocation.SetBkColor( new Color( 26, 42, 58, 255 ) );
         labelLocation.SetBorderColor( new Color( 0, 0, 0, 0 ) );
         labelLocation.SetBorderSize( 1 );
         labelLocation.SetMultiLineEdit( false );
@@ -235,7 +235,7 @@ void InitializeControls()
         knobTone1 = new VoltageKnob( "knobTone1", "Tone 1", this, -1.0, 1.0, 0.0 );
         AddComponent( knobTone1 );
         knobTone1.SetWantsMouseNotifications( false );
-        knobTone1.SetPosition( 85, 30 );
+        knobTone1.SetPosition( 10, 30 );
         knobTone1.SetSize( 20, 20 );
         knobTone1.SetSkin( "TR Large" );
         knobTone1.SetRange( -1.0, 1.0, 0.0, false, 0 );
@@ -243,10 +243,43 @@ void InitializeControls()
         knobTone1.DisplayValueInPercent( true );
         knobTone1.SetKnobAdjustsRing( true );
 
+        knobThird1 = new VoltageKnob( "knobThird1", "Third Knob 1", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobThird1 );
+        knobThird1.SetWantsMouseNotifications( false );
+        knobThird1.SetPosition( 85, 30 );
+        knobThird1.SetSize( 20, 20 );
+        knobThird1.SetSkin( "TR Large" );
+        knobThird1.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobThird1.SetKnobParams( 215, 145 );
+        knobThird1.DisplayValueInPercent( true );
+        knobThird1.SetKnobAdjustsRing( true );
+
+        knobThird2 = new VoltageKnob( "knobThird2", "Third Knob 2", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobThird2 );
+        knobThird2.SetWantsMouseNotifications( false );
+        knobThird2.SetPosition( 85, 86 );
+        knobThird2.SetSize( 20, 20 );
+        knobThird2.SetSkin( "TR Large" );
+        knobThird2.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobThird2.SetKnobParams( 215, 145 );
+        knobThird2.DisplayValueInPercent( true );
+        knobThird2.SetKnobAdjustsRing( true );
+
+        knobThird3 = new VoltageKnob( "knobThird3", "Third Knob 3", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobThird3 );
+        knobThird3.SetWantsMouseNotifications( false );
+        knobThird3.SetPosition( 85, 140 );
+        knobThird3.SetSize( 20, 20 );
+        knobThird3.SetSkin( "TR Large" );
+        knobThird3.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobThird3.SetKnobParams( 215, 145 );
+        knobThird3.DisplayValueInPercent( true );
+        knobThird3.SetKnobAdjustsRing( true );
+
         knobTone2 = new VoltageKnob( "knobTone2", "Tone 2", this, -1.0, 1.0, 0.0 );
         AddComponent( knobTone2 );
         knobTone2.SetWantsMouseNotifications( false );
-        knobTone2.SetPosition( 85, 85 );
+        knobTone2.SetPosition( 10, 85 );
         knobTone2.SetSize( 20, 20 );
         knobTone2.SetSkin( "TR Large" );
         knobTone2.SetRange( -1.0, 1.0, 0.0, false, 0 );
@@ -257,7 +290,7 @@ void InitializeControls()
         knobTone3 = new VoltageKnob( "knobTone3", "Tone 3", this, -1.0, 1.0, 0.0 );
         AddComponent( knobTone3 );
         knobTone3.SetWantsMouseNotifications( false );
-        knobTone3.SetPosition( 85, 140 );
+        knobTone3.SetPosition( 10, 140 );
         knobTone3.SetSize( 20, 20 );
         knobTone3.SetSkin( "TR Large" );
         knobTone3.SetRange( -1.0, 1.0, 0.0, false, 0 );
@@ -268,7 +301,7 @@ void InitializeControls()
         knobTone4 = new VoltageKnob( "knobTone4", "Tone 4", this, -1.0, 1.0, 0.0 );
         AddComponent( knobTone4 );
         knobTone4.SetWantsMouseNotifications( false );
-        knobTone4.SetPosition( 85, 195 );
+        knobTone4.SetPosition( 10, 195 );
         knobTone4.SetSize( 20, 20 );
         knobTone4.SetSkin( "TR Large" );
         knobTone4.SetRange( -1.0, 1.0, 0.0, false, 0 );
@@ -475,7 +508,7 @@ void InitializeControls()
         labelTone = new VoltageLabel( "labelTone", "Tone Label", this, "TONE" );
         AddComponent( labelTone );
         labelTone.SetWantsMouseNotifications( false );
-        labelTone.SetPosition( 80, 16 );
+        labelTone.SetPosition( 5, 16 );
         labelTone.SetSize( 31, 15 );
         labelTone.SetEditable( false, false );
         labelTone.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
@@ -493,53 +526,37 @@ void InitializeControls()
         labelTone.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelTone.SetFont( "Arial Black", 9, false, false );
 
-        buttonPhase1 = new VoltageToggle( "buttonPhase1", "Phase Button 1", this, false, 0 );
-        AddComponent( buttonPhase1 );
-        buttonPhase1.SetWantsMouseNotifications( false );
-        buttonPhase1.SetPosition( 10, 30 );
-        buttonPhase1.SetSize( 20, 20 );
-        buttonPhase1.SetSkin( "2500 Square Big" );
-        buttonPhase1.ShowOverlay( true );
-        buttonPhase1.SetImageOverlay( "button-label-phase-invert-icon.svg" );
-        buttonPhase1.SetOverlayText( "" );
-        buttonPhase1.SetOverlayArea( 0, 0, 0, 0 );
-        buttonPhase1.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+        knobThird4 = new VoltageKnob( "knobThird4", "Third Knob 4", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobThird4 );
+        knobThird4.SetWantsMouseNotifications( false );
+        knobThird4.SetPosition( 85, 195 );
+        knobThird4.SetSize( 20, 20 );
+        knobThird4.SetSkin( "TR Large" );
+        knobThird4.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobThird4.SetKnobParams( 215, 145 );
+        knobThird4.DisplayValueInPercent( true );
+        knobThird4.SetKnobAdjustsRing( true );
 
-        buttonPhase2 = new VoltageToggle( "buttonPhase2", "Phase Button 2", this, false, 0 );
-        AddComponent( buttonPhase2 );
-        buttonPhase2.SetWantsMouseNotifications( false );
-        buttonPhase2.SetPosition( 10, 85 );
-        buttonPhase2.SetSize( 20, 20 );
-        buttonPhase2.SetSkin( "2500 Square Big" );
-        buttonPhase2.ShowOverlay( true );
-        buttonPhase2.SetImageOverlay( "button-label-phase-invert-icon.svg" );
-        buttonPhase2.SetOverlayText( "" );
-        buttonPhase2.SetOverlayArea( 0, 0, 0, 0 );
-        buttonPhase2.SetOverlayTextJustification( VoltageButton.Justification.Centered );
-
-        buttonPhase3 = new VoltageToggle( "buttonPhase3", "Phase Button 3", this, false, 0 );
-        AddComponent( buttonPhase3 );
-        buttonPhase3.SetWantsMouseNotifications( false );
-        buttonPhase3.SetPosition( 10, 140 );
-        buttonPhase3.SetSize( 20, 20 );
-        buttonPhase3.SetSkin( "2500 Square Big" );
-        buttonPhase3.ShowOverlay( true );
-        buttonPhase3.SetImageOverlay( "button-label-phase-invert-icon.svg" );
-        buttonPhase3.SetOverlayText( "" );
-        buttonPhase3.SetOverlayArea( 0, 0, 0, 0 );
-        buttonPhase3.SetOverlayTextJustification( VoltageButton.Justification.Centered );
-
-        buttonPhase4 = new VoltageToggle( "buttonPhase4", "Phase Button 4", this, false, 0 );
-        AddComponent( buttonPhase4 );
-        buttonPhase4.SetWantsMouseNotifications( false );
-        buttonPhase4.SetPosition( 10, 195 );
-        buttonPhase4.SetSize( 20, 20 );
-        buttonPhase4.SetSkin( "2500 Square Big" );
-        buttonPhase4.ShowOverlay( true );
-        buttonPhase4.SetImageOverlay( "button-label-phase-invert-icon.svg" );
-        buttonPhase4.SetOverlayText( "" );
-        buttonPhase4.SetOverlayArea( 0, 0, 0, 0 );
-        buttonPhase4.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+        labelTone_1 = new VoltageLabel( "labelTone_1", "Tone Label_1", this, "III" );
+        AddComponent( labelTone_1 );
+        labelTone_1.SetWantsMouseNotifications( false );
+        labelTone_1.SetPosition( 79, 16 );
+        labelTone_1.SetSize( 31, 15 );
+        labelTone_1.SetEditable( false, false );
+        labelTone_1.SetJustificationFlags( VoltageLabel.Justification.HorizCentered );
+        labelTone_1.SetJustificationFlags( VoltageLabel.Justification.VertCentered );
+        labelTone_1.SetColor( new Color( 164, 34, 34, 255 ) );
+        labelTone_1.SetBkColor( new Color( 65, 65, 65, 0 ) );
+        labelTone_1.SetBorderColor( new Color( 0, 0, 0, 0 ) );
+        labelTone_1.SetBorderSize( 1 );
+        labelTone_1.SetMultiLineEdit( false );
+        labelTone_1.SetIsNumberEditor( false );
+        labelTone_1.SetNumberEditorRange( 0, 100 );
+        labelTone_1.SetNumberEditorInterval( 1 );
+        labelTone_1.SetNumberEditorUsesMouseWheel( false );
+        labelTone_1.SetHasCustomTextHoverColor( false );
+        labelTone_1.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
+        labelTone_1.SetFont( "Arial Black", 11, false, false );
 }
 
 
@@ -801,10 +818,8 @@ void InitializeControls()
 
 
     // Auto-generated variables
-    private VoltageToggle buttonPhase4;
-    private VoltageToggle buttonPhase3;
-    private VoltageToggle buttonPhase2;
-    private VoltageToggle buttonPhase1;
+    private VoltageLabel labelTone_1;
+    private VoltageKnob knobThird4;
     private VoltageLabel labelTone;
     private VoltageLabel label4;
     private VoltageLabel label3;
@@ -827,6 +842,9 @@ void InitializeControls()
     private VoltageKnob knobTone4;
     private VoltageKnob knobTone3;
     private VoltageKnob knobTone2;
+    private VoltageKnob knobThird3;
+    private VoltageKnob knobThird2;
+    private VoltageKnob knobThird1;
     private VoltageKnob knobTone1;
     private VoltageKnob knobGain4;
     private VoltageKnob knobGain3;

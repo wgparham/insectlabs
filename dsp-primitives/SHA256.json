@@ -1,13 +1,15 @@
 {
-  "PROVENANCE.json": "6e8049efeec0e60327214cfc93426eb336c55a4751860f8f483a097dce6bc369",
-  "README.md": "37ddadcaf3062a23a763d6a4a96ffffbc46071a2f973b00c2833d75d462a3bd3",
+  "PROVENANCE.json": "78037bd43d55ec130b6728b691fddf6ed4946808d5cfe52fe65efe577ba6cfba",
+  "README.md": "ebdd1965b0073c672ba2b5fb520bd27556b7800c36715ad9b15938cd3375ed65",
   "src/com/insectlabs/dsp/chorus/ChorusCore.java": "a3c8f60b6dba97dbf5bbc9d41d83bc4e6c5fde192c95a1a2d0ad0abffc40a5ff",
+  "src/com/insectlabs/dsp/delay/BbdAnalogDelay.java": "4d719f5c437b4c96af66f20a5ddcc7d980c2df89c5f3a8f1e9fc4a94f0340a0e",
   "src/com/insectlabs/dsp/filters/EmsSvf96.java": "4255a19ccc5bfd9309316d6862fc08be699b33b4e04122b543d2db45f66877bd",
   "src/com/insectlabs/dsp/filters/HalfBand19.java": "fd2154506475dbc322137e47be4797f9303a04b7392e80159acd94ddfd04a4a0",
   "src/com/insectlabs/dsp/interpolation/CubicHermite.java": "eb0e9b428dc111031f6773d6c8731cdabe1e3db1c6313af970c6acdadba98451",
   "src/com/insectlabs/dsp/noise/GaloisLfsr.java": "1e516136b88d2592fe8e00c8cc1f9633198e4d7e7d324929fdff4187b1eb7c36",
   "src/com/insectlabs/dsp/oscillators/HybridWaveforms48.java": "6a677b83bc214467b758534447473241db80af3f81c770f35efc80473f95fa17",
+  "tests/BbdAnalogDelayParityTest.java": "e8e5bed4b447c996e4f272881a9c437263bfea60a221a094db6937ca9c993c87",
   "tests/ChorusCoreTest.java": "cf66dfd64348b96e1ce924a2f4b7b28dad137094969bb4b78ea81ba5ad0927b9",
   "tests/EmsSvfChecks.java": "804a05e6233717704ea23167c95f0aead9fc4110e9d7e985bd6812d75fe6300c",
-  "tests/validate.py": "21416b9bacf699935afe1196880789cd0487600defe146dd87666b0bfa15dcc0"
+  "tests/validate.py": "89d5a37dffab7cc541c2caf8cbd23f97e334d77e83b7e4e862f8ca33707e1900"
 }

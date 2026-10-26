@@ -2,12 +2,12 @@
 
 The Audio TestBench is a standalone InsectLabs project for module development, audio/musical
 experimentation, and repeatable listening or measurement. The full TestBench collection is versioned
-here. The current v1.6.0 collection contains 63 WAV files at 48 kHz/24-bit, source recordings with
+here. The current v1.9.0 collection contains 66 WAV files at 48 kHz/24-bit, source recordings with
 license evidence, and a measured catalog, attribution, manifest, and verification results.
 
 - `v1` contains the ready-to-patch collection and its listening guide.
-- `sources/ibm-freesound` preserves the source recordings and license evidence used for the recorded fixtures.
-- `InsectLabs-TestBench-v1.zip` remains the portable v1.1 snapshot (54 WAVs); its SHA-256 digest is in the adjacent `.sha256` file. The current v1.6 WAVs and metadata are checked in individually. Rebuilding the 241 MB archive requires Git LFS tooling, which was unavailable during this release.
+- `sources/` preserves source recordings and license evidence used for the recorded fixtures, grouped by source collection.
+- `InsectLabs-TestBench-v1.zip` remains the portable v1.1 snapshot (54 WAVs); its SHA-256 digest is in the adjacent `.sha256` file. The current v1.8 WAVs and metadata are checked in individually. Rebuilding the 241 MB archive requires Git LFS tooling, which was unavailable during this release.
 - `archive-metadata` preserves the original delivery metadata.
 
 Third-party recording licenses are separate from this repository's code license. Keep the credits with the WAV distribution. Do not apply the generated-audio CC0 dedication to the sourced recordings. The original user-provided composition source is archived separately; this repository contains only its approved delivery mix and provenance.
@@ -30,6 +30,16 @@ python test-bench/tools/verify.py C:/InsectLabs-Build/test-bench
 Generation uses seed 19710510. The manifest records NumPy's version; floating-point or FFT implementation changes across environments may alter the least significant bits. SHA-256 hashes identify this particular delivered build.
 
 The user has tested and approved the original 54-file collection in Voltage Modular. Version 1.2 adds four numerically verified SN-16u captures; native host playback of those four fixtures remains unverified. Add useful new test fixtures as modules develop, updating the catalog, credits, manifest, and verification results together.
+
+## Guitar riff loop added in 1.8.0
+
+`v1/07-recordings/slide_the_e_sandman_aceinet_mono.wav` is a 29.5-second sourced guitar phrase for testing distortion pedals, overdrives, fuzz, preamps, gates and compression. The original recording is dual mono, delivered as mono at 48 kHz/24-bit with a 10 ms circular wrap crossfade and -12 dBFS peak for pedal headroom. The complete phrase is kept at its recorded timing; the loop is not tempo-locked. The source WAV and license record are preserved under `sources/guitar-loops/`.
+
+`v1/07-recordings/slip_the_e_to_g_aceinet_mono.wav` is a 24.262-second loop cut supplied from aceinet's Freesound recording. Its source page lists CC0 1.0. The supplied file is dual mono at 48 kHz/16-bit; it is delivered as mono 48 kHz/24-bit with a 10 ms circular wrap crossfade and -12 dBFS peak. It is not tempo-locked. The supplied loop cut is archived unchanged under `sources/guitar-loops/`; the Freesound listing describes a longer 44-second original.
+
+## Clean metal guitar input loop added in 1.7.0
+
+`v1/05-musical/synthetic_clean_death_metal_guitar_drop_d_180bpm.wav` is an original, mono, clean direct-style guitar model for distortion pedals, overdrives, fuzz, gates, preamps and compression. It is a deterministic Karplus-Strong plucked-string performance in Drop D, 180 BPM, eight bars of 4/4, with palm-muted sixteenth-note chugs and power-chord accents. It contains no amplifier model or effects, peaks at -12 dBFS for input headroom, and loops as an exact musical cycle with note tails wrapped at the boundary. This is synthesized audio, not a recording of a guitarist. It is dedicated under CC0 1.0; generator, exact loop duration, measured levels and checksum are recorded in the manifest.
 
 ## sn-16u captures added in 1.2.0
 

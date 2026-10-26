@@ -38,6 +38,12 @@ Call `selectBandwidth` before evaluating waveforms; each caller owns its selecti
 
 The [CED archived checks](../voltage-modular/Teletape%20Workshop/CED/versions/1.0.0/tests/validate.py) compile both source forms against the Voltage SDK, compare the module callback with this core through stubs, and run numeric tests. The `ChorusCoreTest` also renders a 24-bit TestBench audition demo.
 
+## BbdAnalogDelay
+
+[Source](src/com/insectlabs/dsp/delay/BbdAnalogDelay.java): mono, wet-only BBD-style delay core extracted from FMC 1.0.0's DM-2 voice. It retains the log-time delay sweep (20 ms–2.4 s), clock-linked three-pole filtering, Hermite delay read, compander and grit noise, feedback soft limiting, hold-level controller, unpatched-tail feedback cap, and FMC control smoothing. Controls use 0..1 positions; time is logarithmic, feedback reaches 110%, grit is 0..1, and time CV is in core units (1.0 = 5 V, one octave per unit). Audio uses 1.0 = 5 V. `process(input)` returns wet only; the module owns dry/wet balance, routing, gain staging and final limiting. The algorithm is a software voicing model, not a component-level BOSS DM-2 simulation.
+
+Construct with the host sample rate and an optional deterministic noise seed. It allocates two power-of-two delay buffers at construction (about 2 MiB total at 48 kHz) and performs no process-time allocation. The [parity check](tests/BbdAnalogDelayParityTest.java), run by `tests/validate.py`, compiles the DM-2 core from archived FMC 1.0.0 and compares 288,000 samples and reset behavior bit-for-bit. FMC's approved release files remain self-contained and unchanged; SM1084 can use this primitive as its delay engine and add its own mixer behavior.
+
 ## Validation commands
 
-Run `python tests/validate.py` with Java 17. It checks HalfBand19 impulse/symmetry/gain/reset/independence, CubicHermite endpoints/constant/linear interpolation, EmsSvf96 finite and bounded processing, reset, high-response stress and API preconditions, and ChorusCore's delay, blend, nonfinite and mode limits. The separate Teletape SVF release harness compares the extracted primitive bit-for-bit with its embedded source.
+Run `python tests/validate.py` with Java 17 or newer. It checks HalfBand19 impulse/symmetry/gain/reset/independence, CubicHermite endpoints/constant/linear interpolation, EmsSvf96 finite and bounded processing, reset, high-response stress and API preconditions, ChorusCore's delay/blend/nonfinite/mode limits, and exact BBD delay parity with the archived FMC 1.0.0 core. The separate Teletape SVF release harness compares the extracted primitive bit-for-bit with its embedded source.

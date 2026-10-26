@@ -73,3 +73,15 @@ The complete original source is retained in sources/drum-loops with its source-p
 ## Generated module demonstration (1.6.0)
 
 `08-module-demos/CED_dimension_ce1_chorus_demo.wav` was rendered from the InsectLabs CED 1.0.0 test harness and its reusable chorus core. It contains no third-party samples. The audio file is dedicated under CC0 1.0. This dedication applies only to the rendered demo; it does not change the source code license.
+
+## Guitar recording added in 1.8.0
+
+[slide the e sandman.wav](https://freesound.org/people/aceinet/sounds/417149/) by **aceinet**, [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/). The project owner confirmed the listing's license on 2026-10-21. The original WAV is preserved in `test-bench/sources/guitar-loops/`; source SHA-256 `9477bc47f16057cc15521dcdfbc595030f1eb6d23d5de40b83ece21ffcc574ac`.
+
+The delivery is a mono 48 kHz/24-bit PCM loop. The supplied stereo channels are identical. The complete phrase is retained, mean removed, circularly crossfaded over 10 ms, Fourier resampled from 44.1 to 48 kHz, and peak adjusted to -12 dBFS. No time stretching or added effects. The loop is not tempo-locked.
+
+## Guitar recording added in 1.9.0
+
+[slip the e to g.wav](https://freesound.org/people/aceinet/sounds/417150/) by **aceinet**, [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/). The listing was checked on 2026-10-21 and explicitly identifies the recording as Creative Commons 0. The exact supplied WAV is preserved in `test-bench/sources/guitar-loops/417150__aceinet__slip-the-e-to-g_loop.wav`; SHA-256 `cdcfa517c0dc27431a641b1f1d1b8e36cf2ece4f29aea1f0a0591fd249fc1cc1`.
+
+The Freesound listing describes a 44-second, 44.1 kHz, stereo, 16-bit source. The user-supplied loop cut is 24.262 seconds, 48 kHz, stereo, 16-bit PCM and identical dual mono. Delivery is mono 48 kHz/24-bit PCM with mean removed, a 10 ms circular wrap crossfade, and -12 dBFS peak for pedal headroom. No resampling, time stretching, or added effects. The loop is not tempo-locked.

@@ -1,6 +1,6 @@
-# InsectLabs Audio Test Bench — v1.6.0
+# InsectLabs Audio Test Bench — v1.9.0
 
-63 listening and measurement files for the InsectLabs Voltage Modular collections. All delivery files are **48 kHz, 24-bit PCM WAV**, with mono sources prioritized and explicit stereo routing fixtures. Typical lengths are 4–24 seconds, plus two 42-second sn-16u sweeps, with one complete original experimental-music mix for extended audition. No Voltage Modular patch or special player is required.
+66 listening and measurement files for the InsectLabs Voltage Modular collections. All delivery files are **48 kHz, 24-bit PCM WAV**, with mono sources prioritized and explicit stereo routing fixtures. Typical lengths are 4–29.5 seconds, plus two 42-second sn-16u sweeps, with one complete original experimental-music mix for extended audition. No Voltage Modular patch or special player is required.
 
 ## Start here
 
@@ -8,7 +8,7 @@
 2. **Signal Processor listening:** `07-recordings/guitar_recording_mono.wav` or `piano_recording_mono.wav`. Start at unity gain, zero offset, and compare input/output levels. The piano's source does not identify whether the instrument is acoustic or digital.
 3. **Independent stages:** `07-recordings/recorded_guitar_left_piano_right.wav`. Split the player’s left and right outputs into the two mono stages. The two performances are independent, not a tempo-matched duet.
 4. **Pan/Fade:** compare `04-stereo/dual_mono_correlated.wav` with `independent_pink_noise.wav`. Identical sources and independent sources behave differently when summed: equal-power crossfading is not constant-amplitude crossfading of identical signals.
-5. **Musical audition:** `05-musical/stereo_full_music_mix.wav`, an original synthesized instrumental mix; or `after_drinking_at_emalines_original_mix.wav`, a complete user-owned experimental-music mix for extended listening. The other folder 05 performances are synthesized, including files whose short filenames omit “synthetic.”
+5. **Musical audition:** `05-musical/stereo_full_music_mix.wav`, an original synthesized instrumental mix; or `after_drinking_at_emalines_original_mix.wav`, a complete user-owned experimental-music mix for extended listening. For a dry modeled high-gain pedal input, use `05-musical/synthetic_clean_death_metal_guitar_drop_d_180bpm.wav`. For recorded guitar phrases, use `07-recordings/slide_the_e_sandman_aceinet_mono.wav` (29.5 seconds) or `07-recordings/slip_the_e_to_g_aceinet_mono.wav` (24.262 seconds); both have short wrap crossfades and are not tempo-locked. The other folder 05 performances are synthesized, including files whose short filenames omit “synthetic.”
 6. **Real ambience:** `07-recordings/rain_recording_stereo.wav` and `birds2_recording_stereo.wav`. Folder 06 contains separately labeled procedural outdoor-style textures.
 
 `all-files.m3u8` is a relative-path playlist. `CATALOG.md` describes every file; `catalog.csv` and `manifest.json` provide measurements, loop behavior and checksums. `ATTRIBUTION.md` contains source credits and redistribution terms.
@@ -18,12 +18,12 @@
 | Folder | Files | Contents |
 |---|---:|---|
 | 01-calibration | 21 | Sines at 20, 50, 60, 100, 220, 415, 432, 440, 442, 1000, 3000, 8000 and 12000 Hz; silence; beating and IMD pairs; multitone; 20 Hz–18 kHz sweep; sn-16u linear/exponential 0.01 Hz–23.76 kHz sweeps; close-spaced 1 kHz selectivity probe |
-| 02-dynamics | 5 | Level staircase, amplitude modulation, gated bursts, impulses, sine plus DC |
+| 02-dynamics | 6 | Level staircase, amplitude modulation, gated bursts, impulses, sine plus DC, Model 62 head-spacing impulses |
 | 03-noise | 9 | White/pink/brown/blue noise, modulated pink noise, random envelope noise, randomly frequency-modulated sine; sn-16u pink/blue captures |
 | 04-stereo | 7 | Left/right identification, correlated dual mono, opposite polarity, alternating channels, independent noise |
-| 05-musical | 7 | Original synthesized guitar-like and piano-like performances, split-channel pairs, duo, full instrumental mix and complete user-owned experimental-music mix |
+| 05-musical | 8 | Original synthesized guitar-like and piano-like performances, dry Drop-D metal guitar pedal source, split-channel pairs, duo, full instrumental mix and complete user-owned experimental-music mix |
 | 06-ambience | 2 | Synthesized garden and stream textures |
-| 07-recordings | 10 | Sourced guitar and piano, birds and rain, mono instrument versions, split-channel pairs, Hip-Hop and extreme-metal drum loops |
+| 07-recordings | 12 | Sourced guitar and piano, birds and rain, mono instrument versions, split-channel pairs, Hip-Hop and extreme-metal drum loops, two aceinet guitar phrases |
 | 08-module-demos | 1 | Original module-rendered chorus/ensemble listening demonstration |
 
 ## Playback and level conventions
@@ -42,9 +42,11 @@ The analytic tones, FFT noise and procedural sources use periodic constructions.
 
 The real-source files were obtained from a pinned public IBM sample mirror with links back to their Freesound authors. Guitar is a recorded jazz performance; its original processing chain is unspecified. Piano is a sourced performance with unspecified instrument technology. No new reverb, distortion or other effects were added. Birds originated as MP3. The mirror supplies 16-bit WAVs; delivering derived files at 24 bits does not recover lost source precision. These recordings are listening/routing material, not distortion or high-frequency calibration standards.
 
+The clean Drop-D metal guitar pedal source is an original deterministic plucked-string model, not a recorded or sampled performance. Its exact duration is eight bars at 180 BPM (10.6667 seconds); wrapped note tails produce a low-level loop seam without fades or inserted silence. Its -12 dBFS peak leaves headroom for distortion stages. It is for listening and signal-processing tests, not a calibrated guitar pickup or absolute-voltage reference.
+
 ## Validation and archiving
 
-The delivered set passes automated checks (the current count is recorded in `QA.json`): WAV format and duration, checksums, peak measurements, sample clipping, calibrated sine values/frequencies, exact stereo cancellation, channel isolation, channel swaps, and faded recording endpoints. See `QA.json`. The original 54-file set was user-approved in Voltage Modular. The four new sn-16u captures await user playback; Model 62 fixture playback is also pending.
+The delivered set passes automated checks (the current count is recorded in `QA.json`): WAV format and duration, checksums, peak measurements, sample clipping, calibrated sine values/frequencies, exact stereo cancellation, channel isolation, channel swaps, faded recording endpoints, and circular-loop seam continuity. See `QA.json`. The original 54-file set was user-approved in Voltage Modular. The four new sn-16u captures await user playback; Model 62 fixture playback is also pending.
 
 Generated audio in folders 01–06 is dedicated under CC0 1.0. Recordings retain their individual CC0 or CC BY 4.0 terms. **Keep ATTRIBUTION.md with redistributed copies**, particularly piano/rain files and piano-containing channel pairs. The collection is not covered by one blanket CC0 license.
 
@@ -86,6 +88,14 @@ Use `07-recordings/hiphop_drums_loopdilla_stereo.wav` for spacious kick/snare/ha
 ## Metal loop edit (1.5.1)
 
 The extreme-metal WAV is now an exact 6.4-second musical cycle, taken from 3.198833–9.598833 seconds of the decoded source. Its repeated pattern supports eight 4/4 bars at 300 BPM, or four at 150 BPM half-time. A 10 ms wrap-tail blend preserves the duration and cymbal sustain across the join; no endpoint fade or silence is inserted. The original source recording is preserved. This replaces the earlier full-length metal delivery, which included a long decay tail.
+
+## Recorded guitar phrase (1.8.0)
+
+`07-recordings/slide_the_e_sandman_aceinet_mono.wav` is aceinet’s “slide the e sandman.wav” from Freesound, licensed CC0 1.0. It is the complete 29.5-second supplied phrase, converted from dual-mono 44.1 kHz/16-bit PCM to mono 48 kHz/24-bit PCM. DC was removed and a 10 ms circular crossfade joins the tail to the start without inserting silence. Peak is -12 dBFS for pedal input headroom. The recording is not time-stretched or tempo-locked; no added effects are applied. Source and license evidence are preserved in `test-bench/sources/guitar-loops/`. Rebuild with `python test-bench/tools/add_aceinet_guitar_loop.py --output test-bench/v1 --sources test-bench/sources/guitar-loops`.
+
+## Second recorded guitar loop (1.9.0)
+
+`07-recordings/slip_the_e_to_g_aceinet_mono.wav` is aceinet’s “slip the e to g.wav” from Freesound, licensed CC0 1.0. The exact user-supplied loop cut is 24.262 seconds, dual-mono 48 kHz/16-bit PCM, converted to mono 48 kHz/24-bit PCM. DC was removed and a 10 ms circular crossfade joins the tail to the start without inserting silence. Peak is -12 dBFS for pedal input headroom. It is not time-stretched or tempo-locked; no added effects are applied. The Freesound page describes a longer 44-second original, so this catalog entry describes the supplied cut, not the complete Freesound source. The received WAV is preserved unchanged in `test-bench/sources/guitar-loops/`. Rebuild with `python test-bench/tools/add_aceinet_slip_the_e_to_g.py --output test-bench/v1 --sources test-bench/sources/guitar-loops`.
 
 ## Module audition demo (1.6.0)
 
