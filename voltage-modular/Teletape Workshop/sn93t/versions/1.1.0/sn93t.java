@@ -29,7 +29,7 @@ public class sn93t extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "66c6aac7cf1a45e981736d73250efc68" );
+        SetSkin( "2a5dbd9b36cf4166a0821d50fa5d95de" );
     }
 
 void InitializeControls()
@@ -229,7 +229,7 @@ void InitializeControls()
         imageTTW.SetWantsMouseNotifications( false );
         imageTTW.SetPosition( 5, 5 );
         imageTTW.SetSize( 41, 13 );
-        imageTTW.SetCurrentImage( "image image(3).svg" );
+        imageTTW.SetCurrentImage( "image image(4).svg" );
 
         labelNumber = new VoltageLabel( "labelNumber", "Model Number Label", this, "sn93t" );
         AddComponent( labelNumber );

@@ -104,6 +104,13 @@ def main() -> None:
         control = next(item for item in control_props if item["variable name"] == f"knobTone{index}")
         assert (float(control["minValueString"]), float(control["maxValueString"]),
                 float(control["defaultValueString"])) == (-1.0, 1.0, 0.0), f"tone {index} range/default"
+    for index in range(1, 5):
+        control = next(item for item in control_props if item["variable name"] == f"buttonPhase{index}")
+        assert control["Control Type"] == 4 and not control["isInitiallyToggled"], f"phase {index} toggle/default"
+        assert control["display name"] == f"Phase {index} Polarity"
+        assert f'buttonPhase{index} = new VoltageToggle' in source
+        assert f'component == buttonPhase{index}' in source, f"phase {index} event wiring"
+    assert "toneKnobs = new VoltageKnob[] { knobTone1, knobTone2, knobTone3, knobTone4 }" in source
     display_names = {
         "textLabel3": "C Voicing Label", "textLabel4": "Re Voicing Label",
         "textLabel5": "D Voicing Label", "textLabel6": "O Voicing Label",

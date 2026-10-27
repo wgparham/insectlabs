@@ -19,7 +19,7 @@ public class blank extends VoltageModule
 //[/user-inheritance]
 {
 
-    @SuppressWarnings("this-escape") 
+    @SuppressWarnings("this-escape")
     public blank( long moduleID, VoltageObjects voltageObjects )
     {
         super( moduleID, voltageObjects, "blank", ModuleType.ModuleType_Source, 1.6 );
@@ -28,7 +28,7 @@ public class blank extends VoltageModule
 
 
         canBeBypassed = true;
-        SetSkin( "89743ef9b29147f68c06bad2d59f6780" );
+        SetSkin( "30a38deed900491e822dec37aafd8d0e" );
     }
 
 void InitializeControls()
@@ -60,7 +60,7 @@ void InitializeControls()
         imageTTW.SetWantsMouseNotifications( false );
         imageTTW.SetPosition( 5, 5 );
         imageTTW.SetSize( 41, 13 );
-        imageTTW.SetCurrentImage( "image image.svg" );
+        imageTTW.SetCurrentImage( "image image(3).svg" );
 
         labelNumber = new VoltageLabel( "labelNumber", "Model Number Label", this, "" );
         AddComponent( labelNumber );
@@ -151,9 +151,209 @@ void InitializeControls()
     public boolean Notify( VoltageComponent component, ModuleNotifications notification, double doubleValue, long longValue, int x, int y, Object object )
     {
         //[user-Notify]   Add your own notification handling code between this line and the notify-close comment
+        switch( notification )
+        {
+            case Knob_Changed:   // doubleValue is the new VoltageKnob value
+            {
+            }
+            break;
+
+            case Slider_Changed:   // doubleValue is the new slider value
+            {
+            }
+            break;
+
+            case Button_Changed:   // doubleValue is the new button/toggle button value
+            {
+            }
+            break;
+
+            case Switch_Changed:   // doubleValue is the new switch value
+            {
+            }
+            break;
+
+            case Jack_Connected:   // longValue is the new cable ID
+            {
+            }
+            break;
+
+            case Jack_Disconnected:   // All cables have been disconnected from this jack
+            {
+            }
+            break;
+
+            case GUI_Update_Timer:   // Called every 50ms (by default) if turned on
+            {
+            }
+            break;
+
+            case Object_MouseMove:   // called when mouse is over an object that receives mouse notifications. 'object' parameter is a VoltageMouseKeyFlags object.
+            {
+            }
+            break;
+
+            case Object_MouseLeave:  // called when mouse leaves an object that receives mouse notifications. 'object' parameter is a VoltageMouseKeyFlags object.
+            {
+            }
+            break;
+
+            case Object_LeftButtonDown:   // called when user left-clicks on an object that receives mouse notifications. 'object' parameter is a VoltageMouseKeyFlags object.
+            {
+            }
+            break;
+
+            case Object_LeftButtonUp:   // called when user releases left mouse button on an object that receives mouse notifications. 'object' parameter is a VoltageMouseKeyFlags object.
+            {
+            }
+            break;
+
+            case Object_RightButtonDown:   // called when user releases right mouse button on an object that receives mouse notifications. 'object' parameter is a VoltageMouseKeyFlags object.
+            {
+            }
+            break;
+
+            case Object_RightButtonUp:   // called when user right-clicks on an object that receives mouse notifications
+            {
+            }
+            break;
+
+            case Object_LeftButtonDoubleClick: // called when user left-button double-clicks on an object that receives mouse notifications
+            {
+            }
+            break;
+
+            // Less common notifications:
+
+            case Named_Timer:   // object contains a String with the name of the timer that has fired
+            {
+            }
+            break;
+
+            case Canvas_Painting:   // About to paint canvas.  object is a java.awt.Rectangle with painting boundaries
+            {
+            }
+            break;
+
+            case Canvas_Painted:   // Canvas painting is complete
+            {
+            }
+            break;
+
+            case Control_DragStart:    // A user has started dragging on a control that has been marked as draggable
+            {
+            }
+            break;
+
+            case Control_DragOn:       // This control has been dragged over during a drag operation. object contains the dragged object
+            {
+            }
+            break;
+
+            case Control_DragOff:      // This control has been dragged over during a drag operation. object contains the dragged object
+            {
+            }
+            break;
+
+            case Control_DragEnd:      // A user has ended their drag on a control that has been marked as draggable
+            {
+            }
+            break;
+
+            case Label_Changed:        // The text of an editable text control has changed
+            {
+            }
+            break;
+
+            case SoundPlayback_Start:   // A sound has begun playback
+            {
+            }
+            break;
+
+            case SoundPlayback_End:     // A sound has ended playback
+            {
+            }
+            break;
+
+            case Scrollbar_Position:    // longValue is the new scrollbar position
+            {
+            }
+            break;
+
+            case PolyVoices_Changed:    // longValue is the new number of poly voices
+            {
+            }
+            break;
+
+            case File_Dropped:     // 'object' is a String containing the file path
+            {
+            }
+            break;
+
+            case Preset_Loading_Start:   // called when preset loading begins
+            {
+            }
+            break;
+
+            case Preset_Loading_Finish:  // called when preset loading finishes
+            {
+            }
+            break;
+
+            case Variation_Loading_Start:    // sent when a variation is about to load
+            {
+            }
+            break;
+
+            case Variation_Loading_Finish:   // sent when a variation has just finished loading
+            {
+            }
+            break;
+
+            case Tempo_Changed:     // doubleValue is the new tempo
+            {
+            }
+            break;
+
+            case Randomized:     // called when the module's controls get randomized
+            {
+            }
+            break;
+
+            case VariationListChanged:   // sent when a variation gets added, deleted, or renamed, or the variations list gets reordered
+            {
+            }
+            break;
+
+            case Key_Press:     // sent when module has keyboard focus and a key is pressed; object is a VoltageKeyPressInfo object
+            {
+            }
+            break;
+
+            case Reset:    // sent when the module has been reset to default settings
+            {
+            }
+            break;
+
+            case Keyboard_NoteOn:   // sent when a note has been pressed on a VoltageKeyboard object. longValue is the note value ( 0-127 )
+            {
+            }
+            break;
+
+            case Keyboard_NoteOff:   // sent when a note has been released on a VoltageKeyboard object. longValue is the note value ( 0-127 )
+            {
+            }
+            break;
+
+            case Curve_Changed:   // sent when user has edited a curve's value. 'object' will be a VoltageCurve.CurveChangeNotification object.
+            {
+            }
+            break;
+        }
+
+
 
         return false;
-
         //[/user-Notify]
     }
 
@@ -189,8 +389,8 @@ void InitializeControls()
     public void ProcessBypassedSample()
     {
         //[user-ProcessBypassedSample]   Add your own code here
-
-
+        //  processing it.
+    //-------------------------------------------------------------------------------
         //[/user-ProcessBypassedSample]
     }
 
@@ -207,8 +407,9 @@ void InitializeControls()
     {
         //[user-GetTooltipText]   Add your own code here
 
-        return super.GetTooltipText( component );
 
+
+        return super.GetTooltipText( component );
         //[/user-GetTooltipText]
     }
 
@@ -261,8 +462,9 @@ void InitializeControls()
     {
         //[user-GetStateInformation]   Add your own code here
 
-        return null;
 
+
+        return null;
         //[/user-GetStateInformation]
     }
 
@@ -296,8 +498,9 @@ void InitializeControls()
     {
         //[user-GetStateInformationForVariations]   Add your own code here
 
-        return null;
 
+
+        return GetStateInformation();
         //[/user-GetStateInformationForVariations]
     }
 

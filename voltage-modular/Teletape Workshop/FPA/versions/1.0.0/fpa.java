@@ -232,10 +232,58 @@ void InitializeControls()
         knobGain4.DisplayValueInPercent( true );
         knobGain4.SetKnobAdjustsRing( true );
 
+        buttonPhase1 = new VoltageToggle( "buttonPhase1", "Phase 1 Polarity", this, false, 0 );
+        AddComponent( buttonPhase1 );
+        buttonPhase1.SetWantsMouseNotifications( false );
+        buttonPhase1.SetPosition( 10, 85 );
+        buttonPhase1.SetSize( 20, 20 );
+        buttonPhase1.SetSkin( "2500 Square Big" );
+        buttonPhase1.ShowOverlay( true );
+        buttonPhase1.SetOverlayText( "Φ" );
+        buttonPhase1.SetOverlayTextFont( "Arial", 10, false, false );
+        buttonPhase1.SetOverlayTextColor( new Color( 0, 0, 0 ) );
+        buttonPhase1.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonPhase2 = new VoltageToggle( "buttonPhase2", "Phase 2 Polarity", this, false, 0 );
+        AddComponent( buttonPhase2 );
+        buttonPhase2.SetWantsMouseNotifications( false );
+        buttonPhase2.SetPosition( 10, 140 );
+        buttonPhase2.SetSize( 20, 20 );
+        buttonPhase2.SetSkin( "2500 Square Big" );
+        buttonPhase2.ShowOverlay( true );
+        buttonPhase2.SetOverlayText( "Φ" );
+        buttonPhase2.SetOverlayTextFont( "Arial", 10, false, false );
+        buttonPhase2.SetOverlayTextColor( new Color( 0, 0, 0 ) );
+        buttonPhase2.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonPhase3 = new VoltageToggle( "buttonPhase3", "Phase 3 Polarity", this, false, 0 );
+        AddComponent( buttonPhase3 );
+        buttonPhase3.SetWantsMouseNotifications( false );
+        buttonPhase3.SetPosition( 10, 195 );
+        buttonPhase3.SetSize( 20, 20 );
+        buttonPhase3.SetSkin( "2500 Square Big" );
+        buttonPhase3.ShowOverlay( true );
+        buttonPhase3.SetOverlayText( "Φ" );
+        buttonPhase3.SetOverlayTextFont( "Arial", 10, false, false );
+        buttonPhase3.SetOverlayTextColor( new Color( 0, 0, 0 ) );
+        buttonPhase3.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
+        buttonPhase4 = new VoltageToggle( "buttonPhase4", "Phase 4 Polarity", this, false, 0 );
+        AddComponent( buttonPhase4 );
+        buttonPhase4.SetWantsMouseNotifications( false );
+        buttonPhase4.SetPosition( 10, 250 );
+        buttonPhase4.SetSize( 20, 20 );
+        buttonPhase4.SetSkin( "2500 Square Big" );
+        buttonPhase4.ShowOverlay( true );
+        buttonPhase4.SetOverlayText( "Φ" );
+        buttonPhase4.SetOverlayTextFont( "Arial", 10, false, false );
+        buttonPhase4.SetOverlayTextColor( new Color( 0, 0, 0 ) );
+        buttonPhase4.SetOverlayTextJustification( VoltageButton.Justification.Centered );
+
         knobTone1 = new VoltageKnob( "knobTone1", "Tone 1", this, -1.0, 1.0, 0.0 );
         AddComponent( knobTone1 );
         knobTone1.SetWantsMouseNotifications( false );
-        knobTone1.SetPosition( 10, 30 );
+        knobTone1.SetPosition( 85, 30 );
         knobTone1.SetSize( 20, 20 );
         knobTone1.SetSkin( "TR Large" );
         knobTone1.SetRange( -1.0, 1.0, 0.0, false, 0 );
@@ -243,43 +291,10 @@ void InitializeControls()
         knobTone1.DisplayValueInPercent( true );
         knobTone1.SetKnobAdjustsRing( true );
 
-        knobThird1 = new VoltageKnob( "knobThird1", "Third Knob 1", this, -1.0, 1.0, 0.0 );
-        AddComponent( knobThird1 );
-        knobThird1.SetWantsMouseNotifications( false );
-        knobThird1.SetPosition( 85, 30 );
-        knobThird1.SetSize( 20, 20 );
-        knobThird1.SetSkin( "TR Large" );
-        knobThird1.SetRange( -1.0, 1.0, 0.0, false, 0 );
-        knobThird1.SetKnobParams( 215, 145 );
-        knobThird1.DisplayValueInPercent( true );
-        knobThird1.SetKnobAdjustsRing( true );
-
-        knobThird2 = new VoltageKnob( "knobThird2", "Third Knob 2", this, -1.0, 1.0, 0.0 );
-        AddComponent( knobThird2 );
-        knobThird2.SetWantsMouseNotifications( false );
-        knobThird2.SetPosition( 85, 86 );
-        knobThird2.SetSize( 20, 20 );
-        knobThird2.SetSkin( "TR Large" );
-        knobThird2.SetRange( -1.0, 1.0, 0.0, false, 0 );
-        knobThird2.SetKnobParams( 215, 145 );
-        knobThird2.DisplayValueInPercent( true );
-        knobThird2.SetKnobAdjustsRing( true );
-
-        knobThird3 = new VoltageKnob( "knobThird3", "Third Knob 3", this, -1.0, 1.0, 0.0 );
-        AddComponent( knobThird3 );
-        knobThird3.SetWantsMouseNotifications( false );
-        knobThird3.SetPosition( 85, 140 );
-        knobThird3.SetSize( 20, 20 );
-        knobThird3.SetSkin( "TR Large" );
-        knobThird3.SetRange( -1.0, 1.0, 0.0, false, 0 );
-        knobThird3.SetKnobParams( 215, 145 );
-        knobThird3.DisplayValueInPercent( true );
-        knobThird3.SetKnobAdjustsRing( true );
-
         knobTone2 = new VoltageKnob( "knobTone2", "Tone 2", this, -1.0, 1.0, 0.0 );
         AddComponent( knobTone2 );
         knobTone2.SetWantsMouseNotifications( false );
-        knobTone2.SetPosition( 10, 85 );
+        knobTone2.SetPosition( 85, 86 );
         knobTone2.SetSize( 20, 20 );
         knobTone2.SetSkin( "TR Large" );
         knobTone2.SetRange( -1.0, 1.0, 0.0, false, 0 );
@@ -290,24 +305,13 @@ void InitializeControls()
         knobTone3 = new VoltageKnob( "knobTone3", "Tone 3", this, -1.0, 1.0, 0.0 );
         AddComponent( knobTone3 );
         knobTone3.SetWantsMouseNotifications( false );
-        knobTone3.SetPosition( 10, 140 );
+        knobTone3.SetPosition( 85, 140 );
         knobTone3.SetSize( 20, 20 );
         knobTone3.SetSkin( "TR Large" );
         knobTone3.SetRange( -1.0, 1.0, 0.0, false, 0 );
         knobTone3.SetKnobParams( 215, 145 );
         knobTone3.DisplayValueInPercent( true );
         knobTone3.SetKnobAdjustsRing( true );
-
-        knobTone4 = new VoltageKnob( "knobTone4", "Tone 4", this, -1.0, 1.0, 0.0 );
-        AddComponent( knobTone4 );
-        knobTone4.SetWantsMouseNotifications( false );
-        knobTone4.SetPosition( 10, 195 );
-        knobTone4.SetSize( 20, 20 );
-        knobTone4.SetSkin( "TR Large" );
-        knobTone4.SetRange( -1.0, 1.0, 0.0, false, 0 );
-        knobTone4.SetKnobParams( 215, 145 );
-        knobTone4.DisplayValueInPercent( true );
-        knobTone4.SetKnobAdjustsRing( true );
 
         inputPre1 = new VoltageAudioJack( "inputPre1", "Input Pre-Amp 1", this, JackType.JackType_AudioInput );
         AddComponent( inputPre1 );
@@ -526,16 +530,16 @@ void InitializeControls()
         labelTone.SetTextHoverColor( new Color( 0, 0, 0, 255 ) );
         labelTone.SetFont( "Arial Black", 9, false, false );
 
-        knobThird4 = new VoltageKnob( "knobThird4", "Third Knob 4", this, -1.0, 1.0, 0.0 );
-        AddComponent( knobThird4 );
-        knobThird4.SetWantsMouseNotifications( false );
-        knobThird4.SetPosition( 85, 195 );
-        knobThird4.SetSize( 20, 20 );
-        knobThird4.SetSkin( "TR Large" );
-        knobThird4.SetRange( -1.0, 1.0, 0.0, false, 0 );
-        knobThird4.SetKnobParams( 215, 145 );
-        knobThird4.DisplayValueInPercent( true );
-        knobThird4.SetKnobAdjustsRing( true );
+        knobTone4 = new VoltageKnob( "knobTone4", "Tone 4", this, -1.0, 1.0, 0.0 );
+        AddComponent( knobTone4 );
+        knobTone4.SetWantsMouseNotifications( false );
+        knobTone4.SetPosition( 85, 195 );
+        knobTone4.SetSize( 20, 20 );
+        knobTone4.SetSkin( "TR Large" );
+        knobTone4.SetRange( -1.0, 1.0, 0.0, false, 0 );
+        knobTone4.SetKnobParams( 215, 145 );
+        knobTone4.DisplayValueInPercent( true );
+        knobTone4.SetKnobAdjustsRing( true );
 
         labelTone_1 = new VoltageLabel( "labelTone_1", "Tone Label_1", this, "III" );
         AddComponent( labelTone_1 );
@@ -819,7 +823,7 @@ void InitializeControls()
 
     // Auto-generated variables
     private VoltageLabel labelTone_1;
-    private VoltageKnob knobThird4;
+    private VoltageKnob knobTone4;
     private VoltageLabel labelTone;
     private VoltageLabel label4;
     private VoltageLabel label3;
@@ -828,6 +832,10 @@ void InitializeControls()
     private VoltageLabel labelMix;
     private VoltageAudioJack outputMix;
     private VoltageAudioJack output4;
+    private VoltageToggle buttonPhase1;
+    private VoltageToggle buttonPhase2;
+    private VoltageToggle buttonPhase3;
+    private VoltageToggle buttonPhase4;
     private VoltageAudioJack output3;
     private VoltageAudioJack output2;
     private VoltageAudioJack output1;
@@ -839,12 +847,8 @@ void InitializeControls()
     private VoltageAudioJack inputPre3;
     private VoltageAudioJack inputPre2;
     private VoltageAudioJack inputPre1;
-    private VoltageKnob knobTone4;
     private VoltageKnob knobTone3;
     private VoltageKnob knobTone2;
-    private VoltageKnob knobThird3;
-    private VoltageKnob knobThird2;
-    private VoltageKnob knobThird1;
     private VoltageKnob knobTone1;
     private VoltageKnob knobGain4;
     private VoltageKnob knobGain3;
