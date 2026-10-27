@@ -1,0 +1,94 @@
+// Main console: the parameter panels of the original "laboratory signal
+// generator", restyled as modern test equipment, plus a scope-style grain plot.
+#pragma once
+
+#include "CloudEngine.h"
+
+#include <juce_audio_utils/juce_audio_utils.h>
+#include <juce_gui_extra/juce_gui_extra.h>
+
+// Phosphor-display plot of grains on the frequency-versus-time plane.
+class GrainPlot : public juce::Component
+{
+public:
+    void setGrains(std::vector<cloudgen::GrainEvent> g, double cloudStart, double cloudEnd, double lo, double hi);
+    void paint(juce::Graphics&) override;
+
+private:
+    std::vector<cloudgen::GrainEvent> grains;
+    double start = 0.0, end = 1.0, minY = 20.0, maxY = 20000.0;
+};
+
+class MainComponent : public juce::Component, public juce::FileDragAndDropTarget
+{
+public:
+    MainComponent();
+    ~MainComponent() override;
+
+    void paint(juce::Graphics&) override;
+    void resized() override;
+
+    bool isInterestedInFileDrag(const juce::StringArray& files) override;
+    void filesDropped(const juce::StringArray& files, int x, int y) override;
+
+private:
+    // A labelled numeric entry ("Initial [ 5 ] g/s").
+    struct Field
+    {
+        juce::Label label, units;
+        juce::TextEditor editor;
+        float value() const { return editor.getText().getFloatValue(); }
+    };
+
+    // Console stereo potentiometer: 0..100, shown as L -100 .. +100 R.
+    struct Pot
+    {
+        juce::Label label;
+        juce::Slider slider{ juce::Slider::LinearHorizontal, juce::Slider::TextBoxRight };
+        juce::ToggleButton random{ "Random" };
+    };
+
+    Field& addField(const juce::String& name, const juce::String& units, double initial);
+    void setupPot(Pot&, const juce::String& name, const cloudgen::StereoLocation&);
+    cloudgen::CloudParams gatherParams() const;
+    void updateSourceControls();
+    bool loadSound(const juce::File&, cloudgen::SourceSound&);
+    void chooseSource();
+    void generate();
+    void play();
+    void exportResult();
+
+    juce::OwnedArray<Field> fields;
+    Field *startTime, *duration, *densityInitial, *densityFinal, *ampInitial, *ampFinal,
+          *highInitial, *highFinal, *lowInitial, *lowFinal, *grainInitial, *grainFinal;
+    Pot panInitial, panFinal;
+
+    juce::ComboBox cloudType, waveform, selectionOrder, sourceKind, outputKind;
+    juce::ToggleButton grainRandom{ "Random" };
+    juce::TextButton selectButton{ "SELECT..." };
+    juce::Label sourceName;
+    juce::TextButton generateButton{ "GENERATE" }, playButton{ "PLAY" }, exportButton{ "EXPORT..." };
+    GrainPlot plot;
+    juce::Label status;
+
+    struct Panel { juce::String title; juce::Rectangle<int> area; };
+    std::vector<Panel> panels; // framed groups, laid out in resized()
+
+    cloudgen::Waveform importedWave;
+    bool haveImportedWave = false;
+    cloudgen::SourceSound granulationSource;
+    juce::String granulationName;
+
+    cloudgen::RenderResult lastRender;
+    bool lastWasText = false;
+
+    juce::AudioFormatManager formats;
+    juce::AudioDeviceManager deviceManager;
+    juce::AudioSourcePlayer sourcePlayer;
+    juce::AudioTransportSource transport;
+    std::unique_ptr<juce::MemoryAudioSource> memorySource;
+    juce::AudioBuffer<float> playBuffer;
+    std::unique_ptr<juce::FileChooser> chooser;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
+};

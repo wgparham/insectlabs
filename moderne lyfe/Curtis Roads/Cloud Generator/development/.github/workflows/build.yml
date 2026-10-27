@@ -1,0 +1,52 @@
+name: build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            artifact: CloudGenerator-Windows
+          - os: macos-latest
+            artifact: CloudGenerator-macOS
+          - os: ubuntu-latest
+            artifact: CloudGenerator-Linux
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libasound2-dev libjack-jackd2-dev libfreetype-dev \
+            libfontconfig1-dev libx11-dev libxcomposite-dev libxcursor-dev libxext-dev \
+            libxinerama-dev libxrandr-dev libxrender-dev libgl1-mesa-dev
+
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Collect
+        shell: bash
+        run: |
+          mkdir dist
+          find build -path '*CloudGenerator_artefacts/Release/*' -maxdepth 6 \
+            \( -name 'Cloud Generator.exe' -o -name 'Cloud Generator.app' -o -name 'Cloud Generator' \) \
+            -exec cp -R {} dist/ \;
+          find build -maxdepth 3 \( -name 'cloudgen-cli' -o -name 'cloudgen-cli.exe' \) -exec cp {} dist/ \;
+          ls -la dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: dist
