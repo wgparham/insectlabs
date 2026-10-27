@@ -1,9 +1,23 @@
-name: build
+name: cloud-generator
 
 on:
   push:
+    paths:
+      - 'moderne lyfe/Curtis Roads/Cloud Generator/development/**'
+      - '.github/workflows/cloud-generator.yml'
   pull_request:
+    paths:
+      - 'moderne lyfe/Curtis Roads/Cloud Generator/development/**'
+      - '.github/workflows/cloud-generator.yml'
   workflow_dispatch:
+
+env:
+  PROJECT_DIR: moderne lyfe/Curtis Roads/Cloud Generator/development
+
+defaults:
+  run:
+    shell: bash
+    working-directory: moderne lyfe/Curtis Roads/Cloud Generator/development
 
 jobs:
   build:
@@ -37,7 +51,6 @@ jobs:
         run: cmake --build build --config Release --parallel
 
       - name: Collect
-        shell: bash
         run: |
           mkdir dist
           find build -path '*CloudGenerator_artefacts/Release/*' -maxdepth 6 \
@@ -46,7 +59,8 @@ jobs:
           find build -maxdepth 3 \( -name 'cloudgen-cli' -o -name 'cloudgen-cli.exe' \) -exec cp {} dist/ \;
           ls -la dist
 
+      # upload-artifact paths are relative to the workspace, not working-directory.
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact }}
-          path: dist
+          path: ${{ env.PROJECT_DIR }}/dist
