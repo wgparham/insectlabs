@@ -30,7 +30,7 @@ cmake --build build --config Release
 
 To build only the engine and CLI (no JUCE download), pass `-DCLOUDGEN_BUILD_GUI=OFF`.
 
-GitHub Actions (`.github/workflows/build.yml`) builds all three platforms on every push. macOS releases need signing and notarization with an Apple Developer account before they can be distributed widely.
+GitHub Actions builds all three platforms whenever this folder changes. The workflow lives at the repository root, in `.github/workflows/cloud-generator.yml`, because GitHub only runs workflows from there. macOS releases need signing and notarization with an Apple Developer account before they can be distributed widely.
 
 ## Licensing
 
