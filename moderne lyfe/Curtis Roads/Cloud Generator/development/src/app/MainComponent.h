@@ -51,7 +51,11 @@ private:
     Field& addField(const juce::String& name, const juce::String& units, double initial);
     void setupPot(Pot&, const juce::String& name, const cloudgen::StereoLocation&);
     cloudgen::CloudParams gatherParams() const;
+    cloudgen::Waveform currentWave(const cloudgen::Fixes&) const;
     void updateSourceControls();
+    void updateModelControls();
+    void showFixesPanel();
+    void showRender(int index);
     bool loadSound(const juce::File&, cloudgen::SourceSound&);
     void chooseSource();
     void generate();
@@ -71,6 +75,13 @@ private:
     GrainPlot plot;
     juce::Label status;
 
+    // Model 1 / Model 2 and the individual fixes.
+    juce::ComboBox modelSelector, sampleRateBox, bitDepthBox;
+    juce::TextButton fixesButton{ "FIXES..." };
+    juce::ToggleButton compareToggle{ "A/B vs Model 1" };
+    juce::TextButton showA{ "A: MODEL 1" }, showB{ "B: CURRENT" };
+    cloudgen::Fixes fixes = cloudgen::Fixes::model1();
+
     struct Panel { juce::String title; juce::Rectangle<int> area; };
     std::vector<Panel> panels; // framed groups, laid out in resized()
 
@@ -79,8 +90,14 @@ private:
     cloudgen::SourceSound granulationSource;
     juce::String granulationName;
 
-    cloudgen::RenderResult lastRender;
+    // renders[1] is the current settings; renders[0] the Model 1 render made
+    // alongside it when A/B comparing. shown selects which one plays/exports.
+    std::array<cloudgen::RenderResult, 2> renders;
+    int shown = 1;
+    bool compared = false;
     bool lastWasText = false;
+    cloudgen::CloudParams lastParams;
+    const cloudgen::RenderResult& lastRender() const { return renders[(size_t) shown]; }
 
     juce::AudioFormatManager formats;
     juce::AudioDeviceManager deviceManager;

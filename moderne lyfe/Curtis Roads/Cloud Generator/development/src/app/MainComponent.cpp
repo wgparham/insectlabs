@@ -2,6 +2,7 @@
 #include "Waveforms.h"
 
 #include <cmath>
+#include <cstring>
 
 namespace {
 
@@ -15,40 +16,148 @@ const juce::Colour trace   { 0xff7cf0a0 };  // P31 phosphor
 const juce::Colour grid    { 0xff1f3326 };
 }
 
-// Renders a cloud on a background thread behind a progress window with Stop.
+// Renders one or more clouds on a background thread behind a progress window
+// with Stop (several for an A/B comparison).
 class RenderJob : public juce::ThreadWithProgressWindow
 {
 public:
-    RenderJob(cloudgen::CloudParams p, cloudgen::Waveform w, const cloudgen::SourceSound* s, bool audio,
-              std::function<void(cloudgen::RenderResult)> done)
+    struct Item { cloudgen::CloudParams params; cloudgen::Waveform wave; };
+
+    RenderJob(std::vector<Item> items, const cloudgen::SourceSound* s, bool audio,
+              std::function<void(std::vector<cloudgen::RenderResult>)> done)
         : ThreadWithProgressWindow("Generating cloud...", true, true),
-          params(p), wave(w), source(s), renderAudio(audio), onDone(std::move(done))
+          jobs(std::move(items)), source(s), renderAudio(audio), onDone(std::move(done))
     {
         setStatusMessage("Processing...");
     }
 
     void run() override
     {
-        result = cloudgen::render(params, wave, source, renderAudio, [this](double fraction, const cloudgen::GrainEvent&) {
-            setProgress(fraction);
-            return !threadShouldExit();
-        });
+        for (size_t i = 0; i < jobs.size() && !threadShouldExit(); ++i) {
+            const double base = (double) i / (double) jobs.size(), share = 1.0 / (double) jobs.size();
+            results.push_back(cloudgen::render(jobs[i].params, jobs[i].wave, source, renderAudio,
+                [&, base, share](double fraction, const cloudgen::GrainEvent&) {
+                    setProgress(base + fraction * share);
+                    return !threadShouldExit();
+                }));
+        }
     }
 
     void threadComplete(bool) override
     {
-        onDone(std::move(result));
+        onDone(std::move(results));
         delete this;
     }
 
 private:
-    cloudgen::CloudParams params;
-    cloudgen::Waveform wave;
+    std::vector<Item> jobs;
     const cloudgen::SourceSound* source;
     bool renderAudio;
-    std::function<void(cloudgen::RenderResult)> onDone;
-    cloudgen::RenderResult result;
+    std::function<void(std::vector<cloudgen::RenderResult>)> onDone;
+    std::vector<cloudgen::RenderResult> results;
 };
+
+struct FixInfo { const char* group; const char* name; bool cloudgen::Fixes::* flag; const char* tip; };
+
+const FixInfo kFixInfo[] = {
+    { "Bugs", "Interpolate over duration", &cloudgen::Fixes::interpolateOverDuration,
+      "Bandlimits, amplitude, grain duration and fixed panning reach their final values when the start time is not 0." },
+    { "Bugs", "Coherent random panning", &cloudgen::Fixes::coherentPanning,
+      "With one Random box checked, grains move between a random position and the other, fixed setting." },
+    { "Bugs", "Grain duration range", &cloudgen::Fixes::grainDurationRange,
+      "Random grain durations fall between Minimum and Maximum, drawn fresh for every grain." },
+    { "Bugs", "Wavetable wrap", &cloudgen::Fixes::wavetableWrap,
+      "All 512 table entries are used and the oscillator wraps to the start instead of reading into the envelope." },
+    { "Bugs", "Oscillator without 16-bit wrap", &cloudgen::Fixes::oscillatorNoWrap,
+      "Interpolation between table entries no longer overflows at square and saw edges." },
+    { "Bugs", "Sawtooth first point", &cloudgen::Fixes::sawtoothFirstPoint,
+      "The sawtooth's first sample lies on its ramp (0) instead of 16383.5." },
+    { "Bugs", "Safe granulation", &cloudgen::Fixes::safeGranulation,
+      "Grains start on whole stereo frames and stay inside the source file." },
+    { "Bugs", "Resample source", &cloudgen::Fixes::resampleSource,
+      "Sources recorded at other sample rates play at their correct pitch." },
+    { "Bugs", "Drop unused random draw", &cloudgen::Fixes::dropUnusedRandom,
+      "Removes a random number the original drew and discarded for every grain." },
+    { "Signal quality", "Floating-point mix", &cloudgen::Fixes::floatMix,
+      "Grains are summed in floating point and clipped once, instead of wrapping overloads to -32768." },
+    { "Signal quality", "Smooth envelope", &cloudgen::Fixes::smoothEnvelope,
+      "A continuous Gaussian replaces the 512-step table, which stair-steps on long grains." },
+    { "Signal quality", "Keep cloud tail", &cloudgen::Fixes::keepCloudTail,
+      "Grains near the end ring out instead of being cut off or dropped." },
+    { "Sound-defining", "Full-scale envelope", &cloudgen::Fixes::fullScaleEnvelope,
+      "The Gaussian peaks at full scale instead of about 0.80 (louder grains)." },
+    { "Sound-defining", "Logarithmic frequency spread", &cloudgen::Fixes::logFrequency,
+      "Grain frequencies are spread evenly in pitch between the bandlimits rather than evenly in Hz." },
+};
+
+// Toggle list shown in a call-out from the FIXES button.
+class FixesPanel : public juce::Component
+{
+public:
+    FixesPanel(cloudgen::Fixes& target, std::function<void()> changed) : fixes(target), onChange(std::move(changed))
+    {
+        const char* group = "";
+        for (const auto& info : kFixInfo) {
+            if (std::strcmp(group, info.group) != 0) {
+                group = info.group;
+                auto* heading = headings.add(new juce::Label({}, juce::String(group).toUpperCase()));
+                heading->setFont(juce::FontOptions(11.0f, juce::Font::bold));
+                heading->setColour(juce::Label::textColourId, Colours::accent);
+                addAndMakeVisible(heading);
+                rows.push_back({ heading, nullptr });
+            }
+            auto* toggle = toggles.add(new juce::ToggleButton(info.name));
+            toggle->setTooltip(info.tip);
+            toggle->setToggleState(fixes.*(info.flag), juce::dontSendNotification);
+            toggle->onClick = [this, toggle, flag = info.flag] { fixes.*flag = toggle->getToggleState(); onChange(); };
+            addAndMakeVisible(toggle);
+            rows.push_back({ nullptr, toggle });
+        }
+        for (auto* b : { &model1, &model2 }) addAndMakeVisible(b);
+        model1.onClick = [this] { apply(cloudgen::Fixes::model1()); };
+        model2.onClick = [this] { apply(cloudgen::Fixes::model2()); };
+        setSize(320, (int) rows.size() * 24 + 44);
+    }
+
+    void resized() override
+    {
+        auto r = getLocalBounds().reduced(8);
+        auto buttons = r.removeFromBottom(28);
+        model1.setBounds(buttons.removeFromLeft(buttons.getWidth() / 2).reduced(2));
+        model2.setBounds(buttons.reduced(2));
+        for (auto& row : rows) {
+            auto line = r.removeFromTop(24);
+            if (row.heading) row.heading->setBounds(line);
+            else row.toggle->setBounds(line.withTrimmedLeft(8));
+        }
+    }
+
+private:
+    void apply(const cloudgen::Fixes& preset)
+    {
+        fixes = preset;
+        size_t i = 0;
+        for (const auto& info : kFixInfo)
+            toggles[(int) i++]->setToggleState(fixes.*(info.flag), juce::dontSendNotification);
+        onChange();
+    }
+
+    struct Row { juce::Label* heading; juce::ToggleButton* toggle; };
+    cloudgen::Fixes& fixes;
+    std::function<void()> onChange;
+    juce::OwnedArray<juce::Label> headings;
+    juce::OwnedArray<juce::ToggleButton> toggles;
+    std::vector<Row> rows;
+    juce::TextButton model1{ "Model 1 preset" }, model2{ "Model 2 preset" };
+    juce::TooltipWindow tooltips{ this };
+};
+
+bool sameFixes(const cloudgen::Fixes& a, const cloudgen::Fixes& b)
+{
+    for (const auto& info : kFixInfo)
+        if (a.*(info.flag) != b.*(info.flag)) return false;
+    return true;
+}
 
 } // namespace
 
@@ -167,9 +276,32 @@ MainComponent::MainComponent()
     // Shares the waveform menu's slot; it must never swallow the menu's clicks.
     sourceName.setInterceptsMouseClicks(false, false);
 
+    modelSelector.addItemList({ "Model 1 (original)", "Model 2 (corrected)" }, 1);
+    modelSelector.setSelectedId(1, juce::dontSendNotification);
+    modelSelector.onChange = [this] {
+        if (modelSelector.getSelectedId() == 0) return; // "Custom" text
+        fixes = modelSelector.getSelectedId() == 2 ? cloudgen::Fixes::model2() : cloudgen::Fixes::model1();
+        updateModelControls();
+    };
+    fixesButton.onClick = [this] { showFixesPanel(); };
+    sampleRateBox.addItemList({ "44.1 kHz", "48 kHz", "88.2 kHz", "96 kHz" }, 1);
+    sampleRateBox.setSelectedId(1);
+    bitDepthBox.addItemList({ "16-bit", "24-bit", "32-bit float" }, 1);
+    bitDepthBox.setSelectedId(1);
+    compareToggle.setTooltip("Also render Model 1 from the same random seed, to compare A and B");
+    showA.setClickingTogglesState(true);
+    showB.setClickingTogglesState(true);
+    showA.setRadioGroupId(1);
+    showB.setRadioGroupId(1);
+    showA.onClick = [this] { showRender(0); };
+    showB.onClick = [this] { showRender(1); };
+
     for (juce::Component* c : std::initializer_list<juce::Component*>{ &cloudType, &sourceKind, &waveform, &selectionOrder,
-             &outputKind, &grainRandom, &selectButton, &sourceName, &generateButton, &playButton, &exportButton, &plot, &status })
+             &outputKind, &grainRandom, &selectButton, &sourceName, &generateButton, &playButton, &exportButton, &plot, &status,
+             &modelSelector, &fixesButton, &sampleRateBox, &bitDepthBox, &compareToggle, &showA, &showB })
         addAndMakeVisible(c);
+    showA.setVisible(false); // shown after an A/B render
+    showB.setVisible(false);
 
     // The original relabels the grain duration fields Maximum (first) and
     // Minimum (second) when Random is checked.
@@ -186,6 +318,7 @@ MainComponent::MainComponent()
     exportButton.onClick = [this] { exportResult(); };
     status.setText("Ready.", juce::dontSendNotification);
     updateSourceControls();
+    updateModelControls();
 
     deviceManager.initialiseWithDefaultDevices(0, 2);
     sourcePlayer.setSource(&transport);
@@ -213,6 +346,53 @@ void MainComponent::updateSourceControls()
         f->editor.setEnabled(!granulated);
 }
 
+void MainComponent::updateModelControls()
+{
+    const bool original = sameFixes(fixes, cloudgen::Fixes::model1());
+    if (original) modelSelector.setSelectedId(1, juce::dontSendNotification);
+    else if (sameFixes(fixes, cloudgen::Fixes::model2())) modelSelector.setSelectedId(2, juce::dontSendNotification);
+    else modelSelector.setText("Model 2 (custom fixes)", juce::dontSendNotification);
+
+    // Other output rates and bit depths are Model 2 features.
+    sampleRateBox.setEnabled(!original);
+    if (original) sampleRateBox.setSelectedId(1, juce::dontSendNotification);
+    bitDepthBox.setEnabled(fixes.floatMix);
+    if (!fixes.floatMix) bitDepthBox.setSelectedId(1, juce::dontSendNotification);
+    compareToggle.setEnabled(!original);
+    if (original) compareToggle.setToggleState(false, juce::dontSendNotification);
+    repaint(); // header shows the model
+}
+
+void MainComponent::showFixesPanel()
+{
+    auto panel = std::make_unique<FixesPanel>(fixes, [this] { updateModelControls(); });
+    juce::CallOutBox::launchAsynchronously(std::move(panel), fixesButton.getScreenBounds(), nullptr);
+}
+
+void MainComponent::showRender(int index)
+{
+    shown = compared ? index : 1;
+    showA.setToggleState(shown == 0, juce::dontSendNotification);
+    showB.setToggleState(shown == 1, juce::dontSendNotification);
+    const auto& p = lastParams;
+    const float bands[] = { p.highInitial, p.highFinal, p.lowInitial, p.lowFinal };
+    plot.setGrains(lastRender().grains, p.startTime, (double) p.startTime + p.duration,
+                   *std::min_element(std::begin(bands), std::end(bands)),
+                   *std::max_element(std::begin(bands), std::end(bands)));
+    transport.stop();
+}
+
+cloudgen::Waveform MainComponent::currentWave(const cloudgen::Fixes& f) const
+{
+    switch (waveform.getSelectedId()) {
+        case 2: return cloudgen::makeSquare();
+        case 3: return cloudgen::makeSawtooth(f.sawtoothFirstPoint);
+        case 4: if (haveImportedWave) return importedWave; break;
+        default: break;
+    }
+    return cloudgen::makeSine();
+}
+
 bool MainComponent::loadSound(const juce::File& file, cloudgen::SourceSound& out)
 {
     std::unique_ptr<juce::AudioFormatReader> reader(formats.createReaderFor(file));
@@ -223,6 +403,7 @@ bool MainComponent::loadSound(const juce::File& file, cloudgen::SourceSound& out
     // The original read raw 16-bit stereo frames; mono files are duplicated
     // to stereo here rather than refused.
     const int right = buffer.getNumChannels() > 1 ? 1 : 0;
+    out.sampleRate = reader->sampleRate; // used by Model 2's resampling only
     out.interleaved.resize((size_t) buffer.getNumSamples() * 2);
     for (int i = 0; i < buffer.getNumSamples(); ++i)
         for (int c = 0; c < 2; ++c)
@@ -297,6 +478,9 @@ cloudgen::CloudParams MainComponent::gatherParams() const
     p.selectionOrder = (cloudgen::SelectionOrder) (selectionOrder.getSelectedId() - 1);
     // The original seeded rand() from the clock.
     p.seed = (uint16_t) juce::Time::getMillisecondCounter();
+    p.fixes = fixes;
+    const double rates[] = { 44100.0, 48000.0, 88200.0, 96000.0 };
+    p.sampleRate = rates[juce::jlimit(1, 4, sampleRateBox.getSelectedId()) - 1];
     return p;
 }
 
@@ -309,49 +493,64 @@ void MainComponent::generate()
         status.setText(err, juce::dontSendNotification);
         return;
     }
-    const auto wave = waveform.getSelectedId() == 2 ? cloudgen::makeSquare()
-                    : waveform.getSelectedId() == 3 ? cloudgen::makeSawtooth()
-                    : waveform.getSelectedId() == 4 && haveImportedWave ? importedWave
-                    : cloudgen::makeSine();
     const bool text = outputKind.getSelectedId() == 2;
+    const bool compare = compareToggle.isEnabled() && compareToggle.getToggleState();
+
+    // A/B: the same settings and seed through Model 1, then the current fixes.
+    std::vector<RenderJob::Item> items;
+    if (compare) {
+        auto original = p;
+        original.fixes = cloudgen::Fixes::model1();
+        original.sampleRate = cloudgen::kSampleRate;
+        items.push_back({ original, currentWave(original.fixes) });
+    }
+    items.push_back({ p, currentWave(p.fixes) });
 
     transport.stop();
     generateButton.setEnabled(false);
-    auto* job = new RenderJob(p, wave, granulated ? &granulationSource : nullptr, !text,
-        [this, p, text](cloudgen::RenderResult r) {
-            lastRender = std::move(r);
-            lastWasText = text;
-            const float bands[] = { p.highInitial, p.highFinal, p.lowInitial, p.lowFinal };
-            plot.setGrains(lastRender.grains, p.startTime, (double) p.startTime + p.duration,
-                           *std::min_element(std::begin(bands), std::end(bands)),
-                           *std::max_element(std::begin(bands), std::end(bands)));
-            status.setText((lastRender.stopped ? "Stopped. " : "Done. ")
-                               + juce::String((int) lastRender.grains.size()) + " grains.",
-                           juce::dontSendNotification);
+    auto* job = new RenderJob(std::move(items), granulated ? &granulationSource : nullptr, !text,
+        [this, p, text, compare](std::vector<cloudgen::RenderResult> results) {
             generateButton.setEnabled(true);
+            if (results.empty()) return;
+            renders[1] = std::move(results.back());
+            compared = compare && results.size() == 2;
+            renders[0] = compared ? std::move(results.front()) : cloudgen::RenderResult{};
+            lastWasText = text;
+            lastParams = p;
+            showA.setVisible(compared);
+            showB.setVisible(compared);
+            showRender(1);
+            juce::String msg = (renders[1].stopped ? "Stopped. " : "Done. ")
+                               + juce::String((int) renders[1].grains.size()) + " grains, seed " + juce::String(p.seed) + ".";
+            if (compared)
+                msg << " Model 1: " << (int) renders[0].grains.size() << " grains.";
+            status.setText(msg, juce::dontSendNotification);
         });
     job->launchThread();
 }
 
 void MainComponent::play()
 {
-    if (lastRender.interleaved.empty() || lastWasText) return;
+    const auto& r = lastRender();
+    if (r.interleaved.empty() || lastWasText) return;
     transport.stop();
     transport.setSource(nullptr);
-    const int frames = (int) (lastRender.interleaved.size() / 2);
+    const int frames = (int) (r.interleaved.size() / 2);
     playBuffer.setSize(2, frames);
     for (int i = 0; i < frames; ++i)
-        for (int c = 0; c < 2; ++c)
-            playBuffer.setSample(c, i, lastRender.interleaved[(size_t) i * 2 + (size_t) c] / 32768.0f);
+        for (int c = 0; c < 2; ++c) {
+            const size_t k = (size_t) i * 2 + (size_t) c;
+            playBuffer.setSample(c, i, r.mixed.empty() ? r.interleaved[k] / 32768.0f : juce::jlimit(-1.0f, 1.0f, r.mixed[k]));
+        }
     memorySource = std::make_unique<juce::MemoryAudioSource>(playBuffer, false);
-    transport.setSource(memorySource.get(), 0, nullptr, cloudgen::kSampleRate);
+    transport.setSource(memorySource.get(), 0, nullptr, r.sampleRate);
     transport.setPosition(0.0);
     transport.start();
 }
 
 void MainComponent::exportResult()
 {
-    if (lastRender.grains.empty()) return;
+    if (lastRender().grains.empty()) return;
     const auto patterns = lastWasText ? juce::String("*.txt") : juce::String("*.aiff;*.aif;*.wav");
     chooser = std::make_unique<juce::FileChooser>(lastWasText ? "Save TEXT file as:" : "Save sound file as:",
                                                   juce::File(), patterns);
@@ -359,31 +558,50 @@ void MainComponent::exportResult()
         [this](const juce::FileChooser& fc) {
             auto file = fc.getResult();
             if (file == juce::File()) return;
+            const auto& r = lastRender();
             if (lastWasText) {
-                file.replaceWithText(cloudgen::grainsAsText(lastRender.grains));
+                file.replaceWithText(cloudgen::grainsAsText(r.grains));
                 status.setText("Saved " + file.getFileName(), juce::dontSendNotification);
                 return;
             }
+            const bool wav = file.hasFileExtension("wav");
             std::unique_ptr<juce::AudioFormat> format;
-            if (file.hasFileExtension("wav")) format = std::make_unique<juce::WavAudioFormat>();
+            if (wav) format = std::make_unique<juce::WavAudioFormat>();
             else format = std::make_unique<juce::AiffAudioFormat>();
+
+            // Higher bit depths come from the floating-point mix (Model 2).
+            int bits = 16;
+            juce::String note;
+            if (!r.mixed.empty() && bitDepthBox.getSelectedId() == 2) bits = 24;
+            if (!r.mixed.empty() && bitDepthBox.getSelectedId() == 3) {
+                bits = wav ? 32 : 24; // JUCE writes 32-bit float WAV; AIFF float is not supported
+                if (!wav) note = " (24-bit: float needs WAV)";
+            }
+
             file.deleteFile();
             std::unique_ptr<juce::OutputStream> stream(file.createOutputStream().release());
             if (stream == nullptr) return;
-            std::unique_ptr<juce::AudioFormatWriter> writer(
-                format->createWriterFor(stream.get(), cloudgen::kSampleRate, 2, 16, {}, 0));
+            std::unique_ptr<juce::AudioFormatWriter> writer(format->createWriterFor(stream.get(), r.sampleRate, 2, bits, {}, 0));
             if (writer == nullptr) return;
             stream.release(); // writer owns it now
-            // Write the 16-bit samples exactly (JUCE expects left-aligned 32-bit ints).
-            const int frames = (int) (lastRender.interleaved.size() / 2);
-            std::vector<int> left((size_t) frames), right((size_t) frames);
-            for (int i = 0; i < frames; ++i) {
-                left[(size_t) i] = (int) lastRender.interleaved[(size_t) i * 2] * 65536;
-                right[(size_t) i] = (int) lastRender.interleaved[(size_t) i * 2 + 1] * 65536;
+            const int frames = (int) (r.interleaved.size() / 2);
+            if (bits == 16) {
+                // Write the 16-bit samples exactly (JUCE expects left-aligned 32-bit ints).
+                std::vector<int> left((size_t) frames), right((size_t) frames);
+                for (int i = 0; i < frames; ++i) {
+                    left[(size_t) i] = (int) r.interleaved[(size_t) i * 2] * 65536;
+                    right[(size_t) i] = (int) r.interleaved[(size_t) i * 2 + 1] * 65536;
+                }
+                const int* chans[] = { left.data(), right.data(), nullptr };
+                writer->write(chans, frames);
+            } else {
+                juce::AudioBuffer<float> buffer(2, frames);
+                for (int i = 0; i < frames; ++i)
+                    for (int c = 0; c < 2; ++c)
+                        buffer.setSample(c, i, r.mixed[(size_t) i * 2 + (size_t) c]);
+                writer->writeFromAudioSampleBuffer(buffer, 0, frames);
             }
-            const int* chans[] = { left.data(), right.data(), nullptr };
-            writer->write(chans, frames);
-            status.setText("Saved " + file.getFileName(), juce::dontSendNotification);
+            status.setText("Saved " + file.getFileName() + note, juce::dontSendNotification);
         });
 }
 
@@ -397,7 +615,8 @@ void MainComponent::paint(juce::Graphics& g)
     g.drawText("CLOUD GENERATOR", 20, 8, 400, 28, juce::Justification::centredLeft);
     g.setColour(Colours::accent);
     g.setFont(juce::FontOptions(12.0f));
-    g.drawText("MODEL 1  /  GRANULAR SYNTHESIS", 240, 8, 400, 28, juce::Justification::centredLeft);
+    const juce::String model = sameFixes(fixes, cloudgen::Fixes::model1()) ? "MODEL 1" : "MODEL 2";
+    g.drawText(model + "  /  GRANULAR SYNTHESIS", 240, 8, 400, 28, juce::Justification::centredLeft);
 
     for (const auto& ps : panels) {
         auto r = ps.area.toFloat();
@@ -415,7 +634,10 @@ void MainComponent::resized()
 {
     panels.clear();
     auto area = getLocalBounds().reduced(16);
-    area.removeFromTop(32);
+    auto header = area.removeFromTop(32).withTrimmedBottom(6);
+    compareToggle.setBounds(header.removeFromRight(150));
+    fixesButton.setBounds(header.removeFromRight(100).reduced(4, 0));
+    modelSelector.setBounds(header.removeFromRight(220));
 
     auto bottom = area.removeFromBottom(44);
     auto controls = area.removeFromLeft(600);
@@ -454,7 +676,11 @@ void MainComponent::resized()
     layoutPair(panel(left, "Amplitude", 80), ampInitial, ampFinal);
     layoutPair(panel(left, "High Bandlimit", 80), highInitial, highFinal);
     layoutPair(panel(left, "Low Bandlimit", 80), lowInitial, lowFinal);
-    outputKind.setBounds(panel(left, "Output", 56).removeFromTop(rowH));
+    auto output = panel(left, "Output", 88);
+    outputKind.setBounds(output.removeFromTop(rowH));
+    auto formatRow = output.removeFromTop(rowH + 4).withTrimmedTop(4);
+    sampleRateBox.setBounds(formatRow.removeFromLeft(formatRow.getWidth() / 2).withTrimmedRight(3));
+    bitDepthBox.setBounds(formatRow.withTrimmedLeft(3));
 
     cloudType.setBounds(panel(right, "Type", 56).removeFromTop(rowH));
 
@@ -479,5 +705,7 @@ void MainComponent::resized()
     generateButton.setBounds(bottom.removeFromRight(160).reduced(2));
     exportButton.setBounds(bottom.removeFromRight(120).reduced(2));
     playButton.setBounds(bottom.removeFromRight(100).reduced(2));
+    showB.setBounds(bottom.removeFromRight(110).reduced(2));
+    showA.setBounds(bottom.removeFromRight(110).reduced(2));
     status.setBounds(bottom);
 }

@@ -9,6 +9,10 @@ There is no surviving source. The port reimplements the program from:
 
 The synthesis engine follows the disassembled 68K code step by step: grain scheduling, interpolation, the Gaussian and wavetable construction, the oscillator, mixing, granulation and the text format, including the original's quirks. [docs/ALGORITHM.md](docs/ALGORITHM.md) describes the recovered algorithm. The original used 80-bit SANE arithmetic; the port computes those intermediates in 64-bit double, so output is identical on every platform but can differ from a 68K Mac by ±1 LSB in rare cases. The few points the disassembly cannot settle are marked `RE:` in the source.
 
+## Model 2
+
+The app also offers **Model 2**: the same engine with the original's quirks corrected, each fix switchable on its own, and an A/B mode that renders Model 1 and Model 2 from the same random seed for comparison. With every fix off the output is Model 1, bit for bit. See [docs/MODEL2.md](docs/MODEL2.md).
+
 ## Layout
 
 | Path | Contents |
@@ -17,7 +21,7 @@ The synthesis engine follows the disassembled 68K code step by step: grain sched
 | `src/app/` | GUI application (JUCE) |
 | `src/cli/` | `cloudgen-cli`: render clouds from the command line |
 | `tools/re/` | Reverse-engineering tools: resource extractor, 68K disassembler driver (uses [Musashi](https://github.com/kstenerud/Musashi)), SANE lifter |
-| `docs/` | Recovered algorithm |
+| `docs/` | Recovered algorithm (`ALGORITHM.md`), Model 2 fixes (`MODEL2.md`) |
 
 ## Building
 
