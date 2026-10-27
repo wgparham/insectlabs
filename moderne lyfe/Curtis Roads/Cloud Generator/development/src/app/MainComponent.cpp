@@ -164,6 +164,8 @@ MainComponent::MainComponent()
     outputKind.setSelectedId(1);
     sourceName.setJustificationType(juce::Justification::centredLeft);
     sourceName.setColour(juce::Label::textColourId, Colours::accent);
+    // Shares the waveform menu's slot; it must never swallow the menu's clicks.
+    sourceName.setInterceptsMouseClicks(false, false);
 
     for (juce::Component* c : std::initializer_list<juce::Component*>{ &cloudType, &sourceKind, &waveform, &selectionOrder,
              &outputKind, &grainRandom, &selectButton, &sourceName, &generateButton, &playButton, &exportButton, &plot, &status })
@@ -203,6 +205,7 @@ void MainComponent::updateSourceControls()
 {
     const bool granulated = sourceKind.getSelectedId() == 2;
     waveform.setVisible(!granulated);
+    sourceName.setVisible(granulated);
     selectionOrder.setEnabled(granulated);
     sourceName.setText(granulated ? (granulationName.isEmpty() ? "none selected" : granulationName)
                                   : juce::String(), juce::dontSendNotification);
