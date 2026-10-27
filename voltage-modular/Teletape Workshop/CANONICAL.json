@@ -100,5 +100,11 @@
     "path": "sw3/versions/1.0.0",
     "module": "sw3",
     "name": "SW3 Voltage Controlled Switch"
+  },
+  "swcxi": {
+    "version": "1.0.0",
+    "path": "sw111/versions/1.0.0",
+    "module": "swCXI",
+    "name": "swCXI Sequential Switch"
   }
 }

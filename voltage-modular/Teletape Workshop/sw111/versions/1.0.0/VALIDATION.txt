@@ -1,0 +1,5 @@
+PASS: exported Java compiles against Voltage SDK
+PASS: embedded Java compiles against Voltage SDK
+PASS: 1151109 module callback/cable/bypass assertions; 50,000 active samples match supplied v0.1.2 exactly
+PASS: 60109 sequential-switch core assertions
+PASS: release identity, source parity, Designer binary, controls, anchors, and headless route behavior

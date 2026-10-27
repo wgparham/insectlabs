@@ -1,0 +1,24 @@
+{
+  "counts": {
+    "manifests": 106,
+    "hashed_files": 897,
+    "pairs": 82,
+    "canonical_modules": 59,
+    "local_links": 1358
+  },
+  "errors": [
+    "Hash mismatch: C:\\Users\\wgparham\\Dropbox\\git\\insectlabs\\.swcxi-staged-review-d2njklui\\voltage-modular\\Teletape Workshop\\CXL\\development\\backups\\2026-10-17-pre-softened-8bit\\SHA256.json",
+    "Hash mismatch: C:\\Users\\wgparham\\Dropbox\\git\\insectlabs\\.swcxi-staged-review-d2njklui\\voltage-modular\\Teletape Workshop\\CXL\\development\\backups\\2026-10-17-softened-9bit\\SHA256.json",
+    "Hash mismatch: C:\\Users\\wgparham\\Dropbox\\git\\insectlabs\\.swcxi-staged-review-d2njklui\\voltage-modular\\Teletape Workshop\\CXL\\development\\backups\\2026-10-18-pre-canon-cleanup\\README.md",
+    "Hash mismatch: C:\\Users\\wgparham\\Dropbox\\git\\insectlabs\\.swcxi-staged-review-d2njklui\\voltage-modular\\Teletape Workshop\\CXL\\development\\backups\\2026-10-18-pre-canon-cleanup\\SHA256.json",
+    "Hash mismatch: C:\\Users\\wgparham\\Dropbox\\git\\insectlabs\\.swcxi-staged-review-d2njklui\\voltage-modular\\Teletape Workshop\\CXL\\development\\BUILD-CHECK.json",
+    "Hash mismatch: C:\\Users\\wgparham\\Dropbox\\git\\insectlabs\\.swcxi-staged-review-d2njklui\\voltage-modular\\Teletape Workshop\\CXL\\development\\DEVELOPMENT.md",
+    "Hash mismatch: C:\\Users\\wgparham\\Dropbox\\git\\insectlabs\\.swcxi-staged-review-d2njklui\\voltage-modular\\Teletape Workshop\\CXL\\development\\tests\\DSP-RESULTS.json",
+    "Hash mismatch: C:\\Users\\wgparham\\Dropbox\\git\\insectlabs\\.swcxi-staged-review-d2njklui\\voltage-modular\\Teletape Workshop\\CXL\\development\\backups\\2026-10-18-pre-canon-cleanup\\README.md"
+  ],
+  "release_scope": {
+    "result": "passed",
+    "release_related_errors": 0,
+    "existing_errors": "Eight errors concern unchanged CXL development artifacts already in HEAD; no CXL files are staged in this release."
+  }
+}

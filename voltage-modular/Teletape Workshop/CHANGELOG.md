@@ -1,5 +1,9 @@
 # Teletape Workshop changelog
 
+## 2026-10-27 - swCXI 1.0.0
+
+Canonized the supplied v0.1.2 sequential switch after strict compilation of both source forms, source/Designer metadata checks, core and module-callback validation, and exact active-output comparison over 50,000 samples. Retained the panel, every-sample cable writes and approved CV/ramp behavior; corrected knob metadata to the user-confirmed clockwise 1-10/default 1 and brought direct host bypass/resume into the shared infrastructure standard. Harvested SequentialSwitchCore, retained the supplied reference pair and useful change notes, and removed superseded development copies after archive verification. Eighteen Teletape modules are now canonical. The earlier 16-way bidirectional proposal is replaced by swCXI; the next module brief remains open. Publication remains deferred. The exact cleaned pair was not independently reloaded or auditioned in the native host.
+
 ## 2026-10-26 — SW3 1.0.0
 
 Canonized the supplied v0.1.7 Voltage Controlled Switch pair after both exported and embedded Java compiled against the Voltage SDK and 508 headless core checks passed. The Designer project round-trip, source pairing, metadata, ranges, UUIDs, source anchors and reusable core parity also passed. Preserved the user-supplied panel and DSP behavior, moved the current source pair into the 1.0.0 archive, and removed superseded drafts after preserving design behavior and test evidence. The exact native Designer/Voltage Modular GUI reload and listening check was not repeated during closeout. Seventeen Teletape modules are now canonical. The next proposed work is the 16-way MUX/DEMUX router. Cherry Audio publication remains deferred.
