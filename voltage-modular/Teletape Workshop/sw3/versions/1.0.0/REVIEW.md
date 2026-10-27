@@ -37,5 +37,5 @@ Host bypass follows primary direct routes: connected X1 to X Out and connected Y
 - Developer handoff: `DEVELOPER-NOTES.md`
 - Automated validation: `tests/validate.py`, `tests/Sw3CoreTest.java`
 - Shared reusable core: `switch-primitives/src/com/insectlabs/switches/Sw3Core.java`
-- Commit and push: pending
+- Canonical release commit: `4cc1ac5`; pushed to `origin/main` successfully.
 - Cleanup: development archive verified; superseded source revisions and backups removed after the final checks
