@@ -7,6 +7,6 @@
 - [Developer notes](DEVELOPER-NOTES.md)
 - [Release review](versions/1.0.0/REVIEW.md)
 - [DSP design record](versions/1.0.0/DSP-DESIGN.md)
-- [Current working files](development/README.md)
+- [Historical scratch notes](research/Notes-Toward-TRM.md)
 
 Three switches start in different positions so S, G and Si voices are immediately available across the lanes. Publication is deferred until the Teletape lineup is locked.

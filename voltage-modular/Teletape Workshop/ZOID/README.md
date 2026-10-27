@@ -7,4 +7,4 @@ Canonical version: [1.0.0](versions/1.0.0/README.md). User approved 2026-10-16; 
 - [Release review](versions/1.0.0/REVIEW.md)
 - [Synthi 100 research](../references/EMS%2520%2520Synthi%2520100%2520Computer%2520Synthi.pdf)
 
-The development folder contains only a pointer to the archive. Superseded builds were removed after their useful design rationale was retained in the canonical notes.
+No development candidate is active. Start a future revision from the immutable [1.0.0 source archive](versions/1.0.0/README.md); superseded builds were removed after their useful design rationale was retained in the release notes.

@@ -55,7 +55,7 @@ The untouched supplied mockup is retained separately under comparisons. Neither 
 
 ## Reproduce
 
-Run `development/tests/validate.py` with the bundled Python (NumPy required) from the repository. It compiles both sources, extracts current Java user regions into a Java harness, writes temporary captures under `tmp/osc-checks`, and regenerates `results.json`. It requires the installed JDK and Voltage SDK paths listed in the script.
+This historical runner was superseded by the archived [OSC 1.0.0 validation script](../../versions/1.0.0/tests/validate.py). Its original working-tree paths refer to the pre-canon development layout; the report and results are retained as historical prototype evidence.
 
 Java SHA-256: `a661d18b272e0837282a5c726193c34423d5bf6b1aadfadcdebc6e599b29116c`
 
