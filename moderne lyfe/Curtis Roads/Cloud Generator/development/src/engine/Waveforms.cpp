@@ -35,10 +35,10 @@ Waveform makeSquare()
     return w;
 }
 
-Waveform makeSawtooth()
+Waveform makeSawtooth(bool correctFirstPoint)
 {
     Waveform w;
-    w.points[0] = 16383.5f; // as in the original, not the ramp value 0
+    w.points[0] = correctFirstPoint ? 0.0f : 16383.5f; // the original's value is off the ramp
     for (int i = 1; i < kTableSize; ++i) {
         const int k = i + 256 <= 512 ? i + 256 : i - 256;
         w.points[i] = (float) ((double) k / 512.0f * 65535.0f - 32767.5f);
@@ -56,11 +56,13 @@ Waveform importWaveform(const SourceSound& sound)
     return w;
 }
 
-const std::array<int16_t, kTableSize + 1>& gaussTable()
+const std::array<int16_t, kTableSize + 1>& gaussTable(bool fullScale)
 {
-    static const std::array<int16_t, kTableSize + 1> table = [] {
+    static const auto build = [](bool full) {
         std::array<int16_t, kTableSize + 1> t{};
-        const double scale = 1.0 / kPiLiteral; // the original divides by pi, not sqrt(2 pi)
+        // The original divides by pi, not sqrt(2 pi); the full-scale variant
+        // drops the normalisation so the peak is 1.
+        const double scale = full ? 1.0 / kSqrtTwoPiLiteral : 1.0 / kPiLiteral;
         const double step = 6.0 / 512.0;
         for (int i = 0; i <= kTableSize; ++i) {
             const double x = i * step - 3.0;
@@ -68,13 +70,27 @@ const std::array<int16_t, kTableSize + 1>& gaussTable()
             t[i] = sane::toInt16(e * kSqrtTwoPiLiteral * 32767.0);
         }
         return t;
-    }();
-    return table;
+    };
+    static const std::array<int16_t, kTableSize + 1> original = build(false), full = build(true);
+    return fullScale ? full : original;
 }
 
-std::array<int16_t, kTableSize + 1> oscillatorTable(const Waveform& wave)
+double gaussEnvelope(double position, bool fullScale)
+{
+    const double x = position * 6.0 - 3.0;
+    const double peak = fullScale ? 32767.0 : 32767.0 * kSqrtTwoPiLiteral / kPiLiteral;
+    return peak * std::exp(-(x * x) / 2.0);
+}
+
+std::array<int16_t, kTableSize + 1> oscillatorTable(const Waveform& wave, bool wrap)
 {
     std::array<int16_t, kTableSize + 1> t{};
+    if (wrap) {
+        for (int i = 0; i < kTableSize; ++i)
+            t[i] = sane::toInt16(wave.points[i]);
+        t[kTableSize] = t[0];
+        return t;
+    }
     for (int i = 0; i < kTableSize - 1; ++i) // loop bound "< 511" in the original
         t[i] = sane::toInt16(wave.points[i]);
     t[kTableSize - 1] = 0;
