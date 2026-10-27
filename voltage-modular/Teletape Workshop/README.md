@@ -1,6 +1,6 @@
 # Teletape Workshop
 
-Teletape Workshop is the new name for the planned Radiophonic series. It follows the completed Wardenclyffe Station collection and shifts toward electronic-music studio equipment rooted in the mid-1960s through mid-1970s. RVG, TSL, OFB, b08, CXL, SVF, TRM, ZOID, N02, OSC, CED, FPA, HGD, FMC, SN93T and DCA are canonized. The complete series inventory is not yet locked.
+Teletape Workshop is the new name for the planned Radiophonic series. It follows the completed Wardenclyffe Station collection and shifts toward electronic-music studio equipment rooted in the mid-1960s through mid-1970s. RVG, TSL, OFB, b08, CXL, SVF, TRM, ZOID, N02, OSC, CED, FPA, HGD, FMC, SN93T, DCA and SW3 are canonized. The complete series inventory is not yet locked.
 
 ## Accepted directions to explore
 
@@ -11,7 +11,7 @@ Teletape Workshop is the new name for the planned Radiophonic series. It follows
 - Additional sample-and-hold capacity beyond the track-and-hold already present on TSL channel 3, and tape/delay/reverb instruments.
 - Further random, sample-and-hold and performance instruments informed by studio workflows.
 
-[N02 Dual Noise Generator](n02/README.md) is canonical at v1.0.0, with an EMS-inspired analog voice and a clocked digital source that automatically selects 7/15/31-bit sequences with SPEED. [OSC Primary Oscillator](OSC/README.md) is canonical at v1.0.0, with shaped waveform outputs, dedicated V/oct pitch and through-zero linear FM. The next module brief remains open.
+[N02 Dual Noise Generator](n02/README.md) is canonical at v1.0.0, with an EMS-inspired analog voice and a clocked digital source that automatically selects 7/15/31-bit sequences with SPEED. [OSC Primary Oscillator](OSC/README.md) is canonical at v1.0.0, with shaped waveform outputs, dedicated V/oct pitch and through-zero linear FM. [SW3 Voltage Controlled Switch](sw3/README.md) is canonical at v1.0.0, providing independent 2-to-1 and 1-to-2 gate-controlled signal routes. The next proposed concept is a 16-way MUX/DEMUX router; its panel and signal-flow brief remain subject to design review.
 
 [CXL Algorithmic Reverberation](CXL/README.md) is canonical at v1.0.0, with an EMT/Dattorro-inspired shared plate tank and user-approved 8.5-bit extended converter character. Publication remains deferred.
 
@@ -39,6 +39,7 @@ These are design directions, not a committed product list. Keep the general CV r
 | [HGD High Gain Device](HGD/versions/1.0.0/) | 1.0.0 | Four independent high-gain voices with individual outputs and a summed mix | [User manual](HGD/versions/1.0.0/USER-MANUAL.md) |
 | [FMC Four Channel Modulator](FMC/versions/1.0.0/) | 1.0.0 | Four selectable flanger, tremolo, analog-delay and digital-delay lanes with individual outputs and a half-sum mix | [User manual](FMC/versions/1.0.0/USER-MANUAL.md) |
 | [SN93T Tuner](sn93t/versions/1.1.0/) | 1.1.0 | Monophonic tuner with custom temperaments, tone, pitch CV and VCO calibration | [User manual](sn93t/versions/1.1.0/USER-MANUAL.md) |
+| [SW3 Voltage Controlled Switch](sw3/versions/1.0.0/) | 1.0.0 | Independent X 2-to-1 and Y 1-to-2 routes with gate/latch control and variable fade | [User manual](sw3/versions/1.0.0/USER-MANUAL.md) |
 
 The RVG's [developer notes](RVG/DEVELOPER-NOTES.md), [release review](RVG/versions/2.0.0/REVIEW.md), and [shared references](references/README.md) record implementation, validation and research. The RVG models EMS workflow and feel; it is not an exact circuit reconstruction. The b08's [developer notes](b08/DEVELOPER-NOTES.md) and [release review](b08/versions/1.0.0/REVIEW.md) document its artwork-only panel and validation. FPA adds four independent preamp/overdrive voices inspired by CE-1, RE-201/301, BD-2 and SD-1 circuits; see its [design research](FPA/references/FPA-Design-Research.md) and [developer notes](FPA/DEVELOPER-NOTES.md).
 

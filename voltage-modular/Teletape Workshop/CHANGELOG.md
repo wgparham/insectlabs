@@ -1,5 +1,9 @@
 # Teletape Workshop changelog
 
+## 2026-10-26 — SW3 1.0.0
+
+Canonized the supplied v0.1.7 Voltage Controlled Switch pair after both exported and embedded Java compiled against the Voltage SDK and 508 headless core checks passed. The Designer project round-trip, source pairing, metadata, ranges, UUIDs, source anchors and reusable core parity also passed. Preserved the user-supplied panel and DSP behavior, moved the current source pair into the 1.0.0 archive, and removed superseded drafts after preserving design behavior and test evidence. The exact native Designer/Voltage Modular GUI reload and listening check was not repeated during closeout. Seventeen Teletape modules are now canonical. The next proposed work is the 16-way MUX/DEMUX router. Cherry Audio publication remains deferred.
+
 ## 2026-10-26 — SN93T 1.1.0
 
 Promoted the user-tested tuner revision after strict SDK compilation, VMOD/source parity, metadata and geometry checks, and all deterministic tuner regression tests passed. TONE is now 5 V peak at 0 dB and Cents CV is ±5 V at ±50 cents; detector sensitivity, pitch/CAL CV, panel and DSP core remain unchanged. Version 1.0.0 is preserved. Cherry Audio publication remains deferred.

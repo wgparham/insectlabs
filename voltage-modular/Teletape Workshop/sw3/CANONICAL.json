@@ -1,0 +1,8 @@
+{
+  "sw3": {
+    "version": "1.0.0",
+    "path": "versions/1.0.0",
+    "module": "sw3",
+    "name": "SW3 Voltage Controlled Switch"
+  }
+}

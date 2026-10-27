@@ -94,5 +94,11 @@
     "path": "DCA/versions/1.0.0",
     "module": "dca",
     "name": "DCA Dual Controlled Amplifier"
+  },
+  "sw3": {
+    "version": "1.0.0",
+    "path": "sw3/versions/1.0.0",
+    "module": "sw3",
+    "name": "SW3 Voltage Controlled Switch"
   }
 }

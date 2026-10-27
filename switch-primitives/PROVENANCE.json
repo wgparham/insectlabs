@@ -1,0 +1,11 @@
+{
+  "primitives": [
+    {
+      "name": "Sw3Core",
+      "origin": "voltage-modular/Teletape Workshop/sw3/versions/1.0.0/sw3.java",
+      "date": "2026-10-26",
+      "arithmetic": "Exact extraction of the SDK-independent dual switch core; released SW3 retains a self-contained nested copy",
+      "validation": "SW3 1.0.0 tests/validate.py checks source parity and runs the 508 core checks"
+    }
+  ]
+}

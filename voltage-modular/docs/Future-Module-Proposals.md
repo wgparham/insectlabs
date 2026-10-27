@@ -24,7 +24,7 @@ sn16u 2.1.0 provides DC/Vpp, CV pitch, audio Hz and RMS measurement, along with 
 
 ## Teletape Workshop possibilities (formerly Radiophonic)
 
-Teletape Workshop has eight canonized modules: RVG 2.0.1, TSL 1.0.0, OFB 1.0.0, b08 1.0.0, SVF 1.0.1, TRM 1.0.0, ZOID 1.0.0 and N02 1.0.0. N02 fills the dedicated audio-noise source role with independent EMS-inspired analog and clocked digital voices; its sequence lengths automatically increase from 7 to 15 to 31 bits with SPEED. The final inventory and next module brief remain open. The options below are possible additions rather than mandatory gaps.
+Teletape Workshop now has seventeen canonized modules, including SW3 1.0.0, a dual CV/manual switch with separate 2-to-1 and 1-to-2 routes. N02 fills the dedicated audio-noise source role with independent EMS-inspired analog and clocked digital voices; its sequence lengths automatically increase from 7 to 15 to 31 bits with SPEED. The final inventory and next module brief remain open. The options below are possible additions rather than mandatory gaps.
 
 **RVG Random Voltage Generator — canonical v2.0.1.** RVG provides two independent stepped random voltages, variable event timing, manual and external reselection, inhibit/free-run, a +4 V trigger, and compensated/factory/failure hold modes. The design models workflow and response rather than claiming a component-exact EMS circuit. The [module research notes](../Teletape%20Workshop/RVG/RESEARCH-NOTES.md) and [references](../Teletape%20Workshop/RVG/references/README.md) preserve the unresolved circuit questions.
 
@@ -32,7 +32,7 @@ Teletape Workshop has eight canonized modules: RVG 2.0.1, TSL 1.0.0, OFB 1.0.0, 
 
 **Noise processing beyond N02:** CV-controlled spectral movement, bands and perhaps bursts could take the multiple-voice EMW and noise references further. This is distinct from N02's canonical role as a source; OFB and SVF already provide substantial filtering. Keep n01's approved manual noise voice intact.
 
-Frequency shifting with separate UP/DOWN outputs, voltage-controlled switches, modern manual routers, a continuous studio contour/filter tool distinct from the existing OFB and SVF, and tape/delay/reverb remain possible Teletape Workshop directions. These ideas do not commit the whole list or a development order.
+Frequency shifting with separate UP/DOWN outputs, modern manual routers, a continuous studio contour/filter tool distinct from the existing OFB and SVF, and tape/delay/reverb remain possible Teletape Workshop directions. SW3 now covers a compact dual 2:1 switch utility. The next proposed concept is a separate 16-way MUX/DEMUX router: two banks of sixteen signal jacks, one position/address control with CV, route indication, and a MUX/DEMUX mode. It should preserve a clear distinction between signal routing and its gate/latch controls. The existing mockup is a starting point, not a locked design brief.
 
 ## Computing boundary
 
