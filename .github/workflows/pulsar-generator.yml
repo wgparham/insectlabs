@@ -1,0 +1,66 @@
+name: pulsar-generator
+
+on:
+  push:
+    paths:
+      - 'moderne lyfe/Curtis Roads/Pulsar Generator/development/**'
+      - '.github/workflows/pulsar-generator.yml'
+  pull_request:
+    paths:
+      - 'moderne lyfe/Curtis Roads/Pulsar Generator/development/**'
+      - '.github/workflows/pulsar-generator.yml'
+  workflow_dispatch:
+
+env:
+  PROJECT_DIR: moderne lyfe/Curtis Roads/Pulsar Generator/development
+
+defaults:
+  run:
+    shell: bash
+    working-directory: moderne lyfe/Curtis Roads/Pulsar Generator/development
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            artifact: PulsarGenerator-Windows
+          - os: macos-latest
+            artifact: PulsarGenerator-macOS
+          - os: ubuntu-latest
+            artifact: PulsarGenerator-Linux
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libasound2-dev libjack-jackd2-dev libfreetype-dev \
+            libfontconfig1-dev libx11-dev libxcomposite-dev libxcursor-dev libxext-dev \
+            libxinerama-dev libxrandr-dev libxrender-dev libgl1-mesa-dev libcurl4-openssl-dev
+
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      - name: Collect
+        run: |
+          mkdir -p dist
+          art=build/PulsarGenerator_artefacts/Release
+          [ -d "$art/Standalone" ] && cp -R "$art/Standalone/." dist/
+          for fmt in VST3 AU LV2; do [ -d "$art/$fmt" ] && cp -R "$art/$fmt/." dist/; done
+          find build -maxdepth 3 \( -name 'pulsargen-cli' -o -name 'pulsargen-cli.exe' \) -exec cp {} dist/ \;
+          ls -la dist
+
+      # upload-artifact paths are relative to the workspace, not working-directory.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: ${{ env.PROJECT_DIR }}/dist
