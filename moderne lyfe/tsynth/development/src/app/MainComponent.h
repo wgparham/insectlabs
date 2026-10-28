@@ -11,6 +11,12 @@
 
 #include <juce_audio_utils/juce_audio_utils.h>
 
+#include <atomic>
+#include <condition_variable>
+#include <mutex>
+#include <optional>
+#include <thread>
+
 class MainComponent : public juce::Component, public juce::MenuBarModel, private juce::Timer
 {
 public:
@@ -36,7 +42,12 @@ private:
     void exportSound();
     void loadSoundFor(int index);
     void changed();              // something edited: re-render soon
-    void render(int module = 0); // 0 = the whole patch
+    // Rendering runs on a worker thread so the interface stays responsive.
+    // module 0 = the whole patch. With play set, playback starts when it is ready.
+    void render(int module = 0, bool play = false);
+    void renderNow(int module); // synchronous (export)
+    void workerLoop();
+    void applyResult(turbosynth::RenderResult r, int module, bool play);
     void play();
     void stop();
     void setDark(bool);
@@ -56,6 +67,14 @@ private:
     int renderPending = 0;      // countdown in timer ticks
     int previewModule = 0;
     turbosynth::RenderResult result;
+    struct Job { turbosynth::Patch patch; turbosynth::RenderOptions options; int module = 0; bool play = false; };
+    std::mutex jobLock;
+    std::condition_variable jobReady;
+    std::optional<Job> job;
+    bool quitting = false, rendering = false;
+    bool syncRender = false; // snapshots and export render on the calling thread
+    std::thread worker;
+    std::atomic<int> latestRequest { 0 };
 
     juce::AudioDeviceManager devices;
     juce::AudioSourcePlayer player;

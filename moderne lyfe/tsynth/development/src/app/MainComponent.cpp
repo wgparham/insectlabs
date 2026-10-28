@@ -27,19 +27,21 @@ MainComponent::MainComponent(int forceTheme)
     patchView.patch = &patch;
     patchView.onSelect = [this](int i) { modulePanel.show(&patch, i); };
     patchView.onChanged = [this] { modulePanel.show(&patch, patchView.selected); changed(); };
-    patchView.onPreview = [this](int i) { render(i); play(); };
+    patchView.onPreview = [this](int i) { render(i, true); };
     modulePanel.onEdited = [this] { patchView.repaint(); changed(); };
-    modulePanel.onPreview = [this](int i) { render(i); play(); };
+    modulePanel.onPreview = [this](int i) { render(i, true); };
     modulePanel.onLoadSound = [this](int i) { loadSoundFor(i); };
     addAndMakeVisible(patchView);
     addAndMakeVisible(modulePanel);
     addAndMakeVisible(waveView);
-    playButton.onClick = [this] { if (previewModule) render(0); play(); };
+    playButton.onClick = [this] { if (previewModule || renderPending || rendering) render(0, true); else play(); };
     stopButton.onClick = [this] { stop(); };
     addAndMakeVisible(playButton);
     addAndMakeVisible(stopButton);
 
     if (forceTheme < 0) devices.initialiseWithDefaultDevices(0, 2); // no audio device for snapshots
+    syncRender = forceTheme >= 0;
+    if (!syncRender) worker = std::thread([this] { workerLoop(); });
     player.setSource(&transport);
     devices.addAudioCallback(&player);
 
@@ -52,6 +54,12 @@ MainComponent::MainComponent(int forceTheme)
 MainComponent::~MainComponent()
 {
     stopTimer();
+    {
+        const std::lock_guard<std::mutex> lock(jobLock);
+        quitting = true;
+    }
+    jobReady.notify_all();
+    if (worker.joinable()) worker.join();
     transport.setSource(nullptr);
     player.setSource(nullptr);
     devices.removeAudioCallback(&player);
@@ -95,9 +103,9 @@ void MainComponent::menuItemSelected(int id, int)
     case kSaveAs: save(true); break;
     case kExport: exportSound(); break;
     case kQuit: juce::JUCEApplication::getInstance()->systemRequestedQuit(); break;
-    case kPlay: if (previewModule) render(0); play(); break;
+    case kPlay: if (previewModule || renderPending || rendering) render(0, true); else play(); break;
     case kStop: stop(); break;
-    case kHearSelected: render(patchView.selected); play(); break;
+    case kHearSelected: render(patchView.selected, true); break;
     case kDark: setDark(!classic::theme().dark); break;
     case kAbout:
         juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::NoIcon, "TurboSynth",
@@ -115,7 +123,9 @@ void MainComponent::paint(juce::Graphics& g)
     const juce::String name = file.existsAsFile() ? file.getFileName() : juce::String("Untitled");
     classic::drawWindow(g, patchFrame, name + (dirty ? " *" : ""));
     classic::drawWindow(g, infoFrame, "Module Info");
-    classic::drawWindow(g, soundFrame, previewModule ? "Sound: " + juce::String(patch.modules[(size_t) previewModule - 1].name) : juce::String("Sound"));
+    juce::String soundTitle = previewModule ? "Sound: " + juce::String(patch.modules[(size_t) previewModule - 1].name) : juce::String("Sound");
+    if (rendering || renderPending) soundTitle << " (rendering...)";
+    classic::drawWindow(g, soundFrame, soundTitle);
 }
 
 void MainComponent::resized()
@@ -143,7 +153,7 @@ void MainComponent::resized()
 bool MainComponent::keyPressed(const juce::KeyPress& k)
 {
     const bool cmd = k.getModifiers().isCommandDown();
-    if (k == juce::KeyPress::spaceKey) { if (transport.isPlaying()) stop(); else { if (previewModule) render(0); play(); } return true; }
+    if (k == juce::KeyPress::spaceKey) { if (transport.isPlaying()) stop(); else { if (previewModule || renderPending || rendering) render(0, true); else play(); } return true; }
     if (cmd && k.getKeyCode() == 'S') { save(k.getModifiers().isShiftDown()); return true; }
     if (cmd && k.getKeyCode() == 'O') { choosePatch(); return true; }
     if (cmd && k.getKeyCode() == 'N') { newPatch(); return true; }
@@ -226,7 +236,7 @@ void MainComponent::save(bool as)
 
 void MainComponent::exportSound()
 {
-    render(0);
+    renderNow(0);
     if (result.left.empty()) return;
     chooser = std::make_unique<juce::FileChooser>("Export the sound", juce::File(), "*.wav;*.aif;*.aiff");
     chooser->launchAsync(juce::FileBrowserComponent::saveMode | juce::FileBrowserComponent::warnAboutOverwriting, [this](const juce::FileChooser& fc) {
@@ -287,29 +297,83 @@ void MainComponent::changed()
     repaint();
 }
 
-void MainComponent::render(int module)
+void MainComponent::render(int module, bool playWhenReady)
 {
-    RenderOptions opt;
+    if (module < 0 || module > (int) patch.modules.size()) module = 0;
+    Job j;
+    j.patch = patch;
     if (file.existsAsFile()) {
-        opt.soundFolders.push_back(file.getParentDirectory().getFullPathName().toStdString());
-        opt.soundFolders.push_back(file.getParentDirectory().getParentDirectory().getFullPathName().toStdString());
+        j.options.soundFolders.push_back(file.getParentDirectory().getFullPathName().toStdString());
+        j.options.soundFolders.push_back(file.getParentDirectory().getParentDirectory().getFullPathName().toStdString());
     }
-    Engine engine(patch, opt);
-    if (module > 0 && module <= (int) patch.modules.size()) {
-        result = {};
-        result.left = engine.moduleOutput(module);
-        result.sampleRate = patch.modules[(size_t) module - 1].sampleRate;
-        if (result.sampleRate <= 0) result.sampleRate = 44100;
-    } else {
-        result = engine.render();
-        module = 0;
+    j.module = module;
+    j.play = playWhenReady;
+    if (syncRender) { // snapshots: render in place
+        Engine engine(j.patch, j.options);
+        RenderResult r;
+        if (module > 0) { r.left = engine.moduleOutput(module); r.sampleRate = patch.modules[(size_t) module - 1].sampleRate; }
+        else r = engine.render();
+        applyResult(std::move(r), module, false);
+        return;
     }
-    previewModule = module;
-    waveView.setSamples(result.left, result.right, result.sampleRate,
-                        module ? juce::String(patch.modules[(size_t) module - 1].name) : juce::String("Output"));
+    {
+        const std::lock_guard<std::mutex> lock(jobLock);
+        job = std::move(j); // a newer request replaces one not yet started
+        rendering = true;
+    }
+    ++latestRequest;
+    jobReady.notify_one();
     repaint(soundFrame);
 }
 
+void MainComponent::workerLoop()
+{
+    for (;;) {
+        Job j;
+        {
+            std::unique_lock<std::mutex> lock(jobLock);
+            jobReady.wait(lock, [this] { return quitting || job.has_value(); });
+            if (quitting) return;
+            j = std::move(*job);
+            job.reset();
+        }
+        const int request = latestRequest.load();
+        Engine engine(j.patch, j.options);
+        RenderResult r;
+        if (j.module > 0) {
+            r.left = engine.moduleOutput(j.module);
+            r.sampleRate = j.patch.modules[(size_t) j.module - 1].sampleRate;
+        } else r = engine.render();
+        juce::MessageManager::callAsync([safe = juce::Component::SafePointer<MainComponent>(this), r = std::move(r), j, request]() mutable {
+            if (!safe) return;
+            if (request != safe->latestRequest.load()) return; // superseded by a newer edit
+            {
+                const std::lock_guard<std::mutex> lock(safe->jobLock);
+                safe->rendering = safe->job.has_value();
+            }
+            safe->applyResult(std::move(r), j.module, j.play);
+        });
+    }
+}
+
+void MainComponent::applyResult(RenderResult r, int module, bool playNow)
+{
+    if (r.sampleRate <= 0) r.sampleRate = 44100;
+    result = std::move(r);
+    previewModule = module > 0 && module <= (int) patch.modules.size() ? module : 0;
+    waveView.setSamples(result.left, result.right, result.sampleRate,
+                        previewModule ? juce::String(patch.modules[(size_t) previewModule - 1].name) : juce::String("Output"));
+    repaint(soundFrame);
+    if (playNow) play();
+}
+
+void MainComponent::renderNow(int module)
+{
+    const bool saved = syncRender;
+    syncRender = true;
+    render(module);
+    syncRender = saved;
+}
 void MainComponent::play()
 {
     stop();
@@ -338,8 +402,9 @@ void MainComponent::stop()
 void MainComponent::timerCallback()
 {
     if (renderPending > 0 && --renderPending == 0) render(previewModule);
+    // Only touch the display when something moves.
     if (transport.isPlaying()) waveView.setPlayPosition(transport.getCurrentPosition());
-    else if (memorySource) waveView.setPlayPosition(-1.0);
+    else waveView.setPlayPosition(-1.0);
 }
 
 void MainComponent::setDark(bool dark)
@@ -349,6 +414,7 @@ void MainComponent::setDark(bool dark)
     settings.saveIfNeeded();
     lnf.refresh();
     sendLookAndFeelChange();
+    waveView.themeChanged();
     modulePanel.show(&patch, patchView.selected);
     repaint();
 }

@@ -10,13 +10,17 @@ class WaveView : public juce::Component
 {
 public:
     void setSamples(const std::vector<int16_t>& left, const std::vector<int16_t>& right, int sampleRate, const juce::String& caption);
-    void setPlayPosition(double seconds) { playPos = seconds; repaint(); }
+    void setPlayPosition(double seconds) { if (seconds != playPos) { playPos = seconds; repaint(); } }
+    void themeChanged() { cache = {}; repaint(); }
+    void resized() override { cache = {}; }
     void paint(juce::Graphics&) override;
 private:
     std::vector<int16_t> l, r;
     int rate = 44100;
     juce::String caption;
     double playPos = -1.0;
+    juce::Image cache; // the waveform, drawn once per sound and size
+    void buildCache();
 };
 
 // Draw-with-the-mouse table of 16-bit values (oscillator waves, shaper curve).

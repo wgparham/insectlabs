@@ -46,7 +46,7 @@ juce::Point<float> PatchView::toPatch(juce::Point<float> p) const { return (p - 
 juce::Rectangle<float> PatchView::iconBounds(int index) const
 {
     const auto& m = patch->modules[(size_t) index - 1];
-    const float px = 32.0f * std::floor(juce::jmax(1.0f, scale));
+    const float px = 32.0f * scale; // vector icons scale with the view
     return juce::Rectangle<float>(px, px).withCentre(origin + juce::Point<float>((float) m.rect[1] + 16.0f, (float) m.rect[0] + 16.0f) * scale);
 }
 
@@ -254,7 +254,7 @@ void PatchView::fit()
     }
     if (first) return;
     const auto area = getLocalBounds().withTrimmedLeft(kPaletteWidth).reduced(16).toFloat();
-    scale = juce::jlimit(0.5f, 1.5f, juce::jmin(area.getWidth() / all.getWidth(), area.getHeight() / all.getHeight()));
+    scale = juce::jlimit(0.6f, 2.5f, juce::jmin(area.getWidth() / all.getWidth(), area.getHeight() / all.getHeight()));
     // Keep the stored layout's own origin when it fits, as the original window did.
     const float ox = all.getX() * scale < 0.0f || all.getRight() * scale > area.getRight() - area.getX() ? area.getX() - all.getX() * scale : area.getX();
     const float oy = all.getY() * scale < 0.0f || all.getBottom() * scale > area.getBottom() - area.getY() ? area.getY() - all.getY() * scale : area.getY();

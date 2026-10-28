@@ -13,6 +13,7 @@
 #include <cstring>
 #include <filesystem>
 #include <string>
+#include <vector>
 
 using namespace turbosynth;
 
@@ -41,8 +42,36 @@ bool writeWav(const char* path, const RenderResult& r)
 
 } // namespace
 
+#ifdef _WIN32
+#include <windows.h>
+#include <shellapi.h>
+// Windows passes main() its arguments in the ANSI code page, which loses
+// characters such as the pi in "π Mutant". Re-read them as UTF-8.
+static std::vector<std::string> utf8Args()
+{
+    std::vector<std::string> out;
+    int n = 0;
+    if (wchar_t** w = CommandLineToArgvW(GetCommandLineW(), &n)) {
+        for (int i = 0; i < n; ++i) {
+            const int len = WideCharToMultiByte(CP_UTF8, 0, w[i], -1, nullptr, 0, nullptr, nullptr);
+            std::string s((size_t) std::max(0, len - 1), '\0');
+            WideCharToMultiByte(CP_UTF8, 0, w[i], -1, s.data(), len, nullptr, nullptr);
+            out.push_back(s);
+        }
+        LocalFree(w);
+    }
+    return out;
+}
+#endif
+
 int main(int argc, char** argv)
 {
+#ifdef _WIN32
+    const auto wide = utf8Args();
+    std::vector<char*> fixed;
+    for (const auto& s : wide) fixed.push_back(const_cast<char*>(s.c_str()));
+    if ((int) fixed.size() == argc) argv = fixed.data();
+#endif
     if (argc < 3) { std::fprintf(stderr, "usage: tsynth-cli patch out.wav [sounds=folder] [info] [module=N]\n"); return 1; }
     RenderOptions opt;
     const auto dir = std::filesystem::u8path(argv[1]).parent_path();

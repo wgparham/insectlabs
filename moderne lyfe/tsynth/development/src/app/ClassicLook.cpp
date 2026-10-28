@@ -1,6 +1,8 @@
 #include "ClassicLook.h"
 #include "ClassicIcons.h"
 
+#include <map>
+
 namespace classic {
 
 namespace {
@@ -47,7 +49,8 @@ juce::String pickFont(std::initializer_list<const char*> names)
 } // namespace
 
 const Theme& theme() { return current; }
-void setDark(bool dark) { current = makeTheme(dark); }
+static void clearCaches();
+void setDark(bool dark) { current = makeTheme(dark); clearCaches(); }
 
 juce::Font uiFont(float size, bool bold)
 {
@@ -63,29 +66,57 @@ juce::Font smallFont(float size)
 
 bool hasIcon(int id) { return findIcon(id) != nullptr; }
 
+// Icons and dither patterns are built once as images and cached per theme;
+// drawing them pixel by pixel made every repaint very slow.
+static std::map<int, juce::Path> iconCache;
+static std::map<int, juce::Image> ditherCache;
+static void clearCaches() { iconCache.clear(); ditherCache.clear(); }
+
+// Each icon becomes one vector path, built from its rows of set pixels, so it
+// draws with a single fill at any size and still looks like the pixel art.
+static const juce::Path& iconPath(const IconEntry& icon)
+{
+    auto it = iconCache.find(icon.id);
+    if (it != iconCache.end()) return it->second;
+    juce::Path p;
+    for (int y = 0; y < 32; ++y)
+        for (int x = 0; x < 32;) {
+            if (!(icon.bits[y * 4 + x / 8] & (0x80 >> (x % 8)))) { ++x; continue; }
+            int end = x;
+            while (end < 32 && (icon.bits[y * 4 + end / 8] & (0x80 >> (end % 8)))) ++end;
+            p.addRectangle((float) x, (float) y, (float) (end - x), 1.0f);
+            x = end;
+        }
+    return iconCache[icon.id] = p;
+}
+
+// 50% checkerboard of a and b, tiled.
+static void fillDither(juce::Graphics& g, juce::Rectangle<int> r, juce::Colour a, juce::Colour b, int which)
+{
+    auto it = ditherCache.find(which);
+    if (it == ditherCache.end()) {
+        juce::Image img(juce::Image::ARGB, 2, 2, false);
+        img.setPixelAt(0, 0, a); img.setPixelAt(1, 1, a);
+        img.setPixelAt(1, 0, b); img.setPixelAt(0, 1, b);
+        it = ditherCache.emplace(which, img).first;
+    }
+    juce::Graphics::ScopedSaveState s(g);
+    g.setTiledImageFill(it->second, 0, 0, 1.0f);
+    g.fillRect(r);
+}
+
 void drawIcon(juce::Graphics& g, int id, juce::Rectangle<float> r, bool inverted)
 {
     const auto* icon = findIcon(id);
     if (!icon) return;
-    const float px = juce::jmax(1.0f, std::floor(juce::jmin(r.getWidth(), r.getHeight()) / 32.0f));
+    const float px = juce::jmin(r.getWidth(), r.getHeight()) / 32.0f; // vector: any size
     const float x0 = std::round(r.getCentreX() - 16.0f * px), y0 = std::round(r.getCentreY() - 16.0f * px);
     if (inverted) { g.setColour(current.ink); g.fillRect(x0, y0, 32.0f * px, 32.0f * px); }
     g.setColour(inverted ? current.paper : current.ink);
-    for (int y = 0; y < 32; ++y)
-        for (int x = 0; x < 32; ++x)
-            if (icon->bits[y * 4 + x / 8] & (0x80 >> (x % 8)))
-                g.fillRect(x0 + (float) x * px, y0 + (float) y * px, px, px);
+    g.fillPath(iconPath(*icon), juce::AffineTransform::scale(px).translated(x0, y0));
 }
 
-void fillDesktop(juce::Graphics& g, juce::Rectangle<int> r)
-{
-    g.setColour(current.desktopA);
-    g.fillRect(r);
-    g.setColour(current.desktopB);
-    for (int y = r.getY(); y < r.getBottom(); ++y)
-        for (int x = r.getX() + ((y & 1) ? 1 : 0); x < r.getRight(); x += 2)
-            g.fillRect(x, y, 1, 1);
-}
+void fillDesktop(juce::Graphics& g, juce::Rectangle<int> r) { fillDither(g, r, current.desktopA, current.desktopB, 0); }
 
 juce::Rectangle<int> drawWindow(juce::Graphics& g, juce::Rectangle<int> f, const juce::String& title, bool active)
 {
@@ -189,10 +220,8 @@ void LookAndFeel::drawLinearSlider(juce::Graphics& g, int x, int y, int w, int h
     const juce::Rectangle<int> track(x, y + h / 2 - 7, w, 15);
     g.setColour(current.paper);
     g.fillRect(track);
+    fillDither(g, track.reduced(1), current.paper, current.ink, 1);
     g.setColour(current.ink);
-    for (int yy = track.getY() + 1; yy < track.getBottom() - 1; ++yy)
-        for (int xx = track.getX() + 1 + ((yy & 1) ? 1 : 0); xx < track.getRight() - 1; xx += 2)
-            g.fillRect(xx, yy, 1, 1);
     g.drawRect(track, 1);
     const juce::Rectangle<int> thumb((int) pos - 7, track.getY(), 15, track.getHeight());
     g.setColour(current.paper);
@@ -271,9 +300,8 @@ void LookAndFeel::drawScrollbar(juce::Graphics& g, juce::ScrollBar&, int x, int 
 {
     g.setColour(current.paper);
     g.fillRect(x, y, w, h);
+    fillDither(g, { x, y, w, h }, current.paper, current.ink, 1);
     g.setColour(current.ink);
-    for (int yy = y; yy < y + h; ++yy)
-        for (int xx = x + ((yy & 1) ? 1 : 0); xx < x + w; xx += 2) g.fillRect(xx, yy, 1, 1);
     g.drawRect(x, y, w, h, 1);
     const juce::Rectangle<int> thumb = vertical ? juce::Rectangle<int>(x, thumbStart, w, thumbSize) : juce::Rectangle<int>(thumbStart, y, thumbSize, h);
     g.setColour(current.paper);

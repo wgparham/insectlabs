@@ -6,12 +6,16 @@
 void WaveView::setSamples(const std::vector<int16_t>& left, const std::vector<int16_t>& right, int sampleRate, const juce::String& text)
 {
     l = left; r = right; rate = sampleRate > 0 ? sampleRate : 44100; caption = text; playPos = -1.0;
+    cache = {};
     repaint();
 }
 
-void WaveView::paint(juce::Graphics& g)
+void WaveView::buildCache()
 {
+    // Everything except the play cursor, drawn once per sound, size and theme.
     const auto& t = classic::theme();
+    cache = juce::Image(juce::Image::ARGB, juce::jmax(1, getWidth()), juce::jmax(1, getHeight()), true);
+    juce::Graphics g(cache);
     g.fillAll(t.paper);
     auto area = getLocalBounds().reduced(4);
     g.setColour(t.ink);
@@ -41,13 +45,19 @@ void WaveView::paint(juce::Graphics& g)
             g.drawVerticalLine(lane.getX() + x, y1, juce::jmax(y1 + 1.0f, y2));
         }
     }
-    if (playPos >= 0.0) {
+}
+
+void WaveView::paint(juce::Graphics& g)
+{
+    if (!cache.isValid() || cache.getWidth() != getWidth() || cache.getHeight() != getHeight()) buildCache();
+    g.drawImageAt(cache, 0, 0);
+    if (playPos >= 0.0 && !l.empty()) {
+        const auto area = getLocalBounds().reduced(4).withTrimmedTop(13);
         const float x = (float) area.getX() + (float) (playPos * rate / (double) l.size()) * (float) area.getWidth();
-        g.setColour(t.ink);
+        g.setColour(classic::theme().ink);
         g.fillRect(x, (float) area.getY(), 2.0f, (float) area.getHeight());
     }
 }
-
 // ---------------------------------------------------------------------------
 void TableEditor::paint(juce::Graphics& g)
 {

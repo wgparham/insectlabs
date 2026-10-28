@@ -1,5 +1,6 @@
 // hfsx: list and extract a classic HFS volume image (data forks, plus
 // resource forks as "name.rsrc"). Usage: hfsx image.img [outdir]
+#include <cerrno>
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
@@ -118,7 +119,7 @@ int main(int argc, char** argv)
         if (argc > 2) {
             const auto out = std::filesystem::u8path(std::string(argv[2]) + "/" + rel);
             std::filesystem::create_directories(out.parent_path());
-            if (!fi.data.empty() || fi.rsrc.empty()) { std::ofstream o(out, std::ios::binary); o.write((const char*) fi.data.data(), (std::streamsize) fi.data.size()); }
+            if (!fi.data.empty() || fi.rsrc.empty()) { std::ofstream o(out, std::ios::binary); o.write((const char*) fi.data.data(), (std::streamsize) fi.data.size()); o.close(); if (!o) std::fprintf(stderr, "WRITE FAILED: [%s] (errno %d)\n", rel.c_str(), errno); }
             if (!fi.rsrc.empty()) { std::ofstream o(out.string() + ".rsrc", std::ios::binary); o.write((const char*) fi.rsrc.data(), (std::streamsize) fi.rsrc.size()); }
         }
     }

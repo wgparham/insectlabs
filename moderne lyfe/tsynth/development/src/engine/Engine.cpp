@@ -47,7 +47,8 @@ void normalizeBuffer(std::vector<int16_t>& b, int32_t len)
     if (peak < 0x7FFF && peak > 0)
         for (int32_t i = 0; i < len; ++i) {
             const int32_t x = b[(size_t) i];
-            const int32_t n = (int32_t) ((uint32_t) (uint16_t) x << 16 >> 1) - x; // (zero-extended x << 16) >> 1, minus x
+            // swap then asr.l #1: an arithmetic shift, so the sign survives; then minus x. That is x*32767.
+            const int32_t n = ((int32_t) ((uint32_t) (uint16_t) x << 16) >> 1) - x;
             b[(size_t) i] = divs(n, peak);
         }
 }

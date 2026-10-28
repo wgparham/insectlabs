@@ -418,3 +418,22 @@ The values: 0.5, 0.66667, 0.79459, 0.94379, 0.98499, 1.0, 1.01500, 1.05951, 1.25
   - Real-click on Windows: selecting, placing a module from the palette, connecting, Dark Mode from the menu, Play.
   - Engine round trip (`tests/roundtrip.cpp`): 29/29.
 - **Not yet done:** Model 2, an ALGORITHM.md write-up, Mac/Linux runs, a DAW-style keyboard preview.
+
+## Example patches (2026-10-28)
+
+- **Complete set:** the full 2.22 "TS Files" set is 48 patches plus 16 sound files and 20 waveforms, 84 files in all. It's collected in `moderne lyfe/tsynth/patches` (outside this folder).
+- **Seven files:** Additive Example #1, Resonance Example #5, Stretch Example #1/#3/#4, Amplitude Envelope Demo and Spectral Inverter Demo could not be written by hfsx or unar on this machine. They came from the 1988 Compact Pro archive instead, with sizes identical to the 2.22 catalog. Earlier checks used only the 29 that had extracted.
+- **Results:** all 48 render and round-trip.
+- **CLI fix:** `tsynth-cli` now reads its arguments as UTF-8 on Windows, so "π Mutant" opens.
+
+## Fixes after the first test round (2026-10-28)
+
+- **Normalize (F29_001BA) was wrong in the port.**
+  - The original computes n = ((x zero-extended) << 16, then `asr.l #1`) − x. The shift is arithmetic, so n = x·32767 for negative x too.
+  - The port used a logical shift, so every negative sample became garbage, and any module with Normalize on sounded like noise (reported on Cheez-Verb).
+  - Fixed. Most of the "saturating by design" flags in `tests/modstats` came from this and are gone. What remains: two very high-feedback resonators, and DC from asymmetric waveforms.
+- **App speed:**
+  - The dither and the 1-bit icons were drawn pixel by pixel, roughly half a million fillRect calls per repaint. The dither is now a cached tiled image. Icons are cached vector paths built from pixel runs (the user suggested vectors), so they scale smoothly with the window.
+  - The waveform is drawn once into an image, and the play cursor repaints only while playing.
+  - Rendering runs on a worker thread; the newest request wins, the Sound window shows "(rendering...)", and Play waits for the result.
+  - Idle CPU is about 1% of one core. Real clicks register within 250 ms. Drag-move and Shift-drag connect work, checked with input-level mouse moves (SetCursorPos-only drags never reach JUCE).
