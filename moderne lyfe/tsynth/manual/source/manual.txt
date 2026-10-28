@@ -1,0 +1,2126 @@
+@front
+## Copyright
+This manual and the software described in it are copyrighted © 1987, 1988, 1989 by Digidesign Inc. with all rights reserved. Under copyright laws, this manual and software may not be duplicated in whole or in part without the written consent of Digidesign Inc., except in the normal use of the software or to make a backup copy.
+
+## Limited Warranty
+Except to the extent prohibited by applicable law, all implied warranties made by Digidesign Inc. in connection with this manual and software are limited in duration to ninety (90) days from the date of the original purchase, and no warranties, whether express or implied, shall apply to this product after said period. This warranty is not transferrable – it applies only to the original purchaser of the software.
+
+Digidesign Inc. makes no warranty, either express or implied, with respect to this software, its quality, performance, merchantability, or fitness for a particular purpose. As a result, this software is sold "as is", and you, the purchaser are assuming the entire risk as to quality and performance.
+
+In no event will Digidesign Inc. be liable for direct, indirect, special, incidental or consequential damages resulting from any defect in the software or documentation. Some states do not allow the exclusion or limitation of implied warranties or liability for incidental or consequential damages, so the above limitation or exclusion may not apply to you.
+
+## License Agreement
+Carefully read all the terms and conditions of this license agreement prior to using this package. Use of all or any portion of this package indicates your agreement to the following terms and conditions.
+
+Digidesign Inc. grants to you, the purchaser, a non-exclusive license to use the software in this package (the "Software"), under the terms and conditions stated in this agreement.
+
+You may: 1) use the software on a single machine. 2) make one copy of the Software solely for backup purposes.
+
+You may not: 1) make copies of the user manual or the Software in whole or in part except as expressly provided for in this agreement. 2) make alterations or modifications to the Software or any copy or disassemble or decompile the software or any copy, or otherwise attempt to discover the source code of the Software. 3) sublicense, lease, lend, rent or grant other rights in all or any portion of the Software or any copy to others. 4) make verbal or media translations of the user manual. 5) make telecommunication data transmissions of the Software.
+
+TERM: This agreement is effective until terminated. You may terminate it at any time by destroying the Software together with all copies in any form. It will also terminate if you fail to comply with any term or condition in this agreement.
+@endfront
+
+@part Turbosynth User's Manual, Version 2.0
+
+# About This Manual
+
+This manual assumes that you have a basic understanding of both the Macintosh and your digital sampler. If you are not familiar with the Macintosh, please take some time to learn standard Macintosh terms and techniques before using Turbosynth.
+
+The Introduction describes Digidesign's update and telephone support policies, and urges you to send in your registration card.
+
+Section 1 - Getting Started, covers basic hardware requirements and proper system configuration. Turbosynth file types and Sound Designer file compatibility are also discussed.
+
+Section 2 - About Turbosynth, is a basic tutorial on the principles of sound and modular synthesis. Read this section - it defines terms that are used throughout this manual.
+
+Section 3 - Using Turbosynth (Part 1), describes the basic tools and teaches you the overall organization and operation of Turbosynth. It also describes file and memory management, and how to transfer sounds between the Macintosh and sampler.
+
+Section 4 - Using Turbosynth (Part 2), describes the use of each Turbosynth module in detail.
+
+Section 5 - Sampler Personalities, includes a brief description of each Turbosynth compatible sampler, and explains characteristics of each sampler that affect its use with Turbosynth.
+
+Section 6 - User Tips, contains many useful sound design tips from an experienced Turbosynth user.
+
+@page 5 scan=p006R footer="Introduction"
+
+# Introduction
+
+## Hello!
+
+Congratulations on your purchase of Turbosynth software! Turbosynth is a new, unique type of sound creating tool. It extends the concept of software-based digital synthesis and sound processing into new realms.
+
+Our goal at Digidesign is to create interesting, useful "tools" for musicians. You can help by giving us feedback on our programs - do they work for you? How can they be improved? What features would you like to see? What new types of programs would you like us to develop? We prefer written suggestions - it helps to have something written when the time comes to add new features.
+
+## Registration
+
+It is very important that you let us know who you are. Please send in your registration today! If we don't receive your registration card, we can't inform you of updates, send you our newsletter, or provide telephone support.
+
+## Telephone Support
+
+We have an excellent telephone support policy. Many software companies now charge an additional fee for telephone support, or limit the amount of free support. Our support is free and unlimited. However, you must be a registered owner to qualify for telephone support - send in that card today!
+
+If you need help, call (415) 327-8811 between 9:00 AM and 5:00 PM Pacific Standard Time. Please read this manual carefully before calling for help.
+
+You will need your serial number when you call for telephone support - it is written on the back side of your master program disk.
+
+@page  scan=p007L footer=""
+
+## Updates
+
+Future Turbosynth program updates will be available to registered owners for a nominal price. However, to receive information about program updates, you must be a registered owner. Have you sent that card in yet?
+
+If you plan to use Turbosynth with a hard disk, read Appendix C, "Hard Disk Installation" carefully.
+
+@page 7 scan=p007R footer="Section 1 - Getting Started"
+
+# Section 1 – Getting Started
+
+## What You’ll Need
+
+In addition to your Turbosynth software, you will need a Macintosh with at least 1 Megabyte of RAM (Macintosh Plus, Macintosh SE or Macintosh II), a double-sided (800K) disk drive or hard disk and System/Finder configuration 4.2/6.0 (or higher). You'll also need a Macintosh MIDI interface and a Turbosynth-compatible digital sampling instrument to polyphonically play back Turbosynth sounds. See the back panel of the Turbosynth package for a list of digital sampling instruments that are compatible with this version of Turbosynth.
+
+## Hard Disks
+
+In general, a hard disk has many advantages for running Turbosynth. Digital sound files are very large, so they will quickly fill a floppy disk. Hard disks also run faster than floppy disks, reducing the amount of time required to generate a set of new sounds.
+
+## Using Turbosynth with the Emulator II and Emax
+
+Emulator II must have an RS-422 interface cable to use Turbosynth. An RS-422 cable may also be used with the Emax to provide significantly faster transfer of sounds between the Macintosh and Emax than MIDI. These cables can be purchased directly from Digidesign. An order form is included in the Turbosynth package.
+
+If you plan to use a sampler with a SCSI interface (Emulator III, Ensoniq EPS, etc.) you will need the appropriate SCSI cable. Depending on your system configuration, you may also need a SCSI terminator.
+
+Turbosynth is supplied with one master program disk and one sample files disk. Make a back-up copy of each disk.
+
+@page 8 scan=p008L footer=";ection 1 - Getting Started"
+
+## Copy Protection
+
+The master program disk is copy protected using "key disk" protection. Each time you start up the Turbosynth program you must insert the master disk. You will not be required to insert the master disk again until you quit and restart the program.
+
+The Turbosynth program can be installed on a single hard disk, bypassing the key disk copy protection (the program can be run without inserting the master program disk). See Appendix C, "Hard Disk Installation" for instructions.
+
+## Working Copy
+
+If you do not have a hard disk, you should run Turbosynth from a copy of the master program disk. Do not run Turbosynth from the master disk - keep it "locked" and use it only as a "key" disk!
+
+## Key Disk
+
+When you start Turbosynth from a copy of the master disk, the program will ask you to insert your master disk (the "key disk"). A few seconds after you have inserted the key disk it will be automatically ejected and the program will start.
+
+## Connecting the MIDI Interface
+
+Plug the MIDI interface into either of the Macintosh's serial ports (printer or modem). Use whichever port is convenient - Turbosynth can use either port.
+
+Connect the MIDI Out jack of the Macintosh MIDI interface to the sampler's MIDI In jack, and the MIDI In jack of the Macintosh MIDI interface to the sampler's MIDI Out jack.
+
+The hardware is now interfaced and ready to go. Refer to Section 5, "Sampler Personalities" to determine if your sampler requires any additional set up.
+
+@page 9 scan=p008R footer="Section 1 - Getting Started"
+
+Turn on the Macintosh first, then the sampler. Use your copy of the Turbosynth program disk or your hard disk with Turbosynth installed as your startup disk. Double click on the Turbosynth program icon. After you have inserted your key disk and re-inserted your copy, Turbosynth's main screen will appear.
+
+## Setting the Serial Port, Clock Rate, and MIDI Channel/Device ID
+
+Our first step is setting Turbosynth's MIDI parameters. Select MIDI Setup from the pull-down MIDI menu. A dialog box will appear for selecting the Serial Port, setting the Clock Rate of your MIDI interface and specifying a MIDI Channel/Device ID for the sampler.
+
+![](figures/p008_a.png) {w=752}
+
+Click on the button next to the serial port your MIDI interface is connected to. Click on the button next to the clock rate your MIDI interface requires. Most Macintosh MIDI interfaces use 1 mHz clock rates. Early Southworth interfaces and most Musicworks interfaces use 500 kHz clock speeds. Contact the manufacturer if you are not sure of your interfaces clock rate.
+
+16 buttons are provided for setting the MIDI Channel/Device ID. If you have more than one of the same make/model sampler connected to the Macintosh that supports MIDI Device ID, assign each to a different device ID number, then use this parameter to select which one you want the Mac to communicate with. This parameter also determines the MIDI channel that Turbosynth’s MIDI Keyboard will use to transmit data.
+
+After you set the Serial Port, Clock Rate and MIDI Channel/Device ID, click on the OK button to return to the main screen.
+
+@page  scan=p009L footer="±ction 1 - Getting Started"
+
+## Selecting a Sampler
+
+Next, select the sampler you will use with Turbosynth from the list in the pull-down Sampler menu. A checkmark will appear next to the sampler's name when it is selected.
+
+The MIDI Setup and Sampler settings are stored when you quit the Turbosynth program – you will not have to set them again unless you use Turbosynth with a different sampler or MIDI interface.
+
+## Turbosynth File Types
+
+Before you use Turbosynth, it is important to understand the three basic types of files that Turbosynth creates: Document files, Sound files, and Waveform files.
+
+## Documents
+
+Document files store Turbosynth "patches." You create sounds with Turbosynth by connecting various sound generating and processing modules in the main window. A document file includes all module parameters, connections and sound data used in sample modules (if "Save sound data with document" is checked in the Sample module's info box - see page 38). The sound represented by this "patch" can then be transferred to a sampler for playback.
+
+Turbosynth document files are created, stored and retrieved from disk with the New, Save and Open commands in the File menu. The size of a document file depends on the complexity of the patch and the amount of sound data stored in the file.
+
+@page 11 scan=p009R footer="Section 1 - Getting Started"
+
+## Sound Files
+
+Sound files consist of digital samples in the Sound Designer format. These files can be transferred to one of the samplers supported by either Turbosynth or Sound Designer. They can be "opened" into a sample module and used as a sound source in a Turbosynth patch.
+
+In addition, Turbosynth can save the sound data representing the final result of the patch as a sound file. This is done with the Save output as sound file command in the File menu.
+
+Any sound file created by Sound Designer can be opened into a sample module in Turbosynth. Conversely, you can directly open any sound file created by Turbosynth if you have a Sound Designer program.
+
+When a sound file is transferred to the sampler by Turbosynth, it is automatically converted to the format (i.e. 8 bit, 12 bit, etc.) required by the selected sampler.
+
+## Waveforms
+
+Waveform files contain the digital sound data that represent regular waveforms in Turbosynth. These files are used by the Turbosynth oscillator module to generate sounds with regular waveforms (such as triangle and square waves) in a manner similar to hardware oscillators.
+
+Turbosynth allows you to modify preset waveforms and draw your own. You can even isolate part of a sample in a sound file and save it in a waveform file. These waveform files are stored on disk with the Save loop as waveform command in the File menu.
+
+@page 12 scan=p010L footer="ection I - Getting Started"
+
+## Using the Sound Accelerator
+
+Turbosynth supports the Digidesign Sound Accelerator digital audio card, providing real time synthesis in most modules and accelerated synthesis in all modules. If a Sound Accelerator card is present, all acceleration will occur automatically.
+
+To hear 16-bit quality sound from your Macintosh SE or II, launch Turbosynth and select Sound Accelerator from the Options menu.
+
+## Sound Playback Settings
+
+The following Options menu settings determine the way Turbosynth plays back sounds:
+
+**Sound Driver** – When selected, sound playback will be heard out of the Mac's internal speaker. If a sound sampled at a very high or very low sample rate sounds 'dirty' out of the Mac's speaker, try selecting the Mac's playback rate in the Sample or Output module's Info box.
+
+**Sound Manager** – This setting also routes the sound playback to the Mac's internal speaker. Depending on which Macintosh model and system software you are using, this option may be disabled. Some experimentation should be used this setting and the Sound Driver setting to achieve the best sound quality from your Mac and system software. Future improvements to the Macintosh operating system should allow better sound quality from the internal speaker when the Sound Manager is used.
+
+**Sound Accelerator** – When the Sound Accelerator option is selected, sound playback will be heard out of the Sound Accelerator card. This option is disabled if no card is present or no Sound Accelerator SE INIT file was present in the Mac's System Folder during boot up of a Mac SE. If this option is disabled on your Mac SE, verify that the Sound Accelerator SE INIT file is present in your System Folder and restart the Mac. The Sound Accelerator SE INIT file can be found on the Softsynth master disk, which is supplied with the Sound Accelerator.
+
+@page 13 scan=p010R footer="Section 1 - Getting Started"
+
+**Auto Preview** – When this option is selected, Turbosynth will automatically trigger playback of the sound (upon release of the mouse button) after any changes are made to module faders, envelopes or oscillator waveforms.
+
+> **Programmer General’s Advice:** Using Auto Preview (from the Options menu) in conjunction with the Sound Accelerator is highly recommended while editing timbres in the oscillator.
+
+When you change Mac models or system software, experiment with the Sound Manager and Sound Driver settings to obtain the best sound from the Mac's internal speaker.
+
+@page 15 scan=p011R footer="Section 2 - About Turbosynth"
+
+# Section 2 – About Turbosynth
+
+## What is Turbosynth?
+
+Turbosynth creates sounds using a modular approach to synthesis. This technique has been used since the earliest days of electronic music, when analog synthesizers were programmed using patch cords. On the positive side, modular synthesis provided complete flexibility - modules could be patched in any configuration, allowing the user to literally "design" any imaginable synthesizer architecture. On the negative side, however, patch cords were clumsy to use and patches couldn't be stored in computer memory.
+
+Turbosynth combines the flexibility of modular synthesis with the power and convenience of modern digital synthesis, sampling, sound processing and storage technology. This combination allows you to draw on the strengths of each sound producing method to produce the widest possible range of sounds. However, to best understand how Turbosynth works, we must first understand the basic principles of sound and synthesis.
+
+## Sound
+
+Sound consists of vibrations transmitted through the air. These vibrations are created by the movements of a sound source such as a voice or a musical instrument. These movements (i.e. the vibration of a vocal chord or a guitar string) create tiny pressure waves in the air. When these waves reach our ears, our eardrums vibrate and we perceive sound.
+
+If we convert these pressure waves to electrical impulses using a microphone, the pressure waves become an electrical voltage. Changes in the intensity and direction of the pressure waves become changes in the voltage level and polarity (positive or negative). The result is an electronic waveform that represents the sound, and can be converted back into air pressure waves using a speaker.
+
+@page 16 scan=p012L footer="ection 2- About Turbosynth"
+
+## Fundamental Frequency
+
+Sound waves that follow a repeating pattern have a characteristic known as pitch, and are called periodic waveforms. The pitch of a sound is determined by its fundamental frequency - the number of repeated vibrations per second. Frequency is expressed in Hertz (Hz), or cycles per second. For example, middle C on a piano produces a sound wave with a fundamental frequency of 264 Hz. The healthy, young human ear can hear frequencies that range from approximately 20 Hz to 20,000 Hz.
+
+## Waveforms
+
+Pitched sound results from a periodic, repeating vibration. The specific pattern of this vibration is called the waveform of the sound. The exact shape of these waveforms determines the timbre, or tone quality, of the sound you hear. Many synthesizers include oscillators that produce some of the basic waveforms such as square, triangle and sawtooth. However, most acoustic waveforms are more complex than these.
+
+## Sine Wave
+
+The simplest type of waveform is called a sine wave. The quality of the sound produced by a sine wave is very pure and simple. A fundamental law of acoustics states that: Any complex waveform can be broken down into a series of sine waves at different frequencies and amplitudes (loudness levels). These component sine waves are called partials.
+
+Sound is similar to light. If we pass sunlight (complex light) through a prism, it is divided into the colors of the spectrum. We cannot see these individual colors when they are part of the sunlight - they combine to create an entirely different type of light. If we combine all of the colors of the spectrum together, the result is "complex" white light.
+
+@page 17 scan=p012R footer="Section 2 - About Turbosynth"
+
+Like light, complex sounds can be broken down into their component sine waves. Subtractive synthesis uses this principle by removing certain partials from a complex waveform with a filter. Conversely, complex waveforms can be "built" by combining sine waves of the correct frequencies and amplitudes. This is the basic principle behind additive synthesis. Turbosynth is capable of performing both of these types of synthesis.
+
+In addition, Turbosynth is capable of performing amplitude modulation (AM) synthesis (in which the amplitude of a waveform is rapidly modulated, or periodically varied) and frequency modulation (FM) synthesis (in which the fundamental frequency of a waveform is rapidly modulated). Turbosynth can also modify and play back sampled waveforms. All of these methods of synthesis can be used to produce a wide variety of interesting and musical waveforms.
+
+## Envelope
+
+Changes in the amplitude of a sound as time passes is called the envelope of the sound. This is a characteristic of sound that plays an important part in our ability to distinguish one sound from another. It also results in a sound that is much more interesting than one that doesn't change over its duration.
+
+## Complex and Simple Envelopes
+
+Envelopes can also be simple or complex. A typical analog synthesizer has a simple envelope generator with four stages: attack, decay, sustain and release. Turbosynth's amplitude and filter envelope modules provide complex envelopes with as many stages as you wish. These complex envelopes allow you to create very elaborate sounds that are not possible with most analog or digital synthesizers.
+
+@page 18 scan=p013L footer=""
+
+## Modular Synthesis
+
+Modular synthesis combines various modules that generate or modify a sound. These modules include oscillators to generate basic waveforms, filters to modify the harmonic content of the signal from the oscillators and amplifiers to vary the volume of the sound. In addition to these "traditional" modules, Turbosynth includes a number of digital sound processing modules that did not exist in analog modular synths.
+
+Turbosynth combines the patching flexibility of modular synths with a much wider range of sound generating and processing functions. It also provides the advantages of patch storage on disk and digital precision in the control of a sound's parameters. By converting the patches created in Turbosynth into sample files for one of the currently available samplers, they can also be enjoyed with excellent fidelity in full polyphony.
+
+@page 19 scan=p013R footer="Section 3 - Using Turbosynth (Part l)"
+
+# Section 3 – Using Turbosynth (Part 1)
+
+## Starting Turbosynth
+
+Now that we have reviewed the basic concepts of sound and modular synthesis, we're ready to start creating sounds using Turbosynth. If you have not already set up your Turbosynth system, please do so now (see Section 1, "Getting Started").
+
+Once your Turbosynth system is connected, start the Turbosynth program by double clicking the mouse on the Turbosynth program icon.
+
+## Main Window
+
+In a few seconds, the Turbosynth screen will appear. This screen includes the Main Window in which sounds are created using the icons in the palette at the left of the window. Each icon is selected by clicking on it once. In most cases, the cursor becomes a small version of the selected icon as you move it into the work area of the main window.
+
+![](figures/p013_1.png) {w=496}
+
+## Basic Tools
+
+There are six basic tools available in the main document window of Turbosynth. They are selected by pointing to the desired tool with the cursor and single clicking on it.
+
+![](figures/p013_2.png) {w=144}
+
+The **Arrow** is used to select icons, move modules around in the work area, and open module windows. Also, if you hold down the Option key and click on a module, you can isolate the sound at that point in the patch. In most cases, the cursor automatically reverts to the arrow after any other activity.
+
+![](figures/p013_3.png) {w=144}
+
+The **Eraser** is used to erase modules and connections in the work area. The cursor remains an eraser until another icon is selected because you may wish to erase several items in succession. To use the eraser, select it, move the cursor into the work area, point to the item you wish to erase and click on it.
+
+@page 20 scan=p014L footer="Section 3 - Using Turbosynth (Part 1)"
+
+![](figures/p014_1.png) {w=192}
+
+The **Patch Cord** is used to connect the modules you place in the work area. Like traditional modular synthesizers, Turbosynth's modules must be connected in order to hear a sound. All modules have an output and most have at least one input. In fact, the output of each module can be split and routed to as many different modules' inputs as necessary.
+
+In general, the signal from one module is passed through another module in order to modify the sound in some way. The output of the first module is connected to the input of the second module. The output of the second module is then connected to the input of the next module in the chain. This chain always ends at the output jack.
+
+One module's output is connected to another module's input with a patch cord. Clicking on the patch cord icon and moving the cursor into the work area causes the cursor to take the shape of a patch cord end. To connect one module's output to another module's input, click on the output module in the work area, drag the cursor to the input module and release the mouse button. The cursor retains its shape as a patch plug after this operation so that you can connect several modules in succession without having to select the patch cord icon for each connection.
+
+By clicking anywhere on an existing patch cord with the patch plug cursor and dragging the mouse to another module, you can reroute the patch cord to that module. The eraser tool will also erase patch cords in the work area.
+
+Most modules allow a single input, although some allow multiple inputs (e.g. mixers) and others allow none at all (e.g. oscillators).
+
+@page 21 scan=p014R footer="Section 3 - Using Turbosynth (Part 1)"
+
+![](figures/p014_2.png) {w=192}
+
+The **Speaker** is used to hear the sound you have created by connecting different modules together, then connecting the last module to the output jack. Clicking on it causes Turbosynth to play the sound present at the output jack.
+
+> **Note:** If you have altered the patch in any way since you last clicked on the speaker icon, Turbosynth must take a few moments to recalculate the numbers that represent the sound before it can be played. If you have altered the patch and wish to hear the new sound immediately, you can hold the mouse button until you hear the sound start.
+
+![](figures/p014_3.png) {w=200}
+
+The Info Box allows you to monitor and modify the amount of memory available for use by Turbosynth. Samples used indicates the total amount of memory in samples (1 sample = 2 bytes) used by modules in the current document. Samples available indicates the memory that is available to be used for new modules. Normally, you will not be able allocate the entire number of samples available because additional memory is needed to store module parameters.
+
+If the system clipboard contains a Turbosynth module that is no longer needed, you can click on Release Clipboard to free up the memory used to store the module data. If you wish to release any other data type from the clipboard, simply create an empty sample module and Cut it into the clipboard. This will replace the previous clipboard contents. At this point you can release the clipboard.
+
+**Compact Memory** will de-fragment memory so that free memory exists in one contiguous block. Compact Memory also frees up memory blocks that are no longer in use.
+
+@page 22 scan=p015L footer="ection 3 - Using Turbosynth (Part 1)"
+
+![](figures/p015_1.png) {w=192}
+
+The **Mac-to-Keyboard icon** is used to send a sound file representing the patch in the main window directly to your sampler. Clicking on the icon transfers the sound data present at the output jack module to your sampler through the MIDI interface attached to the Macintosh. A dialog box will appear allowing you to select a destination within your sampler. This shortcut allows you to hear your patches as they are played by your sampler without first saving the sound data in the output jack as a sound file and then transferring it to your sampler via a File menu command.
+
+## Modules
+
+Turbosynth includes 15 modules that generate or modify sounds. These modules are placed in the work area of the main window by clicking on them with the arrow and moving the cursor into the work area. The cursor becomes a small version of the selected module's icon. Clicking in the work area places the module at that location. The cursor then reverts to the arrow shape, indicating that it has returned to the selection mode.
+
+![](figures/p015_2.png) {w=456}
+
+Once in the work area, a module can be repositioned by clicking on it with the arrow and dragging it to the desired location in the window. As you drag a module, you will notice that its position changes in discrete "steps." The work area includes an invisible "grid" not unlike those found in most paint and graphic programs for the Macintosh. This grid allows precise alignment of modules in the window.
+
+## Output Jack
+
+@page 23 scan=p015R footer="Section 3 - Using Turbosynth (Part l)"
+
+![](figures/p015_3.png) {w=200}
+
+Whenever you open a new main window, you will notice that there is one module already present in the work area. This module is the output jack. The modules in the work area must be connected in some way to the output jack in order for you to hear any sound (the connections between modules are described below with the patch cord tool). The output jack is the only module that cannot be erased or duplicated. There can be only one output jack for each patch. This is to insure that every sound is unambiguously patched to produce one output.
+
+> **Note:** A detailed description of all modules appears in Section 4 of this manual, "Using Turbosynth (Part 2)."
+
+Like all digital audio systems, Turbosynth represents a sound as a series of numbers. These numbers are stored in a section of the computer's RAM called a "sound buffer." Typically, it takes tens of thousands of memory bytes to store one second of sound. Turbosynth creates a separate sound buffer for each module in the work area. The exact state of a module's sound buffer depends on the settings of the module itself and the input it is receiving. This technique accounts for the relatively high speed with which Turbosynth can calculate and play a sound.
+
+If you are using a Macintosh with 1 MB of RAM and you intend to create complex patches, you may wish to consider expanding your memory to 2 MB or more. The additional memory will benefit all uses of your computer.
+
+## Basic Parameters
+
+All Turbosynth modules share two basic parameters: Sample Rate and Length. In addition, Frequency is a parameter that is utilized by many modules. They are defined as follows:
+
+## Sample Rate
+
+@page 24 scan=p016L footer="Section 3 - Using Turbosynth (Part 1)"
+
+The Sample Rate parameter determines the number of sample points in each second of a Turbosynth sound. Typically this number should match the sample rate commonly used by your sampler. See Section 5, "Sampler Personalities" for a description of each Sampler's playback sample rates.
+
+## Sound Length
+
+The Length parameter determines the overall length of the Turbosynth sound (in number of samples). The actual length (in seconds) of the Turbosynth sound is determined by both the sound length and the sample rate. For example, if the sample rate is 30,000 Hz (samples per second), then a 30,000 sample sound would be 1 second long, a 60,000 sample sound would be 2 seconds long, etc. If we increase the sample rate and keep the number of samples the same, the sound will become shorter in duration.
+
+## Fundamental Frequency
+
+The Frequency parameter is often the fundamental frequency of a sound. Enter a frequency that corresponds to the musical note you want to synthesize or process. "A" is a particularly easy note to synthesize because its frequency is a multiple of 440 hertz (i.e. 220 Hz, 880 Hz, 110 Hz, etc.). 440 Hz is the default setting for the frequency parameter.
+
+## Parameter Manager
+
+Selecting Parameter Manager... from the Edit menu displays a dialog box that allows you to specify default settings for the Sample Rate, Length and Frequency of Turbosynth's modules. Any new modules created by the program will automatically use these settings.
+
+![](figures/p016_a.png) {w=720}
+
+In addition, the Parameter Manager dialog box offers a number of options to further control the attributes of Turbosynth's modules:
+
+@page 25 scan=p016R footer="Section 3 - Using Turbosynth (Part 1)"
+
+When the **Inherit sample rate from input** box is checked, each module will use the same sample rate as the module connected to its input. Whenever a new connection is made to the module's input, it will automatically update to match the new input module.
+
+When the **Convert sample modules to default** option is checked, any sound file that is opened into a Sample module will automatically be sample rate converted to the default sample rate.
+
+When the **Inherit length from input** option is checked, each module will use the same length as the module connected to its input. If a new input connection is made, the length parameter will update.
+
+When **Dynamic length based on parameters** is checked, any modules which perform time alterations (specifically the Stretcher, Compressor, Delay and Pitch Shifter) will derive their length from their parameter settings. This feature is included to eliminate the need to constantly readjust lengths of modules whenever parameters are altered. For example, a short percussive sound patched into a Delay module will produce echos which increase the overall length of the sound. In this instance, turning on this option would automatically calculate a length for the delay module buffer based upon the length of the input, delay time and amount of feedback.
+
+## Converting a Module to a Sample Module
+
+If you create a complex patch with many modules, your computer may eventually run out of memory in which to create new sound buffers. In this circumstance, you will see a dialog box stating that there is insufficient memory to add more modules if you try to do so. Turbosynth provides a unique solution to this problem. You can convert the module at the end of the chain responsible for that sound into a sample module and erase all of the previous modules in the chain. The single Sample module will produce the same sound as the entire chain of previous modules, although the control offered by the intermediate modules will no longer be available.
+
+@menu Edit | Convert to sample
+
+Select a module in the work area with the arrow cursor and then select Convert to sample from the Edit menu to convert the selected module into a Sample module. The sound buffer of the converted module is "frozen" and all dependence on its inputs is removed. Erasing the now-extraneous modules releases the memory used for their sound buffers and allows new modules to be added to the patch.
+
+It is a good idea to save a separate version of your patch in which the modules have not been converted. This insures that you will be able to modify the sounds represented by converted modules at a later time if necessary.
+
+## File Management
+
+One of Turbosynth's major advantages over hardware-based modular synthesizers is the ability to save patches on disk. These patches can then be recalled and edited, played, or sent to your sampler.
+
+@menu File | Save a Copy In...
+
+As you may recall from Section 1, Turbosynth recognizes three types of files: its own Document files, individual Waveform files and Sound Designer format Sound files. Turbosynth document files are opened, saved, and closed in the standard Macintosh manner from the File menu. Turbosynth allows you to open as many document files as memory will permit. Of course, only one document file can be active at a time. You can save a copy of the active document file under a different name by selecting Save a copy in... from the File menu.
+
+@page 27 scan=p017R footer="Section 3 - Using Turbosynth (Part 1)"
+
+@menu File | Save output as soundfile
+
+You can save the sound data appearing at the output jack as a sound file by selecting Save output as sound file... from the File menu. This converts the sound as it is represented at the output jack to a Sound Designer format sound file and saves it on disk. The use of sample and waveform files within a Turbosynth document is discussed in Section 4.
+
+@menu File | Mac -> Sampler
+
+Once you have created a sound file, you can send it to your sampler by selecting the Mac -> Sampler command in the File menu. Sound files can also be opened into compatible waveform editing software such as Sound Designer.
+
+@menu File | Sampler -> Mac
+
+You can retrieve a sound file from your sampler and save it on disk using the Sampler -> Mac command in the File menu. After retrieving a sound file, you can include it in any Turbosynth patch.
+
+> **Note:** The sampler you are using must be selected from the Sampler menu. See Sections 1 and 5 for more information on sampler selection.
+
+The Turbosynth Sample Files disk includes folders of example document, sample and waveform files. Use these files to become familiar with Turbosynth and as a starting point for creating new sounds.
+
+@page 28 scan=p018L footer="ection 3 - Using Turbosynth (Part 1)"
+
+## Transferring Sounds to the Sampler
+
+Turbosynth provides two methods of transferring sounds from the Macintosh to the sampler. The fastest method is to transfer the sound data present at the output jack. However, you can also transfer any Sound Designer format sound file to the sampler that is stored on the Macintosh disk.
+
+![](figures/p018_1.png) {w=144}
+
+To transfer the sound data of a Turbosynth patch that is "open", click on the Mac-to-Keyboard icon in the palette. This will send the sound data and loop points represented in the Output Jack to the sampler directly from the Macintosh's memory. This transfer method is the fastest because the Macintosh does not need to read any data from its disk, and you don't have to select a file to transfer.
+
+@menu File | Mac -> Sampler
+
+To send a sound file from disk, select Mac->Sampler from the File menu. A dialog box will appear with a list of sound files available on the current disk drive. Drive and Eject buttons are provided for selecting the current drive or ejecting disks. Select the sound file you want to send to the sampler, then click once on the Open button.
+
+After you click on the Mac-to-Keyboard icon or select a sound file to transfer, the Macintosh will attempt to establish communication with the sampler. If the Macintosh is not able to communicate with the sampler for any reason (e.g. the MIDI interface is not connected, the wrong serial port is selected, etc.), a "Can't Communicate" alert box will appear. If this happens, check the MIDI interface, RS-422 cable or SCSI cable and communications settings. If you still have trouble, see section 5 "Sampler Personalities" to determine if your sampler requires additional setup to transfer sounds.
+
+@page 29 scan=p018R footer="Section 3 - Using Turbosynth (Part 1)"
+
+Once communication has been established between the Macintosh and sampler, a dialog box will appear for selecting a destination for the Turbosynth sound file. Although the exact parameters displayed vary between samplers, most allow you to either select an existing sample you wish to replace with the transferred sound, or to add the sound to the samples already stored in the sampler's memory. If you have difficulty setting the transfer parameters, refer to section 5, "Sampler Personalities".
+
+If the sampler does not have enough free sound memory to store the Turbosynth sound, a dialog box will appear to warn you that the transferred sound will be truncated. In the case of some samplers this may also result if the transferred sound is longer than the sound it is replacing.
+
+## Transferring Sounds from the Sampler to the Macintosh
+
+Turbosynth can also transfer sound data from the sampler to the Macintosh. After the sound data has been transferred, it is written to the Macintosh disk as a Sound Designer format sound file, which you can later use in a Turbosynth Sample module.
+
+To transfer a sound from the sampler to the Macintosh, select Sampler -> Mac from the File menu. A dialog box similar to the Mac -> Sampler dialog box described above will appear. Select the sound you wish to transfer to the Macintosh, then click on the OK button. A standard Macintosh file saving dialog box will appear for naming the transferred sound file.
+
+@page 30 scan=p019L footer="ction 3 - Using Turbosynth (Part 1)"
+
+## MIDI Preview
+
+The MIDI Preview feature (Sound Accelerator card required) allows you to trigger polyphonic playback (two to eight voices) of the current Turbosynth sound from any MIDI device. While this feature is not intended to replace a dedicated sampler, it allows polyphonic auditioning of sounds.
+
+To use MIDI Preview, you must have a MIDI keyboard or other MIDI device connected to the Macintosh via the MIDI IN of a standard Macintosh MIDI interface. MIDI Preview responds to Note On/Off commands, with velocity sensitivity and sustain looping (when loop markers are placed). Audio playback appears at the Sound Accelerator's audio outputs.
+
+When MIDI Preview is selected from the MIDI menu, Turbosynth will display a dialog containing a piano-style keyboard and buttons for selecting the number of voices available to play. By clicking on the keyboard, you can designate which key the Turbosynth sound will be played back without transposition. This key is referred to as the "root key" and will appear with a gray box above it.
+
+The range of notes Turbosynth is able to play is designated by a black strip. You can change the range of notes by either adjusting the root key or the number of voices available. Also, as the sample rate of sounds changes, so will the transposition range. Due to these factors, as well as overall system speed, the Macintosh SE only provides the option of having two or four voices. With a Macintosh II you have the option of using two, four, six, or eight voices.
+
+@page 31 scan=p019R footer="Section 4 -"
+
+# Section 4 – Using Turbosynth (Part 2)
+
+## Module Windows
+
+Once you have selected several modules, placed them in the work area of the main window and connected them into a patch, you must specify the parameters within each module. Do this by double clicking on a module in the work area. The module's individual window opens, allowing you to choose specific sound sources and set processing parameters.
+
+Most module windows have the same main tools in the main window: the Arrow, Eraser, Info Box, and Speaker. These tools apply to each module window in the same manner as their counterparts in the main window.
+
+There are two types of Turbosynth modules. Some include several special-purpose icons in the palettes of their windows. These modules are time oriented and have a scale marked off in 50 millisecond (ms) increments along the bottom of the module window. Others provide "slider" controls to set parameter values within the main portion of their windows. To operate these controls, point to the slider, hold the mouse button down, and drag the slider to a new position.
+
+## Module Info Box
+
+Each module's info box is displayed by clicking on the Info icon in the module window. All module info boxes include the Length and Sample Rate parameters described in Section 3. All module info boxes also include a name parameter that allows you to specify any name for the module by typing it in the text box provided.
+
+![](figures/p019_a.png) {w=780}
+
+In addition, all module info boxes include two playback options: **Playback at Mac's sample rate** and **Playback at module's sample rate**. These options affect the way in which the Macintosh plays the sound buffer of the module. Selecting playback at the Mac's fixed sample rate of 22 kHz results in a sound of higher fidelity. However, if the module's sample rate differs from 22 kHz, the sound will not be played at the correct pitch.
+
+The **Normalize** option appears in most module info boxes. Checking the Normalize box adjusts the sound buffer so that the highest peak in the sound data is at 100% amplitude.
+
+## Oscillator Module
+
+![](figures/p020_1.png) {w=144}
+
+The **Oscillator** module accepts no inputs and provides various waveforms as sound sources in a Turbosynth patch. The signal from an Oscillator is usually routed to and processed by other modules.
+
+![](figures/p020_a.png) {w=700}
+
+One of the unique features of an Oscillator module is its ability to crossfade from one waveform into another. This provides much more flexibility than any hardware oscillator found in a synthesizer. Smooth crossfading between waveforms is accomplished simply by placing several waveform icons in the main portion of the module window at different locations along the time scale. The sound will shift smoothly from one waveform to the next as the sound is played. To listen to a single waveform without opening it, hold down the Option key and click on the waveform's icon.
+
+The Oscillator Info box is opened in the normal way. It is the only module info box that includes the frequency parameter. The waveform files used by the Oscillator have no inherent frequency of their own.
+
+![](figures/p020_b.png) {w=695}
+
+@page 33 scan=p020R footer="Section 4 - Using Turbosynth (Part 2)"
+
+The oscillator has two modes: Waveform Mode and Harmonic Mode. To switch between these modes click on the two upper left icons in either an oscillator window or a waveform window.
+
+## Waveform Mode
+
+In Waveform Mode all presets and editing tools have a "waveform" orientation. In other words, the waveform is represented as amplitude and phase. "Square wave" and "triangle wave" are common examples of waveform types that have simple shapes.
+
+## Harmonic Mode
+
+In Harmonic Mode all presets and editing tools have a "harmonic" orientation. The laws of physics tell us that all sounds are composed of different frequency sine waves. These sine wave components are often referred to as "partials". Partials that are multiples of the fundamental frequency of a sound are called "harmonics". For example, 880 Hz is the second harmonic of a sound with a fundamental frequency of 440 Hz. In Harmonic Mode, the first 64 harmonics of a waveform are represented. In Harmonic Mode all presets and editing tools have a "harmonic series" orientation. When switching from Waveform Mode to Harmonic Mode, Turbosynth performs a Fourier analysis on the waveform. The Fourier analysis yields the relative amplitude of the first 64 harmonics of the waveform. When switching from Harmonic Mode to Waveform Mode, Turbosynth performs the inverse Fourier transform to generate the waveform shape.
+
+## Preset Waveforms
+
+@page 34 scan=p021L footer=""
+
+Turbosynth provides 11 preset waveform icons. If the oscillator is in Waveform Mode the icons will be miniature waveforms; if the oscillator is in Harmonic mode the icons will be miniature harmonic drawbars. To select one of the 11 preset waveforms in the palette, click on its icon. Move the cursor into the window area above the time scale and click again to place the waveform at the desired location. Use the arrow cursor to drag a waveform icon already in the window to a new location. A waveform's exact placement in time is determined by the position of the left edge of its icon along the time scale.
+
+![](figures/p020_2.png) {w=448}
+
+## Waveform Window
+
+![](figures/p021_a.png) {w=705}
+
+In addition to the 11 preset waveforms, you can customize and create your own waveforms. This operation is performed in the Waveform Window. To open this window, double click on a preset waveform icon that has been placed on the time scale. A large representation of the preset waveform appears in this window. In the upper half of this window's palette, you will see the same basic tools (with the exception of the pencil, to be described shortly) and preset waveform icons as those found in the Oscillator window.
+
+## Modification Tools (Waveform Mode)
+
+In the lower half of the palette are tools that modify the displayed waveform. These tools are used to increase and decrease the amplitude of different parts of the waveform (and induce clipping if desired), stretch and compress different parts of the waveform, and add or remove noise from the waveform. The best way to become acquainted with these tools is to try them out.
+
+![](figures/p021_c.png) {w=320}
+
+The **Pencil** replaces the arrow in this window and is used to freehand draw any waveform shape. Select the pencil icon, move the cursor into the main portion of the window, hold the mouse button down and draw any shape you wish. You can alter any part of the waveform or create an entirely new one.
+
+![](figures/p021_d.png) {w=136}
+
+@page 35 scan=p021R footer="Section 4 - Using Turbosynth (Part 2)"
+
+## Harmonic Window
+
+To edit the harmonic content of a waveform in Harmonic Mode, double-click on the waveform's icon in the oscillator time line. The Harmonic Window will appear, displaying the waveform's harmonic series. Harmonics 1 to 64 appear from left to right. The amplitude of each harmonic is represented as a percentage. When the sum total of all harmonics is greater than 100%, the graph will represent the relative mixture of all the harmonics. In this case, the waveform that is generated by the harmonics will be normalized. If, however, the sum total of all harmonics is less than 100% then the graph represents absolute levels in an un-normalized waveform (in a normalized waveform, peak value = 100% amplitude.)
+
+![](figures/p021_b.png) {w=765}
+
+In the upper half of this window's palette, you will see the basic tools used to edit the harmonic series. The **arrow** is used to edit individual harmonics. Simply click on a harmonic and drag up or down to raise or lower its level.
+
+The **rake** is used to edit a group of harmonics. By clicking and dragging you can create a line segment. All harmonics with a level greater than zero will move to this line. If you hold down the option key while using the rake, only harmonics above the line will be modified. If you hold down the option key and the shift key, all harmonics (including 0% harmonics) will move to the line.
+
+## Modification Tools (Harmonic Mode)
+
+In the lower half of the palette are tools that modify the displayed harmonics. These tools are used to increase and decrease the amplitude of different parts of the harmonic series, stretch and compress harmonic spacing, and add or remove low level harmonics. The best way to become acquainted with these tools is to try them out.
+
+![](figures/p021_e.png) {w=348}
+
+@page 4 scan=p022L footer=""
+
+Once you have created a waveform or harmonic series, you can save it on disk and use it in any other oscillator. The **Save waveform** command in the File menu is available whenever the Waveform window is active. Selecting this item from the File menu allows you to name and save the waveform in the Waveform window on disk.
+
+@menu File | Save waveform
+
+## Custom Waveforms
+
+![](figures/p022_a.png) {w=72}
+
+Custom waveforms can be loaded from disk into the Oscillator or Waveform window. Custom waveforms can either be user created waveforms, or waveforms extracted from sampled sounds (for more details on sampled waveforms see the Sample Module section that begins on the next page). If you are in the module window, click on the small filing cabinet icon in the palette. The cursor becomes a disk waveform icon that you can place anywhere within the time scale. Once it is placed, the standard Macintosh disk file selection dialog box appears. This allows you to select any waveform file on the specified disk. Clicking on the filing cabinet icon in the Waveform window opens the disk file selection dialog box immediately, allowing you to load a waveform from disk for further modification.
+
+Clicking on the info icon in the Waveform window opens the Waveform Info box. This dialog box displays the name of the current waveform window and the point in the Oscillator time scale at which it is located. It also allows you to modify these two parameters.
+
+![](figures/p022_b.png) {w=702}
+
+@page 37 scan=p022R footer="Section 4 -"
+
+## Sample Module
+
+![](figures/p022_c.png) {w=200}
+
+The Sample module allows you to include any Sound Designer sound file as a sound source in a Turbosynth patch. If you have the necessary hardware (Sound Accelerator and AD IN), you can also sample sounds directly into Turbosynth. Samples can be directly manipulated within the sample module or they can be directed to and processed by other modules. Like Oscillators, Sample modules have no inputs.
+
+![](figures/p022_d.png) {w=744}
+
+Whenever a Sample module window is opened for the first time after being placed within the work area of the main window, the standard Macintosh disk file selection dialog box appears. This allows you to select a sound file from disk to provide the data for the module's sound buffer (if you want to sample directly into the sound buffer click on "Cancel"). When you load and edit a sample you will not affect the sound file on disk. You are only editing a copy of the disk file.
+
+## Sample Info Box
+
+The Sample module's info box displays and allows you to edit the name, length, and sample rate of a Sample module.
+
+![](figures/p022_e.png) {w=735}
+
+> **Note:** Changing the sample rate in the info box only changes the playback rate for the sample (it does not perform sample rate conversion), producing interesting transposition effects. In this case, you will probably want the other modules in your patch to have matching sample rates. If so, use the Sample Rate Conversion function described on page 39 to match the prevailing sample rate.
+
+The Sample module info box also includes a parameter called **Loop Frequency**. This parameter displays the length of the isolated section between the loop markers. It is the frequency with which the isolated section will repeat itself in a loop. If the data between the loop markers represents a single period of a waveform, the loop frequency parameter will equal the sound's fundamental frequency. For example, if the data between the loop markers represents a single period of a sound at 440 Hz, the loop frequency will be 440 Hz. However, if the data represents two periods of a sound at 440 Hz, the loop frequency will be 220 Hz. The loop frequency is particularly useful when sending a sampled sound to the Stretcher and Resonator modules described later in this section of the manual.
+
+## Saving Sound Data with Documents
+
+You can also save the sample sound data with the Turbosynth document file in which it appears by checking the **Save sound data with document** box in the Sample module info box. This precludes the need to load sound files from disk every time you open a Turbosynth document that includes Sample modules. However, this option contributes significantly to the size of a document file since sound files can be very large.
+
+## Loading a Sample
+
+![](figures/p023_2.png) {w=144}
+
+You can replace the sound in a Sample module with new data by clicking on the filing cabinet icon in the module window palette. This opens a dialog box, allowing you to select a new sound file to use.
+
+## Direct Sampling
+
+@page 39 scan=p023R footer="Section 4 - Using Turbosynth (Part 2)"
+
+![](figures/p023_3.png) {w=144}
+
+With a Sound Accelerator™ and an AD In™ you can sample sounds directly into the sample module. With this hardware Turbosynth offers 44.1 kHz mono sampling. After sampling you may wish to sample rate convert the sample to the rate used by your sampler. The length of sampling is determined by the size of the sound buffer. Open the module's info box to set the length of sampling. Remember that the sample length should be set with respect to the 44.1 kHz sample rate.
+
+Once you have allocated memory and connected an audio source to the AD IN, click on the sampling icon. This will allow you to monitor the input signal and adjust the sampling trigger threshold. By clicking in the sample time view (where the sample waveform is normally displayed), the gray line representing the threshold can be adjusted. To proceed with sampling click on the sampling icon again. Turbosynth will wait for the input signal to exceed the sampling threshold and then sample until the sound buffer is filled. If the input signal does not exceed the threshold level within approximately 10 seconds, Turbosynth will quit sampling.
+
+## Sample Rate Conversion
+
+![](figures/p023_1.png) {w=144}
+
+Sample rate conversion is often desirable when a sampled sound has been imported from one sampler (with one sample rate) and is to be sent to another sampler (with a different sample rate). Sample rate conversion is also useful after direct 44.1 kHz sampling. Certain sounds, such as cymbals, can be distorted in the sample rate conversion process. If this occurs send the non-converted sound to your sampler and compensate for the difference in sample rate by adjusting the root key.
+
+To convert the sample rate of the sample that is currently displayed in the sample window, click once on the sample rate conversion icon. A dialog box will appear displaying the sample's current sample rate. To change the sample rate, simply enter a new value in the "Desired Rate" box.
+
+@page 40 scan=p024L footer="ction 4 -"
+
+## Extending the Loop
+
+![](figures/p024_2.png) {w=144}
+
+The sample's loop section can be extended by clicking on the extension icon. This takes the sound data located between the loop markers, copies it and fills the sound buffer with these copies until the sample reaches the length specified in its info box. This provides a time-limited loop of the selected section of the original sound, and can be used to extend the sample to the desired length.
+
+## Gain Scaling
+
+![](figures/p024_3.png) {w=136}
+
+The Gain Scaling function alters the amplitude (gain) of a sample. This feature is useful for normalizing a sample or for generating "clipping" effects. If a sampled sound has a low amplitude peak you will probably want to normalize it. This will increase the amplitude of the sample so that its peak amplitude is at 100%. Gain scaling that exceeds normalization will cause clipping. For certain sounds this is very desirable: snare drums can be "beefed up" by clipping them. The gain scaling percentage represents the new amplitude with respect to the original amplitude. For example, a gain scaling of 100% will produce an amplitude that is the same as the original. A gain scaling of 200% will produce an amplitude that is twice the original. A gain scaling of 50% will produce an amplitude that is half the original.
+
+To change the gain of the sample that is currently displayed in the sample window, click once on the Gain Scaling icon. A dialog box will appear allowing you to normalize the sample's gain or enter a percentage amount for changing the sample's gain.
+
+@page 41 scan=p024R footer="Section 4 -"
+
+## Envelope Removal
+
+![](figures/p024_1.png) {w=144}
+
+The Envelope Removal function allows you to remove the inherent amplitude envelope of a sampled sound. This will leave the sample at a continuous maximum level. This effect is similar to heavy compression.
+
+To process the sample currently displayed in the sample module, click once on the Envelope Removal icon. A dialog box will appear for specifying the Response time of the envelope removal process. The response time parameter determines how quickly the process responds to amplitude changes in the sample. Fast response times may result in low frequency distortion or "pumping" because low frequencies are misinterpreted as amplitude changes rather than waveforms. If this occurs, reload the sample and increase the response time. Valid response times range from 1 ms to 1000 ms.
+
+## Crossfade Looping
+
+![](figures/p024_4.png) {w=144}
+
+Crossfade Looping is provided for those who want to do sample editing/looping entirely in the sample module. The crossfade looping functions in this module are identical to the crossfade looping functions available in the Output module. In general, you will want to perform crossfade looping in the Output module rather than the Sample module, since the contents of the output module are transferred to the sampler for playback.
+
+Once loop markers have been placed in the currently displayed sample, click on the crossfade looping icon to display the crossfade looping dialog box. This dialog box allows you to specify the type of crossfade (linear or equal power), and the length of the crossfade.
+
+@page  scan=p025L footer="ction 4 - Using Turbosynth (Part 2)"
+
+Linear crossfades tend to work best on sounds with decaying envelopes (e.g. pianos, guitars). Equal power crossfades tend to work best on sounds with stable envelopes (e.g. strings, brass).
+
+Longer crossfade lengths tend to create better sounding loops. The crossfade length is limited by three ranges: 1) the distance between the start of the sound and the loop start; 2) the distance between the loop start and the loop end; 3) the distance between the loop end and the end of the sound. Keep this in mind when setting loop markers prior to creating a crossfade loop. Also, make sure the loop markers are aligned in the loop window.
+
+## Transfer Loop Points to Selection
+
+![](figures/p025_2.png) {w=144}
+
+This function creates a selection with the same start and end points as the loop start and loop end. This is useful if you want to cut, copy or paste a region without creating a "click" at the edit transition. For example, if you cut a region out of a sound, the point before the cut may have a different amplitude than the point after the cut. This transition will create a click. By using the loop window to adjust the transition, you can select edit points that will not create clicks.
+
+## Loop Markers
+
+![](figures/p025_4.png) {w=144}
+
+Any portion of the sound can be selected using the Loop Markers in the Sample module palette. The selected section can then be used to extend the loop or to extract new waveforms for use in the Oscillator module.
+
+@page 43 scan=p025R footer="Section 4 -"
+
+To specify the beginning of the selected section, click on the right-pointing loop marker icon, move the mouse into the main portion of the module window, position the cursor at the desired location along the time scale and click the mouse button. Repeat this process with the left-pointing marker to specify the end of the selected section. Once placed, the markers can be moved by dragging them to the right or left with the arrow cursor. To remove a loop marker, click once on it using the eraser cursor.
+
+## Playing the Loop
+
+To hear the loop, hold down the Command key and click on the speaker icon. The selected section will loop until you release the mouse button.
+
+## The Loop Window
+
+![](figures/p025_1.png) {w=144}
+
+To get a loop that doesn't buzz, pop, or click you should find start and end points which have similar amplitudes and slopes. The Loop Window places the loop start and end points side by side so that you can observe the transition. To open the Loop window, click on the magnifying glass icon in the Sample module window.
+
+![](figures/p025_a.png) {w=744}
+
+The start and end points of the selected section "wrap around" and meet in the center of the Loop window at the vertical dotted line. The beginning of the selected section appears in the right half of the window and the end appears in the left half of the window. It may seem a bit confusing at first, but this display is very useful for matching the start and end points. The window does not necessarily display the entire section of sound defined by the loop markers. It only displays the first and last parts of the selected section.
+
+To achieve the smoothest possible loop, align the start and end points so that they meet at or near the zero-crossing with a similar slope. Try to make the waveform at the splice point appear to be an uninterrupted waveform that follows the sound's natural waveform "pattern". You can hear the results of your adjustments by clicking on the speaker icon. The selected section will loop for as long as you hold the mouse button down. If you don't hear the loop repeat, it is too short.
+
+The scaling of the waveform in the Loop Window can be adjusted using the **Zoom** controls in the Loop window palette. These controls affect the display only, not the sound itself. The vertical arrows adjust the amplitude of the displayed sound wave. The horizontal arrows adjust the amount of time displayed in the Loop window.
+
+![](figures/p026_2.png) {w=272}
+
+To adjust the location of the selection's start and end points, simply position the arrow cursor on the waveform at the desired location and click. The waveform location you clicked on will "jump" to the middle of the loop window, indicating that it is now the start (or end) point of the selection.
+
+![](figures/p026_3.png) {w=136}
+
+The scroll bar arrows at the bottom of the Loop window allow you to "fine-tune" the exact position of the extension markers in single-sample increments. These controls are used to match the amplitude and slope of the start and end points. Use the scroll bar arrows to shift the start or end point to the right or left.
+
+![](figures/p026_a.png) {w=253}
+
+In addition to regular scroll arrows there are **Auto** scroll arrows. These arrows allow you to move the loop points with automatic loop point selection. This feature tries to find a point that is similar to the loop point that is not being moved. For example, if you auto-move the loop start forward, it will advance the loop start until it reaches a point that closely matches the slope and amplitude of the loop end point.
+
+@page 45 scan=p026R footer="Section 4"
+
+## Extracting Waveforms from Samples
+
+Turbosynth also offers the unique ability of saving the sound data between the loop markers as an oscillator waveform. This feature lets you extract a timbre from a sample for use in an oscillator. After carefully matching the start and end points of the isolated section, select Save loop as waveform from the File menu. A standard Macintosh save file dialog box will appear, allowing you to name the waveform file and save it on disk. The waveform file can then be opened and used by an Oscillator module.
+
+@menu File | Save loop as waveform
+
+## Cut, Copy, Paste… Editing
+
+Turbosynth's Sample module provides full cut, copy and paste editing of samples. These functions appear in Turbosynth's Edit menu. To perform most edits, you will need to select the section of the waveform you wish to edit. Use the arrow cursor to select regions in a sampled sound by positioning the cursor at one end of the selection, clicking the mouse button and dragging to the other end of the selection. When a selection is made, clicking on the speaker icon will only play the selected region.
+
+The **Cut** command removes the selected section of the waveform and stores it in the clipboard (a temporary storage buffer for data).
+
+The **Copy** command makes a copy of the selected waveform section and stores it in the clipboard.
+
+The **Paste** command inserts the contents of the clipboard (the last waveform section you copied or cut) into the sample at the current insertion point. If a section of the sample is selected, it will be deleted and the contents of the clipboard will be inserted in its place.
+
+@page 46 scan=p027L footer="ction 4 -"
+
+## Amplifier Envelope Module
+
+![](figures/p027_a.png) {w=130}
+
+The **Amplifier Envelope** module accepts one input and varies the amplitude of the input signal from 0% to 100% over time according to the envelope within the module window. Its function is similar to that of the voltage-controlled amplifiers (VCA) found on analog synthesizers.
+
+![](figures/p027_b.png) {w=670}
+
+The envelope that determines how the amplitude will vary is selected from the palette of eight small preset envelope icons. Click on a preset envelope icon in the palette to select it. The selected envelope appears in the module window.
+
+Once selected, a preset envelope can be modified in several ways. The four modifier icons at the bottom of the palette alter the envelope in a regular, global fashion. Clicking on one of these icons shifts the entire envelope in the direction indicated by each icon. The amplitude (vertical) modifiers move all points up or down equally. The time (horizontal) modifiers move all points to the right or left proportionally depending on their position relative to each other.
+
+The arrow cursor can be used to alter the envelope in any way you choose. Think of the envelope as a rubber band. Click the arrow cursor on any point in the envelope and drag the point to a new location. The selected point doesn't need to be one of the breakpoints in the preset envelope. Any point along the entire envelope can be selected with the arrow cursor and moved to a new location. This provides exceptional flexibility in creating custom envelopes.
+
+@page 47 scan=p027R footer="Section 4"
+
+## Filter Envelope Module
+
+![](figures/p027_c.png) {w=136}
+
+The **Filter Envelope** accepts one input and provides a variable low-pass filter. The Filter's cut-off slope is 6 db/octave. Its function is similar to that of the voltage-controlled filters (VCF) found on analog synthesizers.
+
+![](figures/p027_d.png) {w=744}
+
+The Filter Envelope window looks and behaves in exactly the same manner as the Amplifier Envelope module (see the previous page for more information). The only difference is that the envelope in this window controls the cutoff frequency of the filter instead of the level of amplification.
+
+When the envelope reaches the top of the window, the filter is entirely open. At the bottom of the window, the cut-off frequency is approximately 500 Hz.
+
+If you wish to increase the slope of the Filter after the cut-off frequency, you can cascade Filter modules. Passing a signal through two identical Filter modules in series increases the slope to 12 db/octave.
+
+## Spectral Inverter Module
+
+![](figures/p027_e.png) {w=140}
+
+The **Spectral Inverter** module accepts one input and inverts the harmonic spectrum of the input signal. Like the Filter Envelope module, it alters the timbre of the input sound over time.
+
+![](figures/p027_f.png) {w=744}
+
+The Spectral Inverter module window looks identical to those of the Amplifier and Filter Envelope modules. In this case, however, the envelope determines the mix between the inverted and non-inverted signals. When the envelope reaches the top of the window, the harmonic spectrum of the output signal is completely inverted with respect to the input signal. When the envelope reaches the bottom, the input signal is unaffected.
+
+@page 48 scan=p028L footer=":tion 4 - Using Turbosynth (Part 2)"
+
+## Digital Audio Review
+
+As you may recall from Section 2, any complex sound wave is made up of component sine waves. These sine waves, known as partials, collectively form the harmonic spectrum of the complex waveform. It is this harmonic spectrum that is affected by the Spectral Inverter module. In order to understand the function of this module, a bit of digital audio theory is required.
+
+Analog sound waves are represented in digital audio systems (such as samplers) by taking many instantaneous readings of the sound wave's level, then storing this stream of numbers in RAM. These numbers can then be manipulated and played back. The rate at which these readings are taken or played back is known as the sample rate.
+
+Frequencies higher than half the sample rate cannot be accurately represented in digital form. The frequency equal to one-half of the sample rate is known as the Nyquist frequency. It is the highest frequency that can be accurately represented in a digital audio system.
+
+The Spectral Inverter uses two different methods to shift frequencies:
+
+## Type "A" Spectral Inversion
+
+Type A takes the input signal's harmonic spectrum and inverts it around the halfway point between 0 Hz and the Nyquist frequency. For example, suppose that the sample rate is 30 kHz. The Nyquist frequency is therefore 15 kHz. If a sound has a partial at 0 Hz, it would be inverted to 15 kHz. Likewise, a partial at 100 Hz would be inverted to 14.9 kHz, and a partial at 7.4 kHz would be inverted to 7.6 kHz. A partial at half the Nyquist frequency (7.5 kHz in this example) would remain unchanged.
+
+@page 49 scan=p028R footer="Section 4 - Using Turbosynth (Part 2)"
+
+## Type "B" Spectral Inversion
+
+Type B takes the input signal's harmonic spectrum and creates two spectral "images" of it.
+
+One image is the original frequency shifted by one fourth of the sample rate. For example, if our sample rate is 30 kHz and a sound has a partial at 0 Hz, it would be shifted to 7.5 kHz. Likewise, a partial at 100 Hz would be shifted to 7.6 kHz, and a partial at 7.4 kHz would be inverted to 14.9 kHz.
+
+The second image inverts the harmonic spectrum around the point that is one-quarter of the distance between 0 Hz and the Nyquist frequency. In our example, a sound which has a partial at 0 Hz would be inverted to 7.5 kHz; a partial at 100 Hz would be inverted to 7.4 kHz; and a partial at 7.4 kHz would be inverted to 100 Hz.
+
+These two images are then combined to produce the output sound.
+
+Sounds confusing? That's because it is. Don't panic. All you really care about is how it sounds. Type A tends to produce very high frequencies. Type B tends to produce more upper midrange frequencies, as well as high frequencies. The actual results depend entirely on the input to the spectral inverter. This module is most effective when the input signal is rich in partials, particularly those of high frequency. Experiment with Type A and Type B on various broadband samples (e.g. percussion, pianos, etc.).
+
+@page 50 scan=p029L footer="ction 4 -"
+
+## Delay Module
+
+![](figures/p029_a.png) {w=130}
+
+The **Delay** module accepts one input and performs much the same function as a standard outboard digital delay unit. This module's parameters are specified with the slider controls located in the main portion of the module window. The eraser resets any control to which it is applied to zero.
+
+![](figures/p029_b.png) {w=670}
+
+The delay time is set with the **Coarse** and **Fine** sliders. To change the delay time, simply point to one of these sliders with the arrow cursor, hold the mouse button and drag the slider up or down to a new setting. The delay time is displayed under the coarse slider.
+
+The **Feedback** control adjusts the percentage of the wet (delayed) signal that is directed back to the input of the module. A setting of less than 100% results in less and less feedback signal with each passing delay cycle. The mix control determines the relative levels of the wet and dry (unaffected) signals in the final output. A mix value of 100% indicates a completely wet output signal.
+
+The **Polarity** control performs a phase inversion on the processed signal. Select Positive or Negative polarity by clicking the arrow cursor on the desired setting. The aural effect of this control depends on several factors including the feedback level, input waveform and delay time. The best way to become familiar with this control is to try it out with the other parameters on various settings.
+
+Many delay devices provide the ability to modulate the delay time. This capability is not present in the Turbosynth delay module. It is found in the Modulation module described later in this section of the manual.
+
+@page 51 scan=p029R footer="Section 4 - Using Turbosynth (Part 2)"
+
+> **Note:** Delay effects inherently extend the length of a sound, particularly at high feedback levels. You may wish to increase the Length parameter in the info box to compensate for this. If you have **Dynamic length based on parameters** selected in the Parameter Manager, the length will automatically be adjusted when you edit the delay time or feedback.
+
+## Pitch Shifter Module
+
+![](figures/p029_c.png) {w=134}
+
+The **Pitch Shifter** module accepts one input and transposes the pitch of the input signal.
+
+There are only three slider controls in this module's window. The coarse control shifts the pitch of the input signal by as much as two octaves up or down in semitone increments. The fine control shifts the pitch by as much as 50 cents (one half of a semitone) up or down in 1 cent increments.
+
+![](figures/p029_d.png) {w=735}
+
+The **Mix** control determines the relative levels of the transposed and unaffected signals. This allows you to create detune effects with a single sound source. A mix value of 100% produces only the transposed signal at the output. A mix value of 50% will combine the original signal and the pitch shifted signal in equal proportions.
+
+> **Note:** Shifting the pitch of a sound alters the sample length needed to fully represent the output signal. For example, dropping the pitch by one octave doubles the number of samples. When raising the pitch, you may wish to change the Length parameter in the info box to compensate for the reduced sound length, or enable the Dynamic length based on parameters option in the Parameter Manager.
+
+@page 52 scan=p030L footer=""
+
+## Modulator Module
+
+![](figures/p030_a.png) {w=143}
+
+The **Modulator** module accepts up to two inputs and modulates one of the input signals with the other input signal. A single input can also be used to modulate itself.
+
+![](figures/p030_b.png) {w=660}
+
+This module provides the ability to control regular variations in the frequency or amplitude of one module's sound data with the signal from another module. The ability to perform Amplitude Modulation (AM), Frequency Modulation (FM) and Pitch Modulation (PM) allows this module to be used in a wide range of applications.
+
+You might wonder what the difference is between PM and FM. Although the words "pitch" and "frequency" are fairly synonymous, these types of modulation are applied differently in Turbosynth. FM is best suited for creating timbral changes by using a high frequency modulator. PM is best suited for low frequency control over pitch (e.g. vibrato). AM can be used for low frequency tremolo effects or timbral variations when a high modulating frequency is used.
+
+This module has two slider controls. The **Amount** slider determines the intensity of the modulating signal's effect. The **Mix** slider controls the wet/dry mix. The type of modulation is selected by clicking on one of the three options (AM, FM or PM) below **Type:** (a dot will appear to the left of the currently selected modulation type). The names of the modules connected to the Modulation module's inputs are listed below **Input:** and **Modulator:**. To select which module acts as the input (carrier) and modulator, click on its name below the desired function. You can also induce self-modulation by selecting the same module to perform both functions.
+
+@page 53 scan=p030R footer="Section 4"
+
+Pitch modulation can be used to produce the chorusing effect commonly achieved using delay time modulation. Select PM and use an Oscillator at a frequency of 4 to 5 Hz as the modulator. The mix control should be set somewhere between 20% and 80% to obtain the chorusing effect. You can vary the waveform within the Oscillator and perhaps send its signal through an Amplifier Envelope before it is used as the modulation signal. Modulating a sample with a waveform (or vice versa) can also produce some very interesting results.
+
+## Waveshaper Module
+
+![](figures/p030_c.png) {w=140}
+
+The **Waveshaper** module accepts one input and provides a unique type of processing. To best understand this module, let's review some digital audio theory:
+
+Digital audio is stored as a series of numbers. Each number represents the instantaneous amplitude, or level, of the sound at a point in time. These numbers fluctuate around a center value that we call 0% of scale. The maximum excursions on either side of our center value are labeled +100% and -100%.
+
+![](figures/p030_d.png) {w=738}
+
+The Waveshaper provides a means of modifying the instantaneous level values in the sound buffer in a regular (or not-so-regular) manner. It alters the shape of the input signal with what is known as a *transfer function*.
+
+The main portion of the Waveshaper window consists of one horizontal scale across the bottom and one vertical scale along the right edge of the window. Each scale measures -100% to +100%. The horizontal scale represents the instantaneous level values of the input signal. The vertical scale represents the level values of the output signal. In essence, each input value gets remapped to a new output value.
+
+@page 54 scan=p031L footer="ction 4 -"
+
+Clicking on one of the eight small preset icons in the palette brings a line of a certain shape into the window. The Waveshaper takes each level value in the input signal, finds the point on the line directly above that level value in the input scale and replaces the input value with the value appearing on the output scale directly to the right of that point on the line. This line represents the transfer function.
+
+![](figures/p031_a.png) {w=690}
+
+For example, a straight line from the lower left corner to the upper right corner of the window allows any signal to pass unaltered. Any single piece of sound data at -100% would be passed on at -100%. A value of +100% would remain at +100%. The same is true for all the points of sound data. This is the first preset shape in the window's palette.
+
+On the other hand, a straight line from the upper left corner to the lower right corner of the window would shift the phase of the input signal by 180 degrees. All data points at -100% would be passed on at +100% and so on. Other shapes appearing in the main portion of the window alter the input wave in many different ways.
+
+![](figures/p031_b.png) {w=690}
+
+@page 55 scan=p031R footer="Section 4"
+
+## Preset Waveshapers
+
+The presets include several regular shapes and one icon that generates random shapes each time it is selected. Once a preset is selected, it can be altered in a variety of ways. The modifier icons appearing below the presets in the palette alter the shape by stretching, flipping, and bowing. In addition, the last two modifiers are used to randomize and smooth out the individual points along the transfer function curve.
+
+![](figures/p031_c.png) {w=277}
+
+Like the Waveform window within the Oscillator module, the pointing tool in this window is a pencil. This allows you to draw any transfer function curve you like. You can use it to alter only parts of a preset curve or to draw an entirely new one. The smoothing modifier can be used to smooth out any rough areas of a freehand curve. The eraser re-establishes the diagonal line that has no effect on the input signal wherever it is used.
+
+## Stretcher Module
+
+![](figures/p031_d.png) {w=146}
+
+The **Stretcher** module accepts one input and stretches its duration. The input signal is stretched by isolating small sections of the sound and duplicating them. The frequency parameter determines the size of these sections. If the frequency parameter matches the pitch of the input signal, time expansion with minimal distortion will occur. If the frequencies don't match, amplitude modulation effects will occur. At times, these amplitude modulation effects can be very interesting.
+
+![](figures/p031_e.png) {w=747}
+
+This is similar to extending a section of the sound in the Sample module. Once the section has been copied a number of times, the loop points are shifted and the process is repeated. This continues until the end of the module's sound buffer is reached.
+
+@page 56 scan=p032L footer="Section 4 -"
+
+The **Coarse** and **Fine** frequency controls are used to specify the resonant frequency of the module. This determines the length of the loop that moves through the sound data. Use these controls to tune the module to the sound you are stretching. For example, if the input signal is at a frequency of 440 Hz, the Stretcher should be tuned to 440 Hz. The frequency controls can also be used to add pitch to an unpitched sound such as a drum.
+
+The **Predelay** control specifies the amount of time (up to 1 second) at the beginning of the input signal that will remain unaffected by the Stretcher. For example, if the predelay is set at 200 ms, the Stretcher will begin affecting the signal after its first 200 ms has passed. This allows the stretched signal to retain its original attack characteristics.
+
+**Amount** determines the amount of stretching that occurs. At the minimum value of 0, the loop moves very quickly through the sound. The resulting sound will be very similar to the original input. As the amount increases, the loop moves through the sound more slowly, copying the looped section several times and stretching the signal more significantly. At a value of 100, the loop moves very slowly through the sound resulting in a very slow timbral evolution.
+
+> **Note:** By definition, the Stretcher module lengthens a sound. This means that the output signal will be longer than the input signal. You may wish to increase the Length parameter in the info box to compensate for this. If you have **Dynamic length based on parameters** selected in the Parameter Manager, the length will automatically be adjusted.
+
+@page 57 scan=p032R footer="Section 4"
+
+If you want to determine the fundamental frequency of a sample, set the loop markers in the Sample module and check the loop frequency in the info box. Try to create the shortest possible loop that produces the proper pitch. Set the Stretcher to this frequency.
+
+## Resonator Module
+
+![](figures/p032_a.png) {w=144}
+
+The **Resonator** module accepts one input and is used to enhance certain frequencies in the harmonic spectrum of the input signal, much like a delay module set to short delay times with feedback. You'll notice that the Resonator window is very similar to the Delay window.
+
+![](figures/p032_b.png) {w=536}
+
+The Coarse and Fine frequency controls specify the resonant frequency of the module. This also determines the delay time. For example, a resonant frequency of 1000 Hz is equivalent to a delay time of 1 ms. The Amount control sets the level of resonance, or feedback level, of the module. The Polarity control is similar to the one in the Delay module. Its effect depends on several factors. The best way to become familiar with this control is to experiment with it. The Mix control determines the wet/dry signal mix.
+
+> **Note:** Resonance effects inherently extend the length of a sound, particularly at high feedback levels. You may wish to increase the Length parameter in the info box to compensate. If you have **Dynamic length based on parameters** selected in the Parameter Manager, the length will be automatically adjusted.
+
+If you want to resonate the sound from a Sample module and are unsure of the frequency setting you should use, set the extension markers in the Sample module and check the loop frequency in the info box. Set the Resonator to this frequency.
+
+@page 58 scan=p033L footer=""
+
+## Mixer Module
+
+![](figures/p033_a.png) {w=143}
+
+The **Mixer** module accepts up to 32 inputs and combines the input signals into a single output. This module can be used at any point within a patch to combine the sounds of several other modules.
+
+![](figures/p033_b.png) {w=649}
+
+The name of each module connected to the input of the Mixer and a corresponding slider control appear in the Mixer window. These sliders are used to specify the level of each input signal from 0% to 100%. The scroll bar at the bottom of the window allows you to access all the sliders if many modules are connected to the Mixer.
+
+> **Note:** Like any Turbosynth module, the range of amplitude values in the Mixer sound buffer is finite. It is conceivable that the peaks of several input signals might coincide, resulting in an amplitude that exceeds the maximum allowable value. It is for this reason that the mixer inputs are attenuated to prevent clipping and other distortions. As a result, the Mixer's output signal could be at a low overall amplitude. If the output level seems low, use the **Normalize** option in the Mixer's info box to ensure that the highest peaks in the output signal reach full amplitude.
+
+## Pitch Envelope Module
+
+![](figures/p033_c.png) {w=134}
+
+The **Pitch Envelope** module accepts one input and varies the pitch of the input signal over time.
+
+![](figures/p033_d.png) {w=655}
+
+Many hardware synthesizers provide pitch enveloping as a way of creating expressive effects in patches, by using subtle (or not-so-subtle) variations in an oscillator's pitch. The Pitch Envelope module functions in much the same way as conventional pitch envelopes, but offers a greater degree of control, due to its multiple breakpoint envelopes.
+
+@page 59 scan=p033R footer="Section 4 - Using Turbosynth (Part 2)"
+
+The Pitch Envelope module allows the pitch of the input signal to be continuously varied over a range of plus or minus one octave. For convenience, the Pitch EG's Envelope window has scale markings at plus and minus 1, 4, 7, and 12 semitones. The center line represents zero pitch shift. Please note that this scale is non-linear. Although the scale markings are equally spaced, they do not represent equally spaced differences in pitch. This permits fine pitch adjustment close to the original pitch (for chorusing/detuning effects), while allowing a wide range of overall adjustment.
+
+Eight small **Preset Envelope** icons appear in the center of the palette in the Envelope window. To replace the current envelope with any of these preset shapes, simply click on its icon.
+
+The **Envelope Modifiers** icons affect the current envelope in a variety of ways. Clicking on a Modifier's icon shifts the entire envelope in the direction indicated by the Modifier's icon. Repeatedly clicking on the icon will continue to shift the envelope.
+
+The top two modifier icons affect the overall amplitude of the current envelope. Click on the icon with the up-pointing arrow to increase all envelope breakpoints proportionally; while the down-pointing arrow decreases all envelope breakpoints proportionally.
+
+The middle two modifier icons affect the overall length of the current envelope. Click on the icon with the left-pointing arrow to shorten all envelope breakpoints proportionally. Likewise, the right-pointing arrow will lengthen all envelope breakpoints.
+
+@page 60 scan=p034L footer=":tion 4 -"
+
+The bottom two modifier icons compress or expand the amplitude of the current envelope with respect to the center of the graph. Click on the icon with the inward-pointing arrows to compress the current envelope. This will reduce the amplitude range, while retaining the overall shape of the envelope. Click on the icon with the outward-pointing arrows to expand the current envelope. When using the Pitch Envelope these modifiers increase or decrease the "depth" of the effect.
+
+## Noise Oscillator Module
+
+![](figures/p034_a.png) {w=137}
+
+The **Noise Oscillator** module accepts no inputs and produces various types of noise as a sound source in a Turbosynth patch. Although static noise usually isn't desirable, processing noise with Amplitude Envelopes, Filter Envelopes, Resonators and other modules can be very effective. The Noise Oscillator can be thought of as a randomized sine oscillator. The amplitude and frequency of the sine wave can be randomized independently of each other.
+
+![](figures/p034_b.png) {w=660}
+
+The **Coarse** and **Fine** controls specify the frequency of the module's noise output. The perceived pitch of the noise depends on the type and amount of noise currently selected.
+
+**Amplitude Noise** is produced by rapidly varying the amplitude points of the waveform. The amount of Amplitude Noise is controlled by the "Amp. Noise" parameter.
+
+**Phase Noise** is produced by rapidly varying the phase of the waveform, and is controlled by the "Phase Noise" parameter.
+
+These two types of noise can be combined in any desired ratio. If you want to create white noise set the frequency, amplitude noise, and phase noise parameters to their maximum values. Please note that if the amplitude and phase parameters are set to zero, the resulting sound will not be a pure sine wave. Instead, a low resolution sine wave will be produced.
+
+## Time Compressor Module
+
+![](figures/p034_c.png) {w=145}
+
+The **Time Compressor** takes one input and compresses its duration. In effect, the timbral evolution of the input signal is accelerated so that the entire sound occurs in a shorter time period.
+
+![](figures/p034_d.png) {w=743}
+
+The **Coarse** and **Fine** parameters control the resonant frequency of this module. If the frequency of the Time Compressor matches the fundamental pitch of the input signal (assuming the input is a pitched sound), the input will be shortened with minimal timbral change. If the Time Compressor's frequency differs from that of the input, or if the input is an unpitched sound, amplitude modulation effects will appear in the sound.
+
+The **Predelay** control specifies the amount of time (up to 1 second) at the beginning of the input signal that will remain unaffected by the Time Compressor. For example, if the predelay is set at 200 ms, the Stretcher will begin affecting the signal after its first 200 ms has passed. This allows the stretched signal to retain its original attack characteristics.
+
+**Amount** determines the amount of time compression that occurs. At the minimum value of 0 there is very little time compression. The resulting sound will be very similar to the original input. As the amount increases, the sound will become shorter without changing pitch (provided the frequency is set properly). At a value of 100, the sound will be a fraction of its original length.
+
+@page 62 scan=p035L footer=":tion 4"
+
+## The Output
+
+![](figures/p035_a.png) {w=131}
+
+**The Output** accepts one input and is the final stop for sounds on their way to samplers or to disk storage. The output allows you to view the overall waveform of the sound, place loop markers in the sound, and perform crossfade looping. Normally the output does not have its own sound buffer. Instead, it gives you a view of the module connected to the output. However, the output does have its own buffer when crossfade looping is enabled (see below).
+
+![](figures/p035_b.png) {w=660}
+
+The Output window graphically displays the sound waveform represented in the sound buffer of the input module. In fact, you'll notice a strong similarity between the Output window and the Sample window. The sound wave is not displayed in the Output window until the sound buffer of the input module is recalculated. This is accomplished by clicking on the speaker icon in the Output window or the input module window. Similarly, the Output display is not updated with new data until the input module sound buffer is recalculated.
+
+If you notice that the peak amplitude of the output is relatively low you may want to **Normalize** the module which is connected to its input.
+
+## Looping the Output
+
+The Output palette includes start and end **Loop markers**. These loop markers are selected, placed and erased in the same manner as the sample module (see page 40 for more information).
+
+The **Loop window** is opened by clicking on the magnifying glass icon, and operates in the same manner as the sample module loop window (see page 40 for more information). The loop points will be saved with a sound file and also transferred to your sampler.
+
+@page 63 scan=p035R footer="Section 4 -"
+
+Unlike the Sample module, the **command** key does not need to be depressed to hear the loop when the sound is played.
+
+## Crossfade Looping
+
+![](figures/p035_c.png) {w=145}
+
+If you are unable to find a good loop in the sound, you may want to use **Crossfade Looping**. As with crossfade looping in the Sample module you have your choice of crossfade type and crossfade length.
+
+Once loop markers have been placed, click on the crossfade looping icon to display the crossfade looping dialog box. This dialog box allows you to specify the type of crossfade, and the length of the crossfade.
+
+Linear crossfades tend to work best on sounds with decaying envelopes (e.g. pianos, guitars). Equal power crossfades tend to work best on sounds with stable envelopes (e.g. strings, brass).
+
+Longer crossfade lengths tend to create better sounding loops. The crossfade length is limited by three ranges: 1) the distance between the start of the sound and the loop start; 2) the distance between the loop start and the loop end; 3) the distance between the loop end and the end of the sound. Keep this in mind when setting loop markers, prior to creating a crossfade loop. Also, make sure the loop markers are aligned in the loop window.
+
+> **Note:** Unlike the sample module, crossfade looping in the output should be thought of as a mode rather than an action. Once you've clicked on the icon and specified the parameters, the output will continue to crossfade loop anything that flows into the output. If you decide to adjust a parameter in a different module, you don't have to worry about losing your perfect loop. When crossfade looping is enabled a separate sound buffer is created for the output. If there is not enough memory to create the sound buffer, you will not be able to crossfade loop.
+
+## Considerations for Looping and Samplers
+
+Some samplers such as the Emax and FZ-1, will not play loops if the loop end is on the last sample point. Other samplers such as the Mirage, have strict guidelines as to where loop markers can be placed. If you transfer this type of looped sample and find that the loop end has been changed, it's due to this limitation. Additionally, some samplers such as the S900, DSS-1, TX16W, and S-50, will not play any sound data which follows a loop end marker.
+
+![](figures/p036_a.png) {w=652}
+
+The values in the Output Jack info box are not found within edit text boxes. Since the output is a view of the module connected to it, the values reflect those found in the info box of the input module. Like the Sample module, the loop frequency identifies the frequency of the waveform appearing between the loop points.
+
+@page 65 scan=p036R footer="Section 5 - Sampler Personalities"
+
+# Section 5 – Sampler Personalities
+
+## About Samplers
+
+Digital sampling instruments are really digital audio recorders that can transpose (raise or lower) the pitch of the digital recording.
+
+Turbosynth creates simulated digital recordings ("samples") of sounds you have designed using modules as discussed in Sections 3 and 4, "Using Turbosynth (Parts 1 and 2)". Once you have created a sound using Turbosynth, it must be transferred to your sampler for playback.
+
+Turbosynth can create sounds for many different samplers, and each sampler has a different "personality". Fortunately, Turbosynth already knows all about your sampler's personality. After you select your sampler from the Sampler menu, Turbosynth's Mac -> Sampler function automatically converts Turbosynth sounds into your sampler's format.
+
+All samplers are not created equal - many factors contribute to the overall fidelity of a sampler, including *sample rate*, *data format* and *pitch shifting* method.
+
+As you may recall from the discussion of spectral inversion in Section 4, the **sample rate** is the number of times each second that the sampler measures the input sound. Increasing the sample rate increases the high frequency response. In theory, the highest frequency a sampler can record and reproduce is one half the sample rate (the "Nyquist" frequency). For example, if the sample rate is 30,000 samples-per-second, the highest reproducible frequency would be 15,000 Hertz. Actually, the real high frequency limit is slightly lower due to input and output filtering.
+
+@page 66 scan=p037L footer=":tion 5 - Sampler Personalities"
+
+Some samplers have variable sample rates. If your sampler has more than one sample rate, the Turbosynth Parameter Manager should be set to the same sample rate as your sampler. If the selected sample rates are different, the Turbosynth sound may play back at the wrong pitch.
+
+The data format is the digital recording method used by the sampler to record and store sounds. In general, the more bits used to record each sample, the better the signal-to-noise ratio and dynamic range. Eight bit linear (no digital compression) sampling provides a maximum signal-to-noise ratio of 48 decibels (dB), 12 bit linear sampling has a S/N ratio of 72 dB, and 16 bit linear sampling has a S/N ratio of 96 dB. Some samplers (such as the E-mu Systems Emulator II and Emax) use various data compression techniques and other tricks to improve their signal-to-noise ratio.
+
+Turbosynth creates 16 bit linear sound files in standard Sound Designer format. These files are converted into your sampler's format when the Mac -> Sampler function is used.
+
+Each sampler also uses a slightly different method for transferring sound files to and from the Macintosh. The following descriptions explain characteristics of each sampler that affect its use with Turbosynth.
+
+@page 67 scan=p037R footer="Section 5 - Sampler Personalities"
+
+## Akai S700/X7000
+
+The Akai X7000/S700 is a twelve bit sampler with six separate banks of sample memory. Each bank consists of 32768 bytes of memory, and has a maximum sampling time ranging from 1 second to 8 seconds depending on the sample rate used. Since 31250 is a commonly used sample rate, you may wish to enter it in the Parameter Manager.
+
+The X7000/S700 uses the loop end point as the sound end point. Hence, sounds transferred to the X7000/S700 may appear to be shorter than their original size.
+
+## Akai S900/S950
+
+The Akai S900/S950 are twelve bit samplers with maximum sampling times from 11.75 seconds to 63.3 seconds depending on the sample rate used (S900 - sampling times for the S950 are greater). The S900 has a variable sample rate ranging from 7.5 kHz to 40 kHz (up to 44kHz on the S950). Since 31250 is a commonly used sample rate, you may wish to enter it in the Parameter Manager.
+
+## Casio FZ-1/FZ-10M
+
+The Casio FZ-1is a 16-bit sampler with 64 sound locations. The FZ-1has three sample rates: 36 kHz, 18 kHz and 9 kHz. Since 36000 is a commonly used sample rate, you may wish to enter it in the Parameter Manager.
+
+The FZ-1 will not play a loop if the loop end is on the last sample point of a sound.
+
+In order to transfer sound data between the Mac and the FZ-1, the following conditions must be satisfied:
+
+- Match the FZ-1 MIDI basic channel with the Turbosynth MIDI channel.
+
+- Set MIDI receive to 'BASIC, and set Select Device to "MIDI".
+- Set the arrow mark to (REMOTE MODE).
+
+@page 68 scan=p038L footer="3tion 5 - Sampler Personalities"
+
+If a MIDI communication problem occurs, the FZ-1may display an error message. If this occurs, you must press the Up cursor button. This will clear the message and enable MIDI.
+
+## E-mu Emax
+
+The E-mu Systems Emax uses a special nonlinear 8 bit data format that provides a signal-to-noise ratio comparable to 12-14 bit systems. The Emax has several sample rates ranging from 10kHz to 42kHz. The Emax has a total sampling time of 17.2 seconds at the default sample rate of 27777 Hz. Since 27777 is a commonly used sample rate, you may wish to enter it in the Parameter Manager.
+
+Turbosynth transfers sound files to the Emax using a RS-422 interface cable (available from Digidesign). If you cancel a sound file transfer between the Mac and Emax, the Emax may take up to 1 minute to recover.
+
+To use Turbosynth with the Emax you will need:
+
+- An Emax with version 3.2 (or higher) software.
+
+- The MIDI out connector on the Emax selected as Out, not Thru.
+
+## E-mu Emulator II
+
+The E-mu Systems Emulator II uses a special non-linear 8 bit data format that provides a signal-to-noise ratio comparable to 12-14 bit systems. The Emulator II has a total sampling time of 17.2 seconds at a sample rate of 27777 Hz. Since 27777 is the sample rate, you should enter it in the Parameter Manager.
+
+@page 69 scan=p038R footer="Section 5 - Sampler Personalities"
+
+Turbosynth transfers sound files to the Emulator II using either of the Macintosh RS-422 serial ports (the printer or modem port). The RS-422 interface transfers sound files very quickly (500,000 bits per second) - nearly 17 times MIDI speed. Since the Emulator can't receive sound files via MIDI, the RS-422 interface cable is required for sound transfers. To use Turbosynth with the Emulator II you will need:
+
+- An Emulator II with version 2.3 (or higher) internal software ROMs.
+
+- Emulator II performance disks with version 2.3 (or higher) software.
+
+- An RS-422 interface cable (available from Digidesign).
+
+## E-mu Emulator III
+
+The E-mu Systems Emulator III is a 16 bit sampler. Since 44100 is a commonly used sample rate, you may wish to enter it in the Parameter Manager.
+
+Turbosynth transfers sound files to the EIII using the SCSI interface. If your Mac does not include a SCSI hard disk, you must own an SCSI terminator. The use of 'generic' ribbon cables is not recommended because of the potential for communication problems. For best results, use EIII system software version 2.0 or higher.
+
+Use the following guidelines for SCSI connections:
+
+- If your Mac setup does not include an internal SCSI hard drive or any external peripherals, connect an SCSI terminator to the EIII, then use an SCSI cable to connect the terminator to the Mac SCSI port.
+
+@page 70 scan=p039L footer="ction 5 - Sampler Personalities"
+
+- If your Mac setup includes an internal SCSI hard drive and no other SCSI peripherals, use an SCSI cable to connect the EIII to the Mac directly.
+
+- If you have an external SCSI hard drive or other SCSI peripherals, daisy-chain your SCSI drive and peripherals to the Mac. Without using an SCSI terminator, connect the EIII to the last SCSI peripheral.
+
+Once the connections have been finalized, you should use the following power-up sequence:
+
+- Turn on the EIII and verify that its hard disk SCSI ID is set to a value other than zero.
+
+- Turn on any other SCSI peripherals.
+
+- Turn on the Macintosh. Once Turbosynth has been launched, select Emulator III from the Sampler menu.
+
+Sounds can now be transferred to and from the Ell! by using the File menu transfer commands or the Mac -> Sampler icon. A dialog box will indicate the status of the Elllis voices. Samples cannot be truncated at or during the transfer, so EIII memory management by the user is important. When powering down the system be sure to reverse the above order.
+
+@page 71 scan=p039R footer="Section 5 - Sampler Personalities"
+
+## Ensoniq Mirage/Multisampler
+
+The Ensoniq Mirage and the Mirage Multisampler are both 8 bit samplers that can store about 4.4 seconds of digitized sound (2.2 seconds per memory half) at a sample rate of 29412 Hz. Since 29412 is a commonly used sample rate, you may wish to enter it in the Parameter Manager.
+
+The Mirage should be booted with MASOS version 2.0.
+
+If the Mirage does not have enough free sound memory to store a sound file, a dialog box will appear to warn you that the file is too large. You have three options - you can Cancel the transfer, Truncate the file, or Extend the sample's memory.
+
+@page 72 scan=p040L footer=">ction 5 - Sampler Personalities"
+
+## Ensoniq EPS/EPS-M
+
+The Ensoniq EPS is a 13-bit sampler that can hold up to 8 "instruments" of up to 127 "wavesamples" each. The maximum sampling time is limited only by the sampling rate and the amount of memory available. All of the EPS's memory can be dedicated to one wavesample, or it can be divided among wavesamples. The EPS offers many sampling rates – from 6.25 kHz up to 52.1 kHz. Since 36800 is the optimized sample rate, you may wish to enter it in the Parameter Manager.
+
+Turbosynth includes both MIDI and SCSI drivers for the EPS. If the EPS is equipped with an SCSI port, you cannot use the MIDI driver.
+
+In order to transfer sound data between the Mac and the EPS, the following conditions must be satisfied:
+
+- You must use a startup disk with EPS OS 2.35 or higher.
+
+- MIDI Sys-Ex must be enabled on the EPS. From the EPS front panel, use the Edit-MIDI button sequence to turn MIDI SYS-EX on. Use Command-System to SAVE GLOBAL PARAMETERS if you want to make this a permanent change on your startup disk.
+
+- A system disk should be left in the EPS's disk drive the first time a sound transfer is done so the EPS may read system information.
+
+If you plan to use Sound Designer II with the SCSI interface on the EPS and your Macintosh setup does not include an SCSI hard disk, you must own an SCSI terminator.
+
+@page 73 scan=p040R footer="Section 5 - Sampler Personalities"
+
+First, connect the EPS to the Macintosh using conventional MIDI connections: two MIDI cables – one for each direction – between the EPS and a Macintosh MIDI interface.
+
+Next, making sure the EPS, Macintosh, and all other SCSI peripherals in your setup are powered off, connect the EPS to your Macintosh setup using a standard Macintosh SCSI cable:
+
+- If your Macintosh setup does not include an internal SCSI hard drive nor any external SCSI peripherals, connect an SCSI terminator to the EPS, then use an SCSI cable to connect the terminator to the Macintosh SCSI port.
+
+- If your Macintosh setup includes an internal SCSI hard drive and no other SCSI peripherals, use an SCSI cable to connect the EPS to the Macintosh directly.
+
+- If you have an external SCSI hard drive or other SCSI peripherals, daisy-chain your SCSI drive and peripherals to the Macintosh. Without using an SCSI terminator, connect the EPS to the last SCSI peripheral.
+
+Once the connections have been made, you should use the following power-up sequence:
+
+- Turn on the EPS first. From the System page, choose an SCSI ID that is unique within your SCSI network (the Macintosh is ID 7 and the standard Macintosh SE internal hard disk is ID 0 – the EPS defaults to ID 3).
+
+- Turn on any other SCSI peripherals.
+
+- Turn on the Macintosh.
+
+When powering down the system, simply reverse the above order.
+
+@page 74 scan=p041L footer="Ction 5 - Sampler Personalities"
+
+Make sure the SCSI ID number matches the EPS SCSI ID in Sound Designer II's Sampler dialog.
+
+If the EPS ever displays an error condition, it is recommended that you power down the system and reboot all SCSI devices.
+
+## Korg DSS-1
+
+The Korg DSS-1is a twelve bit sampler with a maximum sampling time ranging from 5.5 seconds to 16 seconds, depending on the sample rate used. The DSS-1has four sample rates available: 15625 Hz, 23810 Hz, 31250 Hz and 47620 Hz. Since 31250 is a commonly used sample rate, you may wish to enter it in the Parameter Manager.
+
+If you sample sounds using the 47620 Hz sample rate, you must do the following before transferring those sounds to the Macintosh:
+
+- Enter the Multi Sound mode on the DSS-1.
+
+- Select Function #3.
+
+- Exit the Multi Sound mode.
+
+## Korg DSM-1
+
+The Korg DSM-1is a twelve bit sampler with a total sampling time ranging from 22 seconds to 64 seconds, depending on the sample rate used. The DSM-1has four sample rates available: 15625 Hz, 23810 Hz, 31250 Hz and 47620 Hz. Since 31250 is a commonly used sample rate, you may wish to enter it in the Parameter Manager.
+
+> **Warning:** The Programmer General has determined that non-terminated MIDI cables connected to the DSM-1MIDI Thru are hazardous to communications.
+
+@page 75 scan=p041R footer="Section 5 - Sampler Personalities"
+
+## Roland S-10/S-220/MKS-100
+
+The Roland S-10, S-220 and MKS-100 are very similar. In fact, the MIDI messages used to transfer samples are identical. This description will use "S-10" to refer to all three.
+
+The S-10 has a total sampling time of 4 seconds at its 30 kHz sample rate, or 8 seconds at its 15 kHz sample rate. Since 30000 is a commonly used sample rate, you may wish to enter it in the Parameter Manager. If you would rather use the lower sample rate, enter 15000 in the document information box.
+
+To use Turbosynth with the S-10 you will need to turn the S-10’s MIDI System Exclusive parameter On, and turn Active Sensing Off.
+
+## Roland S-50
+
+The Roland S-50 is a twelve bit sampler with total sampling time of 14 seconds at its 30 kHz sample rate, or 28 seconds at its 15 kHz sample rate. Since 30000 is a commonly used sample rate, you may wish to enter it in the Parameter Manager.
+
+Turbosynth is not able to allocate memory in the S-50. Hence, you may find that the destination in the S-50 is either too small or too large for a Turbosynth sound you wish to send. If the Turbosynth sound is too large you will be given the option to truncate the sound. Another option is to create a new sample within the S-50 of a more suitable size.
+
+To use Turbosynth with the S-50 you will need to turn the S-50's MIDI System Exclusive parameter to "On". You must use system 2.0 or higher software.
+
+@page 76 scan=p042L footer=":tion 5 - Sampler Personalities"
+
+## Roland S-550
+
+The Roland S-550 is a twelve bit sampler with total sampling time of 28 seconds at its 30 kHz sample rate, or 56 seconds at its 15 kHz sample rate. Since 30000 is a commonly used sample rate, you may wish to enter it in the Parameter Manager.
+
+Turbosynth is not able to allocate memory in the S-550. Hence, you may find that the destination in the S-550 is either too small or too large for a Turbosynth sound you wish to send. If the Turbosynth sound is too large you will be given the option to truncate the sound. Another option is to create a new sample within the S-550 of a more suitable size.
+
+To use Turbosynth with the S-550 you will need to turn the S-550's MIDI System Exclusive parameter to "On". You must use system 2.0 or higher software.
+
+## Sample Dump Standard (SDS)
+
+The Sample Dump Standard (SDS) was developed to facilitate the transfer of sampled sounds between different samplers. As of the printing of this manual, samplers that supported SDS included the Sequential Prophet 2000/2002, Sequential Studio 440 (with ROM 2.20 – call (415) 821-6613), Dynacord ADD-1, Yamaha TX16W, Akai S1000, Forat F-16, and Simmons SDX. There are different flavors of SDS: 12-bit and 16-bit. Select the menu command that corresponds to your sampler.
+
+@page 77 scan=p042R footer="Section 5 Sampler Personalities"
+
+Although the SDS was meant to be a standard, there are a few "gray areas", and different manufacturers may have implemented SDS in slightly different ways. For example, there is no way of knowing (via MIDI) whether a sound is "not sampled" or "non-existent". A "not sampled" sound is a sound location that is available but, as yet, not sampled. A "non-existent" sound is one that cannot be created on the sampler (e.g. "sound 33" in a sampler that only holds 32 sounds).
+
+Additionally, there is no way to determine from the Macintosh whether or not a sampler will accept a sound. Some samplers will allow you to replace a sound, but not transfer to an unoccupied location. Other samplers allow both the replacement of a sound as well as the allocation of a new sound location. If Turbosynth attempts to transfer to a less cooperative sampler, an error message may appear.
+
+In general, sound transfers with an MMA SDS sampler will go smoothly if you are aware of the limitations of your sampler. You should know how many sample locations are available in your sampler, and whether your sampler will accept transfers to unoccupied sample locations.
+
+@page 79 scan=p043R footer="Section 6 - User Tips"
+
+# Section 6 – User Tips
+
+*By Peter Freeman. Peter is a bassist/synthesist based in New York City. He has worked with such artists as; John Cale, L. Shankar, Pierce Turner, Richard Horowitz and Sussan Deihim. In this section of the manual he shares some tips and ideas for creative sound design using Turbosynth.*
+
+Turbosynth is a program with the potential for creating a vast array of sounds. Because of this capability, however, it's possible that the program might appear rather daunting to some first-time users. For this reason, we feel it may be valuable to offer some suggestions on interesting ways that Turbosynth's power can be used. To this end, we present the Turbosynth User Tips section: a collection of ideas, hints, tips and tricks which should (we hope) enlighten the Turbosynth neophyte on just what can be done with this new tool. This chapter is divided up into three categories: module specific techniques, general techniques and sampler techniques. This chapter is intended to offer ideas which will hopefully inspire you to create your own applications for the program, and generally get your creative juices flowing. Have fun, and above all, experiment!
+
+## Oscillator Module
+
+### A few words on Waveforms
+
+Often it is difficult to make a connection between what a waveform looks like and what it sounds like. Although we can describe something as "dirty" sounding we might not know how to create it. There are a few general observations that may aid you in achieving particular results: Waveforms with closely spaced harmonics tend to sound "dirty", often with jagged waveforms; freehand drawing tends to produce these types of sounds. "Clean" waveforms tend to have widely spaced harmonics. "Clean" waveforms tend to have smooth curves. "Nasal" waveforms tend to have a cluster of prominent, closely spaced harmonics, Waveforms with few zero-crossings have strong lower harmonics and/or fundamental.
+
+@page 80 scan=p044L footer="•ction 6 - User Tips"
+
+### For Softsynth Users
+
+Those who have used the Softsynth time slice mode may find the harmonic mode of the oscillator to be very familiar. This oscillator mode may be used to create a similar class of sounds; e.g. clean, transparent and precise. However, due to its greater resolution, the oscillator harmonic mode allows for the creation of an even wider variety of possible sounds using Softsynth-like techniques. Think of waveforms placed along the duration of an Oscillator as "timbre events". You may place as many as you wish in an Oscillator, and the program will crossfade between them in exactly the same way Softsynth does. The major difference here is that unlike Softsynth, there is no master amplitude envelope. You must use an additional Amplitude Envelope module in Turbosynth to replace the master envelope.
+
+Also, if you have favorite Softsynth timbres, synthesize them into Sound Designer sound files (if you haven't already), and open them into Turbosynth Sample modules. When processed in the program or used in combination with Turbosynth's own oscillators, they can become an effective starting point for new sounds.
+
+### Getting a Percussive Attack
+
+@page 81 scan=p044R footer="Section 6 - User Tips"
+
+If you need to create a sharp, metallic attack in an oscillator, try using a waveform from a complex sampled sound, such as a piano. Using the loop markers, create a short loop somewhere near the beginning of the sample. The loop should be erratic so that it will contain many high harmonics (not a smooth zero-cross loop). Next, use the "save loop as waveform" command in the File menu, and open the new waveform into your oscillator using the "file cabinet" icon. When using this technique, the best results are generally achieved if the attack of the oscillator is followed quickly (within 50-100 msec) by a conventional synthesized waveform and/or waveforms. This way the high harmonics of the sample-loop waveform are quickly faded out, creating the metallic, percussive effect.
+
+### Waveform mixing
+
+One technique for creating unique sounding waveforms is to mix several different "static" (single waveform) oscillators together, using a Mixer as an "oscillator balance" control, similar to those found on conventional hardware synths, the important difference being that you can combine many more oscillators than just "Osc A" and "Osc B". First, decide what timbral characteristics you would like in the final result, and create a group of "component" oscillators which you can combine to produce the desired sound. As a simple example, to create a sound with the characteristics of Triangle and Sawtooth waves using this method, you would make a pair of oscillators, one being composed of a single Triangle wave, the other containing a Sawtooth wave, and patch both into a Mixer.
+
+Once you reach the desired blend you may want to save the composite waveform to disk for later use. To do this, convert the Mixer to a sample, create a short loop in the sample, and use the "save loop as waveform" command. This will create a waveform document which can be used in new oscillators.
+
+### Sampled waveform analysis/resynthesis
+
+The harmonic mode of the oscillator can be applied to sample-loop waveforms (created using the "save loop as waveform" option in the File menu) as well as purely synthetic ones. Experiment with analyzing and altering sampled waveforms; while this function is not true "time varying resynthesis", it is quite capable of producing interesting results.
+
+@page 34 scan=p045L footer="ction 6 - User Tips"
+
+## Delay Module
+
+Turbosynth's Delay module functions in much the same way as conventional hardware DDLs, and can be employed as such, allowing more "polished" sounds to be created without leaving the program. Many DDL effects can be replicated in Turbosynth with pleasing results. Here are a few of them:
+
+### Doubling
+
+Adding a touch of subtle "doubling" delay (typically less than 100 mSec) can give added extra dimension to most sounds, and can help accentuate sharp attacks. Experiment with the wet/dry mix to vary the amount of effect, and synthesize a few versions of the finished patch at different frequencies to minimize the undesirable effects of extreme pitch shift across the keyboard.
+
+### Multitap Delay
+
+As with all of Turbosynth's modules, the number of possible delays in a patch is limited only by the available memory (here again, a Macintosh with at least 2 megabytes of RAM is strongly recommended!). This allows the program to simulate some elaborate delay-based effects that exist in conventional hardware signal processors, such as multitap delays and reverb. For the uninitiated, a multitap delay is a conventional digital delay line with one important difference: instead of producing only one delayed signal, it can produce multiple delays (each at a different time) relative to its input – that is, there are "taps" placed at different positions along the delay line, each capable of producing one or more repeats. Most hardware-based multitap delays contain between two and six taps.
+
+@page 83 scan=p045R footer="Section 6 - User Tips"
+
+In the context of Turbosynth, this type of effect is very easy to simulate using multiple independent delay modules, (each receiving the same input signal), set to different delay times and mixed together using a Mixer module. The major advantage of creating this effect in Turbosynth is that the user can go much further than most hardware systems. For example, each separate "tap" (delay module) in a "multitap" patch could be further processed using any of the other modules, or combinations thereof, before being patched to the Mixer with the others.
+
+### Reverb Simulation
+
+Another example of a delay-based effect can be found in the "Cheez-verb" patch on the Sample Files disk supplied with the program. This patch uses multiple Delay modules to process a single drum machine "rim" sample, each one set to a slightly different delay time, with a fairly large amount of feedback. The first Delay in the chain has a much greater delay time than the others, to simulate the "pre-delay" effect that sometimes exists in large, reverberant spaces. The outputs of all of the Delays are then combined in a Mixer. Because natural reverb is composed of many discrete echoes, the result is an approximation of the real thing. Each of the Delays simulates the behavior of individual "reflections" in an imaginary room. In reality, it would be impractical to accurately reproduce natural reverb using only delays because of the extremely high number of possible reflections that exist in a reverberant space. Nonetheless, techniques like the one described above can yield interesting results. Experiment modifying this patch using other modules.
+
+### Comb Filtering
+
+With delay times less than about 20 ms, a delay does not create discrete echoes, but rather, phase reinforcement or cancellation effects. To create these type of effects you should probably use the resonator. The resonator is optimized for creating short delay type effects.
+
+@page 84 scan=p046L footer=":tion 6 - User Tips"
+
+## Filter Envelope Module
+
+Turbosynth's filter envelope module provides an effective means of achieving conventional (and not-so-conventional) lowpass filtering effects. Here are a few useful applications:
+
+### Contrasting Envelopes
+
+In patches with multiple Oscillators or Sample Modules, experiment with contrasting filtering effects on each one. Try using simultaneous slow and fast filter envelopes, as well as combining simple envelope curves with more convoluted ones.
+
+### Fixed Filtering
+
+The Filter Envelope can also be useful for removing unwanted brightness in a Sample Module or an Oscillator. Use a constant envelope (i.e. a straight line with a single breakpoint at its beginning). The height of the line in the window determines the "cutoff" frequency.
+
+### Complex Envelopes
+
+As with all the envelope-based modules, the breakpoint oriented design of Turbosynth's filter envelope allows far more precise control over the contour of an envelope than the conventional ADSR design found on most hardware synths. Take advantage of it! Many subtle nuances are possible when using many breakpoints in the curve of an envelope. Also, LFO effects can be simulated by creating an envelope that continuously oscillates levels.
+
+@page 85 scan=p046R footer="Section 6 - User Tips"
+
+## Pitch Envelope Module
+
+This module is extremely useful for adding expressiveness and character to most sounds. Slight variations in pitch may sometimes play subtle tricks on the ear, which can help make the "electronic" quality of synthesized sounds a little less glaring. As an example, try patching an Oscillator Module through a Pitch Envelope containing very small (less than a semitone) dips and peaks in its envelope.
+
+### Chorusing
+
+Patch a Sample module or an Oscillator module through a Pitch Envelope containing small dips and peaks in its envelope. Patch both the Pitch Envelope's output and a direct output from the Oscillator into a Mixer. Due to changing phase relationships between the original signal and the enveloped signal a sweeping filtering effect will occur.
+
+### Horn Blips
+
+The Pitch Envelope is also effective for imitating some of the characteristics of acoustic instruments. For example, one way of adding realism to brass-instrument sounds is to create a small "blip" at the sound's attack, using the envelope window. To do this, place a breakpoint at the very beginning (extreme left) of the window, below the zero line at between -1 and -12 semitones. Then, place another breakpoint about 10 mSec later, on the zero line. The result should be a slight but noticeable upward pitch bend during the attack of the sound. This effect imitates the initial pitch fluctuations that are characteristic of many brass instruments. Experiment with placing additional breakpoints on either side of the zero line.
+
+@page 86 scan=p047L footer="ction 6 - User Tips"
+
+## Amplifier Envelope Module
+
+Although amplitude envelopes are commonplace (virtually every synthesizer ever made has them), there are a few unusual ways in which they can be employed which are worth covering here:
+
+### Re-enveloping Samples
+
+Open one of your favorite samples (preferably one with wide variations in amplitude) into a Sample Module, then remove its amplitude envelope using the Envelope Extraction function. The resulting sample should keep a constant level throughout its duration. Next, patch it through an amplitude envelope, and re-envelope the sample. Try a few different envelope contours, especially ones which differ greatly from the sample's original shape. This process can give standard acoustic sounds an unusual quality.
+
+### Borrowing sample envelopes
+
+The "Convert to Envelope" function allows you to convert a Sample module into an amplitude envelope. The amplitude envelope from a sample module can then be applied to another Sample module, Oscillator or whatever. When the envelope data from a sample is applied to an Oscillator, the Oscillator will assume the amplitude characteristics of that sample. The Oscillator's output can then be mixed with the original sample using a Mixer, to create subtle "shading" effects.
+
+@page 87 scan=p047R footer="Section 6 - User Tips"
+
+## Waveshaper Module
+
+The Waveshaper can be very effective as a "distortion generator" which can give a sound some "grit". Additionally, the amount and type of distortion will change with amplitude changes in the input. Since distortion adds additional harmonics to a sound, it is a good idea to connect a simple sound (i.e. sounds with few harmonics) to this module. This way you can produce a sound that can go from one harmonic extreme to another when amplitude changes occur. Often an enveloped sine wave is effective as an input for the Waveshaper.
+
+The following is a good exercise to familiarize yourself with the Waveshaper. Create an Oscillator containing a sine wave, then patch it through an amplitude envelope module and give it changes in amplitude. Patch the Amplitude Envelope Module to a Waveshaper, and experiment with using the different preset shaping functions and modifiers to see how they affect the sound. Experiment with other Oscillator waveforms and Amplitude Envelopes. Also, open the "Waveshaper example" patches on the Sample Files disk and examine them. Experiment with changing the shaping functions, by trying the different modifier icons, and by drawing your own shapes in the graph with the "pencil" tool.
+
+@page 88 scan=p048L footer=":tion 6 - User Tips"
+
+### General Rules
+
+Because the Waveshaper's effect is determined completely by the shape of the graph in its window, it is important to have a general feel for what type of results will be produced by it. Generally speaking, the more jagged a shaping function is, the more high frequency distortion it will produce. If a waveshaper does not map an input level of zero to an output level of zero, sounds will tend to have DC offset. Also, the waveshaper can greatly affect the dynamic range of a sound. If a waveshaping function does not utilize the full vertical displacement of the graph the sound will be compressed.
+
+### Potent Combinations
+
+The Waveshaper tends to work well in combination with other modules. Patching its output into Resonators, Stretchers and Delays can create unusual effects which can be great for processing Samples. Some particularly interesting candidates for this kind of processing are vocals, speech, strings, and percussion.
+
+### Dirt
+
+For some interesting "fuzz" effects, experiment with the bottom-left modifier icon. This modifier is very good for producing very nasal, digital sounding distortion.
+
+### Dynamics Processing
+
+Because of the way in which they modify a signal's amplitude, the third row of Modifiers are useful for obtaining effects reminiscent of conventional compressor and expander units. Use the left one for "compressing", and the right one for "expanding". After you have applied either of these to a sound, experiment further with modifying the Waveshaping function using the "smoothing" and "randomizing" modifiers located in the bottom row of the palette. Many subtle variations are possible with them.
+
+@page 89 scan=p048R footer="Section 6 - User Tips"
+
+## Stretcher Module
+
+This module is good for creating a number of different effects, from simply lengthening a sound, to adding pitch to non-pitched sounds.
+
+### Time Expansion
+
+To use the Stretcher to "expand time" in a pitched sound, the Stretcher's Frequency parameter must match the fundamental frequency of the sound. For instance, if a piano sample has a fundamental frequency of 440 hz, the Stretcher's Frequency should be set to 440 hz. If you are not sure of a sample's fundamental frequency, you can derive it using the following method: (1) Create a short, one period loop. (2) Play the loop to make sure that its pitch matches the overall pitch of the sample. (3) Get Info on the sample using its Info box, and note the Loop Frequency. (4) Set the Stretcher's Frequency to that frequency. Any frequency differences between the Stretcher and its input will result in amplitude modulation effects, which can obscure the pitch and character of the input sound by adding enharmonic tones to it. Of course, this can sometimes produce really interesting results. As always, experimentation is encouraged.
+
+### Resonance Effects
+
+To add pitch content to a non-pitched sound, set the Amount parameter to a high level, and experiment with different frequency settings. Short percussion sounds work well using this technique. Adding a resonator can also enhance this technique.
+
+### Extraterrestrial Choir
+
+One particularly interesting use for the Stretcher is as a processor for speech and vocal samples. This can be good for creating "other-worldly" effects.
+
+@page 90 scan=p049L footer=":tion 6 - User Tips"
+
+## Time Compression Module
+
+This Module functions exactly the opposite of the Stretcher; it allows pitched sounds to be shortened without affecting their pitch. If a sound is non-pitched, or if there is a frequency mismatch, amplitude modulation effects will occur. The same techniques used for deriving the Stretcher's frequency apply to the Time Compressor.
+
+### Mutilation
+
+The Time Compressor is great for processing, altering, and distorting acoustic sounds, especially those with rhythmic and pitch content. You will find that a range of different effects can be achieved by setting the Amount parameter to a relatively high level and experimenting with different Frequency settings.
+
+### Time Compression with Delay
+
+Both the Time Compressor and the Stretcher can be particularly interesting when placed after a Delay Module with a fairly high Feedback and Delay Time settings. Experiment with mixing a compressed or stretched delay with the original input signal.
+
+@page 91 scan=p049R footer="Section 6"
+
+## Resonator Module
+
+The Resonator is another module which can add pitch content to a non-pitched sound, as well as accentuating a particular frequency in a pitched sound. Resonance is a fairly versatile effect. Used in small amounts, it can subtly emphasize certain harmonics in some sounds. Used in the extreme, it can overpower a sound's inherent frequency spectrum, and impose an entirely different one over it.
+
+### Tuned Percussion
+
+The resonator is very effective on percussion sounds; it can drastically alter their character, and allow them to be tuned to a desired pitch. Resonance will be most prevalent when the frequency selected is strong in the input signal.
+
+### Subtle Enharmonics
+
+In addition to emphasizing the harmonics of a pitched sound, the resonator can also bring out enharmonics. Sounds with fast attacks (pianos, guitars, etc.) are best suited for this technique. Set the frequency parameter to a non-harmonic value and increase the resonance amount until enharmonics are noticeable during the attack. You should be able to find a resonance level that will give the sound an interesting attack without making the entire sound dissonant.
+
+@page 92 scan=p050L footer="ction 6 - User Tips"
+
+## Modulator Module
+
+Depending on the way it is used, the Modulator can produce a very wide range of different effects:
+
+### Amplitude Modulation
+
+Try using AM for nasal, quasi-distorted effects. AM works well for "dirtying-up" just about anything, but really outlandish things are possible with acoustic instrument samples. Try both sampled and synthetic modulation sources.
+
+### Frequency Modulation
+
+Using FM will generally add high frequency harmonic content to a sound. This can produce sounds similar to those produced by FM synthesizers like the Yamaha DX7™. When acoustic instrument samples are modulated by other sounds, they will change radically. A sine wave is usually a good candidate for frequency modulation. This is an area well worth investigating.
+
+### Pitch Modulation
+
+Most conventional hardware based synthesizers have dedicated LFOs of some kind. Turbosynth instead offers the basic building block so you can build and customize your own modulator. Use the PM setting, and use an Oscillator Module as the "Modulator" input; the oscillator waveform will determine the LFO waveshape. Set the oscillator's frequency parameter to a fairly low frequency, usually less than 10 Hz, and connect the oscillator to the modulator. Experiment with creating complex modulations by using multiple waveforms in the modulating oscillator.
+
+@page 93 scan=p050R footer="Section 6 - User Tips"
+
+## Spectral Inverter Module
+
+In addition to Turbosynth's original Spectral Inversion method (type A), version 2.0 also offers Type B, a new variety of Spectral Inversion. Type B tends to produce more upper mid range frequencies than Type A. The best candidates for either type of spectral inversion have a broad range of frequencies (e.g. percussion, pianos, etc).
+
+### The Clink
+
+The Spectral Inverter can, among other things, be used to generate a very clean, pointed metallic "clink" which is very effective when placed at the front of a sound. Use a very fast-decaying envelope, starting at the top edge of the graph, and ending at the bottom.
+
+### With Delay
+
+When working with Delays, try patching the delayed signal through a Spectral Inverter, for unusual echo effects.
+
+### Switch Methods
+
+Try applying Type B Spectral Inversion to patches that you have developed using the original method. Since Type B Inversion tends to sound louder than Type A, you may want to adjust the wet/dry mix envelope.
+
+@page 94 scan=p051L footer="ction 6 - User Tips"
+
+## Pitch Shifter Module
+
+One useful application for the Pitch Shifter is to correct pitch discrepancies between different modules in a patch. This problem can be common when using Samples in conjunction with Oscillators.
+
+### Chorusing
+
+Detuning effects are simple to create with the Pitch Shifter. Set the Fine control for about +/- 10 cents (higher for more extreme effects), and use a Mix setting of about 50%. Since the pitch shifting algorithm also affects the length of the input, it is best to use negative detuning. This way sounds that do not decay to zero will be mixed with a longer version of itself. Hence, there won't be any glitches at the end of the mixed sound.
+
+### Extreme Shifting
+
+Try using the Pitch Shifter to transpose Samples out of their normal range. This will often change their character drastically, and can render them utterly unidentifiable. For example, a guitar sample transposed down two octaves can become an interesting, perfectly usable bass sound; cymbals transposed down can turn into gongs, bass sounds transposed upward can become mutant clavinets, and so on.
+
+@page 95 scan=p051R footer="Section 6 - User Tips"
+
+## Sample Module
+
+### Sample Your Synths
+
+If you have a favorite synth whose character you particularly like, try sampling some of its best sounds into your sampler and transferring them to your Mac (or, if you own an AD IN and Sound Accelerator, sample directly into Turbosynth). You can then use Turbosynth as an extension of your synth's own sound creating possibilities. The Resonator, Stretcher, Waveshaper and Spectral Inverter Modules can be especially effective for performing radical alterations on sampled sounds which would be nearly impossible to accomplish outside of Turbosynth. When these modules are used with synthesizer samples the results can be unusual and interesting.
+
+### Crossfade Looping
+
+Before using the Crossfade Looping function, try to position the sample's loop markers roughly in an area which will be conducive to a good-sounding loop. Usually, positioning the loop start and end at zero-crossing points (the places where the waveform is crossing the zero line) is a good idea. Also, since Crossfade Looping uses the sound data on both sides of each loop marker, be sure to position the loop markers with ample space from each other, the sound start, and the sound end.
+
+### Normalize after Crossfade Looping
+
+Due to the nature of Turbosynth's Crossfade Looping algorithm, some of a sample's gain may be lost in the crossfading process. Use the Normalize option in the Gain Change icon to boost a crossfaded sample back up to its maximum level.
+
+@page 96 scan=p052L footer=""
+
+### Auto Looping
+
+The Auto Loop function is designed to help find points in a sample which may be good candidates for a loop. This function has no aesthetic sense however; only your ears know the difference between a good loop and a bad loop. The Auto Loop arrows will give you loop points with similar amplitude and slope. It's up to you to select the best of the options provided.
+
+### Sampling Tips for AD IN™ Owners
+
+When sampling sounds with slow attacks, it is a good idea to set the Threshold control to zero to avoid missing any low-level sound at the start of the sample. This forces the sampling process to start as soon as the Sample icon is clicked.
+
+### Sample rate mismatch
+
+The AD IN™ samples at a fixed rate of 44.1 kHz, which is generally regarded as an industry standard. However, if your sampler is not capable of a 44.1 kHz sample rate, you will encounter transposition problems when you transfer AD IN-derived sounds to it. In this situation, you have two possible courses of action: (1) you can use Turbosynth's ability to perform sample rate conversion in order to match the rate of your sampler, which can sometimes distort a sample, or (2) send the non-converted sample to your sampler and simply alter the sample's "root key". "Root key" is a common term used to describe the key in your sampler's keyboard setup at which the sample is played back at its original pitch. You may have to also adjust the sample's fine tuning to achieve the correct pitch.
+
+@page 97 scan=p052R footer="Section 6 - User Tips"
+
+## General Suggestions
+
+### Perpetual Patching
+
+In addition to the "Compact Memory" and "Release Clipboard" commands, the "Convert to sample" option in the Edit menu is useful for conserving and regaining memory, as described earlier in this manual. However, it can also be used as a means of creating extremely complex timbres. Although Turbosynth has nearly unlimited patching capabilities, you may find that your Macintosh can run out of memory before you have run out of ideas. If this occurs, don't panic; simply convert the last module in the patch to a sample, and use it as the starting point for another patch. This process can be repeated until you are satisfied with the results.
+
+### Sample Components
+
+The "Save output as soundfile" command can be a timesaver, particularly if you often use a certain combination of modules to create a component of a sound. For example, if you create a sound resembling the "tine" of an electric piano, you may later want to use that sound in another patch. Saving the sound's output as a soundfile will allow you to quickly recall the "tine" without having to recreate it from scratch. Also, it is generally good practice to save a Parameter document for any Turbosynth sound you have created which you like. This ensures that you can go back and examine or alter it at a later date, so make sure to do this before erasing any modules.
+
+@page 4 scan=p053L footer="ction 6 - User Tips"
+
+### Hybrid Sounds
+
+Attention, fans of the Roland D-50™, Korg M1™, Kawai K-1™ and similar synthesizers! If you like the sound of sampled attacks on synthesized sounds, Turbosynth can open up many new possibilities for you. Spend some time creating a few different oscillators. When you're happy with the results, browse through your sample library and select a few sampled sounds with interesting attacks. Open the samples into Turbosynth Sample Modules. Use the Clear command to remove any unwanted sound data occurring after the attack portion of each sample (you can audition a particular region of a sample by selecting it with the mouse and clicking on the Speaker icon). If necessary, route the truncated sample into an Amplitude Envelope module to fade out the abrupt cutoff at the end of the sound. You can now experiment with grafting the sampled attacks on to your new oscillators, by patching both into a Mixer and adjusting their relative levels. Any pitch discrepancies between the samples and your oscillators can be easily corrected by either adjusting the frequency parameter of the oscillator or by patching the sampled sound through a Pitch-Shifter and matching up the respective pitches.
+
+### The Completion Backwards Principle
+
+Turbosynth's flexibility and power allow sounds to be designed using the Completion Backwards principle. Rather than starting from scratch and tweaking, try to conceptualize all of the various characteristics of a sound and then try to realize them. Start by envisioning the final sound, then work backwards to define the sound's components. You can construct its various elements separately, and combine them in endless ways. Since you're not limited to a fixed number of oscillators, filters etc. you are more free to divide a sound down into small components.
+
+@page 99 scan=p053R footer="Section 6 - User Tips"
+
+### Systems
+
+The old adage "the whole is greater than the sum of its parts" should be kept in mind while using Turbosynth. Although interesting sounds can be created using small numbers of modules, in some cases the most effective approach is the use of "systems" of modules. A "system" consists of a large number of processing modules used in combination to process multiple Samples or Oscillators (this is another memory intensive process, so upgrade that Macintosh now!). For example, a patch might run a sampled sound through a bank of resonators, each resonator tuned to a different frequency in a harmonic series. If you develop a particularly interesting "system" patch that processes a Sample or Oscillator, be sure to try other Samples or Oscillators with that "system" to see how they will be affected.
+
+### Life after Turbosynth
+
+Remember that when you use the "Save output as soundfile" command from the File menu, you are doing two things; you are synthesizing the current patch into a sample, and creating a Macintosh soundfile document of that sample in Digidesign's widely-adopted Sound Designer format. This file type is compatible with most commercially available Mac sample-editing packages, such as Sound Designer, Sound Designer II, and Blank Software's Alchemy. Once opened into one of these programs, your Turbosynth sounds can be edited using the tools available in that program, opening up further possibilities.
+
+@page 100 scan=p054L footer=""
+
+## Sampler Suggestions
+
+Creative use of your sampler's own processing power will allow you to take finished Turbosynth sounds a step further. A few examples:
+
+### Analog processing
+
+One of the simplest techniques for making a sample more expressive is to use key velocity to affect the attack time, filter cutoff or envelope amount of the sound.
+
+### Velocity crossfading
+
+If your sampler has velocity crossfading or cross-switching abilities, use them! Create keyboard "presets" containing several versions of a sound, set up to be triggered by different key velocities. For example, add a resonator to one of your favorite patches. With your sampler, use velocity to switch between the straight sample and the resonated sample. This will allow you to accentuate overtones as you play harder.
+
+### Chorusing
+
+For rich "chorus" effects, stack two identical sounds on top of each other across your sampler's keyboard, and use LFO modulation to vary the pitch of one sound. Assign the modwheel to vary the depth of the effect. This technique has two advantages over using Turbosynth to create the same effect. First, chorused sounds are much more difficult to loop than "dry" sounds. Also, real-time control over chorusing via the modwheel is more flexible than the fixed chorusing offered by Turbosynth. The main drawback of this technique is that it cuts your sampler's polyphony (the number of simultaneous notes) in half.
+
+### Transposition Layering
+
+In addition to slight detuning, extreme detuning can also be very effective. Using multiple copies of a sound with different tunings, filtering and amplitude envelopes can yield very good results. For instance, if a sound lacks a strong attack, try making a few copies of the sound in your sampler, placing very short amplitude envelopes on them and transposing them up about two or three octaves. This should add a bright, metallic quality or prominent "clink" to the start of the sound.
+
+@page A1 scan=p055R
+
+# Appendix A – Menu Reference
+
+## File Menu
+
+@menu File | New ^N | Open... ^O | Close ^W | ~Save ^S | Save As... | Save a Copy In... | --- | ~Save output as soundfile | ~Save loop as waveform | ~Save waveform | --- | Get Info ^I | --- | Mac -> Sampler ^F | Sampler -> Mac ^G | --- | Page Setup... | Print One | Print... ^P | --- | Quit ^Q
+
+**New:** Opens a new Turbosynth document with no modules except the Output Jack. The number of simultaneously open documents is limited by memory.
+
+**Open:** Opens a previously saved Turbosynth document. The number of simultaneously open documents is limited by memory.
+
+**Close:** Closes the current Turbosynth document. This is equivalent to clicking in the Close box in the upper left corner of the document window.
+
+**Save:** Saves the current document file under its own name.
+
+**Save As:** Saves the current document file under a new name.
+
+**Save a Copy In:** Saves a copy of the current document under a new name without changing the name of the current document.
+
+**Save output as sound file:** Saves the sound data represented in the Output Jack as a Sound Designer sound file.
+
+**Save loop as waveform:** Saves the sound data between the extension markers (in the active Sample module) or the loop markers (in the Output Jack) as a waveform file.
+
+**Save waveform:** Saves the waveform in the active Waveform window as a waveform file.
+
+**Get Info:** Opens the info box of the active window. Parameters such as name, sample rate and length can be edited in the info box.
+
+@page A2 scan=p056L
+
+**Mac -> Sampler:** Sends the specified sound file on disk to the sampler selected in the Sampler menu.
+
+**Sampler -> Mac:** Requests a sound file from the selected sampler and saves it on disk.
+
+**Page Setup:** Opens a dialog box allowing you to specify various page orientation options.
+
+**Print One:** Prints one copy of the active window without opening the print dialog box.
+
+**Print:** Opens the print dialog box providing various print options.
+
+**Quit:** Quits Turbosynth.
+
+## Edit Menu
+
+@menu Edit | Undo ^Z | --- | Cut ^X | Copy ^C | ~Paste ^V | Clear ^B | Duplicate ^D | Reverse ^R | Silence ^E | --- | ~Convert to sample | ~Convert to envelope | Send loop to output | --- | Show Clipboard
+
+**Undo:** Undoes the last action.
+
+**Cut:** Cuts the selected item into the clipboard. As with most Edit menu items, this item can be a module or a selected portion of a sound within the sample module.
+
+**Copy:** Copies the selected item into the clipboard.
+
+**Paste:** Pastes the contents of the clipboard into the active window.
+
+**Clear:** Deletes the selected item.
+
+**Duplicate:** Duplicates the selected item in the program. Since this action does not use the clipboard, less memory is used than during a Copy and Paste.
+
+**Reverse:** Reverses the selected portion of a sound in a Sample module.
+
+@page A3 scan=p056R
+
+**Silence:** Replaces the selected portion of a sound in a Sample module with silence.
+
+**Convert to sample:** Converts the selected module into a Sample module. Used to conserve memory by converting a module to a Sample module and erasing the support modules.
+
+**Show clipboard:** Displays the contents of the clipboard.
+
+## Options Menu
+
+@menu Options | Sound Driver | Sound Manager | √Sound Accelerator | --- | Auto Preview ^T | --- | Parameter Manager... ^Y
+
+**Sound Driver:** Is one of three different playback options. This is the original Apple sound playback software. It is currently (as of June, 1989) the best option for Mac Plus and Mac SE owners.
+
+**Sound Manager:** Is the Apple sound playback software developed for the Mac II. This option should work with the Mac Plus and Mac SE in a future release of the Mac system software. If you get new system software give it a try.
+
+**Sound Accelerator:** Is a hardware card which allows real-time computation and 16 bit playback. Versions are available for the Mac SE and the Mac II.
+
+**Auto Preview:** Causes Turbosynth to automatically compute and play a sound after any parameter is edited. This option is highly recommended when using a Sound Accelerator during oscillator timbre editing.
+
+**Parameter Manager...:** Allows you to control the attributes of modules. Attributes include sample rate, length, and frequency.
+
+@page A4 scan=p057L
+
+## MIDI Menu
+
+**MIDI Setup:** Allows you to select the serial port to which your MIDI interface is connected and the clock speed at which it operates.
+
+**MIDI Keyboard:** Displays a musical keyboard on the screen. Clicking on the keys sends MIDI note numbers to the MIDI output.
+
+**MIDI Preview:** Allows two to eight voices of the current Turbosynth sound to be played out of the Sound Accelerator using a MIDI keyboard. While this feature is not intended to replace a dedicated sampler, it does allow polyphonic transposition of sounds using a remote keyboard.
+
+## Sampler Menu
+
+@menu Sampler | Akai S700/X7000 | Akai S900 | Casio FZ-1/FZ-10M | E-mu Emax | E-mu Emulator II | E-mu Emulator III | Ensoniq Mirage/Multisampler | Ensoniq EPS | Korg DSS-1 | Korg DSM-1 | Roland S-10/S-220/MKS-100 | Roland S-50 | Roland S-550/S-330 | MMA (12 bit) | MMA (16 bit)
+
+Select the sampler you will be using with Turbosynth from the **Sampler** menu.
+
+@page A5 scan=p057R
+
+# Appendix B – Shortcuts
+
+This Appendix describes some operational shortcuts that will help you use Turbosynth more efficiently.
+
+Hitting the **space bar** is equivalent to clicking on the speaker icon. To stop sound playback you can either click the mouse or wait until the sound has finished playing.
+
+To play an individual module from the main window, hold down the **option** key and click on a module icon. Turbosynth will play the sound at this point in the signal path. If necessary, Turbosynth will pause to recalculate the sound buffer.
+
+Likewise, to play a waveform from an oscillator window, hold down the **option** key and click on a waveform icon. Turbosynth will continuously play the waveform until the mouse button is released.
+
+To quickly switch between the arrow, patch connector, and eraser in the main window use the **tab** key.
+
+To play a loop from a Sample window, hold down the **command** key and click on the speaker icon. Turbosynth will continuously play the looped selection until the mouse button is released.
+
+To adjust loop points within a loop window, click on a point in the left half of the loop window to specify a loop end point. The point at which you click will then shift right and become the new loop end. Likewise, if you click in the right half of the window you can specify a loop start point. This method is much faster than using the scroll arrows to move the loop points large distances. You may still want to use the scroll arrows to "fine-tune" the loop.
+
+@page A6 scan=p058L
+
+# Appendix C – Hard Disk Installation
+
+Turbosynth's copy protection allows you to install the program on a hard disk without requiring you to insert the master disk when you start the program.
+
+Never delete the Turbosynth program icon from a hard disk! You must use the Remove function for Turbosynth to be re-installed on a hard disk.
+
+## To Install Turbosynth on a Hard Disk
+
+1. Boot the Macintosh from the hard disk.
+2. Insert the original Turbosynth master disk (a copy won't work). The disk must be unlocked. Start Turbosynth from this disk by double-clicking on the Turbosynth icon.
+3. A hard disk install/remove menu will appear. Click on the **Install** button.
+4. A dialog box will appear that lists the available disk volumes and folders that Turbosynth can be installed on. Use the **Disk** button to select the hard disk or hard disk volume on which to install Turbosynth. You cannot move Turbosynth to a different volume once it has been installed.
+5. Click once on the **Install** button. After the installation is complete the hard disk install/remove menu will appear. Click on the **Execute Installed** button to run Turbosynth, or the **Finder** button to quit to the Finder.
+
+@page A7 scan=p058R
+
+## To Remove Turbosynth from a Hard Disk
+
+1. Boot the Macintosh from the hard disk.
+2. Insert the original Turbosynth master disk (a copy won't work). The disk must be unlocked. Start Turbosynth from this disk by double-clicking on the Turbosynth icon.
+3. A hard disk install/remove menu will appear. Click on the **Remove** button.
+4. A dialog box will appear that lists available disk volumes and folders. Use the **Disk** button to select the hard disk or hard disk volume on which Turbosynth is installed. Locate the Turbosynth file and select it (click on its name).
+5. Click once on the **Remove** button. After the removal is complete, the hard disk install/remove menu will appear. Read the dialog box; it should say that "you have the option to install 1 copy..." Click on the **Finder** button to quit to the Finder.
+
+> **Programmer General's Warning:** Before running a backup utility, "virus vaccine" or hard disk optimizer, you must de-install your copy of Turbosynth. Disk utilities can sometimes affect the invisible copy protection file on your hard disk and destroy the keyless operation of the program.
+
+@page A8 scan=p059L
+
+# Appendix D – Note-to-Frequency Chart
+
+Equal-tempered tuning, with C4 = middle C and A4 = 440 Hz.
+
+@include freq.html
+
+@page A9 scan=p059R
+
+# Appendix E – Turbosynth Credits
+
+**Turbosynth Concept/Functional Design:** Mark Jeffery, Peter Gotcher, Evan Brooks
+
+**Software:** Mark Jeffery, Evan Brooks, Andy Hong
+
+**Manual:** Scott Wilkinson, Peter Freeman, Peter Gotcher, Mark Jeffery, Caitlin Johnson
+
+**Special thanks to:** Peter Freeman, Dennis Camberry, Rob Campanella, Bill Koepnick, Chris Now, Jeff Cohen
+
+Turbosynth was developed using Apple Computer Inc.'s MacApp™ source code library. MacApp is © 1985, 1986, 1987, 1988, 1989 Apple Computer Inc. Apple Computer Inc. makes no warranties whatsoever, either express or implied, regarding this product, including warranties with respect to its merchantability or its fitness for any particular purpose.
+
+The MacApp software is proprietary to Apple Computer Inc., and is licensed to Digidesign Inc. for distribution only for use in combination with the Turbosynth program.
+
+@part Turbosynth SC 2.2 Manual Addendum {img=cover/sc_logo.png}
+
+@page 5 scan=p064
+
+# About the Addendum
+
+Welcome to Turbosynth SC! This upgrade offers several new features and many enhancements to existing ones including integrated SampleCell II support, more playback options, new modules, stereo capabilities, and more. Please take the time to read this Addendum to become familiar with all these additions. Here's what you'll find in the Turbosynth SC 2.2 Manual Addendum:
+
+- *Section 1: Getting Started* gives you an introduction to Turbosynth SC, and tells you what you'll need to use Turbosynth SC, how to install it, and how to configure it on your Macintosh.
+- *Section 2: What's New* lists the features that have been added since version 2.0.
+- *Section 3: What has Changed* lists all other changes to Turbosynth SC since version 2.0.
+- *Section 4: Using SampleCell II with Turbosynth SC* explains Turbo's SampleCell II support and shows what a potent combination these two applications can be.
+
+# Section 1: Getting Started
+
+## What is Turbosynth SC?
+
+Turbosynth SC is software that allows you to create and manipulate sounds for Digidesign's SampleCell™, Pro Tools™, Sound Tools™ and Audiomedia™ digital recording and editing systems. Turbosynth SC uses a "modular" approach to synthesis, by providing a variety of modules such as oscillators, filters, and waveshapers to create and modify sounds. This approach to synthesis has been used since the earliest days of electronic music, when analog synthesizers were programmed using patch cords. While this type of modular synthesis provided complete flexibility – modules could be patched in any configuration, allowing the user to literally "design" any imaginable synthesizer architecture – patch cords were clumsy to use and patches couldn't be stored in computer memory.
+
+Turbosynth SC combines the flexibility of modular synthesis with the power and convenience of modern digital synthesis, sampling, sound processing and hard disk storage technology. This combination allows you to draw on the strengths of each sound producing method to produce the widest possible range of sounds. Once created, these sounds can be opened in SampleCell or one of Digidesign's digital recording systems and played back via MIDI or from a "playlist."
+
+@page 6 scan=p065
+
+## What You'll Need
+
+In order to use Turbosynth SC, the following is required:
+
+- System 7.0 or later, in 32-bit mode, with a minimum of 5 Megabytes of RAM. While Turbosynth SC will operate with as little as 2 Megabytes of available RAM, we strongly recommend 8 Megabytes to take full advantage of Turbosynth SC, as well as to be able to use some of the larger Example files.
+
+Optional (but highly recommended) equipment includes:
+
+- A SampleCell playback card, or any Digidesign DSP card (AudioMedia II, AudioMedia LC, Pro Tools, Sound Tools, etc.). A SampleCell card will provide 16-bit playback fidelity, and a DSP card will provide high-fidelity output and direct sampling input.
+
+> **Note:** Without a SampleCell or DSP card you will not be able to use Turbosynth SC's Diffuser module. If you open Turbosynth documents which already contain a Diffuser, the signal will automatically pass through the module (as if it was in a "bypass" mode).
+
+## Installing the Turbosynth SC Software
+
+This section shows you how to install Turbosynth SC on your hard disk. We strongly recommend you carefully follow the steps outlined below. In other words, this is not the time to exercise your creativity – you'll have plenty of time for that later, after you've correctly installed and authorized your copy of Turbosynth SC. Turbosynth SC allows you to authorize up to three hard disks for Turbo-use.
+
+> **Important:** We know, copy protection can be an inconvenience. However, the installation procedure you'll follow with Turbosynth SC is fast, flexible and does not require a serial number. As long as you hold onto your master disk and follow the instructions in this section you should be able to use Turbosynth SC without a hitch.
+
+@page 7 scan=p066
+
+Please, do NOT run Turbosynth SC directly from the floppy disk. (Floppy drives are too slow for Turbosynth SC.)
+
+### To install Turbosynth SC on your hard disk:
+
+- Insert the *Turbosynth SC Master* Disk into any floppy drive.
+- Double-click the *Turbosynth SC* icon. The following dialog box appears:
+
+![](figures/p066_1.png) {w=1880 ppi=560}
+
+- Click *Setup*. If you click *Continue*, you will still be able to install Turbosynth SC, but you will not have *authorized* your hard disk. If you install Turbosynth SC without authorizing your hard disk you will be required to insert the master disk each time you start up the program. Therefore, don't click *Continue* unless you need to somehow limit access to your installed copy of Turbosynth SC.
+
+After you click *Setup*, the following dialog box appears:
+
+![](figures/p066_2.png) {w=1984 ppi=560}
+
+- Click *Authorize*. The next dialog that appears lets you do two things: specify which hard drive will be authorized for Turbosynth SC, and copy the application to the authorized drive.
+
+@page 8 scan=p067
+
+![](figures/p067_1.png) {w=1800 ppi=560}
+
+- Select the hard disk on which you want to install Turbosynth SC using the pop-up list (in the example above, "Mac HD" is selected).
+- Check *Make a copy of the application on the hard disk...* If you do not check this checkbox, the selected hard disk will still be authorized, but you'll have to manually drag-copy the application from the floppy disk later.
+- Click *OK*.
+
+A standard Macintosh file dialog box appears asking you to indicate where on the selected and authorized hard disk you want Turbosynth SC to be installed. (We suggest you create a new "Turbo" folder (by clicking the *New Folder* button) before installing the application). Do NOT rename the application.
+
+- Choose the location for Turbosynth SC and click *Save*.
+
+You'll now see a couple of dialogs go by as the installer first authorizes your hard disk, then copies the application from the floppy. When these two processes finish, this dialog appears:
+
+![](figures/p067_2.png) {w=1888 ppi=560}
+
+This dialog box confirms that your hard disk is now authorized to run Turbosynth SC, and tells you how many more authorizations your disk has left (in the example above, the disk has a remaining authorization count of 2).
+
+- Click *OK*. The following dialog appears again:
+
+@page 9 scan=p068
+
+![](figures/p068_1.png) {w=1976 ppi=560}
+
+- Click *Quit* and, when you return to the Finder, eject the Turbosynth SC Master disk.
+
+To learn how to "Deauthorize" your hard disk, see the following section, "About Deauthorizing Your Hard Disk."
+
+This completes the installation and authorization of Turbosynth SC. You can now complete the procedure by installing the supporting files from the Turbosynth SC Miscellaneous Files floppy disk.
+
+You are now ready to start using Turbosynth SC! One more thing though, before you get engrossed in Waveshaping, Spectral Inverting and Diffusing – send in your Registration card! This will guarantee that you're kept up-to-date with news from us about upgrades to Turbosynth SC and other Digidesign audio production tools.
+
+## About Deauthorizing Your Hard Disk
+
+On an Authorized hard disk, you can start up, use, and even move Turbosynth SC around without ever being prompted for your master disk. If you use up your three authorizations (reinstalling Turbosynth SC after a hard disk crash, etc.), no additional authorizations can occur until you "reclaim" an authorization by using the Deauthorization feature of the Turbosynth SC installer.
+
+### To deauthorize your hard disk:
+
+- Insert the Turbosynth SC Master disk into any floppy drive connected to the hard disk that you want to deauthorize.
+- Double-click on the floppy disk icon to open it.
+- Double-click on the Turbosynth SC icon on the master disk to launch the installer.
+
+@page 10 scan=p069
+
+- At the first dialog box, click *Setup*. The following dialog appears:
+
+![](figures/p069_1.png) {w=1784 ppi=560}
+
+- Click *Deauthorize*. Next, this dialog box appears:
+
+![](figures/p069_2.png) {w=1560 ppi=560}
+
+- Make sure the appropriate hard disk is selected (use the pop-up menu to select a different disk, if necessary) and click *OK*.
+
+A message box will appear briefly while deauthorization takes place, after which a dialog appears confirming that you have reclaimed one authorization.
+
+![](figures/p069_3.png) {w=1696 ppi=560}
+
+- Click *OK*. When the next dialog box appears (the "Authorize/Deauthorize" dialog), click *Quit* to return to the Finder.
+
+Deauthorization is now complete. If you now launch Turbosynth SC (assuming you left a copy on your hard disk) you will see the following dialog box *every time* you start the application:
+
+![](figures/p069_4.png) {w=1664 ppi=560}
+
+Simply insert the master disk and Turbosynth SC will launch.
+
+@page 11 scan=p070
+
+If you have not already done so, be sure to open and read the *Read Me!* file on your Misc Files disk. The Misc Files disk contains a few system utilities which your computer might need – the Read Me! will tell you whether or not you need any of these files. If you have any problems or questions about installing, authorizing or deauthorizing Turbosynth SC, try repeating the steps listed above. If you have tried and still have problems, call Digidesign Technical Support at (415) 688-0744.
+
+## Audio Connections
+
+The ideal audio configuration for Turbosynth SC is to use Digidesign's 32-voice, 32 Megabyte SampleCell II sample playback system for audio playback. Turbosynth SC can also play audio through any Digidesign DSP card (Pro Tools, Sound Tools, Audiomedia, etc). If you do not have either of these, you can use the Macintosh internal speaker to hear your sounds.
+
+If you plan to use SampleCell or another Digidesign DSP card, connect your card's audio outputs to your mixer and/or other audio gear. Turbosynth SC files can be either mono or stereo, so be sure you use two outputs of your audio card for true stereo playback.
+
+This completes the basic installation process. You are now ready to start using Turbosynth SC.
+
+# Section 2: What's New
+
+This section tells you what new features you will find in Turbosynth SC. Features added since version 2.0 are included for those of you who have not upgraded to version 2.1.
+
+## Copy Protection
+
+This one should be obvious if you just completed the installation instructions. You must have a Turbosynth Master disk to start-up Turbosynth SC. The installation instructions contain everything you'll need to know about Turbosynth SC 2.2's copy protection.
+
+@page 12 scan=p071
+
+## Playback Options
+
+Turbosynth SC is compatible with all of Digidesign's DSP cards (Pro Tools, Sound Tools II, Audiomedia II). There are two new Options menu commands, *Playback Options* and *Hardware Setup*, which you use to configure playback for Turbosynth SC. *Playback Options* lets you choose one of three possible playback configurations – a Digidesign DSP card, SampleCell, or Sound Manager.
+
+![The Playback Options dialog](figures/p071_a.png) {w=1183 ppi=560}
+
+In the Playback Options dialog:
+
+- Choose *Digidesign DSP Card* if you have a Pro Tools, Sound Tools II or Audiomedia II card. Next, open the *Hardware Setup* dialog and configure the settings appropriately (i.e., make sure the proper card and slot are selected, and that the digital/analog input is set to the desired status).
+
+![The Hardware Setup dialog](figures/p071_b.png) {w=1850 ppi=560}
+
+@page 13 scan=p072
+
+## Stereo Documents and Stereo Sampling
+
+Turbosynth SC reads and writes Sound Designer II and AIFF files in mono or stereo.
+
+A stereo sample module is represented by two modules representing each channel. Both modules are linked together so that any changes or edits in one module affect both modules. When selecting one of these modules the other is also selected. You can unlink them using the *Convert Stereo Sample to Dual Mono* command in the Edit menu.
+
+![A Stereo Sample](figures/p072_1.png) {w=592 ppi=560}
+
+If the document is stereo there will be two output jacks. The two output modules will share the same loop markers, unless there is no sound data in one of the outputs. Because each output's sound buffer length can be different, a loop is constrained by the shorter of the two lengths. Also, reducing the length of one output's sound buffer may cause a deletion of loop markers for both outputs if the marker is beyond the new length of the sound buffer. Unlike the stereo sample modules, crossfade looping is done explicitly for each output module.
+
+![A Stereo Output Module](figures/p072_2.png) {w=584 ppi=560}
+
+In the Options menu you will find the *Stereo Preferences* command. This command opens the *Creating Stereo* dialog box, which lets you set various preferences for creating, saving and playing stereo files in Turbosynth SC:
+
+@page 14 scan=p073
+
+![Stereo Preferences "Creating Stereo" dialog](figures/p073_a.png) {w=2170 ppi=560}
+
+- *Open A New Document As A.* Sets the default for new documents to be Mono or Stereo. When set to Mono Document, all new Turbosynth documents will have a mono output jack. When Stereo Document is selected, all new Turbosynth documents will have a stereo output jack.
+- *Open a Stereo Sound file.* With *Open both channels* checked, Turbosynth will automatically load both channels of a stereo sound file. With *Open specified channel* checked, Turbosynth will ask you to specify which channel (*right* or *left*) to load.
+- *Direct Sampling.* Sets the default for mono or stereo direct sampling.
+- *Empty Sample Module.* Sets the default type (stereo or mono) for new Sample modules.
+- *Matching Channel Length.* Sets how you want channels of differing length "matched" in stereo files, by lengthening the shorter of the two (*Pad shorter length channel*) or shortening the longer of the two (*Truncate longer length channel*).
+
+@page 15 scan=p074
+
+- *Stereo to Mono.* Sets the default for whether or not Turbosynth scales a soundfile when saving a Stereo output as a mono file, or when playing back through Sound Manager.
+- *Sample Rate.* Lets you set how Turbosynth resolves sample rate differences between the two output channels. Choices include *Use highest*, *Use lowest*, *Use left channel's* and *Use right channel's*.
+
+## Memory Indicator
+
+![](figures/p074_1.png) {w=296 ppi=560}
+
+The main window's info icon (in the tool palette) is now used as a memory indicator. It fills with black from the bottom up as memory is used. In extremely low memory situations, the word *Lo!* will appear at the top of the icon. When this occurs, try the following two things: open the Info Box and click the *Compact Memory* and/or *Release Clipboard* button, or increase Turbosynth SC's Finder memory allocation.
+
+## Diffuser Module
+
+![](figures/p074_2.png) {w=304 ppi=560}
+
+The *Diffuser* accepts one input and provides the ability to "smear" a signal over time. The Diffuser can be thought of as a fundamental building block of reverb.
+
+> **Important:** The Diffuser module performs extremely complex math-intensive operations. For this reason, you must have a Digidesign card such as a Pro Tools, Sound Tools, Audiomedia or SampleCell card installed in your Macintosh in order to use this module. If there is no such card physically installed in your CPU, the Diffuser icon will be disabled.
+
+@page 16 scan=p075
+
+![The Diffuser](figures/p075_1.png) {w=1136 ppi=560}
+
+The *Coarse* and *Fine* sliders control the amount of diffusion, or "smearing." The *Amount* slider controls the relative level of diffused signal to dry signal. 0% results in no audible effect, 100% results in full effect.
+
+## Convert to Oscillator
+
+In addition to the *Convert to Waveform* command, Turbosynth SC offers a unique capability to convert an entire sample into an oscillator.
+
+### To convert a sample into an oscillator:
+
+- Select the sample module in the work area of the Main Window.
+- Choose *Convert to oscillator* from the *Edit* menu.
+
+The following dialog box appears:
+
+![Convert to oscillator dialog box](figures/p075_2.png) {w=1288 ppi=560}
+
+@page 17 scan=p076
+
+*"Extract a waveform every"* will tell Turbosynth SC how many waveforms you want the sample broken into. The higher the number you enter here, the more closely the resulting oscillator will resemble the original sample. The lower the number you enter, the less recognizable the result. Experiment with different extraction values to find what works best for you.
+
+The *Fundamental Frequency* is the fundamental pitch the oscillator will sound. Change this value to change the pitch of the sound before it is converted to an oscillator.
+
+*Track frequency changes* lets Turbosynth SC create multiple waveforms with differing fundamental frequencies when converting complex samples into oscillators. Leave this option off to get an oscillator that doesn't deviate from its fundamental frequency.
+
+- Set the parameters in the dialog box as appropriate and click *OK*.
+
+This operation can take a few moments. When conversion is finished, your screen will return to the Main Window, and the module which you just converted will appear as a waveform icon.
+
+## Windows Menu
+
+A Windows menu has been added. This menu lists all currently open Turbosynth SC document and/or module windows. Choosing an item from the Windows menu makes that window the "topmost" (i.e., active) window.
+
+## Monitor Loop at Output
+
+Located in the Parameter Manager dialog box (accessed via the Options menu), the checkbox *Monitor Loop at Output* provides some flexibility for listening to looped Turbo sounds. When checked, you can use the normal play functions (space bar, clicking the speaker) from the main window and hear the loop (if you have set loop start and stop points). If unchecked, you will only be able to hear the loop from within the Loop Window.
+
+@page 18 scan=p077
+
+# Section 3: What has Changed?
+
+The following are some of the more significant changes that have been made to Turbosynth SC since version 2.0. Consult the Turbosynth SC 2.2 Read Me! document for any additional changes.
+
+- *Mac -> Sampler*, *Sampler -> Mac* commands are no longer supported.
+- The Tab key of your computer keyboard toggles between the Arrow, Patch Cord and Eraser tools.
+- The File menu command *Save Output as soundfile* has been replaced by the two commands *Save Output*, and *Save Output As*. These two commands function similarly to the familiar Save and Save As commands of many Macintosh applications, and have specific uses when using Turbosynth SC with SampleCell II. Refer to Section 4 for more information.
+- *Select All* now works in the Oscillator window (to select all waveforms) and in the Sample Module (to select the entire sample) as well as in the main window. Previously, Select All only worked to select all modules placed in the work area.
+
+# Section 4: Using SampleCell II with Turbosynth SC
+
+## Introduction
+
+If you already use SampleCell, chances are good that at some point you have used Sound Designer II SC™ to modify a sample you're using in a SampleCell Instrument. If you are new to SampleCell, or have never used Sound Designer II SC in this fashion, suffice it to say that switching between these two applications is so easy it makes Sound Designer II SC and SampleCell work almost as if they were two windows of a single application.
+
+@page 19 scan=p078
+
+In a somewhat similar fashion, Turbosynth SC can be used as a sound editing extension of SampleCell. The way it works is like this: come up with a sound in Turbosynth SC, turn on *Auto Update SampleCell*, and then save your Turbosynth SC sound as an Output file. SampleCell will automatically create a new Multi-Sample Instrument and load the sound in the output file into it. If your Turbosynth SC sound is a stereo sound, SampleCell will create a Stereo Multi-Sample Instrument, automatically!
+
+If you want to continue creating new Instruments, simply *Save Output As* (to save a different version of the Turbosynth SC sound). SampleCell will load each output file as a new Instrument.
+
+Once an Output file is in an Instrument it can be modified in Turbosynth SC, and automatically updated in SampleCell II, by doing a *Save Output*. This updates the saved-to-disk Output file, and SampleCell then updates itself with this new version of the file.
+
+For multi-sampling, the process is slightly different due to the fact that the goal is to create Multi-Sample Instruments rather than single-sample instruments. Refer to the section *Working with Multi-Sample Instruments* later in this appendix for more information.
+
+## Before you begin
+
+- Make sure your SampleCell card(s) are installed correctly and operating properly.
+- This section assumes you have a working knowledge of SampleCell, and are familiar with SampleCell Instruments, Banks, Keygroups, Velocity Zones, etc. If you are not familiar with these terms, you might end up a bit confused by this section. You must understand the basic operation of SampleCell before proceeding.
+
+You're ready to start hearing what you can do using the combination of Turbosynth SC and SampleCell!
+
+@page 20 scan=p079
+
+## Getting Started
+
+Setting up the link between Turbosynth SC and SampleCell is easy. Here's how to get the pair working together quickly:
+
+### To set up Turbosynth SC and SampleCell links:
+
+- Open Turbosynth SC and open a sound or create a sound from scratch. This will be the first sound of your SampleCell Instrument.
+- Once you've got your sound, choose *Auto Update SampleCell* from the Options menu. This "turns on" the link between the two applications.
+- Choose *Save Output* from the File menu of Turbosynth SC. A Macintosh save file dialog appears. Name the output file, select a destination folder and indicate the desired file format (Sound Designer II, Sound Designer, or AIFF).
+
+When the output file is saved, SampleCell automatically loads it into a new multisample instrument (SampleCell will automatically launch, if it is not already running.) If you want, switch to SampleCell and adjust instrument parameters, or remain in Turbosynth to further edit the sound:
+
+### To edit the sound in Turbosynth SC after it is in SampleCell:
+
+- Modify the sound.
+- Choose *Save Output* from the File menu. Just like the familiar Save command found in word-processors, this command updates the earlier output file with the modifications you have just made. At this point, Auto Update SampleCell tells SampleCell to load this newest version of the sound, replacing the original but retaining its keygroup, velocity zone, or other SampleCell parameters. Remember, if you do *Save Output As*, SampleCell will create a whole new single-sample instrument with the new output file instead of updating the existing one.
+
+@page 21 scan=p080
+
+## Working with Multi-Sample Instruments
+
+You can take advantage of Auto Update SampleCell with multi-sample instruments as well. Here's how you should go about creating, and then working with, an instrument containing multiple Turbosynth SC sounds:
+
+### To use multiple Turbosynth SC sounds in one multi-sample instrument:
+
+- In Turbosynth SC, turn OFF *Auto Update SampleCell*.
+- Open your first sound and modify it, if necessary. (Be sure to play the sound so that the signal is present at the Output module.)
+- Choose *Save Output* from the File menu. Name the output file and indicate a location for it.
+- Continue in this manner, opening other sounds or modifying your first sound, and use the *Save Output As* command to save each variation until you have enough raw sounds to use in SampleCell (how many is "enough" is completely up to you).
+- Next, launch SampleCell and create a new, Multi-Sample Instrument. (When you're ready to be a power user, turn Auto Update SampleCell back on before saving your last output file. As described earlier, this will launch SampleCell, create a multi-sample instrument, and load this output file automatically. You would then move to SampleCell and continue as described below.)
+- Open the Sample Map window for your new Instrument and click the *New Keygroup* button. SampleCell's *Select a file to open* dialog appears.
+- Locate and load the output file(s) you just created in Turbosynth SC as your first keygroup, then continue adding new keygroups or velocity zones as described in your SampleCell User's Guide. Adjust the keygroup and velocity zone boundaries as you normally would, and, if you like, audition them with your MIDI controller.
+
+You should now have the basic elements of your Instrument in place. It is likely, however, that you will want to edit your sounds further after hearing them in your instrument. Here's how you can take advantage of Auto Update SampleCell for this:
+
+@page 22 scan=p081
+
+### To edit multi-sample instruments:
+
+- First, save the Instrument (and the Bank), but do not close or quit SampleCell.
+- With SampleCell still running, and with your new Instrument still loaded, switch back to Turbosynth SC.
+- In Turbosynth SC, choose *Auto Update SampleCell* from the Options menu.
+- Open and modify the sounds as needed, and save the new versions using the *Save Output* command. As described earlier, SampleCell will automatically update itself with these new versions of your sounds.
+
+That covers the basics of using Turbosynth SC with SampleCell. There are, however, several Preference settings within SampleCell which can speed up a few of the above tasks. These options include:
+
+- *Make One Instrument when multiple sound files are dragged onto the editor.* As a shortcut to launch SampleCell II you can drag and drop individual or multiple sound files onto the SampleCell Editor application. When a single sound file is dropped on the Editor, SampleCell will automatically create a single-sample instrument with that sound as it launches (no need to click Load, then locate and open the individual sample). When you drop multiple sound files (perhaps a folder of 5 or 6 Turbosynth Output files) SampleCell will create that number of single-sample instruments, unless this Preference is On. When On, SampleCell will load all the dragged-and-dropped sound files into a single, multi-sample instrument automatically.
+- *Default new single sample instruments to Key Track OFF.* This Preference tells SampleCell to keep Key Track Off for all new single-sample instruments. Having key track off is often desirable for sound effects or other instances where pitch is irrelevant. Generally, if you have a sound in Turbosynth SC that you want to hear transposed across the entire keyboard, you would probably not want to have this Preference On.
+
+@page 23 scan=p082
+
+- *Automatically remap Instruments in a bank after adding an instrument.* This command spreads all existing instruments in the current bank over a 5 octave range (i.e. sets hi/lo MIDI notes), and sets the first sample's base note to the center of the range. For example, if you have 5 instruments open, the leftmost instrument will be mapped from C0 to B2 with its root note set to F♯2. Moving to the right, the next instrument will be mapped from C3 to B3 with a root note of F♯3, and so on.
+
+By configuring these Preferences to match your work habits, your Turbosynth SC/SampleCell system can be optimized for maximum efficiency.
+
+Don't forget, if you have a Digidesign DSP card (Pro Tools, Sound Tools or AudioMedia) and the requisite audio interface, you can direct-sample into Turbosynth's Sample module as a way to collect raw samples for your system.
+
+@page 4 scan=p063
+
+# Support, Credits and License
+
+## Digidesign's Update and Support Policy
+
+Digidesign will provide telephone support to registered users for a period of one year from the date of original purchase. As a new Turbosynth SC owner, the first action you should take is to send in your registration card. You must be a registered owner if you want to receive telephone support, program updates, or new product information. Once you are a registered owner, program updates will be made available to you for a minimal charge.
+
+Digidesign is serious about customer support, and is strongly committed to a continuing relationship with you after your purchase. As a registered Turbosynth SC owner, you can contact Digidesign directly with any questions or problems. A Turbosynth SC Technical Support person will be standing by to help you during business hours (Monday to Friday, 9:30 to 5:30 PST). For customer service, call (415) 688-0744.
+
+Digidesign is made up of people who are very interested in audio and the recording process as a whole. Become one of our registered owners and participate in the creative process.
+
+@page scan=p061
+
+## Credits
+
+**Turbosynth SC Project Team:** Tina Chavez, Robert Currie, Midori Duarte, Mike Freitas, Bobb Haskitt, David Hipshman, Roger Keller, Charles Maynes, Tom McTavish, Ed Rios, Karen Robb
+
+**Turbosynth SC Software:** Mark Jeffery, Evan Brooks, Andy Hong, David Hipshman, Robert Currie
+
+**Turbosynth SC 2.2 Manual Addendum:** Mike Freitas
+
+**Package and Turbosynth Graphic Design:** Kristine Ekstrand
+
+**Product Management:** Bobb Haskitt
+
+**Thanks to:** Charles Maynes, Peter Freeman, Tom McTavish, Kim Haskitt and the rest of the ever growing Digi gang.
+
+## Copyright
+
+This manual is copyrighted © 1993 by Digidesign, Inc. with all rights reserved. Under copyright laws, this manual may not be duplicated in whole or in part without the written consent of Digidesign.
+
+All trademarks are property of their respective holders. All features and specifications subject to change without notice.
+
+© 1993 Digidesign Inc. All rights reserved. PN 932102141 Rev A 6/93
+
+@page scan=p062
+
+## End User License Agreement
+
+NOTICE TO END USERS: CAREFULLY READ THE FOLLOWING LEGAL AGREEMENT PRIOR TO USING THE SOFTWARE PROVIDED WITH THE AGREEMENT (Turbosynth SC™). USE OF THE SOFTWARE CONSTITUTES YOUR ACCEPTANCE OF THESE TERMS. IF YOU DO NOT AGREE TO THE TERMS OF THE AGREEMENT, PROMPTLY RETURN THE SOFTWARE AND THE ACCOMPANYING ITEMS (INCLUDING WRITTEN MATERIALS AND CONTAINERS) TO THE LOCATION WHERE YOU OBTAINED THEM FOR A FULL REFUND.
+
+1. **License Grant.** Digidesign grants to you (either as an individual or entity) a personal, non-transferable, and non-exclusive right to use the copy of the object code version of the SOFTWARE provided with this license. You agree you will not copy the materials accompanying the SOFTWARE.
+2. **Copyright.** You acknowledge that no title to the intellectual property in the SOFTWARE is transferred to you. You further acknowledge that title and full ownership rights to the SOFTWARE will remain the exclusive property of Digidesign or its suppliers, and you will not acquire any rights to the SOFTWARE except as expressly set forth above. You agree that any copies of the SOFTWARE will contain the same proprietary notices which appear on and in the SOFTWARE.
+3. **Reverse Engineering.** You agree that you will not attempt, and if you are a corporation, you will use your best efforts to prevent your employees and contractors from attempting to reverse compile, modify, translate, or disassemble the SOFTWARE in whole or in part.
+4. **Limited Warranty.** Digidesign warrants that the SOFTWARE will perform substantially in accordance with the accompanying documentation and that the documentation and diskettes are free from any physical defects for a period of ninety (90) days from the date of purchase ("Limited Warranty").
+5. **Customer Remedies.** Digidesign's entire liability and your sole and exclusive remedy shall be, at Digidesign's option, either to (a) correct the error, (b) help you work around or avoid the error or (c) authorize a refund, so long as the SOFTWARE, documentation and diskettes are returned to Digidesign with a copy of your receipts. This Limited Warranty is void if failure of the SOFTWARE has resulted from accident, abuse, or misapplication. Any replacement SOFTWARE will be warranted for the remainder of the original warranty period.
+6. **No Other Warranties.** DIGIDESIGN DOES NOT WARRANT THAT THE DIGIDESIGN SOFTWARE IS ERROR FREE. DIGIDESIGN DISCLAIMS ALL OTHER WARRANTIES, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT OF THIRD PARTY RIGHTS WITH RESPECT TO THE SOFTWARE, THE ACCOMPANYING DOCUMENTATION OR DISKETTES. SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF IMPLIED WARRANTIES, INCIDENTAL OR CONSEQUENTIAL DAMAGES, SO THE ABOVE LIMITATION OR EXCLUSIONS MAY NOT APPLY TO YOU. THIS WARRANTY GIVES YOU SPECIFIC LEGAL RIGHTS AND YOU MAY ALSO HAVE OTHER RIGHTS WHICH VARY FROM JURISDICTION TO JURISDICTION.
+7. **Term.** This Agreement is effective until terminated. You may terminate this Agreement at any time by destroying the SOFTWARE together with any copies in any form. Digidesign may terminate this Agreement if you fail to comply with any term or condition herein.
+8. **Severability.** In the event of invalidity of any provision of this Agreement, the parties agree that such invalidity shall not affect the validity of the remaining portions of this Agreement.
+9. **No Liability for Consequential Damages.** IN NO EVENT SHALL DIGIDESIGN BE LIABLE TO YOU FOR ANY CONSEQUENTIAL, SPECIAL, INCIDENTAL OR INDIRECT DAMAGES OF ANY KIND ARISING OUT OF THE USE OF THE DIGIDESIGN SOFTWARE, EVEN IF DIGIDESIGN HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. IN NO EVENT WILL DIGIDESIGN'S LIABILITY FOR ANY CLAIM, WHETHER IN CONTRACT, TORT OR ANY OTHER THEORY OF LIABILITY, EXCEED THE LICENSE FEE PAID BY YOU.
+10. You agree that you will not export or re-export the SOFTWARE without the appropriate United States or foreign government licenses.
+11. **Governing Law.** This Agreement will be governed by the laws of the State of California as they are applied to agreements between California residents entered in to and to be performed entirely within California. The United Nations Convention on Contracts for the International Sale of Goods is specifically disclaimed.
+12. **Entire Agreement.** This is the entire agreement between you and Digidesign which supersedes any prior agreement, whether written or oral, relating to the subject matter of this Agreement.
+
+**U.S. Government Restricted Rights.** If this product is acquired under the terms of a DOD contract: Use, duplication or disclosure by the Government is subject to restrictions as set forth in subparagraph (c) (1) (ii) of 252.227-19(a) through (d) and restrictions set forth in the accompanying end user agreement. Unpublished rights reserved under the copyright laws of the United States.
+
+Should you have any questions concerning this Agreement, or if you desire to contact Digidesign for any reason, please write: Digidesign, Inc., 1360 Willow Road, Suite 101, Menlo Park, CA 94025.
+

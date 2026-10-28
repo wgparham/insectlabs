@@ -1,0 +1,116 @@
+ABOUT THIS MANUAL
+INTRODUCTION
+Registration
+Telephone Support
+Updates
+GETTING STARTED
+What You'll Need...
+Hard Disks
+Using Turbosynth with the Emulator II
+Copy Protection
+Working Copy
+Key Disk
+Connecting the MIDI Interface
+Selecting a Sampler
+Turbosynth File Types
+Using the Sound Accelerator
+Sound Playback Settings
+ABOUT TURBOSYNTH
+What is Turbosynth?
+Sound
+Fundamental Frequency
+Waveforms
+Sine Wave
+Envelope
+Complex and Simple Envelopes
+Modular Synthesis
+USING TURBOSYNTH (PART 1)
+Starting Turbosynth
+Main Window
+Basic Tools
+Patch Cord
+Info Box
+Modules
+Output Jack
+Basic Parameters
+Sample Rate
+Sound Length
+Frequency
+Parameter Manager
+Converting Modules to Samples
+File Management
+Transferring Sounds to the Sampler
+Transferring Sounds from the Sampler to the Macintosh
+MIDI Preview
+USING TURBOSYNTH (PART 2)
+Module Windows
+Module Info Box
+Oscillator Module
+Waveform Mode
+Harmonic Mode
+Preset Waveforms
+Waveform Window
+Waveform Modifying Tools
+Harmonic Window
+Harmonic Modifying Tools
+Custom Waveforms
+Sample Module
+Sample Info Box
+Saving Sound Data with Documents
+Loading a Sample
+Direct Sampling (using AD IN)
+Sample Rate Conversion
+Extending the Loop
+Gain Scaling
+Envelope Removal
+Crossfade Looping
+Loop Markers
+Playing the Loop
+The Loop Window
+Extracting Waveforms from Samples
+Cut, Copy and Paste Editing
+Amplifier Envelope Module
+Filter Envelope Module
+Spectral Inverter Module
+Type "A" Spectral Inversion
+Type "B" Spectral Inversion
+Delay Module
+Pitch Shifter Module
+Modulator Module
+Waveshaper Module
+Preset Waveshapers
+Stretcher Module
+Resonator Module
+Mixer Module
+Pitch Envelope Module
+Noise Oscillator Module
+Time Compression Module
+The Output
+Looping the Output Sound
+Crossfade Looping (Output)
+Considerations for Looping and Samplers
+SAMPLER PERSONALITIES
+About Samplers
+Akai S700/X7000
+Akai S900/S950
+Casio FZ-1/FZ-10M
+E-mu Emax
+E-mu Emulator II
+E-mu Emulator III
+Ensoniq Mirage/Multisampler
+Ensoniq EPS/EPS-M
+Korg DSS-1
+Korg DSM-1
+Roland S-10/S-220/MKS-100
+Roland S-50
+Roland S-550
+Sample Dump Standard
+USER TIPS
+Appendix A - Menu Reference
+Appendix B - Shortcuts
+Appendix C - Hard Disk Installation
+Appendix D - Note-to-Frequency Conversion Chart
+Appendix E - Turbosynth Credits
+Setting the Serial Port, Clock Rate and MIDI Channel/Device ID
+Ensoniq EPS
+Roland S-10, S-220
