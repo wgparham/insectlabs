@@ -66,6 +66,55 @@ void ScopeView::paint(juce::Graphics& g)
 }
 
 // ---------------------------------------------------------------------------
+FixesPanel::FixesPanel(PulsarProcessor& proc)
+{
+    for (int i = 0; i < pulsar::Fixes::kCount; ++i) {
+        Row r;
+        r.toggle = std::make_unique<juce::ToggleButton>(pulsar::Fixes::name(i));
+        r.toggle->setColour(juce::ToggleButton::textColourId, look::legend);
+        r.toggle->setColour(juce::ToggleButton::tickColourId, look::accent);
+        r.text = std::make_unique<juce::Label>(juce::String(), pulsar::Fixes::description(i));
+        r.text->setFont(juce::FontOptions(12.0f));
+        r.text->setColour(juce::Label::textColourId, look::legend.withAlpha(0.7f));
+        r.text->setInterceptsMouseClicks(false, false);
+        addAndMakeVisible(*r.toggle);
+        addAndMakeVisible(*r.text);
+        attachments.push_back(std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(
+            proc.params, juce::String("fix_") + pulsar::Fixes::id(i), *r.toggle));
+        rows.push_back(std::move(r));
+    }
+    setSize(600, 3 * 26 + pulsar::Fixes::kCount * 52 + 12);
+}
+
+void FixesPanel::paint(juce::Graphics& g)
+{
+    g.fillAll(look::panel);
+    g.setFont(juce::FontOptions(11.0f, juce::Font::bold));
+    for (const auto& [title, y] : headings) {
+        g.setColour(look::accent);
+        g.drawText(title, 12, y, getWidth() - 24, 22, juce::Justification::bottomLeft);
+        g.setColour(look::legend.withAlpha(0.25f));
+        g.drawHorizontalLine(y + 23, 12.0f, (float) getWidth() - 12.0f);
+    }
+}
+
+void FixesPanel::resized()
+{
+    headings.clear();
+    int y = 4;
+    for (int i = 0; i < (int) rows.size(); ++i) {
+        if (i == 0 || i == 4 || i == 8) {
+            headings.push_back({ i == 0 ? "BUGS  (MODEL 2 PRESET)" : i == 4 ? "SIGNAL QUALITY  (MODEL 2 PRESET)"
+                                                                        : "SOUND-DEFINING  (OPTIONAL)", y });
+            y += 26;
+        }
+        rows[(size_t) i].toggle->setBounds(12, y, getWidth() - 24, 22);
+        rows[(size_t) i].text->setBounds(32, y + 20, getWidth() - 44, 30);
+        y += 52;
+    }
+}
+
+// ---------------------------------------------------------------------------
 void PulsarEditor::setupSlider(juce::Slider& s, juce::Label& l, const juce::String& text)
 {
     s.setSliderStyle(juce::Slider::LinearHorizontal);
@@ -223,6 +272,31 @@ PulsarEditor::PulsarEditor(PulsarProcessor& p) : AudioProcessorEditor(p), proc(p
     status.setColour(juce::Label::textColourId, look::accent);
     addAndMakeVisible(status);
 
+    // Model 1 / Model 2
+    modelSelector.addItem("Model 1 (original)", 1);
+    modelSelector.addItem("Model 2 (corrected)", 2);
+    modelSelector.onChange = [this] {
+        const int id = modelSelector.getSelectedId();
+        if (id == 1) proc.setFixes(pulsar::Fixes::model1());
+        else if (id == 2) proc.setFixes(pulsar::Fixes::model2());
+    };
+    addAndMakeVisible(modelSelector);
+    fixesButton.onClick = [this] {
+        juce::CallOutBox::launchAsynchronously(std::make_unique<FixesPanel>(proc), fixesButton.getScreenBounds(), nullptr);
+    };
+    addAndMakeVisible(fixesButton);
+    for (auto* b : { &showA, &showB }) {
+        b->setClickingTogglesState(true);
+        b->setRadioGroupId(1001);
+        b->setColour(juce::TextButton::buttonOnColourId, look::accent.darker(0.2f));
+        addAndMakeVisible(*b);
+    }
+    showA.setTooltip("Hear Model 1 (the original) with the same tables and controls");
+    showB.setTooltip("Hear the current model and fixes");
+    showA.onClick = [this] { if (auto* a = proc.params.getParameter("abModel1")) a->setValueNotifyingHost(1.0f); };
+    showB.onClick = [this] { if (auto* a = proc.params.getParameter("abModel1")) a->setValueNotifyingHost(0.0f); };
+    updateModelControls();
+
     proc.onTablesChanged = [this] { refreshTables(); rebuildBankButtons(); };
     rebuildBankButtons();
     setWantsKeyboardFocus(true);
@@ -268,6 +342,26 @@ void PulsarEditor::chooseFile(const juce::String& title, const juce::String& pat
     });
 }
 
+void PulsarEditor::updateModelControls()
+{
+    const auto f = proc.fixes();
+    // Only follow changes to the fixes: the ComboBox reports a choice
+    // asynchronously, so re-syncing on every tick could undo it first.
+    if (!shownFixes || *shownFixes != f) {
+        shownFixes = f;
+        const int id = f == pulsar::Fixes::model1() ? 1 : f == pulsar::Fixes::model2() ? 2 : 0;
+        if (id == 0) modelSelector.setText(proc.modelName(), juce::dontSendNotification);
+        else modelSelector.setSelectedId(id, juce::dontSendNotification);
+    }
+    const bool hearingA = proc.params.getRawParameterValue("abModel1")->load() > 0.5f;
+    showA.setToggleState(hearingA, juce::dontSendNotification);
+    showB.setToggleState(!hearingA, juce::dontSendNotification);
+    // A/B only means something once a fix is on.
+    const bool any = f.any();
+    showA.setEnabled(any || hearingA);
+    showB.setEnabled(any || hearingA);
+}
+
 void PulsarEditor::report(const juce::String& message) { status.setText(message, juce::dontSendNotification); }
 
 bool PulsarEditor::keyPressed(const juce::KeyPress& key)
@@ -275,6 +369,7 @@ bool PulsarEditor::keyPressed(const juce::KeyPress& key)
     if (key == juce::KeyPress::spaceKey) { proc.setRunning(!proc.isRunning()); return true; }
     if (key.getTextCharacter() == 'z') { proc.undoTableSwitch(); return true; }
     if (key.getTextCharacter() == 'f') { freezeButton.triggerClick(); return true; }
+    if (key.getTextCharacter() == 'a') { (showA.getToggleState() ? showB : showA).triggerClick(); return true; } // A/B
     return false;
 }
 
@@ -282,6 +377,7 @@ void PulsarEditor::timerCallback()
 {
     if (!cycle.isMouseButtonDown()) cycle.setValue(proc.position(), juce::dontSendNotification);
     pulsarCount.setText(juce::String(proc.pulsarCount()) + " pulsars", juce::dontSendNotification);
+    updateModelControls();
     if (!proc.isRecording() && recordButton.getToggleState()) recordButton.setToggleState(false, juce::dontSendNotification);
 
     if (masterFading) {
@@ -323,10 +419,20 @@ void PulsarEditor::resized()
     panels.clear();
     auto area = getLocalBounds().reduced(14);
     auto header = area.removeFromTop(34);
-    status.setBounds(header.removeFromRight(460));
+    {
+        auto r = header.withTrimmedLeft(440).reduced(0, 4);
+        showB.setBounds(r.removeFromRight(96));
+        r.removeFromRight(2);
+        showA.setBounds(r.removeFromRight(96));
+        r.removeFromRight(10);
+        fixesButton.setBounds(r.removeFromRight(80));
+        r.removeFromRight(6);
+        modelSelector.setBounds(r.removeFromRight(190));
+    }
     auto footer = area.removeFromBottom(26);
+    status.setBounds(footer.removeFromLeft(330));
     pulsarCount.setBounds(footer.removeFromRight(140));
-    cycle.setBounds(footer.withTrimmedLeft(342).withTrimmedRight(250));
+    cycle.setBounds(footer.withTrimmedLeft(12).withTrimmedRight(110)); // under the table grid
 
     const int row = 26;
     auto panel = [&](juce::Rectangle<int>& col, const juce::String& title, int h) {

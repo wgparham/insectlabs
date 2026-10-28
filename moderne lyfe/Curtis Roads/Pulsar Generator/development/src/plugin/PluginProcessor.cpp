@@ -29,6 +29,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout makeLayout()
     real("ringMix", "Ring Mod Dry/Wet", { 0.0f, 1.0f, 0.001f }, 0.0f);
     real("fadeTime", "Fade Time", { 0.0f, 30.0f, 0.05f, 0.35f }, 2.0f);
     boolean("linkSettings", "Link Play Controls to Tables", true);
+    // Model 2: one switch per fix, and A/B against Model 1.
+    for (int i = 0; i < pulsar::Fixes::kCount; ++i)
+        boolean((std::string("fix_") + pulsar::Fixes::id(i)).c_str(), (std::string("Fix: ") + pulsar::Fixes::name(i)).c_str(), false);
+    boolean("abModel1", "A/B: Hear Model 1", false);
     return l;
 }
 
@@ -64,6 +68,9 @@ PulsarProcessor::PulsarProcessor()
     p.ringMix = params.getRawParameterValue("ringMix");
     p.fadeTime = params.getRawParameterValue("fadeTime");
     p.linkSettings = params.getRawParameterValue("linkSettings");
+    for (int i = 0; i < pulsar::Fixes::kCount; ++i)
+        p.fixes[(size_t) i] = params.getRawParameterValue(juce::String("fix_") + pulsar::Fixes::id(i));
+    p.abModel1 = params.getRawParameterValue("abModel1");
     writerThread.startThread();
     startTimerHz(30);
 }
@@ -126,6 +133,7 @@ void PulsarProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiB
     }
 
     engine.setControls(readControls());
+    engine.setFixes(p.abModel1->load() > 0.5f ? pulsar::Fixes::model1() : fixes());
     const bool wantRun = p.run->load() > 0.5f;
     if (wantRun && !engine.isRunning() && !stoppedAtEnd.load()) engine.start();
     if (!wantRun && engine.isRunning()) engine.stop();
@@ -179,6 +187,27 @@ void PulsarProcessor::applySettingsToParams(const pulsar::Settings& s)
     setParam(params, "burstOffs", (float) c.burstOffs);
     setParam(params, "trainDur", c.trainDuration);
     setParam(params, "edge", c.edge);
+}
+
+pulsar::Fixes PulsarProcessor::fixes() const
+{
+    pulsar::Fixes f;
+    for (int i = 0; i < pulsar::Fixes::kCount; ++i) f[i] = p.fixes[(size_t) i]->load() > 0.5f;
+    return f;
+}
+
+void PulsarProcessor::setFixes(const pulsar::Fixes& f)
+{
+    for (int i = 0; i < pulsar::Fixes::kCount; ++i)
+        setParam(params, (std::string("fix_") + pulsar::Fixes::id(i)).c_str(), f[i] ? 1.0f : 0.0f);
+}
+
+juce::String PulsarProcessor::modelName() const
+{
+    const auto f = fixes();
+    if (f == pulsar::Fixes::model1()) return "Model 1 (original)";
+    if (f == pulsar::Fixes::model2()) return "Model 2 (corrected)";
+    return "Model 2 (custom fixes)";
 }
 
 void PulsarProcessor::captureSettings() { readControls().toSettings(current.settings); }

@@ -56,6 +56,11 @@ public:
     void selectBankSet(int index);
     int selectedBankSet() const { return selectedSet; }
 
+    // ---- Model 1 / Model 2 ----
+    pulsar::Fixes fixes() const;            // the fix switches (A/B aside)
+    void setFixes(const pulsar::Fixes& f);  // sets the fix parameters
+    juce::String modelName() const;         // "Model 1 (original)", "Model 2 (corrected)", ...
+
     // Copies the current play controls into the current set's settings.
     void captureSettings();
     void randomizeControls();
@@ -90,6 +95,8 @@ private:
         std::array<std::atomic<float>*, 3> trainOn{}, trainLevel{};
         std::atomic<float> *run{}, *burstOn{}, *burstOns{}, *burstOffs{}, *trainDur{}, *edge{}, *master{},
                            *mute{}, *loop{}, *freeze{}, *backwards{}, *ringMix{}, *fadeTime{}, *linkSettings{};
+        std::array<std::atomic<float>*, pulsar::Fixes::kCount> fixes{};
+        std::atomic<float>* abModel1{};
     } p;
 
     pulsar::Engine engine;

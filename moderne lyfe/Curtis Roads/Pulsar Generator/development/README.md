@@ -4,6 +4,8 @@ A port of **Pulsar Generator** (Curtis Roads and Alberto de Campo, 2001), a puls
 
 The original's SuperCollider source was recovered from the compressed class library inside the application, and the engine follows it. The behaviour of the SuperCollider 2 unit generators it uses was taken from the PowerPC runtime. [docs/ALGORITHM.md](docs/ALGORITHM.md) describes the recovery and the synthesis in detail.
 
+**Model 2** is the same instrument with the original's quirks corrected: a header switch chooses Model 1 (the original) or Model 2, each fix can be switched on its own, and A/B plays Model 1 against the current fixes live. [docs/MODEL2.md](docs/MODEL2.md) lists the fixes.
+
 It loads the original files directly: `.set` table sets, `.bank` banks, and `.wt` wavetables. The original distribution's DemoTables, ExampleTables and El Rey 6 banks are in the parent folder.
 
 ## Layout
@@ -12,7 +14,7 @@ It loads the original files directly: `.set` table sets, `.bank` banks, and `.wt
 | --- | --- |
 | `src/engine/` | Synthesis engine, file formats and table operations: portable C++17, no dependencies |
 | `src/plugin/` | Standalone app and plugin (JUCE) |
-| `src/cli/` | `pulsargen-cli`: render a `.set` offline |
+| `src/cli/` | `pulsargen-cli`: render a `.set` offline (`model=2`, `+fix` / `-fix`) |
 | `reference/Default.lib.sc` | The recovered SuperCollider 2 source |
 | `tools/re/` | Recovery tools: library decompressor, PowerPC disassembler, resource extractor |
 | `docs/` | Recovered design |

@@ -19,6 +19,20 @@ private:
     int write = 0;
 };
 
+// The FIXES... call-out: one switch per Model 2 fix, grouped as in docs/MODEL2.md.
+class FixesPanel : public juce::Component
+{
+public:
+    explicit FixesPanel(PulsarProcessor&);
+    void paint(juce::Graphics&) override;
+    void resized() override;
+private:
+    struct Row { std::unique_ptr<juce::ToggleButton> toggle; std::unique_ptr<juce::Label> text; };
+    std::vector<Row> rows;
+    std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment>> attachments;
+    std::vector<std::pair<juce::String, int>> headings; // title, y
+};
+
 class PulsarEditor : public juce::AudioProcessorEditor, private juce::Timer
 {
 public:
@@ -67,6 +81,12 @@ private:
     juce::TextButton ringLoad;
     juce::Slider ringMix;
     juce::Label ringLabel;
+
+    // Model 1 / Model 2, the individual fixes, and A/B against Model 1.
+    juce::ComboBox modelSelector;
+    juce::TextButton fixesButton{ "FIXES..." }, showA{ "A: MODEL 1" }, showB{ "B: CURRENT" };
+    void updateModelControls();
+    std::optional<pulsar::Fixes> shownFixes; // what the selector last showed
 
     juce::OwnedArray<TableView> tableViews;
     ScopeView scope;

@@ -23,7 +23,51 @@ namespace pulsar {
 struct TableData {
     std::array<std::vector<float>, kNumTables> tables;
     std::vector<float> combo; // pulsaret * pulseEnv
+    // combo low-passed and halved in length, level by level (2048, 1024, ...
+    // 8 points), for band-limited playback. comboLevels[0] is combo.
+    std::vector<std::vector<float>> comboLevels;
     static std::shared_ptr<const TableData> from(const TableSet& set);
+};
+
+// Model 2: corrections to the original's quirks. All off is Model 1, the
+// original behaviour. docs/MODEL2.md describes each one.
+struct Fixes {
+    // Clear bugs.
+    bool noChannelSwap = false;     // left is left: no final .reverse
+    bool loopEndBothWays = false;   // Loop off ends a backwards run at the start of the tables
+    bool controlsAtStart = false;   // control tables live from the first sample: no silent first pulses
+    bool burstFromFirstStep = false;// the burst pattern starts on its first step
+
+    // Signal quality.
+    bool silenceAfterPulsaret = false; // zero, not the last table value, once the pulsaret ends
+    bool exactFormant = false;      // fractional pulsaret length: formants in tune and gliding smoothly
+    bool smoothControls = false;    // control tables interpolated per sample, not per 64-sample block
+    bool rateIndependentDC = false; // DC blocker cutoff stays at 7 Hz at any sample rate
+
+    // Sound-defining choices (not in the Model 2 preset).
+    bool burstEveryPulse = false;   // the burst pattern advances on every pulse, not only coin wins
+    bool formantEnvelopeRule = false; // no cutoff envelope when the lowest formant >= fundamental, as intended
+    bool raisedFundCap = false;     // fundamental up to 8 kHz with any number of trains
+    bool bandLimited = false;       // pulsarets band-limited to the output rate
+
+    static constexpr int kCount = 12;
+    bool& operator[](int i) { return this->*member(i); }
+    bool operator[](int i) const { return this->*member(i); }
+    static bool Fixes::* member(int i);
+    bool operator==(const Fixes& o) const { for (int i = 0; i < kCount; ++i) if ((*this)[i] != o[i]) return false; return true; }
+    bool operator!=(const Fixes& o) const { return !(*this == o); }
+    bool any() const { return *this != model1(); }
+
+    static Fixes model1() { return {}; }
+    static Fixes model2()
+    {
+        Fixes f;
+        for (int i = 0; i < 8; ++i) f[i] = true;
+        return f;
+    }
+    static const char* id(int i);   // "noChannelSwap", ...
+    static const char* name(int i); // "No channel swap", ...
+    static const char* description(int i);
 };
 
 // A looping sound for the ring modulator (FX_RingMod window).
@@ -67,6 +111,8 @@ public:
     void setControls(const Controls& c);
     const Controls& controls() const { return ctl; }
     void setMaxFundFreqs(const std::array<float, 4>& m) { maxFundFreqs = m; } // by active train count
+    void setFixes(const Fixes& f) { fixes = f; }
+    const Fixes& currentFixes() const { return fixes; }
     void setRingModSound(std::shared_ptr<const LoopSound> s) { loopSound = std::move(s); loopPos = 0.0; }
 
     void start();
@@ -90,6 +136,7 @@ private:
         float mulA = 0.0f, mulB = 0.0f;
         double phase = 0.0, inc = 0.0;
         int remaining = 0;       // interpolated samples still to read
+        int mipLevel = 0;        // comboLevels entry (band-limited playback)
         bool started = false;
         float gainL = 0.0f, gainR = 0.0f;
         enum class Env { None, Release, Predict } env = Env::None;
@@ -104,11 +151,17 @@ private:
     void spawnVoice(const std::array<float, 4>& train, float fund, bool predict, bool noEnvelope);
     bool burstNext();
     float readTable(const std::vector<float>& t, double phase01) const;
-    float control(int table) const { return ctlValues[(size_t) table]; }
+    float control(int table) const
+    {
+        if (!fixes.smoothControls) return ctlValues[(size_t) table];
+        const float a = ctlValues[(size_t) table], b = ctlNext[(size_t) table];
+        return a + (b - a) * (float) blockSample / kBlockSize;
+    }
     float cutoffTime() const;
 
     double sampleRate = 44100.0;
     Controls ctl;
+    Fixes fixes;
     std::array<float, 4> maxFundFreqs{ 3000.0f, 3000.0f, 2400.0f, 2000.0f };
 
     std::shared_ptr<const TableData> tables, fadeFrom;   // control tables
@@ -120,6 +173,9 @@ private:
     double lastCheckedPos = 0.0;
     int checkCounter = 0, checkInterval = 1470;
     std::array<float, kNumTables> ctlValues{};
+    std::array<float, kNumTables> ctlNext{}; // smoothControls: values at the next block's start
+    int blockSample = 0;
+    bool wrapped = false; // loopEndBothWays: the phase wrapped since the last check
     int controlsDelay = 0; // samples until the control tables start (3 ms after start)
 
     double impulsePhase = 1.0;

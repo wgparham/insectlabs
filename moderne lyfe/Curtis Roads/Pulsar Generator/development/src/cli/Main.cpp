@@ -1,8 +1,11 @@
 // pulsargen-cli: render a table set offline, for testing and scripting.
 //
 //   pulsargen-cli in.set out.wav [seconds=10] [seed=1] [rate=44100]
+//                 [model=1|2] [+fix] [-fix] ...
 //
-// The set's own play-control settings are used.
+// The set's own play-control settings are used. model=2 switches on the
+// Model 2 preset; +name / -name then switch single fixes (names as in
+// docs/MODEL2.md, e.g. +bandLimited -noChannelSwap).
 
 #include "PulsarEngine.h"
 
@@ -42,16 +45,28 @@ bool writeWav(const char* path, const std::vector<float>& l, const std::vector<f
 int main(int argc, char** argv)
 {
     if (argc < 3) {
-        std::fprintf(stderr, "usage: pulsargen-cli in.set out.wav [seconds=10] [seed=1] [rate=44100]\n");
+        std::fprintf(stderr, "usage: pulsargen-cli in.set out.wav [seconds=10] [seed=1] [rate=44100] [model=1|2] [+fix] [-fix]\nfixes:");
+        for (int i = 0; i < Fixes::kCount; ++i) std::fprintf(stderr, " %s", Fixes::id(i));
+        std::fprintf(stderr, "\n");
         return 1;
     }
     double seconds = 10.0, rate = 44100.0;
     uint32_t seed = 1;
+    Fixes fixes;
     for (int i = 3; i < argc; ++i) {
         const char* a = argv[i];
+        if (a[0] == '+' || a[0] == '-') {
+            int k = 0;
+            while (k < Fixes::kCount && std::strcmp(a + 1, Fixes::id(k)) != 0) ++k;
+            if (k == Fixes::kCount) { std::fprintf(stderr, "unknown fix: %s\n", a + 1); return 1; }
+            fixes[k] = a[0] == '+';
+            continue;
+        }
         if (!std::strncmp(a, "seconds=", 8)) seconds = std::atof(a + 8);
         else if (!std::strncmp(a, "seed=", 5)) seed = (uint32_t) std::strtoul(a + 5, nullptr, 10);
         else if (!std::strncmp(a, "rate=", 5)) rate = std::atof(a + 5);
+        else if (!std::strcmp(a, "model=1")) fixes = Fixes::model1();
+        else if (!std::strcmp(a, "model=2")) fixes = Fixes::model2();
         else { std::fprintf(stderr, "unknown argument: %s\n", a); return 1; }
     }
 
@@ -62,6 +77,7 @@ int main(int argc, char** argv)
     Engine engine;
     engine.prepare(rate);
     engine.setSeed(seed);
+    engine.setFixes(fixes);
     engine.setTables(TableData::from(set));
     engine.setControls(Controls::fromSettings(set.settings, Controls{}));
     engine.start();

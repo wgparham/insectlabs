@@ -2,15 +2,48 @@
 
 #include <algorithm>
 #include <cmath>
+#include <limits>
 
 namespace pulsar {
 
 namespace {
 
 constexpr double kPi = 3.14159265358979323846;
-constexpr int kMaxVoices = 512;
+constexpr int kMaxVoices = 1024;       // raisedFundCap
+constexpr int kOriginalMaxVoices = 512;
 
 int roundSamples(double seconds, double sr) { return std::max(1, (int) std::floor(seconds * sr + 0.5)); }
+
+constexpr int kMinLevelSize = 8;
+constexpr int kTaps = 31, kMid = kTaps / 2; // half-band filter
+
+// Half-band low-pass (31-tap Blackman-windowed sinc, cutoff a quarter of the
+// sample rate), then every other sample. Ends are extended with their values.
+std::vector<float> halve(const std::vector<float>& x)
+{
+    static const std::array<double, kTaps> h = [] {
+        std::array<double, kTaps> c{};
+        double sum = 0.0;
+        for (int k = 0; k < kTaps; ++k) {
+            const double t = k - kMid;
+            const double sinc = t == 0.0 ? 0.5 : std::sin(0.5 * kPi * t) / (kPi * t);
+            const double w = 0.42 - 0.5 * std::cos(2.0 * kPi * k / (kTaps - 1)) + 0.08 * std::cos(4.0 * kPi * k / (kTaps - 1));
+            c[(size_t) k] = sinc * w;
+            sum += c[(size_t) k];
+        }
+        for (auto& v : c) v /= sum;
+        return c;
+    }();
+    const int n = (int) x.size();
+    std::vector<float> y((size_t) n / 2);
+    for (int j = 0; j < n / 2; ++j) {
+        double acc = 0.0;
+        for (int k = 0; k < kTaps; ++k)
+            acc += h[(size_t) k] * x[(size_t) std::clamp(2 * j + k - kMid, 0, n - 1)];
+        y[(size_t) j] = (float) acc;
+    }
+    return y;
+}
 
 } // namespace
 
@@ -21,7 +54,59 @@ std::shared_ptr<const TableData> TableData::from(const TableSet& set)
     d->tables = set.tables;
     for (auto& t : d->tables) t.resize(kTableSize, 0.0f);
     d->combo = set.comboSignal();
+    d->comboLevels.push_back(d->combo);
+    while ((int) d->comboLevels.back().size() > kMinLevelSize)
+        d->comboLevels.push_back(halve(d->comboLevels.back()));
     return d;
+}
+
+bool Fixes::* Fixes::member(int i)
+{
+    static constexpr bool Fixes::* m[kCount] = {
+        &Fixes::noChannelSwap, &Fixes::loopEndBothWays, &Fixes::controlsAtStart, &Fixes::burstFromFirstStep,
+        &Fixes::silenceAfterPulsaret, &Fixes::exactFormant, &Fixes::smoothControls, &Fixes::rateIndependentDC,
+        &Fixes::burstEveryPulse, &Fixes::formantEnvelopeRule, &Fixes::raisedFundCap, &Fixes::bandLimited,
+    };
+    return m[std::clamp(i, 0, kCount - 1)];
+}
+
+const char* Fixes::id(int i)
+{
+    static const char* ids[kCount] = {
+        "noChannelSwap", "loopEndBothWays", "controlsAtStart", "burstFromFirstStep",
+        "silenceAfterPulsaret", "exactFormant", "smoothControls", "rateIndependentDC",
+        "burstEveryPulse", "formantEnvelopeRule", "raisedFundCap", "bandLimited",
+    };
+    return ids[std::clamp(i, 0, kCount - 1)];
+}
+
+const char* Fixes::name(int i)
+{
+    static const char* names[kCount] = {
+        "No channel swap", "Loop end both ways", "Controls at start", "Burst from first step",
+        "Silence after pulsaret", "Exact formant", "Smooth controls", "Rate-independent DC block",
+        "Burst on every pulse", "Formant envelope rule", "Raised fundamental cap", "Band-limited pulsarets",
+    };
+    return names[std::clamp(i, 0, kCount - 1)];
+}
+
+const char* Fixes::description(int i)
+{
+    static const char* text[kCount] = {
+        "The original swaps left and right at its output (.reverse), so pan tables play mirrored.",
+        "With Loop off the original only notices the end of the tables going forwards, so Backwards stops at once.",
+        "The original loads the control tables 3 ms after starting, so the first pulses play with every control at zero.",
+        "The original's burst counter starts at -2, so the pattern begins on its last step.",
+        "The original holds the pulsaret's last value until the envelope cuts it, leaving a DC step after each pulse.",
+        "The original rounds the pulsaret to whole samples, so high formants go out of tune and sweeps move in steps.",
+        "The original reads the control tables once per 64 samples, so fast sweeps step audibly.",
+        "The original's DC blocker coefficient is fixed, so its cutoff rises at higher sample rates (15 Hz at 96 kHz).",
+        "The original only advances the burst pattern on pulses that won the mask coin, stretching it when masking.",
+        "The source meant to drop the cutoff envelope when the lowest formant is at or above the fundamental; a bug disabled it.",
+        "The original caps the fundamental at 2000-3000 Hz, depending on the number of trains, for 2001 CPUs.",
+        "The original reads the pulsaret with linear interpolation, so high formants alias.",
+    };
+    return text[std::clamp(i, 0, kCount - 1)];
 }
 
 Controls Controls::fromSettings(const Settings& s, const Controls& keep)
@@ -103,15 +188,20 @@ void Engine::start()
     impulsePhase = 1.0;   // Impulse starts full: the first sample triggers
     lowestForm = 0.0f;
     nextPulseWillPlay.reset();
-    burstPos = -2;        // PG.burstLoop.setPos(-2)
+    burstPos = fixes.burstFromFirstStep ? -1 : -2; // PG.burstLoop.setPos(-2)
     numPulsars = 0;
     for (auto& v : voices) v = Voice{};
     numActiveVoices = 0;
     dcX = dcY = { 0.0f, 0.0f };
     masterGain = ctl.masterVolume;
     ctlValues.fill(0.0f);
+    ctlNext.fill(0.0f);
     blockRead = kBlockSize;
-    controlsDelay = (int) std::ceil(0.003 * sampleRate); // OscXFadeBank triggers its tables after 3 ms
+    // OscXFadeBank triggers its tables after 3 ms.
+    controlsDelay = fixes.controlsAtStart ? 0 : (int) std::ceil(0.003 * sampleRate);
+    wrapped = false;
+    // A backwards run from the very start of the tables plays them from the end.
+    if (fixes.loopEndBothWays && ctl.backwards && tablePos == 0.0) tablePos = lastCheckedPos = std::nextafter(1.0, 0.0);
 }
 
 void Engine::stop()
@@ -126,6 +216,7 @@ void Engine::jumpToPosition(double p)
 {
     tablePos = p - std::floor(p);
     lastCheckedPos = tablePos;
+    wrapped = false;
 }
 
 double Engine::position() const { return tablePos; }
@@ -144,37 +235,54 @@ float Engine::readTable(const std::vector<float>& t, double phase01) const
 void Engine::controlBlock()
 {
     // Control values for this block, read at its first sample.
-    if (controlsDelay > 0) {
+    const float x = fadeSamplesTotal > 0 ? 1.0f - (float) fadeSamplesLeft / (float) fadeSamplesTotal : 1.0f;
+    auto readControls = [&](std::array<float, kNumTables>& out, double pos, float fade) {
+        for (int k = 0; k < kNumTables; ++k) {
+            if (k == Pulsaret || k == PulseEnv) continue;
+            float v = readTable(tables->tables[(size_t) k], pos);
+            if (fadeFrom && fadeSamplesLeft > 0)
+                v = readTable(fadeFrom->tables[(size_t) k], pos) * (1.0f - fade) + v * fade;
+            out[(size_t) k] = v;
+        }
+    };
+    const bool live = controlsDelay <= 0;
+    if (!live) {
         ctlValues.fill(0.0f);
         controlsDelay -= kBlockSize;
     } else {
-        const float x = fadeSamplesTotal > 0 ? 1.0f - (float) fadeSamplesLeft / (float) fadeSamplesTotal : 1.0f;
-        for (int k = 0; k < kNumTables; ++k) {
-            if (k == Pulsaret || k == PulseEnv) continue;
-            float v = readTable(tables->tables[(size_t) k], tablePos);
-            if (fadeFrom && fadeSamplesLeft > 0)
-                v = readTable(fadeFrom->tables[(size_t) k], tablePos) * (1.0f - x) + v * x;
-            ctlValues[(size_t) k] = v;
-        }
+        readControls(ctlValues, tablePos, x);
     }
 
     // Phasor: one pass through the tables per train duration.
     if (!ctl.freeze) {
         const double dir = ctl.backwards ? -1.0 : 1.0;
         tablePos += dir * kBlockSize / (sampleRate * std::max(0.1f, ctl.trainDuration));
+        if (tablePos >= 1.0 || tablePos < 0.0) wrapped = true;
         tablePos -= std::floor(tablePos);
+    }
+    if (fixes.smoothControls) {
+        // Values at the next block's start, for per-sample interpolation.
+        if (live) {
+            const float xNext = fadeSamplesTotal > 0 ? std::min(1.0f, x + (float) kBlockSize / (float) fadeSamplesTotal) : 1.0f;
+            readControls(ctlNext, tablePos, xNext);
+        } else {
+            ctlNext = ctlValues;
+        }
     }
     // checkLoopPos (every 1/30 s): a wrap of the phase ends the run when Loop
     // is off. Like the original it only checks for the phase going down, so
-    // running backwards with Loop off stops at the first check.
+    // running backwards with Loop off stops at the first check
+    // (loopEndBothWays checks for a wrap either way).
     checkCounter += kBlockSize;
     if (checkCounter >= checkInterval) {
         checkCounter -= checkInterval;
-        if (tablePos < lastCheckedPos && !ctl.loop) {
+        const bool ended = fixes.loopEndBothWays ? wrapped : tablePos < lastCheckedPos;
+        if (ended && !ctl.loop) {
             stop();
             stoppedAtEnd = true;
         }
         lastCheckedPos = tablePos;
+        wrapped = false;
     }
 
     if (fadeSamplesLeft > 0) {
@@ -196,7 +304,8 @@ void Engine::spawnVoice(const std::array<float, 4>& train, float fund, bool pred
 {
     const float formFreq = train[0], pan = train[1], amp = train[2], level = train[3];
     Voice* v = nullptr;
-    for (auto& candidate : voices) if (!candidate.active) { v = &candidate; break; }
+    const size_t limit = fixes.raisedFundCap ? voices.size() : (size_t) kOriginalMaxVoices;
+    for (size_t k = 0; k < limit; ++k) if (!voices[k].active) { v = &voices[k]; break; }
     if (!v) return;
 
     *v = Voice{};
@@ -204,9 +313,22 @@ void Engine::spawnVoice(const std::array<float, 4>& train, float fund, bool pred
     // Osc1: one pass through the table in round(sr / formFreq) samples,
     // linear interpolation, then the last value is held.
     const double dur = 1.0 / std::max(1.0, (double) std::fabs(formFreq));
-    const int n = roundSamples(dur, sampleRate);
-    v->inc = (double) (kTableSize - 1) / (double) n;
-    v->remaining = n;
+    if (fixes.exactFormant) {
+        // The pass takes exactly dur seconds; samples with a phase short of
+        // the table's end are interpolated.
+        const double length = std::max(1.0, dur * sampleRate);
+        v->inc = (double) (kTableSize - 1) / length;
+        v->remaining = (int) std::ceil(length);
+    } else {
+        const int n = roundSamples(dur, sampleRate);
+        v->inc = (double) (kTableSize - 1) / (double) n;
+        v->remaining = n;
+    }
+    if (fixes.bandLimited) {
+        // Smallest level read at no more than one point per sample.
+        const int levels = (int) pulsaretNew->comboLevels.size();
+        v->mipLevel = std::clamp((int) std::ceil(std::log2(std::max(1.0, v->inc)) - 1e-9), 0, levels - 1);
+    }
     v->tablesA = pulsaretNew;
     if (pulsaretOld && fadeSamplesTotal > 0) {
         // xFade spawn function: new * fadeIn + old * (1 - fadeIn), fadeIn polled now.
@@ -238,7 +360,9 @@ void Engine::trigger(int)
     // that will be followed by silence is not cut short.
     auto flag = [&] {
         const bool coin = std::uniform_real_distribution<float>(0.0f, 1.0f)(rng) < control(PulseMask);
-        return ctl.burstOn ? (coin && burstNext()) : coin; // "and:" only advances the burst on a coin win
+        if (!ctl.burstOn) return coin;
+        if (fixes.burstEveryPulse) { const bool burst = burstNext(); return coin && burst; }
+        return coin && burstNext(); // "and:" only advances the burst on a coin win
     };
     std::optional<bool> playThis = nextPulseWillPlay;
     nextPulseWillPlay = flag();
@@ -256,16 +380,19 @@ void Engine::trigger(int)
 
     std::array<std::array<float, 4>, 3> active{};
     int count = 0;
+    float pulseLowestForm = std::numeric_limits<float>::infinity(); // formantEnvelopeRule
     for (int i = 0; i < 3; ++i) {
         if (!ctl.trainOn[(size_t) i] || ctl.trainLevel[(size_t) i] <= 0.0f) continue;
         const int base = FormFreq1 + i;
         const float formFreq = control(base);
         active[(size_t) count++] = { formFreq, control(Pan1 + i), control(Amp1 + i), ctl.trainLevel[(size_t) i] * 0.1f };
         lowestForm = std::min(formFreq, lowestForm); // never reset, so it stays <= 0
+        pulseLowestForm = std::min(std::fabs(formFreq), pulseLowestForm);
     }
     const float fund = std::fabs(control(FundFreq));
     // lowestForm < fund is effectively always true: the envelope always applies.
-    const bool noEnvelope = !(lowestForm < fund);
+    // formantEnvelopeRule takes this pulse's lowest formant instead, as intended.
+    const bool noEnvelope = fixes.formantEnvelopeRule ? !(pulseLowestForm < fund) : !(lowestForm < fund);
     const bool predict = !(fund < 20.0f || !*nextPulseWillPlay);
     for (int i = 0; i < count; ++i)
         spawnVoice(active[(size_t) i], fund, predict, noEnvelope);
@@ -282,10 +409,14 @@ void Engine::renderBlock()
 
     int activeTrains = 0;
     for (int i = 0; i < 3; ++i) if (ctl.trainOn[(size_t) i] && ctl.trainLevel[(size_t) i] > 0.0f) ++activeTrains;
-    const double freq = std::min((double) std::fabs(control(FundFreq)), (double) maxFundFreqs[(size_t) activeTrains]);
-    const double inc = freq / sampleRate;
+    double maxFund = maxFundFreqs[(size_t) activeTrains];
+    if (fixes.raisedFundCap) maxFund = std::max(maxFund, std::min(8000.0, 0.45 * sampleRate));
+    auto impulseInc = [&] { return std::min((double) std::fabs(control(FundFreq)), maxFund) / sampleRate; };
+    double inc = impulseInc();
 
     for (int s = 0; s < kBlockSize; ++s) {
+        blockSample = s;
+        if (fixes.smoothControls) inc = impulseInc();
         impulsePhase += inc;
         if (impulsePhase >= 1.0) {
             impulsePhase -= 1.0;
@@ -294,10 +425,21 @@ void Engine::renderBlock()
         float l = 0.0f, r = 0.0f;
         for (auto& v : voices) {
             if (!v.active) continue;
+            if (fixes.silenceAfterPulsaret && v.started && v.remaining <= 0) {
+                // The pulsaret has ended: nothing more to hear from this voice.
+                v.active = false; v.tablesA.reset(); v.tablesB.reset(); --numActiveVoices;
+                continue;
+            }
             auto osc = [&](const TableData& t) {
                 const auto& c = t.combo;
                 if (!v.started) return c[0];
                 if (v.remaining <= 0) return c[kTableSize - 1];
+                if (v.mipLevel > 0) {
+                    const auto& m = t.comboLevels[(size_t) std::min(v.mipLevel, (int) t.comboLevels.size() - 1)];
+                    const double ph = v.phase * (double) m.size() / kTableSize;
+                    const int i = std::min((int) ph, (int) m.size() - 2);
+                    return m[(size_t) i] + (m[(size_t) i + 1] - m[(size_t) i]) * (float) (ph - i);
+                }
                 const int i = (int) v.phase;
                 return c[(size_t) i] + (c[(size_t) i + 1] - c[(size_t) i]) * (float) (v.phase - i);
             };
@@ -340,18 +482,20 @@ void Engine::renderBlock()
     }
 
     // LeakDC(out, 0.999, masterVol), then .reverse swaps the channels.
+    // rateIndependentDC keeps the cutoff 0.999 gives at 44.1 kHz (about 7 Hz).
+    const float coef = fixes.rateIndependentDC ? (float) std::pow(0.999, 44100.0 / sampleRate) : 0.999f;
     const float g0 = masterGain, g1 = ctl.masterVolume;
     for (int s = 0; s < kBlockSize; ++s) {
         const float g = g0 + (g1 - g0) * (float) (s + 1) / kBlockSize;
         float* ch[2] = { &blockL[(size_t) s], &blockR[(size_t) s] };
         for (int c = 0; c < 2; ++c) {
             const float x = *ch[c];
-            const float y = x - dcX[(size_t) c] + 0.999f * dcY[(size_t) c];
+            const float y = x - dcX[(size_t) c] + coef * dcY[(size_t) c];
             dcX[(size_t) c] = x;
             dcY[(size_t) c] = y;
             *ch[c] = y * g;
         }
-        std::swap(blockL[(size_t) s], blockR[(size_t) s]);
+        if (!fixes.noChannelSwap) std::swap(blockL[(size_t) s], blockR[(size_t) s]);
     }
     masterGain = g1;
 }

@@ -117,6 +117,8 @@ Unused slots hold −99. With *Link Play Controls* on, switching sets while play
 
 ## Differences from the original
 
+Model 1 follows the original, quirks included. [MODEL2.md](MODEL2.md) describes the optional corrections. Apart from those:
+
 - **Recording:** the standalone records 24-bit AIFF or WAV. The original recorded 16-bit.
 - **Randomness:** the coin flips and random controls use a modern generator, so masking patterns are statistically the same but not the same sequence. The original's sequence was never reproducible either.
 - **Table editing tools:** the Alter and Fill operations follow the original help text. Their exact SC2 primitives (for example `Signal.smooth`) were not disassembled.
