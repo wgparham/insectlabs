@@ -7,7 +7,7 @@
 
 #include <juce_gui_basics/juce_gui_basics.h>
 
-class PatchView : public juce::Component
+class PatchView : public juce::Component, public juce::TooltipClient
 {
 public:
     turbosynth::Patch* patch = nullptr;
@@ -16,14 +16,23 @@ public:
     std::function<void(int)> onSelect;
     std::function<void()> onChanged;    // structure or positions changed
     std::function<void(int)> onPreview; // hear one module
+    std::function<void(turbosynth::Module&)> onNewModule; // a module about to be placed (defaults)
+    std::function<void(int, int)> onConnected;            // a new cord, from and to (1-based)
 
     void paint(juce::Graphics&) override;
     void mouseDown(const juce::MouseEvent&) override;
     void mouseDrag(const juce::MouseEvent&) override;
     void mouseUp(const juce::MouseEvent&) override;
     void mouseDoubleClick(const juce::MouseEvent&) override;
+    // Palette tools and modules name themselves on hover.
+    juce::String getTooltip() override;
 
     static int iconFor(const turbosynth::Module&);
+    // The other half of a stereo output jack or stereo sample (0 if none), and whether a module is an output.
+    int partnerOf(int index) const;
+    bool isOutput(int index) const;
+    // The right edge of the visible patch area, in patch coordinates.
+    int visibleRight() const { return (int) toPatch({ (float) getWidth(), 0.0f }).x; }
 
 private:
     enum class Tool { Arrow, Cord, Eraser, Place };
@@ -48,5 +57,5 @@ private:
     int dragging = 0;
     bool connecting = false;
     juce::Point<float> dragStart, dragNow;
-    std::array<int16_t, 4> rectAtStart{};
+    std::array<int16_t, 4> rectAtStart{}, partnerRectAtStart{};
 };

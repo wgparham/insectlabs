@@ -22,14 +22,13 @@ int PatchView::iconFor(const Module& m)
 std::vector<PatchView::PaletteItem> PatchView::palette() const
 {
     return {
-        { 1000, -1, "Arrow: select and move" }, { 1005, -2, "Patch cord: drag from a module to another" }, { 1007, -3, "Eraser: remove a module or cord" },
+        { 1000, -1, "Arrow: select and move" }, { 1005, -2, "Patch cord: drag from a module to another" }, { 1001, -3, "Eraser: remove a module or cord" },
         { 2000, kOscillator, "Oscillator" }, { 2001, kSample, "Sample" }, { 2002, kNoise, "Noise" },
         { 3000, kAmpEnv, "Amplitude Envelope" }, { 3001, kFilter, "Filter" }, { 3002, kSpectralInverter, "Spectral Inverter" },
         { 3011, kPitchEnv, "Pitch Envelope" }, { 3003, kModulator, "Modulator" }, { 3004, kWaveshaper, "Waveshaper" },
         { 3005, kMixer, "Mixer" }, { 3006, kDelay, "Delay" }, { 3009, kResonator, "Resonator" },
         { 3007, kPitchShifter, "Pitch Shifter" }, { 3008, kStretchExpand, "Stretcher (expand)" },
-        { 3010, kStretchCompress, "Stretcher (compress)" }, { 3012, kDiffuser, "Diffuser" },
-        { 7000, kOutput, "Output (or Output L)" }, { 7002, kOutputR, "Output R" },
+        { 3010, kStretchCompress, "Stretcher (compress)" }, { 3012, kDiffuser, "Diffuser" }, // the output jack is always there (Sound > Stereo Output)
     };
 }
 
@@ -42,6 +41,24 @@ juce::Rectangle<float> PatchView::paletteCell(int i) const
 }
 
 juce::Point<float> PatchView::toPatch(juce::Point<float> p) const { return (p - origin) / scale; }
+
+int PatchView::partnerOf(int index) const
+{
+    if (!patch || index < 1 || index > (int) patch->modules.size()) return 0;
+    const int16_t type = patch->modules[(size_t) index - 1].type;
+    if (type == kSample) return samplePartner(*patch, index); // a linked stereo sample
+    if (type != kOutput && type != kOutputR) return 0;
+    for (int i = 1; i <= (int) patch->modules.size(); ++i)
+        if (patch->modules[(size_t) i - 1].type == (type == kOutput ? kOutputR : kOutput)) return i;
+    return 0;
+}
+
+bool PatchView::isOutput(int index) const
+{
+    if (!patch || index < 1 || index > (int) patch->modules.size()) return false;
+    const int16_t type = patch->modules[(size_t) index - 1].type;
+    return type == kOutput || type == kOutputR;
+}
 
 juce::Rectangle<float> PatchView::iconBounds(int index) const
 {
@@ -116,7 +133,7 @@ void PatchView::paint(juce::Graphics& g)
     // Modules: icon plus name, inverted when selected (as in the Finder).
     for (int i = 1; i <= (int) patch->modules.size(); ++i) {
         const auto& m = patch->modules[(size_t) i - 1];
-        const bool sel = i == selected;
+        const bool sel = i == selected || (selected && partnerOf(i) == selected); // the halves of a stereo jack or sample go together
         classic::drawIcon(g, iconFor(m), iconBounds(i), sel);
         const auto font = classic::smallFont(10.0f);
         const int tw = juce::GlyphArrangement::getStringWidthInt(font, m.name) + 4;
@@ -131,6 +148,7 @@ void PatchView::paint(juce::Graphics& g)
 
 void PatchView::mouseDown(const juce::MouseEvent& e)
 {
+    if (auto* top = getParentComponent()) top->grabKeyboardFocus(); // so the Edit shortcuts reach the main window
     if (paletteArea().contains(e.getPosition())) {
         const auto items = palette();
         for (int i = 0; i < (int) items.size(); ++i)
@@ -157,7 +175,7 @@ void PatchView::mouseDown(const juce::MouseEvent& e)
         return;
     }
     if (tool == Tool::Eraser) {
-        if (hit) { removeModule(*patch, hit); selected = 0; if (onSelect) onSelect(0); if (onChanged) onChanged(); }
+        if (hit) { if (!isOutput(hit)) { removeModule(*patch, hit); selected = 0; if (onSelect) onSelect(0); if (onChanged) onChanged(); } } // the output jack cannot be erased
         else if (const int c = cordAt(e.position); c >= 0) { patch->connections.erase(patch->connections.begin() + c); if (onChanged) onChanged(); }
         repaint();
         return;
@@ -168,6 +186,7 @@ void PatchView::mouseDown(const juce::MouseEvent& e)
     connecting = hit && (tool == Tool::Cord || e.mods.isShiftDown());
     dragStart = dragNow = e.position;
     if (hit) rectAtStart = patch->modules[(size_t) hit - 1].rect;
+    if (const int p = partnerOf(hit)) partnerRectAtStart = patch->modules[(size_t) p - 1].rect;
     repaint();
 }
 
@@ -180,6 +199,11 @@ void PatchView::mouseDrag(const juce::MouseEvent& e)
         auto& r = patch->modules[(size_t) dragging - 1].rect;
         r[0] = (int16_t) (rectAtStart[0] + d.y); r[2] = (int16_t) (rectAtStart[2] + d.y);
         r[1] = (int16_t) (rectAtStart[1] + d.x); r[3] = (int16_t) (rectAtStart[3] + d.x);
+        if (const int p = partnerOf(dragging)) {
+            auto& pr = patch->modules[(size_t) p - 1].rect;
+            pr[0] = (int16_t) (partnerRectAtStart[0] + d.y); pr[2] = (int16_t) (partnerRectAtStart[2] + d.y);
+            pr[1] = (int16_t) (partnerRectAtStart[1] + d.x); pr[3] = (int16_t) (partnerRectAtStart[3] + d.x);
+        }
     }
     repaint();
 }
@@ -189,7 +213,11 @@ void PatchView::mouseUp(const juce::MouseEvent& e)
     if (!patch || !dragging) return;
     if (connecting) {
         const int to = moduleAt(e.position);
-        if (to && to != dragging) { patch->connections.push_back({ (int16_t) dragging, (int16_t) to }); if (onChanged) onChanged(); }
+        if (to && to != dragging) {
+            patch->connections.push_back({ (int16_t) dragging, (int16_t) to });
+            if (onConnected) onConnected(dragging, to);
+            if (onChanged) onChanged();
+        }
     } else if (e.position != dragStart && onChanged) {
         onChanged();
     }
@@ -211,7 +239,7 @@ void PatchView::showModuleMenu(int index)
     menu.addSeparator();
     menu.addItem(2, "Disconnect Inputs");
     menu.addItem(3, "Disconnect Outputs");
-    menu.addItem(4, "Clear Module");
+    menu.addItem(4, "Clear Module", !isOutput(index));
     menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this), [this, index](int r) {
         if (!patch || r == 0) return;
         auto& cs = patch->connections;
@@ -230,6 +258,7 @@ void PatchView::place(int type, juce::Point<float> at)
     int32_t sr = 44100, len = 44100;
     for (const auto& m : patch->modules) if (m.type == kOutput && m.sampleRate > 0) { sr = m.sampleRate; len = m.length > 0 ? m.length : sr; break; }
     auto m = makeModule(type, sr, len);
+    if (onNewModule) onNewModule(m);
     const auto pos = toPatch(at);
     m.rect = { (int16_t) (pos.y - 16), (int16_t) (pos.x - 16), (int16_t) (pos.y + 16), (int16_t) (pos.x + 16) };
     int count = 1;
@@ -259,4 +288,26 @@ void PatchView::fit()
     const float ox = all.getX() * scale < 0.0f || all.getRight() * scale > area.getRight() - area.getX() ? area.getX() - all.getX() * scale : area.getX();
     const float oy = all.getY() * scale < 0.0f || all.getBottom() * scale > area.getBottom() - area.getY() ? area.getY() - all.getY() * scale : area.getY();
     origin = { ox, oy };
+}
+
+juce::String PatchView::getTooltip()
+{
+    const auto p = getMouseXYRelative().toFloat();
+    if (paletteArea().contains(p.toInt())) {
+        const auto items = palette();
+        for (int i = 0; i < (int) items.size(); ++i)
+            if (paletteCell(i).contains(p)) return items[(size_t) i].tip;
+        return {};
+    }
+    if (const int hit = moduleAt(p)) {
+        const auto& m = patch->modules[(size_t) hit - 1];
+        juce::String type = moduleTypeName(m.type);
+        if (m.type == kSample && partnerOf(hit)) type = m.sampC[2] == 1 ? "Stereo Sample, left" : "Stereo Sample, right";
+        return juce::String(m.name) == type ? type : juce::String(m.name) + " (" + type + ")";
+    }
+    if (patch && cordAt(p) >= 0) {
+        const auto& c = patch->connections[(size_t) cordAt(p)];
+        return "Patch cord: " + juce::String(patch->modules[(size_t) c.from - 1].name) + " to " + juce::String(patch->modules[(size_t) c.to - 1].name);
+    }
+    return {};
 }

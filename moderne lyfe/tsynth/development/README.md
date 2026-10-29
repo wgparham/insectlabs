@@ -16,6 +16,18 @@ You patch modules together to build a sound: oscillators, samples, noise, envelo
 | Connect | Choose the patch-cord tool and drag from one module to another, or Shift-drag with the arrow |
 | Remove | Use the eraser tool on a module or a cord, or select a module and press Delete |
 | Edit | Select a module; Module Info shows its settings, breakpoint envelope or waveform |
+| Presets and modifiers | The tool palette beside the envelope, waveform or waveshaper editor, with the original icons: each preset icon holds four presets, one per quarter. Hover for names. The waveshaper also has the pencil and the eraser (puts back the straight line) |
+| Stereo | Sound > Stereo Output switches the output jack between mono and the L/R pair |
+| Stereo samples | Loading a stereo file into a Sample module (with Stereo Preferences set to "Open both channels") makes a linked pair: the L and R halves sit side by side, select together, and share edits, tools and loop points. Each half has its own cords, so you can process the two channels differently. Edit > Convert Stereo Sample to Dual Mono unlinks them |
+| Harmonic mode | In the Oscillator, the two top palette icons switch between the waveform and its first 64 harmonics. Drag a harmonic with the arrow, or draw a line with the rake (Alt: only harmonics above the line; Alt+Shift: all of them). Harmonic presets and modifiers have their own icons |
+| Time line | The Oscillator's waveforms sit on a time line: click one to edit it, drag it to move it in time. **Save** writes the current waveform to a file; the disk quarter of the last preset icon loads one |
+| Edit menu | Undo, Cut, Copy, Paste, Clear, Duplicate and Convert to Sample (freezes a module's sound into a Sample module and disconnects its inputs), with the original shortcuts (Ctrl or Cmd + Z, X, C, V, B, D) |
+| Options menu | Auto Preview (play after every edit, Ctrl+T); the Parameter Manager (Ctrl+Y): default rate, length and frequency, Inherit sample rate, Convert sample modules to default, Inherit length, Dynamic length (the original's formulas for the Delay, Stretchers and Pitch Shifter) and Monitor loop at output; Stereo Preferences: new documents as stereo, opening both channels of a stereo file or one you choose, matching channel lengths and the stereo sample rate |
+| Tooltips | Hover over a palette tool, module or cord to see its name |
+| Sample window | Select a Sample module: its sound appears in the Sound window. Drag to select; Cut, Copy, Paste, Clear, Reverse (Ctrl+R) and Silence (Ctrl+E) then work on the selection. The palette has the original tools: load, sample rate conversion, extend loop, gain scaling (or normalize), envelope removal, crossfade looping, loop points to selection, the loop-marker pair and the Loop window |
+| Loop markers | Pick the start or end marker in the palette and click in the Sound window, or drag a marker. A stereo output pair, or a linked stereo sample, shares its markers |
+| Loop window | Shows the loop end (left) against the loop start (right). Click a half to move that point, use the arrows to step one sample or the Auto arrows to jump to the best match for the other point in that direction, zoom with the four arrow icons, and hear the loop with the speaker |
+| Output crossfade | Select the output and use the crossfade icon: a mode, like the original, that crossfades whatever reaches the output. File > Save Loop as Waveform makes an oscillator waveform from the loop |
 | Hear one module | Double-click it, or use Hear in Module Info |
 | Play / stop | The Play and Stop buttons, or the space bar |
 | Export | File > Export Sound (16-bit WAV or AIFF) |

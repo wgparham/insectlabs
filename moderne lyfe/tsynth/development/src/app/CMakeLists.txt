@@ -11,7 +11,8 @@ target_sources(TurboSynth PRIVATE
     ModulePanel.cpp
     WaveView.cpp
     ClassicLook.cpp
-    ClassicIcons.cpp)
+    ClassicIcons.cpp
+    LoopWindow.cpp)
 
 target_compile_definitions(TurboSynth PRIVATE
     JUCE_WEB_BROWSER=0

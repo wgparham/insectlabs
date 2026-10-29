@@ -94,7 +94,7 @@ All 29 example documents parse with this layout.
 Small, call-free Pascal routines, interleaved with large setup routines. They use Q15 arithmetic: `muls`, add, add (×2), `swap` (that is, (a·b) >> 15, truncated). For example:
 - `F29_00004`: mix into a buffer, `out = (out·g0 + in·g1) >> 15`.
 - `F29_0006C`: clear a buffer.
-- `F29_000E4`: a stereo rotation with a moving 16.16 coefficient.
+- `F29_000E4`: the crossfade-loop kernel (see "Loops and the Sample window" below).
 
 ## Method tables
 
@@ -409,7 +409,7 @@ The values: 0.5, 0.66667, 0.79459, 0.94379, 0.98499, 1.0, 1.01500, 1.05951, 1.25
 ## App status (2026-10-28)
 
 - **Look:** a JUCE standalone in `src/app` with a Classic Mac look (the user asked for one "closer to its original look", with a dark mode). Light is black on white with a dither desktop and pinstriped windows; View > Dark Mode is the same drawing in warm light ink on charcoal, saved in `TurboSynth.settings`.
-- **Icons:** the original ICON resources are embedded in `src/app/ClassicIcons.cpp`, generated from the 2.22 resource fork. Module icons are numbered by kind: 2000 osc, 2001 sample, 2002 noise, 3000–3012 processors (3008 expanding stretcher, 3010 compressing stretcher), 7000–7002 outputs. Tool icons: 1000 arrow, 1005 patch cord, 1007 eraser, 1003 speaker.
+- **Icons:** the original ICON resources are embedded in `src/app/ClassicIcons.cpp`, generated from the 2.22 resource fork. Module icons are numbered by kind: 2000 osc, 2001 sample, 2002 noise, 3000–3012 processors (3008 expanding stretcher, 3010 compressing stretcher), 7000–7002 outputs. Tool icons: 1000 arrow, 1001 eraser, 1003 speaker, 1005 patch cord, 1006 pencil, 1007 rake (Harmonic window). 7001 and 7002 are the left and right halves of the stereo jack (each lacks one border), and 2004 and 2003 the left and right halves of a linked stereo sample.
 - **Patch window:** a two-column palette; place a module by clicking its icon, then the patch. Patch cord or Shift-drag connects, the eraser removes, double-click hears a module. The view fits large patches.
 - **Module Info:** numeric fields per type, a breakpoint editor (envelope family), and drawable tables (oscillator waves, shaper).
 - **Sound window:** waveform, Play/Stop, play cursor. File > Export Sound writes 16-bit WAV or AIFF.
@@ -437,3 +437,111 @@ The values: 0.5, 0.66667, 0.79459, 0.94379, 0.98499, 1.0, 1.01500, 1.05951, 1.25
   - The waveform is drawn once into an image, and the play cursor repaints only while playing.
   - Rendering runs on a worker thread; the newest request wins, the Sound window shows "(rendering...)", and Play waits for the result.
   - Idle CPU is about 1% of one core. Real clicks register within 250 ms. Drag-move and Shift-drag connect work, checked with input-level mouse moves (SetCursorPos-only drags never reach JUCE).
+
+## Editor presets and modifiers (2026-10-28)
+
+The module windows' palettes, recovered from the window code and ported in `src/engine/Presets.cpp`. Each palette sits two icons to a row. A preset icon (1010–1012, 1110–1112, 3100/3101, 3400/3401) holds four tools, one per quarter; the tool codes run across the top halves of a whole row of preset icons, then the bottom halves (two icons to a row, three in the Waveform/Harmonic window; verified from the palette rectangles, see "Palette click mapping" below). Checked by plotting every result against its icon.
+
+- **Waveshaper (CODE 41).** Dispatch at F41_01CF4 on the tool code (+1C), 5..22. The table is at +132.
+  - Presets 5–12: straight line (F41_00004), zigzag (0003C), fold (00202), V (00294), parabola (00320), cubic x³/16 − 768x (00386), random walk (00426), flat (005D8).
+  - The random walk burns TickCount mod 8 Randoms, walks up by HiWord(slope) + 256 a step, turns at the edges, re-aims 1 time in 32, then applies one random modifier (Random mod 8 → 68A, 6C8, 7E0, 896, 708, 770, 96E, 9E6).
+  - Modifiers 13–22: mirror right half onto left (0068A), left onto right (006C8), flip left half (00608), flip right half (00648), square law (007E0), 2v − square law (00896), bow down (00708), bow up (00770), add Random/32 (0096E), smooth (009E6: in place, 3/5/7-point, ends held). 7E0–770 smooth afterwards.
+  - The bows square v + 0x8000 with the 32-bit LMUL, which wraps above 46341; dividing by 65536 and keeping 16 bits makes the wrap vanish, so the port reproduces it as is.
+  - The window's eraser re-draws the straight line (i − 128) << 8 where it is dragged.
+- **Waveforms (CODE 38, used by the Oscillator window CODE 39 through the jump table).** Dispatch at F38_03F70 (presets, codes 7–18) and F38_0406E (modifiers in waveform mode, codes 19–36; the flag at +33A picks it; harmonic mode has its own 15-entry table at F38_041A6, see below).
+  - A preset is a harmonic recipe: 65 records of (level, phase) at +22A, phase 0..255 of a cycle (0x80 = inverted). F38_00CEC clears them; F38_0098C sums them into a 32-bit buffer with the TSWT sine table (F38_04A54: buf += q15(sine[(phase + n·k) & 255] · level)), finds the peak (04ABC) and, if it is over 0x7FFF, scales by LoWord(FixDiv(0x7FF8, peak)); otherwise by 0xFFFF (04AF0: hi·scale + ext((lo·scale) >> 16), low word kept). A sum under 100% therefore stays unnormalized, as the manual says.
+  - Recipes: sine (00D28); triangle, odd k at 0x6872/k² with alternating phase (00D5E); saw, 0x7FFF/k (00DEA); square, odd k (00E3E); k = 1 or even at 0x70A2/k (00E9A); k ≡ 1 mod 4 at 0x5C8C/k, alternating (00F06); k ≡ 1 mod 3 (00F94); formant, the fundamental plus k 20–25 at 0x7FFF divided by 3, 2, 1, 1, 2, 3 (00FF8); Fibonacci harmonics (01086) and primes plus 1 (010F4), both Pascal sets stored as bitmaps just before each routine; octaves (01162). Code 18 is the disk: load a waveform file.
+  - Modifiers: ×10/9 on the positive half (011C4), negative half (01232), both (012A0); fade in ×(i+245)/500 (0130A); fade out ×(500−i)/500 (0135E); ×9/10 (013B2); +2000 (013FE); −2000 (0144C); normalize to 0x7FFF (0149A; the original divides by zero on silence, the port skips); resample with a falling step from the left (0155E), from the right (015E0), both (01678), interpolating with F38_00C5A; rotate 4 samples left (01692) and right (016EE); invert (0174C); add Random/32 (01796); smooth using the guard point (01806); smooth wrapping round the cycle (01968).
+- **Envelopes (CODE 40).** Dispatch at F40_02056, codes 5–18. Times are in ms against the module's length: dur = LMUL(length, 1000) / rate.
+  - Presets: ADSR (0,0)(100,30)(50,100)(50,dur−100)(0,dur) with each point only if it fits (F40_000C0); decay (00270); rise and fall (00334); rise (0044A); 45/55 alternating every 201 ms (00510); 50/100 every 61 ms (005B0); flat 50 (00650); flat 100 (006AA).
+  - Modifiers: levels ×9/10 (00704); (level+1)×10/9 up to 100 (0075E); times from the second point ×9/10, kept increasing (007CC; 9·time is a 16-bit `muls.w`, so it wraps past 3640 ms, as in the original); times ×10/9 + 1, then points past the end are dropped (00852, 0005A); levels toward 50 (008C4); away from 50, applied twice (00928).
+  - F40_00C2C keeps a handle rectangle with each point: SetRect(time−1, 99−level, time+2, 102−level), stored in the point's extra words. The port fills it whenever it creates or edits points.
+
+## Stereo output (2026-10-28)
+
+- **In the documents:** a stereo document has Output L (type 100, kind 7001) and Output R (type 101, kind 7002), R exactly 32 px right of L, so the two half icons make one jack. A mono document has Output (type 100, kind 7000). Checked on Early Reflections and Rotating Speaker.
+- **In the port:** Sound > Stereo Output switches between the two (`setStereo` in `Patch.cpp`); going back to mono drops Output R and its cords. The halves move and highlight together, and neither can be erased, matching the original's "the output jack cannot be erased". The palette no longer offers loose output modules.
+- **Not yet:** the original's Stereo Preferences (new documents as stereo, channel matching, sample-rate choice).
+
+## Harmonic mode (2026-10-28)
+
+- **Analysis (F38_007AC):** run when the Harmonic window needs harmonics and the flag at +228 says they are stale. For k = 0..64 it correlates the 256 samples with the TSWT sine twice, from phase 0 and from phase 64 (a quarter cycle), with F38_049E6: sum of (sample · sine) >> 6, saturating to 0x7FFF0000 / 0x80000000, result the high word (−1 becomes 0).
+  - Level = HiWord(FracSqrt(s² + c²) << 1), with the FracSqrt result clamped to 0x3FFFFFFF.
+  - Phase is a linear stand-in for the arctangent, one quadrant at a time: (c·64)/(s+c); 64 + (−s·64)/(c−s); 128 + (c·64)/(c+s); 192 + (s·64)/(s−c).
+  - Resynthesis is F38_0098C (see the waveform presets). A preset wave analyzed and resynthesized comes back within a few steps; a normalized wave's levels come back scaled with it.
+- **Harmonic presets:** the same twelve recipes as the waveform presets (the icons 1110–1112 draw them as drawbars). In Harmonic mode they replace the harmonics, then resynthesize.
+- **Harmonic modifiers (F38_041A6, codes 19–33), on levels only:** −0x200, floor 0 (01A82); +0x200 for levels above 8, ceiling 0x7FFF (01AD6); normalize to 0x7FFF (01B3E); ×(k+64)/128 (01C18); ×(128−k)/128 below 33 and ×(k+64)/128 above (01C72); ×(128−k)/128 (01D10); ×(129−k)/64 (01D6A); ×(k+64)/64 below 33, ×(129−k)/64 above (01DD2); ×(k+64)/64 (01E6C), each capped at 0x7FFF; shift down, h1 += h2 (01ED4); shift up (01F40); add Random/256, below 64 becomes 0 (01F7C); spacing halved (01FEA); spacing doubled, odd places from k/2, even ones cleared (0206C); spacing ×3/2 by averaging (020CE).
+- **Editing (F38_03A34 tracking, F38_03B32 apply):** the Harmonic window is 256 pixels tall and each harmonic 4 pixels wide (x 1..256 → harmonic x/4 + 1). A point at y (clamped to at most 255) is level (256 − y)·128, so levels step by 128 and the lowest a drag can set is 128. The bars are drawn absolute, top at 256 − level/128 (F38_02B30); there is no relative display. The rake orders its two points by x and sets each harmonic k between them to l1 + (k − h1)·(l2 − l1)/(h2 − h1) (long multiply and divide) if the harmonic is above 1, or with Option only if it is above the line (`+2AC`), or with Option+Shift always (`+2AD`). With both points on one harmonic it takes the second point's level (the comparison there uses a stale register in the original; the port compares with that level). The port does all of this, except that the original's y = 0 (level 32768, which wraps negative) is clamped to y = 1.
+
+## Group 2 in the port (2026-10-28)
+
+- **Oscillator time line:** the waveforms sit at their times on a 50 ms scale and are dragged in time; on release they are re-sorted by time. Save writes the 554-byte waveform file.
+- **Edit menu:** Undo (40 steps, one per edit), Cut, Copy, Paste, Clear, Duplicate and Convert to Sample (the module's computed sound becomes a Sample module's stored sound, its input cords go, its output cords stay), with the original shortcuts.
+- **Options menu:** Auto Preview (⌘T), the Parameter Manager (⌘Y) and Stereo Preferences, saved in the settings. The defaults (rate, length, frequency) apply to new documents and newly placed modules. The rate and length rules are traced; see "Parameter Manager rules" below.
+- **Keyboard:** the window passes keys no control takes to the shortcuts, and Ctrl+letter arriving as a control character is mapped back.
+
+## Loops and the Sample window (2026-10-28)
+
+- **Loop fields:** TBLOCK modules with a sound window keep the loop start at `+12E` and the loop end at `+132` (−1 = none; set by F36_00004). The Output adds crossfade looping: `+146` on (byte), `+148` length, `+14C` type (byte: 1 Linear, 0 Equal Power, from the dialog's radio items 5/6 in F37_0008C). These are the Output's five stored values; the Sample module's `+12E`/`+132` are its loop.
+- **Output crossfade is a mode (F23_01DF2):** when the Output is computed with `+146` set, and `length − loopEnd ≥ xfLength` and `xfLength ≤ loopStart`, it copies its input's sound into its own buffer and crossfades it; otherwise it stays a view of the input. The port now does this in the engine: FM Synthesis Example has it on for both outputs, and its render changed accordingly.
+- **Crossfade (F6_00C36, kernel F29_000E4):** q = length / 4; four quarters centred on the loop points, posA from loopStart − 2q, posB from loopEnd − 2q. Per sample a' = (a·gA + b·gB)·2 >> 16 and b' = (a·gB + b·gA)·2 >> 16 with gA, gB the high words of 16.16 accumulators starting at 0x7FFF0000 and 0; each sample gA −= slope, gB += slope. Slopes per quarter, divided by q: Linear 0x20000000, 0x20000000, −0x20000000, −0x20000000; Equal Power 0x30000000, 0x10000000, −0x10000000, −0x30000000. So both regions meet at an equal blend exactly at the loop points. The dialog limits the length to min(loopEnd − loopStart, length − loopEnd, loopStart) and at least 8.
+- **Sample Rate Conversion (F28_01B6E dialog 0x2718, F28_01870, kernel F28_0594A):** ratio = FixDiv(old, new); new length = FixDiv(length, ratio). The kernel steps a 16.16 position by the ratio and interpolates a + (b−a)·frac >> 16 (toward a when b < a). Downsampling works in place; upsampling first moves the sound to the end of the larger buffer. The loop points (and `+140`/`+144`) become FixDiv(point, ratio). Rates 100–100000.
+- **Gain Scaling (F28_01380, dialog 0x2717):** Normalize runs the module normalize; otherwise gain = FixRatio(percent, 100), 1–2000%, applied by F28_059C6: x·integer part + (x·(fraction >> 1))·2 >> 16, clipped.
+- **Envelope Removal (after F28_01B6E, dialog 0x271C, default 50 ms):** blocks = length·(1000 / response) / rate (the 1000/response truncates first), block length = rate·response / 1000. For each block F6_00D7C finds the peak and the index after it; the gain there is FixRatio(30000, peak) (or the previous gain for silence), and F28_05A64 ramps the gain linearly from the previous peak to this one, clipping. The last gain holds to the end.
+- **Edit commands (CODE 16, MacApp command objects with Do/Undo):** Reverse F16_01B10 (F28_05A28 both ways); Silence F16_01D1E (F29_0006C clears the selection); Cut F16_00B2C removes the selection, leaves the insertion point at its start, and if the loop end is now at or past the end clears both loop markers; Paste F16_00FE0 / F16_013D8 inserts the clipboard (replacing a selection) and selects what was pasted; Clear F16_018B6 removes the selection and leaves the markers alone. The selection is `+140`/`+144`. Loop markers do not move with the edits. The port follows these.
+- **Extend Loop (F28_01FF0, rect `+78`):** the info box's Length sets the buffer size first; the command then fills from the loop end to the end of the buffer with copies of the loop (BlockMove from the loop start each time), overwriting what was there. The port resizes to the module's Length and does the same.
+- **Loop points to selection (rect `+98`):** selection = loop start .. loop end, for a stereo partner too.
+- **Save Loop As Waveform (F25_002B6):** step = FixRatio(loop length as a word, 256); the oscillator's resampler F39_02870 makes 256 points (a + ((b−a)·(frac >> 1))·2 >> 16 with 16-bit differences; the last point reads the sample at the loop end); then the module normalize (F23_008B8 + F29_000A2). The file it writes is 0x2A bytes copied from the start of the sample buffer (not a name and time: that is why waveform files saved from loops have header bytes equal to their first samples) followed by the 512 bytes of samples. The port resamples and normalizes the same way but writes a proper name.
+- **Palette click mapping (verified, CODE 38/40/41):** each tool has a rectangle at `+38 + 8·code` in the window object, set with SetRect. Waveshaper and envelope palettes are 64 px wide: codes 1–4 are 32 px icons, the preset codes are 16 px quarters across the top halves of the two preset icons, then the bottom halves, then 32 px modifiers two to a row. The Waveform/Harmonic window palette is 96 px wide (three icons): row 1 waveform mode (1008), pencil (1006) or arrow (1000), eraser (1001) or rake (1007); row 2 harmonic mode (1009), info, speaker; row 3 the three preset icons, codes 7–12 across their top halves and 13–18 across the bottom halves; then the modifiers three to a row. The port's earlier two-wide waveform palette had some waveform presets in the wrong quarters; it now uses the original layout. The waveform window's eraser is not ported (its action was not traced).
+- **Still the port's own:** the Loop window's layout and zoom steps, and playing the loop for about four seconds. Direct sampling (Sound Accelerator + AD In) is not offered.
+- **Loop window Auto arrows (CODE 35 F35_00EE4, search F6_00DDA):** each arrow scans a whole range one sample at a time: loop end ← from the end to loopStart + 1 (1 without a start), loop end → to length − 1, loop start ← to 0, loop start → to loopEnd − 1 (length − 2 without an end). At each position p, with d the direction, score = |s[p] − s[r−d]| + |s[p+d] − s[r]| + |s[p+2d] − s[r+d]| where r is the other loop point; the lowest score wins, a tie going to the later position, and the new point is p + d (the middle of the three). So it always moves, and it goes to the best match in the range however far away. The port follows this exactly (it replaced an earlier search of the port's own that stopped at the first close match nearby).
+
+## Parameter Manager rules (2026-10-28)
+
+- **Settings (DITL 10009, CODE 6 F6_0132C; loaded in CODE 3):** `-$4F2` default rate, `-$4F6` default length, `-$4FA` default frequency; check boxes Inherit sample rate (item 8, `-$4FB`), Convert sample modules to default (9, `-$4FC`), Inherit length (14, `-$4FD`), Dynamic length (15, `-$4FE`) and Monitor loop at output (20, `-$4FF`).
+- **Messages (the change selector F18_00E70; TBLOCK handler F23_014F4):** 4 sets the rate and, with Inherit rate, sends 9 to the modules fed; 9 sets the rate and passes it on unconditionally; 5 sets the length (capped by memory) and always sends 10 with the new length to the modules fed; 10 ("input length") sets the length only with Inherit length; 11/12 (input added/removed).
+- **Classes overriding message 10:**
+  - TDELAY F23_02794: for a Delay (type 13) with Dynamic length, L + (feedback / 5) · delay, delay = (100·coarse + fine)·rate / 10000 samples; otherwise L (so the Resonator always takes its input's length).
+  - TCOMPAND F23_02828: expanding Stretcher with Dynamic length L + FixMul(L, FixRatio(25, 101 − amount)); compressing Stretcher with Dynamic length and amount > 80 L·(110 − amount)/40; otherwise L.
+  - TPSHIFT F23_028C8: with Dynamic length max(L, L·(−semitones)/6); otherwise L.
+  - TDIFFUSE F23_02936: the same formula applied to the Size coarse parameter, so in practice L.
+  - TOUTPUT F23_018F4: takes L.
+  - TMIX F23_02612: with Inherit length, the longest of its inputs (F23_025B8), also re-measured when inputs are added or removed.
+  - TENV F23_02346: with Inherit length, takes L and drops breakpoints past the new end (F40_0005A).
+  - These classes then set their length with message 5, which passes it on. So a Delay, Resonator, Stretcher, Pitch Shifter, Diffuser or Output follows a change of its input's length whether or not Inherit length is on.
+- **Connections (F16_047C2):** message 11 to the new destination, then 10 with the source's length if Inherit length is on, then 9 with the source's rate if Inherit rate is on.
+- **Parameter edits:** the Delay window (CODE 44, only for type 13), the Stretcher (45), Pitch Shifter (46) and Diffuser (48) windows send 10 with their input's length after an edit when Dynamic length is on and the module has exactly one input.
+- **Monitor loop at output:** when the output is previewed, the loop points go to the playback routine and the loop repeats.
+- **The port** (`src/engine/Rules.cpp`) applies all of this after edits in Module Info, new cords and loaded sounds; it replaced the port's earlier "compute and trim the tail" rule. Monitor loop at output repeats the output's loop for about 20 seconds after Play.
+
+## Stereo Preferences (2026-10-28)
+
+- **Dialog (DITL 10040, CODE 6 F6_0178E):** new document Mono/Stereo (items 4/5, a field of the application object); open both channels / a specified channel of a stereo file (7/8, `-$518`); matching channel lengths pad/truncate (12/13, `-$513`); sample rate highest / lowest / left's / right's (15–18, `-$516` holds the item number); stereo to mono scale / don't (20/21, `-$517`); direct sampling mono/stereo (23/24, `-$519`); empty Sample module mono/stereo (26/27, `-$51A`).
+- **Stereo sound (F23_02DDC, F23_02F6E):** the rate is chosen from the two outputs' sources per `-$516` (or the one output that has a source), and the length is the longer channel padded (pad) or the shorter (truncate, which also clears loop points past it).
+- **The port:** new documents as stereo, pad/truncate and the rate choice (`RenderOptions`), open both channels (linked pairs, below) or a specified channel, chosen when the file opens. Not ported: stereo empty Sample modules (`-$51A`), direct sampling, and the stereo-to-mono scale (the port plays and exports stereo).
+
+## Linked stereo Sample modules (2026-10-28)
+
+- **Fields:** `+14E` partner handle, `+152` partner's id, `+154` own id, `+156` channel (1 left, 2 right, 0 mono). Documents store `+154`, `+152`, `+156` (the port's `sampC`).
+- **The id is not a list position.** F28_01278 gives a Sample module whose `+154` is 0 the id of the nearest earlier Sample module that has one, plus 1 (or 1 if there is none). The partner is the Sample module whose id equals `+152`, so deleting modules needs no renumbering.
+- **Icons (F28_011D8):** channel 1 → kind 2004, channel 2 → 2003, otherwise 2001. 2004 lacks its right border and 2003 its left one, so the pair reads as one L|R icon, like the stereo output jack.
+- **Reading a document (F9_010A2, F28_01040):** each left half (`+156` = 1, `+152` ≠ 0) finds the module with that id. The partner takes the left's id in `+152` and channel 2. A Sample module left without a partner becomes mono (kind 2001).
+- **Opening a stereo file with "Open both channels" (`-$518`; F28_00D8A, F28_00EE0):**
+  - The module becomes the left half.
+  - A new Sample module is created as the right half, 32 px to the right. If that would pass the window's right edge, the left half moves 32 px left first.
+  - The right half gets the left's name and loop points.
+  - The two exchange ids, and both are selected.
+  - F28_00B90 loads channel 1 into the left and channel 2 into the right, converting the rate for both when "Convert sample modules" is on.
+- **Opening a mono file, or one channel, into a linked half** unlinks the pair first (F28_006E2 → F28_00532).
+- **Convert Stereo Sample to Dual Mono (Edit menu, F28_00532 → F28_0130A on each half):** clears `+152` and `+156`, sets kind 2001 and drops the partner pointer. The modules keep their places and ids.
+- **What applies to both halves:**
+  - Clicking one selects both, and dragging keeps the left half 32 px left of the right (F16_024C4).
+  - Cut, Copy, Paste, Clear, Reverse and Silence (F16_00B2C, F16_00FE0/F16_013D8, F16_018B6, F16_01B10, F16_01D1E) repeat the edit on the partner, over the partner's own selection, which follows this one.
+  - Copy takes both channels (F16_008A0).
+  - Rate conversion (F28_01B6E), Gain Scaling (two F28_059C6 calls), Envelope Removal (F28_05A64 per half) and Extend Loop (F28_01FF0) run on both halves.
+  - Loop points are copied to the partner.
+  - Hearing a linked half plays both channels as stereo (F29_00A66 → F29_00234 with the channel).
+- **Deleting one half** unlinks the other (F16_03A66). In the port, Clear on a selected pair deletes both halves; the eraser deletes only the one it touches.
+- **Port choices:**
+  - Crossfade looping a Sample module also runs on both halves; that follows the other tools and is not traced.
+  - Pasting or duplicating one half as a module gives a mono Sample module with a new id. The original relinks pasted halves (F16_02314); that isn't ported.

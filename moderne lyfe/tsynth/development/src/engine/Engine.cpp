@@ -128,6 +128,9 @@ void Engine::compute(int index)
     case kDiffuser: diffuser(m, out, in, inLen); break;
     case kOutput: case kOutputR: // the result is the input's buffer
         out.assign(in.begin(), in.begin() + std::min<size_t>(in.size(), (size_t) std::max(0, inLen)));
+        // With crossfade looping on, the output keeps its own crossfaded copy (F23_01DF2).
+        if (m.out[0] && m.out[3] >= 0 && m.out[4] >= 0 && (int32_t) out.size() - m.out[4] >= m.out[1] && m.out[1] <= m.out[3])
+            crossfadeLoop(out, m.out[1], m.out[3], m.out[4], m.out[2] != 0);
         norm = false;
         break;
     default: break;
@@ -155,7 +158,27 @@ RenderResult Engine::render()
         if (r.sampleRate <= 0) r.sampleRate = 44100;
     }
     if (right) r.right = moduleOutput(right);
-    if (!r.right.empty()) r.right.resize(std::max(r.left.size(), r.right.size()), 0), r.left.resize(r.right.size(), 0);
+    const auto srcL = left ? inputsOf(left) : std::vector<int>(), srcR = right ? inputsOf(right) : std::vector<int>();
+    if (right && (!srcL.empty() || !srcR.empty())) {
+        // F23_02DDC: the rate comes from the outputs' sources, per the Stereo Preferences.
+        const int32_t rl = srcL.empty() ? 0 : patch.modules[(size_t) srcL[0] - 1].sampleRate;
+        const int32_t rr = srcR.empty() ? 0 : patch.modules[(size_t) srcR[0] - 1].sampleRate;
+        if (srcL.empty()) r.sampleRate = rr;
+        else if (srcR.empty()) r.sampleRate = rl;
+        else switch (options.stereoRate) {
+            case 16: r.sampleRate = std::min(rl, rr); break;
+            case 17: r.sampleRate = rl; break;
+            case 18: r.sampleRate = rr; break;
+            default: r.sampleRate = std::max(rl, rr); break;
+        }
+        if (r.sampleRate <= 0) r.sampleRate = 44100;
+    }
+    if (!r.right.empty()) {
+        // F23_02F6E: pad the shorter channel with silence, or cut the longer one.
+        const size_t n = options.padStereo ? std::max(r.left.size(), r.right.size()) : std::min(r.left.size(), r.right.size());
+        r.left.resize(n, 0);
+        r.right.resize(n, 0);
+    }
     r.warnings = warnings;
     return r;
 }
@@ -663,4 +686,30 @@ void Engine::diffuser(Module& m, std::vector<int16_t>& out, const std::vector<in
     }
 }
 
+
+bool crossfadeLoop(std::vector<int16_t>& buf, int32_t length, int32_t loopStart, int32_t loopEnd, bool linear)
+{
+    // F6_00C36: four quarters centred on the loop points; in each, kernel
+    // F29_000E4 blends the samples around the loop start (a) and the loop end
+    // (b) into each other, a' = a*g + b*(1-g), b' = a*(1-g) + b*g. g falls from
+    // 1 to 1/2 at the loop points and back, in a straight line (Linear) or
+    // faster at first (Equal Power).
+    const int32_t q = ldiv(length, 4);
+    if (q <= 0 || loopStart - 2 * q < 0 || loopEnd + 2 * q > (int32_t) buf.size()) return false;
+    static const int32_t kLinear[4] = { 0x20000000, 0x20000000, (int32_t) 0xE0000000, (int32_t) 0xE0000000 };
+    static const int32_t kEqualPower[4] = { 0x30000000, 0x10000000, (int32_t) 0xF0000000, (int32_t) 0xD0000000 };
+    int32_t gA = 0x7FFF0000, gB = 0;
+    for (int s = 0; s < 4; ++s) {
+        int32_t a = loopStart + (s - 2) * q, b = loopEnd + (s - 2) * q;
+        const int32_t slope = ldiv((linear ? kLinear : kEqualPower)[s], q);
+        for (int32_t n = 0; n < q; ++n, ++a, ++b) {
+            const int16_t x = buf[(size_t) a], y = buf[(size_t) b], ga = hiWord(gA), gb = hiWord(gB);
+            buf[(size_t) a] = q15(muls(x, ga) + muls(y, gb));
+            buf[(size_t) b] = q15(muls(x, gb) + muls(y, ga));
+            gA = (int32_t) ((uint32_t) gA - (uint32_t) slope);
+            gB = (int32_t) ((uint32_t) gB + (uint32_t) slope);
+        }
+    }
+    return true;
+}
 } // namespace turbosynth

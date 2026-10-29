@@ -46,7 +46,7 @@ struct Module {
     std::array<int16_t, 32> mixGains{};
     // Sample module
     int32_t sampA = 0, sampB = 0;    // +12E, +132
-    std::array<int16_t, 3> sampC{};  // +154, +152, +156
+    std::array<int16_t, 3> sampC{};  // +154 id, +152 partner's id, +156 channel (1 left, 2 right)
     std::vector<int16_t> embedded;   // sound data stored in the document
     // Output module
     std::array<int32_t, 5> out{};
@@ -70,8 +70,31 @@ const char* moduleTypeName(int type);
 Module makeModule(int type, int32_t sampleRate, int32_t length);
 // Removes module index (1-based) and renumbers the connections.
 void removeModule(Patch& patch, int index);
+// A stereo document has two output jacks: Output L (type 100, icon 7001) and
+// Output R (type 101, icon 7002) side by side; a mono one has Output (7000).
+bool isStereo(const Patch& patch);
+void setStereo(Patch& patch, bool stereo);
+
+// Linked stereo Sample modules. Each Sample module has an id (+154, F28_01278:
+// one more than the nearest earlier Sample module's id); the halves of a pair
+// hold each other's id (+152) and their channel (+156). The left shows icon
+// 2004 and the right 2003, side by side like the stereo output.
+int sampleId(Patch& patch, int index);            // assigns one if it has none
+int samplePartner(const Patch& patch, int index); // the other half, or 0
+// After reading a document (F9_010A2 / F28_01040): ids, pair links and icons.
+void linkSamples(Patch& patch);
+// "Open both channels" (F28_00D8A / F28_00EE0): adds a right half 32 px to the
+// right of `index` (moving `index` 32 px left if it would pass maxRight) and
+// links the two. Returns the right half's index.
+int makeStereoSample(Patch& patch, int index, int maxRight);
+// Convert Stereo Sample to Dual Mono (F28_00532 / F28_0130A): both halves
+// become ordinary Sample modules.
+void unlinkSample(Patch& patch, int index);
 
 // Sound Designer I file: header size in the first word, then big-endian samples.
 bool loadSoundDesigner(const std::string& path, std::vector<int16_t>& samples, std::string* error);
+// A waveform file (.WVFM): the same 554-byte record as in documents.
+bool loadWaveform(const std::string& path, Waveform& out, std::string* error);
+bool saveWaveform(const std::string& path, const Waveform& w, std::string* error);
 
 } // namespace turbosynth

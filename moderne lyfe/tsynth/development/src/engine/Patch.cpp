@@ -113,6 +113,7 @@ bool readPatch(const std::vector<uint8_t>& data, Patch& patch, std::string* erro
     const int nc = r.i16();
     for (int i = 0; i < nc && r.ok; ++i) { Connection c; c.from = r.i16(); c.to = r.i16(); patch.connections.push_back(c); }
     if (!r.ok) { if (error) *error = "The document is truncated."; return false; }
+    linkSamples(patch);
     return true;
 }
 
@@ -137,6 +138,21 @@ bool loadSoundDesigner(const std::string& path, std::vector<int16_t>& samples, s
     return true;
 }
 
+
+bool loadWaveform(const std::string& path, Waveform& out, std::string* error)
+{
+    std::ifstream f(std::filesystem::u8path(path), std::ios::binary);
+    if (!f) { if (error) *error = "Cannot open " + path; return false; }
+    std::vector<uint8_t> d(std::istreambuf_iterator<char>(f), {});
+    if (d.size() != 554) { if (error) *error = "Not a TurboSynth waveform file"; return false; }
+    Reader r { d };
+    out.name = r.pstr(32);
+    out.timeMs = r.i16();
+    for (auto& v : out.rect) v = r.i16();
+    for (int k = 0; k < 256; ++k) out.samples[(size_t) k] = r.i16();
+    out.samples[256] = out.samples[0];
+    return true;
+}
 } // namespace turbosynth
 
 namespace turbosynth {
@@ -217,6 +233,19 @@ bool savePatch(const std::string& path, const Patch& patch, std::string* error)
     return (bool) f;
 }
 
+bool saveWaveform(const std::string& path, const Waveform& wf, std::string* error)
+{
+    Writer w;
+    w.pstr(wf.name, 32);
+    w.i16(wf.timeMs);
+    for (int v : wf.rect) w.i16(v);
+    for (int k = 0; k < 256; ++k) w.i16(wf.samples[(size_t) k]);
+    std::ofstream f(std::filesystem::u8path(path), std::ios::binary);
+    if (!f) { if (error) *error = "Cannot write " + path; return false; }
+    f.write((const char*) w.d.data(), (std::streamsize) w.d.size());
+    return (bool) f;
+}
+
 } // namespace turbosynth
 
 namespace turbosynth {
@@ -264,6 +293,7 @@ Module makeModule(int type, int32_t sampleRate, int32_t length)
 void removeModule(Patch& patch, int index)
 {
     if (index < 1 || index > (int) patch.modules.size()) return;
+    if (samplePartner(patch, index)) unlinkSample(patch, index); // F16_03A66: the half left behind goes mono
     patch.modules.erase(patch.modules.begin() + (index - 1));
     std::vector<Connection> kept;
     for (auto c : patch.connections) {
@@ -273,6 +303,124 @@ void removeModule(Patch& patch, int index)
         kept.push_back(c);
     }
     patch.connections = kept;
+}
+
+bool isStereo(const Patch& patch)
+{
+    return std::any_of(patch.modules.begin(), patch.modules.end(), [](const Module& m) { return m.type == kOutputR; });
+}
+
+void setStereo(Patch& patch, bool stereo)
+{
+    auto left = std::find_if(patch.modules.begin(), patch.modules.end(), [](const Module& m) { return m.type == kOutput; });
+    if (!stereo) {
+        for (int i = (int) patch.modules.size(); i >= 1; --i)
+            if (patch.modules[(size_t) i - 1].type == kOutputR) removeModule(patch, i);
+        left = std::find_if(patch.modules.begin(), patch.modules.end(), [](const Module& m) { return m.type == kOutput; });
+        if (left != patch.modules.end()) { left->kind = 7000; left->name = "Output"; }
+        return;
+    }
+    if (isStereo(patch)) return;
+    if (left == patch.modules.end()) {
+        patch.modules.push_back(makeModule(kOutput, 44100, 88200));
+        left = patch.modules.end() - 1;
+    }
+    left->kind = 7001;
+    left->name = "Output L";
+    Module right = makeModule(kOutputR, left->sampleRate, left->length);
+    right.rect = { left->rect[0], (int16_t) (left->rect[1] + 32), left->rect[2], (int16_t) (left->rect[3] + 32) }; // the right half of the jack
+    right.out = left->out;
+    patch.modules.push_back(right);
+}
+
+int sampleId(Patch& patch, int index)
+{
+    if (index < 1 || index > (int) patch.modules.size()) return 0;
+    auto& m = patch.modules[(size_t) index - 1];
+    if (m.type != kSample) return 0;
+    if (m.sampC[0] == 0) { // F28_01278: one more than the nearest earlier id, else 1
+        int16_t id = 1;
+        for (int j = index - 1; j >= 1; --j) {
+            const auto& o = patch.modules[(size_t) j - 1];
+            if (o.type == kSample && o.sampC[0] != 0) { id = (int16_t) (o.sampC[0] + 1); break; }
+        }
+        m.sampC[0] = id;
+    }
+    return m.sampC[0];
+}
+
+int samplePartner(const Patch& patch, int index)
+{
+    if (index < 1 || index > (int) patch.modules.size()) return 0;
+    const auto& m = patch.modules[(size_t) index - 1];
+    if (m.type != kSample || m.sampC[1] == 0 || (m.sampC[2] != 1 && m.sampC[2] != 2)) return 0;
+    for (int j = 1; j <= (int) patch.modules.size(); ++j) {
+        const auto& o = patch.modules[(size_t) j - 1];
+        if (j != index && o.type == kSample && o.sampC[0] == m.sampC[1] && o.sampC[1] == m.sampC[0] && o.sampC[2] == 3 - m.sampC[2]) return j;
+    }
+    return 0;
+}
+
+namespace {
+void setSampleKind(Module& m) { m.kind = m.sampC[2] == 1 ? 2004 : m.sampC[2] == 2 ? 2003 : 2001; } // F28_011D8
+}
+
+void linkSamples(Patch& patch)
+{
+    const int n = (int) patch.modules.size();
+    for (int i = 1; i <= n; ++i) sampleId(patch, i);
+    for (int i = 1; i <= n; ++i) { // F9_010A2: each left half looks for the module with its partner's id
+        auto& m = patch.modules[(size_t) i - 1];
+        if (m.type != kSample || m.sampC[2] != 1 || m.sampC[1] == 0) continue;
+        for (int j = 1; j <= n; ++j) {
+            auto& o = patch.modules[(size_t) j - 1];
+            if (j == i || o.type != kSample || o.sampC[0] != m.sampC[1]) continue;
+            o.sampC[1] = m.sampC[0]; // F28_01040: the partner takes this id and the other channel
+            o.sampC[2] = 2;
+            break;
+        }
+    }
+    for (int i = 1; i <= n; ++i) {
+        auto& m = patch.modules[(size_t) i - 1];
+        if (m.type != kSample) continue;
+        if (!samplePartner(patch, i)) { m.sampC[1] = 0; m.sampC[2] = 0; } // no partner: mono
+        setSampleKind(m);
+    }
+}
+
+int makeStereoSample(Patch& patch, int index, int maxRight)
+{
+    if (index < 1 || index > (int) patch.modules.size() || patch.modules[(size_t) index - 1].type != kSample) return 0;
+    if (const int p = samplePartner(patch, index)) return patch.modules[(size_t) index - 1].sampC[2] == 2 ? index : p;
+    sampleId(patch, index);
+    Module right = patch.modules[(size_t) index - 1]; // F28_00EE0: a new Sample module with the same name and loop
+    right.embedded.clear();
+    right.sampC = { 0, 0, 2 };
+    patch.modules.push_back(right);
+    const int r = (int) patch.modules.size();
+    auto& left = patch.modules[(size_t) index - 1];
+    if (left.rect[3] + 32 > maxRight) { left.rect[1] = (int16_t) (left.rect[1] - 32); left.rect[3] = (int16_t) (left.rect[3] - 32); }
+    auto& rm = patch.modules[(size_t) r - 1];
+    rm.rect = { left.rect[0], (int16_t) (left.rect[1] + 32), left.rect[2], (int16_t) (left.rect[3] + 32) };
+    left.sampC[2] = 1;
+    sampleId(patch, r);
+    left.sampC[1] = rm.sampC[0];
+    rm.sampC[1] = left.sampC[0];
+    setSampleKind(left);
+    setSampleKind(rm);
+    return r;
+}
+
+void unlinkSample(Patch& patch, int index)
+{
+    const int p = samplePartner(patch, index);
+    for (int i : { index, p }) {
+        if (i < 1 || i > (int) patch.modules.size()) continue;
+        auto& m = patch.modules[(size_t) i - 1];
+        if (m.type != kSample) continue;
+        m.sampC[1] = 0; m.sampC[2] = 0;
+        setSampleKind(m);
+    }
 }
 
 } // namespace turbosynth

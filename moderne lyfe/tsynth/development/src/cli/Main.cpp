@@ -92,8 +92,10 @@ int main(int argc, char** argv)
         for (size_t i = 0; i < patch.modules.size(); ++i) {
             const auto& m = patch.modules[i];
             std::printf("%2zu %-22s '%s' %d Hz, %d samples%s\n", i + 1, moduleTypeName(m.type), m.name.c_str(), m.sampleRate, m.length, m.normalize ? ", normalize" : "");
-            std::printf("     p: %d %d %d %d %d", m.p[0], m.p[1], m.p[2], m.p[3], m.p[4]);
+            std::printf("     kind %d at (%d,%d)-(%d,%d)  p: %d %d %d %d %d", m.kind, m.rect[1], m.rect[0], m.rect[3], m.rect[2], m.p[0], m.p[1], m.p[2], m.p[3], m.p[4]);
             if (m.type == kOscillator) std::printf("  freq %.3f Hz, %zu waves", m.oscFreq / 65536.0, m.waveforms.size());
+            if (m.type == kOutput || m.type == kOutputR) std::printf("  crossfade %d len %d type %d loop %d..%d", m.out[0], m.out[1], m.out[2], m.out[3], m.out[4]);
+            if (m.type == kSample) std::printf("  loop %d..%d  c %d %d %d", m.sampA, m.sampB, m.sampC[0], m.sampC[1], m.sampC[2]);
             for (const auto& pt : m.points) std::printf("  (%d@%dms)", pt.level, pt.timeMs);
             std::printf("\n");
         }

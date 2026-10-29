@@ -49,6 +49,7 @@ private:
             setUsingNativeTitleBar(true);
             main = new MainComponent();
             setContentOwned(main, true);
+            addKeyListener(main); // keys no control takes reach the menu shortcuts
             setResizable(true, true);
             centreWithSize(getWidth(), getHeight());
             setVisible(true);

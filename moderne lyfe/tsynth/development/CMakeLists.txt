@@ -18,6 +18,9 @@ add_library(tsynth_engine STATIC
     src/engine/Patch.cpp
     src/engine/Engine.cpp
     src/engine/SineTable.cpp
+    src/engine/Presets.cpp
+    src/engine/SampleEdit.cpp
+    src/engine/Rules.cpp
 )
 target_include_directories(tsynth_engine PUBLIC src/engine)
 
