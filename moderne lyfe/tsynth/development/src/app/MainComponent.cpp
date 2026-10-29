@@ -207,12 +207,17 @@ void MainComponent::menuItemSelected(int id, int)
     case kRedo: redo(); break;
     case kCut: if (soundSelectionActive()) soundEdit(kCut); else { copySelected(); clearSelected(); } break;
     case kCopy: if (soundSelectionActive()) soundEdit(kCopy); else copySelected(); break;
-    case kPaste: if (soundSelectionActive()) soundEdit(kPaste); else if (clipboard) paste(*clipboard); break;
+    case kPaste: if (soundSelectionActive()) soundEdit(kPaste); else if (clipboard) paste(*clipboard, clipboardPartner ? &*clipboardPartner : nullptr); break;
     case kReverse: case kSilence: if (soundSelectionActive()) soundEdit(id); break;
     case kSaveLoopWave: saveLoopAsWaveform(); break;
     case kClear: if (soundSelectionActive()) soundEdit(kClear); else clearSelected(); break;
     case kDuplicate:
-        if (patchView.selected && !patchView.isOutput(patchView.selected)) paste(patch.modules[(size_t) patchView.selected - 1]);
+        if (patchView.selected && !patchView.isOutput(patchView.selected)) {
+            const int p = samplePartner(patch, patchView.selected);
+            const Module m = patch.modules[(size_t) patchView.selected - 1];
+            const Module partner = p ? patch.modules[(size_t) p - 1] : Module{};
+            paste(m, p ? &partner : nullptr);
+        }
         break;
     case kConvert: convertToSample(); break;
     case kDualMono: convertToDualMono(); break;
@@ -634,7 +639,11 @@ void MainComponent::stepHistory(std::vector<Patch>& from, std::vector<Patch>& to
 
 void MainComponent::copySelected()
 {
-    if (patchView.selected && !patchView.isOutput(patchView.selected)) clipboard = patch.modules[(size_t) patchView.selected - 1];
+    const int i = patchView.selected;
+    if (!i || patchView.isOutput(i)) return;
+    clipboard = patch.modules[(size_t) i - 1];
+    clipboardPartner.reset();
+    if (const int p = samplePartner(patch, i)) clipboardPartner = patch.modules[(size_t) p - 1]; // both halves are selected
 }
 
 void MainComponent::clearSelected()
@@ -650,14 +659,33 @@ void MainComponent::clearSelected()
     changed();
 }
 
-void MainComponent::paste(const Module& source)
+void MainComponent::paste(const Module& source, const Module* partner)
 {
-    Module m = source; // pasted below and to the right of the original, without connections
-    m.rect = { (int16_t) (m.rect[0] + 24), (int16_t) (m.rect[1] + 24), (int16_t) (m.rect[2] + 24), (int16_t) (m.rect[3] + 24) };
-    if (m.type == kSample) { m.sampC = {}; m.kind = 2001; } // a copy of one half is a mono sample with an id of its own
-    patch.modules.push_back(m);
-    if (m.type == kSample) sampleId(patch, (int) patch.modules.size());
-    patchView.selected = (int) patch.modules.size();
+    // Pasted below and to the right of the original, without connections.
+    // Pasted Sample modules get new ids (F16_02458); the two halves of a
+    // stereo sample are linked to each other again (F16_02314) and lined up
+    // 32 px apart (F16_024C4).
+    int added[2] = { 0, 0 };
+    const Module* src[2] = { &source, partner };
+    for (int k = 0; k < 2 && src[k]; ++k) {
+        Module m = *src[k];
+        m.rect = { (int16_t) (m.rect[0] + 24), (int16_t) (m.rect[1] + 24), (int16_t) (m.rect[2] + 24), (int16_t) (m.rect[3] + 24) };
+        if (m.type == kSample) { m.sampC[0] = 0; m.sampC[1] = 0; m.kind = 2001; }
+        patch.modules.push_back(m);
+        added[k] = (int) patch.modules.size();
+        if (m.type == kSample) sampleId(patch, added[k]);
+    }
+    if (added[1]) {
+        const bool firstIsLeft = source.sampC[2] == 1;
+        const int l = firstIsLeft ? added[0] : added[1], r = firstIsLeft ? added[1] : added[0];
+        linkSamplePair(patch, l, r);
+        auto& lr = patch.modules[(size_t) l - 1].rect;
+        auto& rr = patch.modules[(size_t) r - 1].rect;
+        lr = { rr[0], (int16_t) (rr[1] - 32), rr[2], (int16_t) (rr[3] - 32) };
+    } else if (patch.modules.back().type == kSample) {
+        patch.modules.back().sampC[2] = 0; // a copy of one half alone is mono
+    }
+    patchView.selected = added[0];
     modulePanel.show(&patch, patchView.selected);
     patchView.repaint();
     changed();
@@ -994,8 +1022,9 @@ void MainComponent::soundTool(int code)
             if (!sampleData(i)) return;
             const bool norm = static_cast<juce::ToggleButton*>(w.getCustomComponent(0))->getToggleState();
             const int percent = juce::jlimit(1, 2000, w.getTextEditorContents("percent").getIntValue());
-            for (int h : sampleHalves(i)) // F28_01380 scales both halves
-                if (auto* d = sampleData(h)) { if (norm) sampleedit::normalize(*d); else sampleedit::scaleGain(*d, percent); }
+            if (norm) sampleedit::normalize(*sampleData(i)); // F28_01560: Normalize is the module's own (F18_00EAA), this half only
+            else for (int h : sampleHalves(i)) // while scaling runs on both halves (F28_059C6 twice)
+                if (auto* d = sampleData(h)) sampleedit::scaleGain(*d, percent);
             sampleEdited(i);
         });
         break;

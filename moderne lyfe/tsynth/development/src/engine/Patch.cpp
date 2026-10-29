@@ -91,7 +91,10 @@ bool readPatch(const std::vector<uint8_t>& data, Patch& patch, std::string* erro
             }
             break; }
         case kAmpEnv: case kFilter: case kSpectralInverter: case kPitchEnv: {
-            if (ver > 1) mod.envMode = r.i16();
+            // F9_00856 reads +136 only for version > 1; older documents keep the
+            // value the new module starts with, 1 (CODE 36 initializers). For the
+            // Spectral Inverter that selects step 80h (verified in the emulator).
+            mod.envMode = ver > 1 ? r.i16() : 1;
             const int n = r.i16();
             for (int i = 0; i < n && r.ok && n < 10000; ++i) {
                 EnvPoint pt; pt.level = r.i16(); pt.timeMs = r.i16();
@@ -102,7 +105,11 @@ bool readPatch(const std::vector<uint8_t>& data, Patch& patch, std::string* erro
         case kWaveshaper: for (auto& v : mod.shaper) v = r.i16(); break;
         case kMixer: for (auto& v : mod.mixGains) v = r.i16(); break;
         case kModulator: case kDelay: case kResonator: for (int i = 0; i < 5; ++i) mod.p[(size_t) i] = r.i16(); break;
-        case kStretchExpand: case kStretchCompress: case kNoise: for (int i = 0; i < 4; ++i) mod.p[(size_t) i] = r.i16(); break;
+        case kStretchExpand: case kStretchCompress:
+            for (int i = 0; i < 4; ++i) mod.p[(size_t) i] = r.i16();
+            if (ver == 1) mod.p[3] = (int16_t) (100 - mod.p[3]); // F9_00BCC: version-1 documents store the amount inverted
+            break;
+        case kNoise: for (int i = 0; i < 4; ++i) mod.p[(size_t) i] = r.i16(); break;
         case kPitchShifter: case kDiffuser: for (int i = 0; i < 3; ++i) mod.p[(size_t) i] = r.i16(); break;
         default:
             if (error) *error = "Unknown module type " + std::to_string(mod.type);
@@ -402,13 +409,23 @@ int makeStereoSample(Patch& patch, int index, int maxRight)
     if (left.rect[3] + 32 > maxRight) { left.rect[1] = (int16_t) (left.rect[1] - 32); left.rect[3] = (int16_t) (left.rect[3] - 32); }
     auto& rm = patch.modules[(size_t) r - 1];
     rm.rect = { left.rect[0], (int16_t) (left.rect[1] + 32), left.rect[2], (int16_t) (left.rect[3] + 32) };
-    left.sampC[2] = 1;
-    sampleId(patch, r);
-    left.sampC[1] = rm.sampC[0];
-    rm.sampC[1] = left.sampC[0];
-    setSampleKind(left);
-    setSampleKind(rm);
+    linkSamplePair(patch, index, r);
     return r;
+}
+
+void linkSamplePair(Patch& patch, int left, int right)
+{
+    const int n = (int) patch.modules.size();
+    if (left < 1 || right < 1 || left > n || right > n || left == right) return;
+    sampleId(patch, left);
+    sampleId(patch, right);
+    auto& l = patch.modules[(size_t) left - 1];
+    auto& r = patch.modules[(size_t) right - 1];
+    if (l.type != kSample || r.type != kSample) return;
+    l.sampC[1] = r.sampC[0]; l.sampC[2] = 1;
+    r.sampC[1] = l.sampC[0]; r.sampC[2] = 2;
+    setSampleKind(l);
+    setSampleKind(r);
 }
 
 void unlinkSample(Patch& patch, int index)

@@ -20,12 +20,24 @@ inline int32_t roundDiv(int64_t n, int64_t d)
     if (q < -0x7FFFFFFF - 1) return (int32_t) 0x80000000;
     return (int32_t) q;
 }
-inline Fixed fixRatio(int16_t n, int16_t d) { return roundDiv((int64_t) n << 16, d); }
+inline int32_t truncDiv(int64_t n, int64_t d)
+{
+    if (d == 0) return n >= 0 ? 0x7FFFFFFF : (int32_t) 0x80000000;
+    const int64_t q = n / d; // C division truncates toward zero
+    if (q > 0x7FFFFFFF) return 0x7FFFFFFF;
+    if (q < -0x7FFFFFFF - 1) return (int32_t) 0x80000000;
+    return (int32_t) q;
+}
+
+// FixRatio truncates: verified in the emulator (Quadra 650 ROM, System 7.5.3),
+// FixRatio(4096, 22050) = 12173, not 12174 (oscillator phase increments).
+inline Fixed fixRatio(int16_t n, int16_t d) { return truncDiv((int64_t) n << 16, d); }
 inline Fixed fixMul(Fixed a, Fixed b)
 {
     const int64_t p = (int64_t) a * b;
     return (int32_t) (p >= 0 ? (p + 0x8000) >> 16 : -((-p + 0x8000) >> 16));
 }
+// FixDiv rounds: verified in the emulator (truncating breaks the filter and stretcher renders).
 inline Fixed fixDiv(Fixed a, Fixed b) { return roundDiv((int64_t) a << 16, b); }
 inline int16_t fixRound(Fixed f) { return (int16_t) ((f + 0x8000) >> 16); }
 inline int16_t loWord(int32_t v) { return (int16_t) (v & 0xFFFF); }

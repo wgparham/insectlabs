@@ -87,6 +87,9 @@ void linkSamples(Patch& patch);
 // right of `index` (moving `index` 32 px left if it would pass maxRight) and
 // links the two. Returns the right half's index.
 int makeStereoSample(Patch& patch, int index, int maxRight);
+// Links two Sample modules as left and right halves (F28_01040), giving
+// either an id first if it has none.
+void linkSamplePair(Patch& patch, int left, int right);
 // Convert Stereo Sample to Dual Mono (F28_00532 / F28_0130A): both halves
 // become ordinary Sample modules.
 void unlinkSample(Patch& patch, int index);

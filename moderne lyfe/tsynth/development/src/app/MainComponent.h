@@ -64,7 +64,7 @@ private:
     void resetHistory();          // a new or opened document starts without undo
     void copySelected();
     void clearSelected();
-    void paste(const turbosynth::Module&);
+    void paste(const turbosynth::Module&, const turbosynth::Module* partner = nullptr); // partner: the other half of a stereo sample
     void convertToSample();
     // Options menu: the Parameter Manager's defaults and length/rate rules.
     void showParameterManager();
@@ -104,6 +104,7 @@ private:
     std::vector<turbosynth::Patch> undoStack;    // earlier states, newest last
     std::vector<turbosynth::Patch> redoStack;    // undone states, newest last
     std::optional<turbosynth::Module> clipboard; // a cut or copied module
+    std::optional<turbosynth::Module> clipboardPartner; // the other half, when that was a stereo sample
     std::vector<int16_t> soundClipboard;         // a cut or copied piece of a sample (the left, for a stereo pair)
     std::vector<int16_t> soundClipboardRight;    // the right half's piece, when copied from a stereo pair
     int soundShown = 0;                          // the Sample module shown in the Sound window, or 0

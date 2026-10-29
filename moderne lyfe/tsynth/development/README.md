@@ -5,6 +5,7 @@ A port of **Turbosynth SC 2.22** (Digidesign, 1988–1995), the modular sample-s
 You patch modules together to build a sound: oscillators, samples, noise, envelopes, filters, modulators, waveshapers, mixers, delays, resonators, pitch shifters, stretchers and the diffuser. TurboSynth then computes the whole result, which you can play or export. The port reads and writes the original documents. All 29 example patches from the 2.0 and 2.22 disks open and render.
 
 - **The synthesis follows the original program.** It was recovered from the 68000 code of Turbosynth SC 2.22, including its fixed-point arithmetic, quirks and per-module normalization. The Diffuser, which originally needed a Digidesign DSP card, follows the card's 56000 program. [docs/RE-NOTES.md](docs/RE-NOTES.md) is the recovery record.
+- **Checked against the original.** Running the original program in an emulator, 45 of the 48 example patches render identically to it, sample for sample. The other three use the Diffuser, which the original can't run without the DSP card.
 - **The interface is Classic Mac inspired.** It uses the original icons, pinstriped windows and a 1-bit look. **View > Dark Mode** switches to light ink on charcoal for night work, and the choice is remembered.
 
 ## Using it

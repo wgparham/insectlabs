@@ -355,7 +355,7 @@ void Engine::filter(Module& m, std::vector<int16_t>& out, const std::vector<int1
     int32_t pos = 0;
     size_t si = 0;
     while (pos < len) {
-        if (head > inLen) break; // the head reached the input's end
+        if (head >= inLen) break; // the head reached the input's end (cmpa.l A5,A4 / bge)
         if (pos >= segs[si].end) {
             if (si + 1 >= segs.size()) break;
             ++si; c = segs[si].value; slope = segs[si].slope;
@@ -404,16 +404,18 @@ void Engine::pitchEnv(Module& m, std::vector<int16_t>& out, const std::vector<in
         const int64_t limit = inLen - 4;
         int32_t P = 0;
         bool stop = false;
+        int64_t prev = 0; // D4: the last read position, tested before the next read (F29_03488)
         for (const auto& s : segs) {
             int32_t rt = s.value;
             while (pos < len && pos < s.end) {
+                if (prev >= limit) { stop = true; break; }
                 const int32_t q = P >> 8;
                 const int64_t i = base + hiWord(q);
-                if (i >= limit) { stop = true; break; }
                 out[(size_t) pos++] = interp(at(in, i), at(in, i + 1), (uint16_t) loWord(q));
+                prev = i;
                 rt += s.slope;
                 const int64_t np = (int64_t) P + rt;
-                if (np > 0x7FFFFFFF || np < -0x80000000LL) { base += 128; P = (int32_t) ((uint32_t) np & 0x7FFFFFFF); }
+                if (np > 0x7FFFFFFF || np < -0x80000000LL) { base += 128; prev = base; P = (int32_t) ((uint32_t) np & 0x7FFFFFFF); }
                 else P = (int32_t) np;
             }
             if (stop || pos >= len) break;
@@ -470,26 +472,29 @@ void Engine::modulator(int index, Module& m, std::vector<int16_t>& out)
             ++c;
         }
         break; }
-    case 3: {
+    case 3: { // F29_01CEA, step for step
         const int16_t d = (int16_t) (m.p[0] * 30);
-        int64_t base = 2, last = 2;
+        int64_t base = 2;
         const int64_t limit = (int64_t) carLen - 2;
+        int64_t prev = INT64_MIN; // D2: the last read position (address 0 before the first read)
         int32_t P = 0;
-        bool stopped = false;
-        for (int32_t i = 0; i < len; ++i) {
-            if (stopped) { out[(size_t) i] = 0; continue; }
-            if (i >= modLen) { // copy the carrier from the last read position
-                if (last >= limit) { stopped = true; out[(size_t) i] = 0; continue; }
-                out[(size_t) i] = at(car, last++);
-                continue;
+        int32_t o = 0, mi = 0;
+        while (o < len) {
+            if (mi >= modLen) { // the modulator ended: copy from the last read position until it equals the limit
+                int64_t p = prev == INT64_MIN ? 0 : prev;
+                while (o < len && p != limit) out[(size_t) o++] = at(car, p++);
+                while (o < len) out[(size_t) o++] = 0;
+                break;
             }
-            int64_t np = (int64_t) P + hiWord(muls(mod[(size_t) i], d));
-            if (np > 0x7FFFFFFF || np < -0x80000000LL) { base += 32768; np = (uint32_t) np & 0x7FFFFFFF; }
+            if (prev >= limit) { while (o < len) out[(size_t) o++] = 0; break; } // tested before the new read
+            int64_t np = (int64_t) P + hiWord(muls(mod[(size_t) mi++], d));
+            if (np > 0x7FFFFFFF || np < -0x80000000LL) { // bvs: a new base, and no sample this time
+                base += 32768; P = (int32_t) ((uint32_t) np & 0x7FFFFFFF); continue;
+            }
             P = (int32_t) np;
             const int64_t idx = base + (P >> 16);
-            if (idx >= limit) { stopped = true; out[(size_t) i] = 0; continue; }
-            out[(size_t) i] = interp(at(car, idx), at(car, idx + 1), (uint16_t) loWord(P));
-            last = idx;
+            out[(size_t) o++] = interp(at(car, idx), at(car, idx + 1), (uint16_t) loWord(P));
+            prev = idx;
             np = (int64_t) P + 0x10000;
             if (np > 0x7FFFFFFF) { base += 32768; np = (uint32_t) np & 0x7FFFFFFF; }
             P = (int32_t) np;
@@ -564,20 +569,32 @@ void Engine::stretch(Module& m, std::vector<int16_t>& out, const std::vector<int
         const int32_t adv = ldiv(lmul(lmul(P, 4), 101 - m.p[3]), 100);
         const int32_t S = std::max(S0, P);
         const int32_t slope = ldiv(0x7FFF0000, P);
+        // The kernel step for step (F30_010BC; F29_029BA is the same without the card
+        // output): reaching the input's end anywhere means zeros from there on.
         int64_t boundary = S;
-        while (pos < len && A < inLen && A < boundary) put(in[(size_t) A++]);
-        while (pos < len && A < inLen) {
+        bool ended = false;
+        do { // copy up to S
+            if (pos >= len) break;
+            if (A >= inLen) { ended = true; break; }
+            put(in[(size_t) A++]);
+        } while (A < boundary);
+        while (!ended && pos < len) {
             int64_t B = A - P;
             int32_t gA = 0x7FFF0000, gB = 0;
-            while (pos < len && A < inLen && B < boundary) {
+            do { // crossfade one period back in
+                if (pos >= len) break;
+                if (A >= inLen) { ended = true; break; }
                 const int32_t s = muls(hiWord(gA), at(in, A++)) + muls(hiWord(gB), at(in, B++));
                 put(hiWord((int32_t) ((uint32_t) s << 1)));
                 gA -= slope; gB += slope;
-            }
+            } while (B < boundary);
+            if (ended || pos >= len) break;
             A = B;
             boundary += adv;
-            if (adv <= 0 && P <= 0) break;
-            while (pos < len && A < inLen && A < boundary) put(in[(size_t) A++]);
+            while (pos < len && A < boundary) { // copy to the next boundary
+                put(in[(size_t) A++]);
+                if (A >= inLen) { ended = true; break; }
+            }
         }
     } else {
         const int32_t L = ldiv(lmul(P, 101 - m.p[3]), 10);
