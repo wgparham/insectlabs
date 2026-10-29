@@ -341,7 +341,7 @@ The values: 0.5, 0.66667, 0.79459, 0.94379, 0.98499, 1.0, 1.01500, 1.05951, 1.25
 
 - **Parameters:** `+12A` coarse (×10 Hz), `+12C` fine (0.1 Hz), `+12E` amplitude randomness (0–100), `+130` frequency randomness (0–100).
 - **No inputs, no normalization.** It writes its own buffer, of length `+11A`.
-- **Random generator:** QuickDraw randSeed `(-$1F2,A5)` is set to 12345 at every compute. Toolbox Random: seed = seed·16807 mod 7FFFFFFF; result = low word, with 8000h becoming 0 (to confirm).
+- **Random generator:** QuickDraw randSeed `(-$1F2,A5)` is set to 12345 at every compute. Toolbox Random: seed = seed·16807 mod 7FFFFFFF; result = low word, with 8000h becoming 0. Verified in the emulator (see "Verification against the original").
 - **Table:** `TSWT` resource 1, "Sine Wave": 256 × `int16`, stored as `tswt_sine.bin`.
 - **Frequency:** freq = FixRatio(p12A·10, 1) + FixRatio(p12C, 10).
 - **Increment:** sc = 200h, s = sr; while s > 7FFF: s /= 2, sc /= 2. inc = FixMul(freq, FixRatio(sc, LoWord(s))).
@@ -393,12 +393,12 @@ The values: 0.5, 0.66667, 0.79459, 0.94379, 0.98499, 1.0, 1.01500, 1.05951, 1.25
 - **FixDiv(a, b) rounds** to nearest: truncating it breaks the Filter, Stretcher and Resonator renders.
 - FixRound(f) = (f + 8000h) >> 16 (not exercised separately).
 - Long multiply and divide (F1_020CA, F1_020FE): C semantics, truncating toward zero.
-- Random: seed = seed·16807 mod 7FFFFFFF; return the low word, with 8000h becoming 0. **Unverified:** no example patch uses the Noise module.
+- Random: seed = seed·16807 mod 7FFFFFFF; return the low word, with 8000h becoming 0. Verified with seven single-Noise test patches (pure tone; amplitude randomness 20 and 75; frequency randomness 10, 50 and 95; both at 40), which match the original exactly. The 8000h case occurs at draw 14294 from seed 12345, inside the masks of two of them.
 
 ## Verification against the original (2026-10-29)
 
 - **Setup:** Basilisk II (kanjitalk755/macemu, built with MSYS2 MinGW32, JIT off) with a Quadra 650 ROM and System 7.5.3 runs the original Turbosynth SC 2.22 from the extracted HFS volume. A host folder is mapped as a drive the Mac sees (Basilisk's ExtFS; Finder type/creator live in `.finf\<name>`, so documents get TRBD/TRBS). For each patch the original's File > Save Output As writes a Sound Designer II file (data fork: big-endian 16-bit samples, interleaved for stereo) straight to the host, and a small tool compares it sample for sample with `tsynth-cli`. Renders are deterministic: the same patch saved twice gives identical files.
-- **Result:** all 45 example patches that can run without a Digidesign card match the original exactly, including the four stereo patches and the output crossfade. Bright Hall 01, Non-Linear Reverb and Simple Reverb Model use the Diffuser, which the original refuses without the DSP card ("A Digidesign DSP Card is required to use the Diffuser"), so the Diffuser is still checked only against its DSP program.
+- **Result:** all 45 example patches that can run without a Digidesign card match the original exactly, including the four stereo patches and the output crossfade. Bright Hall 01, Non-Linear Reverb and Simple Reverb Model use the Diffuser, which the original refuses without the DSP card ("A Digidesign DSP Card is required to use the Diffuser"), so the Diffuser is still checked only against its DSP program. Seven test patches with a single Noise module (none of the examples uses one) also match exactly, so every module except the Diffuser is now verified.
 - **Method for a mismatch:** a probe patch connects one module straight to the Output (written by the port as a version-5 document); rendering probes in both programs shows the first module that differs.
 - **What the comparison corrected:**
   - FixRatio truncates (above). It set every oscillator's phase increment off by a few units.
