@@ -1,5 +1,5 @@
 #include "TableView.h"
-#include "Look.h"
+#include "ClassicLook.h"
 #include "TableOps.h"
 
 #include <random>
@@ -16,31 +16,31 @@ TableView::TableView(int tableId) : id(tableId)
 
 juce::Rectangle<float> TableView::plotArea() const
 {
-    return getLocalBounds().toFloat().reduced(4.0f).withTrimmedTop(16.0f).withTrimmedBottom(2.0f);
+    // The content area of the little window, below the range line.
+    return getLocalBounds().toFloat().reduced(6.0f).withTrimmedTop((float) classic::kTitleHeight + 12.0f).withTrimmedBottom(1.0f);
 }
 
 void TableView::paint(juce::Graphics& g)
 {
-    auto r = getLocalBounds().toFloat();
-    g.setColour(look::screen);
-    g.fillRoundedRectangle(r, 4.0f);
-    g.setColour(selected ? look::accent : look::legend.withAlpha(0.25f));
-    g.drawRoundedRectangle(r.reduced(0.5f), 4.0f, selected ? 1.5f : 1.0f);
+    // Each table is a small Classic window; the selected one has the pinstriped
+    // (active) title bar, as the front window does.
+    const auto& th = classic::theme();
+    const auto r = getLocalBounds().withTrimmedRight(1).withTrimmedBottom(1);
+    const auto inside = classic::drawWindow(g, r, pulsar::tableName(id), selected);
+    g.setColour(th.ink);
+    g.setFont(classic::smallFont(9.0f));
+    g.drawText(juce::String(viewMin, 1) + ".." + juce::String(viewMax, 1), inside.reduced(5, 0).withHeight(13),
+               juce::Justification::centredRight);
 
     const auto plot = plotArea();
-    g.setColour(look::grid);
-    for (int i = 1; i < 8; ++i) g.drawVerticalLine((int) (plot.getX() + plot.getWidth() * i / 8.0f), plot.getY(), plot.getBottom());
+    for (int i = 1; i < 8; ++i) {
+        const int x = (int) (plot.getX() + plot.getWidth() * i / 8.0f);
+        for (int y = (int) plot.getY(); y < (int) plot.getBottom(); y += 3) g.fillRect(x, y, 1, 1);
+    }
     if (viewMin < 0.0f && viewMax > 0.0f) {
         const float y0 = plot.getBottom() - plot.getHeight() * (0.0f - viewMin) / (viewMax - viewMin);
-        g.drawHorizontalLine((int) y0, plot.getX(), plot.getRight());
+        for (int x = (int) plot.getX(); x < (int) plot.getRight(); x += 2) g.fillRect(x, (int) y0, 1, 1);
     }
-
-    g.setColour(look::legend);
-    g.setFont(juce::FontOptions(11.0f, juce::Font::bold));
-    g.drawText(pulsar::tableName(id), r.reduced(6.0f, 2.0f).withHeight(14.0f), juce::Justification::centredLeft);
-    g.setColour(look::trace.withAlpha(0.55f));
-    g.setFont(juce::FontOptions(juce::Font::getDefaultMonospacedFontName(), 10.0f, juce::Font::plain));
-    g.drawText(juce::String(viewMin, 1) + ".." + juce::String(viewMax, 1), r.reduced(6.0f, 2.0f).withHeight(14.0f), juce::Justification::centredRight);
 
     auto* t = table ? table() : nullptr;
     if (t == nullptr || t->empty()) return;
@@ -52,17 +52,13 @@ void TableView::paint(juce::Graphics& g)
         const float y = plot.getBottom() - plot.getHeight() * (v - viewMin) / (viewMax - viewMin);
         if (x == 0) path.startNewSubPath(plot.getX() + x, y); else path.lineTo(plot.getX() + x, y);
     }
-    g.setColour(look::trace.withAlpha(0.25f));
-    g.strokePath(path, juce::PathStrokeType(3.0f));
-    g.setColour(look::trace);
-    g.strokePath(path, juce::PathStrokeType(1.2f));
+    g.setColour(th.ink);
+    g.strokePath(path, juce::PathStrokeType(1.0f));
 
     // Play position, for the tables the control oscillators read.
     const double pos = position ? position() : -1.0;
-    if (pos >= 0.0 && id != pulsar::Pulsaret && id != pulsar::PulseEnv) {
-        g.setColour(look::accent.withAlpha(0.8f));
+    if (pos >= 0.0 && id != pulsar::Pulsaret && id != pulsar::PulseEnv)
         g.drawVerticalLine((int) (plot.getX() + plot.getWidth() * (float) pos), plot.getY(), plot.getBottom());
-    }
 }
 
 void TableView::mouseDown(const juce::MouseEvent& e)

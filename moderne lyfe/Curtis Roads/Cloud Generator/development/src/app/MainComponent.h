@@ -1,13 +1,15 @@
 // Main console: the parameter panels of the original "laboratory signal
-// generator", restyled as modern test equipment, plus a scope-style grain plot.
+// generator" as Classic Mac windows (the TurboSynth port's look, with a dark
+// mode), plus a plot of the grains.
 #pragma once
 
+#include "ClassicLook.h"
 #include "CloudEngine.h"
 
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_gui_extra/juce_gui_extra.h>
 
-// Phosphor-display plot of grains on the frequency-versus-time plane.
+// Plot of grains on the frequency-versus-time plane.
 class GrainPlot : public juce::Component
 {
 public:
@@ -19,10 +21,10 @@ private:
     double start = 0.0, end = 1.0, minY = 20.0, maxY = 20000.0;
 };
 
-class MainComponent : public juce::Component, public juce::FileDragAndDropTarget
+class MainComponent : public juce::Component, public juce::FileDragAndDropTarget, public juce::MenuBarModel
 {
 public:
-    MainComponent();
+    explicit MainComponent(int forceTheme = -1); // 0 light, 1 dark, -1 the saved choice (snapshots force one)
     ~MainComponent() override;
 
     void paint(juce::Graphics&) override;
@@ -31,7 +33,19 @@ public:
     bool isInterestedInFileDrag(const juce::StringArray& files) override;
     void filesDropped(const juce::StringArray& files, int x, int y) override;
 
+    juce::StringArray getMenuBarNames() override;
+    juce::PopupMenu getMenuForIndex(int index, const juce::String& name) override;
+    void menuItemSelected(int id, int) override;
+
+    void generateNow(); // render on the calling thread (snapshots)
+
 private:
+    // Declared first so it outlives every component that uses it.
+    classic::LookAndFeel lnf;
+    juce::ApplicationProperties settings;
+    juce::MenuBarComponent menuBar{ this };
+    void setDark(bool);
+
     // A labelled numeric entry ("Initial [ 5 ] g/s").
     struct Field
     {

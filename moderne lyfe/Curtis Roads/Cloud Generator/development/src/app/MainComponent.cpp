@@ -6,15 +6,7 @@
 
 namespace {
 
-namespace Colours {
-const juce::Colour panel   { 0xff2b2e2c };  // instrument chassis
-const juce::Colour bezel   { 0xff3a3e3b };
-const juce::Colour legend  { 0xffd8d2c0 };  // silkscreen lettering
-const juce::Colour accent  { 0xffe0a040 };  // amber indicator
-const juce::Colour screen  { 0xff0c140f };
-const juce::Colour trace   { 0xff7cf0a0 };  // P31 phosphor
-const juce::Colour grid    { 0xff1f3326 };
-}
+enum MenuIds { kSelectSource = 1, kGenerate, kPlay, kExport, kQuit, kDark = 20, kAbout = 30 };
 
 // Renders one or more clouds on a background thread behind a progress window
 // with Stop (several for an A/B comparison).
@@ -101,8 +93,7 @@ public:
             if (std::strcmp(group, info.group) != 0) {
                 group = info.group;
                 auto* heading = headings.add(new juce::Label({}, juce::String(group).toUpperCase()));
-                heading->setFont(juce::FontOptions(11.0f, juce::Font::bold));
-                heading->setColour(juce::Label::textColourId, Colours::accent);
+                heading->setFont(classic::uiFont(12.0f));
                 addAndMakeVisible(heading);
                 rows.push_back({ heading, nullptr });
             }
@@ -174,36 +165,34 @@ void GrainPlot::setGrains(std::vector<cloudgen::GrainEvent> g, double cloudStart
 
 void GrainPlot::paint(juce::Graphics& g)
 {
-    auto r = getLocalBounds().toFloat();
-    g.setColour(Colours::screen);
-    g.fillRoundedRectangle(r, 6.0f);
+    // 1-bit: paper, a dotted grid, and each grain as a 3x3 ink dot.
+    const auto& t = classic::theme();
+    auto r = getLocalBounds();
+    g.fillAll(t.paper);
 
-    auto plotArea = r.reduced(28.0f, 22.0f);
-    g.setColour(Colours::grid);
-    for (int i = 0; i <= 10; ++i) {
-        const float x = plotArea.getX() + plotArea.getWidth() * (float) i / 10.0f;
-        g.drawVerticalLine((int) x, plotArea.getY(), plotArea.getBottom());
+    const auto plotArea = r.reduced(28, 22);
+    g.setColour(t.ink);
+    g.drawRect(plotArea.expanded(1), 1);
+    for (int i = 1; i < 10; ++i) {
+        const int x = plotArea.getX() + plotArea.getWidth() * i / 10;
+        for (int y = plotArea.getY(); y < plotArea.getBottom(); y += 3) g.fillRect(x, y, 1, 1);
     }
-    for (int i = 0; i <= 8; ++i) {
-        const float y = plotArea.getY() + plotArea.getHeight() * (float) i / 8.0f;
-        g.drawHorizontalLine((int) y, plotArea.getX(), plotArea.getRight());
+    for (int i = 1; i < 8; ++i) {
+        const int y = plotArea.getY() + plotArea.getHeight() * i / 8;
+        for (int x = plotArea.getX(); x < plotArea.getRight(); x += 3) g.fillRect(x, y, 1, 1);
     }
 
-    g.setColour(Colours::trace.withAlpha(0.6f));
-    g.setFont(juce::FontOptions(juce::Font::getDefaultMonospacedFontName(), 11.0f, juce::Font::plain));
-    g.drawText(juce::String(maxY, 0) + " Hz", r.withHeight(20.0f).reduced(8.0f, 0.0f), juce::Justification::centredLeft);
-    g.drawText(juce::String(minY, 0) + " Hz", r.withTrimmedTop(r.getHeight() - 20.0f).reduced(8.0f, 0.0f), juce::Justification::centredLeft);
-    g.drawText(juce::String(end, 2) + " s", r.withTrimmedTop(r.getHeight() - 20.0f).reduced(8.0f, 0.0f), juce::Justification::centredRight);
+    g.setFont(classic::smallFont(10.0f));
+    g.drawText(juce::String(maxY, 0) + " Hz", r.withHeight(20).reduced(8, 0), juce::Justification::centredLeft);
+    g.drawText(juce::String(minY, 0) + " Hz", r.withTrimmedTop(r.getHeight() - 20).reduced(8, 0), juce::Justification::centredLeft);
+    g.drawText(juce::String(end, 2) + " s", r.withTrimmedTop(r.getHeight() - 20).reduced(8, 0), juce::Justification::centredRight);
 
     for (const auto& gr : grains) {
-        const float x = plotArea.getX() + plotArea.getWidth() * (float) ((gr.onset - start) / (end - start));
+        const int x = plotArea.getX() + (int) (plotArea.getWidth() * (gr.onset - start) / (end - start));
         // Granulated grains carry no frequency; plot them along the centre line.
         const float yn = gr.frequency > 0.0f ? (float) ((gr.frequency - minY) / (maxY - minY)) : 0.5f;
-        const float y = plotArea.getBottom() - plotArea.getHeight() * juce::jlimit(0.0f, 1.0f, yn);
-        g.setColour(Colours::trace.withAlpha(0.25f));
-        g.fillEllipse(x - 3.0f, y - 3.0f, 6.0f, 6.0f);
-        g.setColour(Colours::trace);
-        g.fillEllipse(x - 1.2f, y - 1.2f, 2.4f, 2.4f);
+        const int y = plotArea.getBottom() - (int) ((float) plotArea.getHeight() * juce::jlimit(0.0f, 1.0f, yn));
+        g.fillRect(x - 1, y - 1, 3, 3);
     }
 }
 
@@ -238,9 +227,18 @@ void MainComponent::setupPot(Pot& pot, const juce::String& name, const cloudgen:
         addAndMakeVisible(c);
 }
 
-MainComponent::MainComponent()
+MainComponent::MainComponent(int forceTheme)
 {
-    setColour(juce::Label::textColourId, Colours::legend);
+    juce::PropertiesFile::Options o;
+    o.applicationName = "Cloud Generator";
+    o.filenameSuffix = ".settings";
+    o.osxLibrarySubFolder = "Application Support";
+    settings.setStorageParameters(o);
+    classic::setDark(forceTheme >= 0 ? forceTheme == 1 : settings.getUserSettings()->getBoolValue("darkMode", false));
+    lnf.refresh();
+    setLookAndFeel(&lnf);
+    juce::LookAndFeel::setDefaultLookAndFeel(&lnf); // dialogs and the Fixes call-out too
+    addAndMakeVisible(menuBar);
     formats.registerBasicFormats();
 
     const cloudgen::CloudParams d;
@@ -272,7 +270,6 @@ MainComponent::MainComponent()
     outputKind.addItemList({ "AIFF / WAV", "Text" }, 1);
     outputKind.setSelectedId(1);
     sourceName.setJustificationType(juce::Justification::centredLeft);
-    sourceName.setColour(juce::Label::textColourId, Colours::accent);
     // Shares the waveform menu's slot; it must never swallow the menu's clicks.
     sourceName.setInterceptsMouseClicks(false, false);
 
@@ -312,7 +309,6 @@ MainComponent::MainComponent()
     };
 
     selectButton.onClick = [this] { chooseSource(); };
-    generateButton.setColour(juce::TextButton::buttonColourId, Colours::accent.darker(0.3f));
     generateButton.onClick = [this] { generate(); };
     playButton.onClick = [this] { play(); };
     exportButton.onClick = [this] { exportResult(); };
@@ -320,11 +316,11 @@ MainComponent::MainComponent()
     updateSourceControls();
     updateModelControls();
 
-    deviceManager.initialiseWithDefaultDevices(0, 2);
+    if (forceTheme < 0) deviceManager.initialiseWithDefaultDevices(0, 2); // no audio device for snapshots
     sourcePlayer.setSource(&transport);
     deviceManager.addAudioCallback(&sourcePlayer);
 
-    setSize(1180, 760);
+    setSize(1180, 800);
 }
 
 MainComponent::~MainComponent()
@@ -332,6 +328,68 @@ MainComponent::~MainComponent()
     transport.setSource(nullptr);
     sourcePlayer.setSource(nullptr);
     deviceManager.removeAudioCallback(&sourcePlayer);
+    setLookAndFeel(nullptr);
+    juce::LookAndFeel::setDefaultLookAndFeel(nullptr);
+}
+
+// ---------------------------------------------------------------------------
+juce::StringArray MainComponent::getMenuBarNames() { return { "File", "View", "Help" }; }
+
+juce::PopupMenu MainComponent::getMenuForIndex(int index, const juce::String&)
+{
+    juce::PopupMenu m;
+    if (index == 0) {
+        m.addItem(kSelectSource, "Select Source...", sourceKind.getSelectedId() == 2);
+        m.addItem(kGenerate, "Generate");
+        m.addItem(kPlay, "Play", !lastRender().grains.empty());
+        m.addItem(kExport, "Export...", !lastRender().grains.empty());
+        m.addSeparator();
+        m.addItem(kQuit, "Quit");
+    } else if (index == 1) {
+        m.addItem(kDark, "Dark Mode", true, classic::theme().dark);
+    } else {
+        m.addItem(kAbout, "About Cloud Generator...");
+    }
+    return m;
+}
+
+void MainComponent::menuItemSelected(int id, int)
+{
+    switch (id) {
+    case kSelectSource: chooseSource(); break;
+    case kGenerate: generate(); break;
+    case kPlay: play(); break;
+    case kExport: exportResult(); break;
+    case kQuit: juce::JUCEApplication::getInstance()->systemRequestedQuit(); break;
+    case kDark: setDark(!classic::theme().dark); break;
+    case kAbout:
+        juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::NoIcon, "Cloud Generator",
+            "A port of Cloud Generator by Curtis Roads and John Alexander (1996).\n\n"
+            "Model 1 follows the original program's 68000 code; Model 2 adds switchable fixes.");
+        break;
+    default: break;
+    }
+}
+
+void MainComponent::setDark(bool dark)
+{
+    classic::setDark(dark);
+    settings.getUserSettings()->setValue("darkMode", dark);
+    settings.saveIfNeeded();
+    lnf.refresh();
+    sendLookAndFeelChange();
+    if (auto* w = findParentComponentOfClass<juce::DocumentWindow>()) w->setBackgroundColour(classic::theme().paper);
+    repaint();
+}
+
+void MainComponent::generateNow()
+{
+    const auto p = gatherParams();
+    renders[1] = cloudgen::render(p, currentWave(p.fixes), nullptr, false);
+    lastParams = p;
+    showRender(1);
+    status.setText("Done. " + juce::String((int) renders[1].grains.size()) + " grains, seed " + juce::String(p.seed) + ".",
+                   juce::dontSendNotification);
 }
 
 void MainComponent::updateSourceControls()
@@ -608,41 +666,37 @@ void MainComponent::exportResult()
 // ---------------------------------------------------------------------------
 void MainComponent::paint(juce::Graphics& g)
 {
-    g.fillAll(Colours::panel);
-
-    g.setColour(Colours::legend);
-    g.setFont(juce::FontOptions(20.0f, juce::Font::bold));
-    g.drawText("CLOUD GENERATOR", 20, 8, 400, 28, juce::Justification::centredLeft);
-    g.setColour(Colours::accent);
-    g.setFont(juce::FontOptions(12.0f));
-    const juce::String model = sameFixes(fixes, cloudgen::Fixes::model1()) ? "MODEL 1" : "MODEL 2";
-    g.drawText(model + "  /  GRANULAR SYNTHESIS", 240, 8, 400, 28, juce::Justification::centredLeft);
-
-    for (const auto& ps : panels) {
-        auto r = ps.area.toFloat();
-        g.setColour(Colours::bezel);
-        g.fillRoundedRectangle(r, 5.0f);
-        g.setColour(Colours::legend.withAlpha(0.35f));
-        g.drawRoundedRectangle(r, 5.0f, 1.0f);
-        g.setColour(Colours::legend);
-        g.setFont(juce::FontOptions(11.0f, juce::Font::bold));
-        g.drawText(ps.title.toUpperCase(), ps.area.withHeight(20).reduced(10, 0), juce::Justification::centredLeft);
-    }
+    // A dithered desktop with each panel as a Classic Mac window.
+    classic::fillDesktop(g, getLocalBounds().withTrimmedTop(menuBar.getHeight()));
+    const juce::String model = sameFixes(fixes, cloudgen::Fixes::model1()) ? "Model 1" : "Model 2";
+    for (const auto& ps : panels)
+        classic::drawWindow(g, ps.area, ps.title.isEmpty() ? "Cloud Generator - " + model + " - Granular Synthesis" : ps.title);
 }
 
 void MainComponent::resized()
 {
     panels.clear();
-    auto area = getLocalBounds().reduced(16);
-    auto header = area.removeFromTop(32).withTrimmedBottom(6);
+    auto area = getLocalBounds();
+    menuBar.setBounds(area.removeFromTop(22));
+    area.reduce(12, 12);
+    auto content = [](juce::Rectangle<int> r) { return r.withTrimmedTop(classic::kTitleHeight + 3).reduced(8, 2); };
+
+    auto headerWindow = area.removeFromTop(classic::kTitleHeight + 38);
+    area.removeFromTop(10);
+    panels.push_back({ {}, headerWindow }); // titled with the model in paint()
+    auto header = content(headerWindow);
     compareToggle.setBounds(header.removeFromRight(150));
     fixesButton.setBounds(header.removeFromRight(100).reduced(4, 0));
     modelSelector.setBounds(header.removeFromRight(220));
 
-    auto bottom = area.removeFromBottom(44);
+    auto bottomWindow = area.removeFromBottom(classic::kTitleHeight + 42);
+    area.removeFromBottom(10);
+    panels.push_back({ "Generate", bottomWindow });
+    auto bottom = content(bottomWindow);
     auto controls = area.removeFromLeft(600);
     area.removeFromLeft(12);
-    plot.setBounds(area);
+    panels.push_back({ "Grains", area });
+    plot.setBounds(area.reduced(1).withTrimmedTop(classic::kTitleHeight));
 
     const int rowH = 26;
     auto layoutPair = [&](juce::Rectangle<int> r, Field* a, Field* b) {
@@ -664,7 +718,7 @@ void MainComponent::resized()
         auto r = col.removeFromTop(h);
         col.removeFromTop(8);
         panels.push_back({ title, r });
-        return r.withTrimmedTop(22).reduced(8, 2);
+        return content(r);
     };
 
     auto left = controls.removeFromLeft(280);

@@ -13,6 +13,10 @@ The synthesis engine follows the disassembled 68K code step by step: grain sched
 
 The app also offers **Model 2**: the same engine with the original's quirks corrected, each fix switchable on its own, and an A/B mode that renders Model 1 and Model 2 from the same random seed for comparison. With every fix off the output is Model 1, bit for bit. See [docs/MODEL2.md](docs/MODEL2.md).
 
+## Look
+
+The interface uses the same Classic Mac look as the TurboSynth port: a dithered desktop, the parameter panels as pinstriped windows, 1-bit controls, and the grains plotted as dots. **View > Dark Mode** switches to light ink on charcoal, and the choice is remembered. `"Cloud Generator.exe" --snapshot out.png [--dark]` paints the window with a generated cloud into an image and quits.
+
 ## Layout
 
 | Path | Contents |

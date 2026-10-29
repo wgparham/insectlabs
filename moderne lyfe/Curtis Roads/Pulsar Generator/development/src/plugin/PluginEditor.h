@@ -1,7 +1,9 @@
 // Pulsar Generator console: control panel, the 13 table views, the tables
-// bank, ring modulator and scope, restyled as modern test equipment.
+// bank, ring modulator and scope, as Classic Mac windows (the TurboSynth
+// port's look, with a dark mode).
 #pragma once
 
+#include "ClassicLook.h"
 #include "PluginProcessor.h"
 #include "TableView.h"
 
@@ -57,6 +59,11 @@ private:
     void setupToggle(juce::TextButton&, const juce::String& text);
 
     PulsarProcessor& proc;
+    // Declared before the components so it outlives them.
+    classic::LookAndFeel lnf;
+    juce::ApplicationProperties settings; // the dark mode choice, shared by every host
+    juce::ToggleButton darkMode{ "Dark Mode" };
+    void setDark(bool);
 
     // Control panel
     std::array<juce::TextButton, 3> trainOn;

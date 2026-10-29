@@ -43,7 +43,8 @@ if(CLOUDGEN_BUILD_GUI)
 
     target_sources(CloudGenerator PRIVATE
         src/app/Main.cpp
-        src/app/MainComponent.cpp)
+        src/app/MainComponent.cpp
+        src/app/ClassicLook.cpp)
 
     target_compile_definitions(CloudGenerator PRIVATE
         JUCE_WEB_BROWSER=0

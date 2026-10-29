@@ -1,5 +1,4 @@
 #include "PluginEditor.h"
-#include "Look.h"
 
 namespace {
 
@@ -33,19 +32,18 @@ void ScopeView::pull()
 
 void ScopeView::paint(juce::Graphics& g)
 {
-    auto r0 = getLocalBounds().toFloat();
-    g.setColour(look::screen);
-    g.fillRoundedRectangle(r0, 4.0f);
-    g.setColour(look::legend.withAlpha(0.25f));
-    g.drawRoundedRectangle(r0.reduced(0.5f), 4.0f, 1.0f);
-    g.setColour(look::legend);
-    g.setFont(juce::FontOptions(11.0f, juce::Font::bold));
-    g.drawText("SCOPE", r0.reduced(6.0f, 2.0f).withHeight(14.0f), juce::Justification::centredLeft);
-
-    const auto plot = r0.reduced(6.0f).withTrimmedTop(14.0f);
-    g.setColour(look::grid);
-    for (int i = 1; i < 10; ++i) g.drawVerticalLine((int) (plot.getX() + plot.getWidth() * i / 10.0f), plot.getY(), plot.getBottom());
-    for (int i = 1; i < 4; ++i) g.drawHorizontalLine((int) (plot.getY() + plot.getHeight() * i / 4.0f), plot.getX(), plot.getRight());
+    const auto& th = classic::theme();
+    const auto inside = classic::drawWindow(g, getLocalBounds().withTrimmedRight(1).withTrimmedBottom(1), "Scope");
+    const auto plot = inside.toFloat().reduced(6.0f);
+    g.setColour(th.ink);
+    for (int i = 1; i < 10; ++i) {
+        const int x = (int) (plot.getX() + plot.getWidth() * i / 10.0f);
+        for (int y = (int) plot.getY(); y < (int) plot.getBottom(); y += 3) g.fillRect(x, y, 1, 1);
+    }
+    for (int i = 1; i < 4; ++i) {
+        const int y = (int) (plot.getY() + plot.getHeight() * i / 4.0f);
+        for (int x = (int) plot.getX(); x < (int) plot.getRight(); x += 3) g.fillRect(x, y, 1, 1);
+    }
 
     auto trace = [&](const std::array<float, 1024>& d, float centre, juce::Colour c) {
         juce::Path p;
@@ -56,13 +54,11 @@ void ScopeView::paint(juce::Graphics& g)
             const float y = centre - v * plot.getHeight() * 0.24f;
             if (i == 0) p.startNewSubPath(x, y); else p.lineTo(x, y);
         }
-        g.setColour(c.withAlpha(0.25f));
-        g.strokePath(p, juce::PathStrokeType(2.5f));
         g.setColour(c);
         g.strokePath(p, juce::PathStrokeType(1.0f));
     };
-    trace(l, plot.getY() + plot.getHeight() * 0.25f, look::trace);
-    trace(r, plot.getY() + plot.getHeight() * 0.75f, look::trace);
+    trace(l, plot.getY() + plot.getHeight() * 0.25f, th.ink);
+    trace(r, plot.getY() + plot.getHeight() * 0.75f, th.ink);
 }
 
 // ---------------------------------------------------------------------------
@@ -71,11 +67,8 @@ FixesPanel::FixesPanel(PulsarProcessor& proc)
     for (int i = 0; i < pulsar::Fixes::kCount; ++i) {
         Row r;
         r.toggle = std::make_unique<juce::ToggleButton>(pulsar::Fixes::name(i));
-        r.toggle->setColour(juce::ToggleButton::textColourId, look::legend);
-        r.toggle->setColour(juce::ToggleButton::tickColourId, look::accent);
         r.text = std::make_unique<juce::Label>(juce::String(), pulsar::Fixes::description(i));
-        r.text->setFont(juce::FontOptions(12.0f));
-        r.text->setColour(juce::Label::textColourId, look::legend.withAlpha(0.7f));
+        r.text->setFont(classic::smallFont(11.0f));
         r.text->setInterceptsMouseClicks(false, false);
         addAndMakeVisible(*r.toggle);
         addAndMakeVisible(*r.text);
@@ -88,13 +81,13 @@ FixesPanel::FixesPanel(PulsarProcessor& proc)
 
 void FixesPanel::paint(juce::Graphics& g)
 {
-    g.fillAll(look::panel);
-    g.setFont(juce::FontOptions(11.0f, juce::Font::bold));
+    const auto& th = classic::theme();
+    g.fillAll(th.paper);
+    g.setColour(th.ink);
+    g.setFont(classic::uiFont(12.0f));
     for (const auto& [title, y] : headings) {
-        g.setColour(look::accent);
         g.drawText(title, 12, y, getWidth() - 24, 22, juce::Justification::bottomLeft);
-        g.setColour(look::legend.withAlpha(0.25f));
-        g.drawHorizontalLine(y + 23, 12.0f, (float) getWidth() - 12.0f);
+        for (int x = 12; x < getWidth() - 12; x += 2) g.fillRect(x, y + 23, 1, 1); // dotted rule
     }
 }
 
@@ -128,15 +121,24 @@ void PulsarEditor::setupSlider(juce::Slider& s, juce::Label& l, const juce::Stri
 void PulsarEditor::setupToggle(juce::TextButton& b, const juce::String& text)
 {
     b.setButtonText(text);
-    b.setClickingTogglesState(true);
-    b.setColour(juce::TextButton::buttonOnColourId, look::accent.darker(0.2f));
+    b.setClickingTogglesState(true); // on shows inverted, like a selected Mac button
     addAndMakeVisible(b);
 }
 
 PulsarEditor::PulsarEditor(PulsarProcessor& p) : AudioProcessorEditor(p), proc(p), scope(p)
 {
-    setColour(juce::ResizableWindow::backgroundColourId, look::panel);
-    getLookAndFeel().setColour(juce::Label::textColourId, look::legend);
+    juce::PropertiesFile::Options o;
+    o.applicationName = "Pulsar Generator Look"; // apart from the standalone wrapper's own settings file
+    o.folderName = "Pulsar Generator";
+    o.filenameSuffix = ".settings";
+    o.osxLibrarySubFolder = "Application Support";
+    settings.setStorageParameters(o);
+    classic::setDark(settings.getUserSettings()->getBoolValue("darkMode", false));
+    lnf.refresh();
+    setLookAndFeel(&lnf);
+    darkMode.setToggleState(classic::theme().dark, juce::dontSendNotification);
+    darkMode.onClick = [this] { setDark(darkMode.getToggleState()); };
+    addAndMakeVisible(darkMode);
     auto& params = proc.params;
     auto attachS = [&](juce::Slider& s, const char* id) { sliderAttachments.add(new SliderAttachment(params, id, s)); };
     auto attachB = [&](juce::Button& b, const char* id) { buttonAttachments.add(new ButtonAttachment(params, id, b)); };
@@ -148,13 +150,10 @@ PulsarEditor::PulsarEditor(PulsarProcessor& p) : AudioProcessorEditor(p), proc(p
         attachS(trainLevel[(size_t) i], ("train" + std::to_string(i + 1) + "Level").c_str());
     }
     setupToggle(runButton, "S T A R T");
-    runButton.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff2b582b)); // PG.darkGreen
-    runButton.setColour(juce::TextButton::buttonOnColourId, look::record);
     runButton.onStateChange = [this] { runButton.setButtonText(runButton.getToggleState() ? "S T O P" : "S T A R T"); };
     attachB(runButton, "run");
     setupToggle(loopButton, "LOOP");       attachB(loopButton, "loop");
     setupToggle(muteButton, "M U T E");    attachB(muteButton, "mute");
-    muteButton.setColour(juce::TextButton::buttonOnColourId, look::record);
     setupToggle(freezeButton, "[F]");      attachB(freezeButton, "freeze");
     setupToggle(backButton, "<-");         attachB(backButton, "backwards");
     setupToggle(burstOn, "BURST RATIO");   attachB(burstOn, "burstOn");
@@ -181,7 +180,6 @@ PulsarEditor::PulsarEditor(PulsarProcessor& p) : AudioProcessorEditor(p), proc(p
     randomButton.onClick = [this] { proc.randomizeControls(); };
 
     recordButton.setButtonText("RECORD");
-    recordButton.setColour(juce::TextButton::buttonOnColourId, look::record);
     recordButton.setVisible(proc.isStandalone());
     addChildComponent(recordButton);
     recordButton.onClick = [this] {
@@ -215,7 +213,6 @@ PulsarEditor::PulsarEditor(PulsarProcessor& p) : AudioProcessorEditor(p), proc(p
     setupSlider(fadeTime, fadeTimeLabel, "Fade Time");
     attachS(fadeTime, "fadeTime");
     bankLabel.setJustificationType(juce::Justification::centredLeft);
-    bankLabel.setColour(juce::Label::textColourId, look::accent);
     addAndMakeVisible(bankLabel);
     bankViewport.setViewedComponent(&bankList, false);
     bankViewport.setScrollBarsShown(true, false);
@@ -269,7 +266,6 @@ PulsarEditor::PulsarEditor(PulsarProcessor& p) : AudioProcessorEditor(p), proc(p
         addAndMakeVisible(v);
     }
     addAndMakeVisible(scope);
-    status.setColour(juce::Label::textColourId, look::accent);
     addAndMakeVisible(status);
 
     // Model 1 / Model 2
@@ -282,13 +278,13 @@ PulsarEditor::PulsarEditor(PulsarProcessor& p) : AudioProcessorEditor(p), proc(p
     };
     addAndMakeVisible(modelSelector);
     fixesButton.onClick = [this] {
-        juce::CallOutBox::launchAsynchronously(std::make_unique<FixesPanel>(proc), fixesButton.getScreenBounds(), nullptr);
+        // Inside the editor, so the call-out uses the editor's look.
+        juce::CallOutBox::launchAsynchronously(std::make_unique<FixesPanel>(proc), fixesButton.getBounds(), this);
     };
     addAndMakeVisible(fixesButton);
     for (auto* b : { &showA, &showB }) {
         b->setClickingTogglesState(true);
         b->setRadioGroupId(1001);
-        b->setColour(juce::TextButton::buttonOnColourId, look::accent.darker(0.2f));
         addAndMakeVisible(*b);
     }
     showA.setTooltip("Hear Model 1 (the original) with the same tables and controls");
@@ -303,12 +299,27 @@ PulsarEditor::PulsarEditor(PulsarProcessor& p) : AudioProcessorEditor(p), proc(p
     setResizable(true, true);
     setResizeLimits(1100, 720, 2400, 1600);
     setSize(1240, 820);
+    // Slider text boxes were made before their sliders joined the editor, with
+    // the default look; send ours down so they are rebuilt with it.
+    sendLookAndFeelChange();
     startTimerHz(30);
 }
 
 PulsarEditor::~PulsarEditor()
 {
     proc.onTablesChanged = nullptr;
+    setLookAndFeel(nullptr);
+}
+
+void PulsarEditor::setDark(bool dark)
+{
+    classic::setDark(dark);
+    settings.getUserSettings()->setValue("darkMode", dark);
+    settings.saveIfNeeded();
+    lnf.refresh();
+    sendLookAndFeelChange();
+    rebuildBankButtons();
+    repaint();
 }
 
 void PulsarEditor::refreshTables()
@@ -322,7 +333,7 @@ void PulsarEditor::rebuildBankButtons()
     bankLabel.setText(proc.bankName.isEmpty() ? "Bank" : "Bank: " + proc.bankName, juce::dontSendNotification);
     for (int i = 0; i < (int) proc.bank.size(); ++i) {
         auto* b = bankButtons.add(new juce::TextButton(juce::String(proc.bank[(size_t) i].name)));
-        b->setColour(juce::TextButton::buttonColourId, i == proc.selectedBankSet() ? look::accent.darker(0.4f) : look::bezel);
+        b->setToggleState(i == proc.selectedBankSet(), juce::dontSendNotification); // the current set shows inverted
         b->onClick = [this, i] { proc.selectBankSet(i); };
         bankList.addAndMakeVisible(b);
     }
@@ -394,33 +405,24 @@ void PulsarEditor::timerCallback()
 
 void PulsarEditor::paint(juce::Graphics& g)
 {
-    g.fillAll(look::panel);
-    g.setColour(look::legend);
-    g.setFont(juce::FontOptions(20.0f, juce::Font::bold));
-    g.drawText("PULSAR GENERATOR", 18, 8, 300, 26, juce::Justification::centredLeft);
-    g.setColour(look::accent);
-    g.setFont(juce::FontOptions(12.0f));
-    g.drawText("2001  /  PULSAR SYNTHESIS", 236, 8, 300, 26, juce::Justification::centredLeft);
-
-    for (const auto& p : panels) {
-        const auto r = p.area.toFloat();
-        g.setColour(look::bezel);
-        g.fillRoundedRectangle(r, 5.0f);
-        g.setColour(look::legend.withAlpha(0.3f));
-        g.drawRoundedRectangle(r.reduced(0.5f), 5.0f, 1.0f);
-        g.setColour(look::legend);
-        g.setFont(juce::FontOptions(11.0f, juce::Font::bold));
-        g.drawText(p.title.toUpperCase(), p.area.withHeight(20).reduced(10, 0), juce::Justification::centredLeft);
-    }
+    // A dithered desktop with each panel as a Classic Mac window (the tables and
+    // the scope draw their own).
+    classic::fillDesktop(g, getLocalBounds());
+    for (const auto& p : panels) classic::drawWindow(g, p.area, p.title);
 }
 
 void PulsarEditor::resized()
 {
     panels.clear();
-    auto area = getLocalBounds().reduced(14);
-    auto header = area.removeFromTop(34);
+    auto area = getLocalBounds().reduced(12);
+    auto content = [](juce::Rectangle<int> r) { return r.withTrimmedTop(classic::kTitleHeight + 3).reduced(8, 2); };
+    auto headerWindow = area.removeFromTop(classic::kTitleHeight + 36);
+    area.removeFromTop(10);
+    panels.push_back({ "Pulsar Generator - 2001 - Pulsar Synthesis", headerWindow });
+    auto header = content(headerWindow);
+    darkMode.setBounds(header.removeFromLeft(120));
     {
-        auto r = header.withTrimmedLeft(440).reduced(0, 4);
+        auto r = header.reduced(0, 1);
         showB.setBounds(r.removeFromRight(96));
         r.removeFromRight(2);
         showA.setBounds(r.removeFromRight(96));
@@ -429,8 +431,11 @@ void PulsarEditor::resized()
         r.removeFromRight(6);
         modelSelector.setBounds(r.removeFromRight(190));
     }
-    auto footer = area.removeFromBottom(26);
-    status.setBounds(footer.removeFromLeft(330));
+    auto footerWindow = area.removeFromBottom(classic::kTitleHeight + 30);
+    area.removeFromBottom(10);
+    panels.push_back({ "Cycle", footerWindow });
+    auto footer = content(footerWindow);
+    status.setBounds(footer.removeFromLeft(322));
     pulsarCount.setBounds(footer.removeFromRight(140));
     cycle.setBounds(footer.withTrimmedLeft(12).withTrimmedRight(110)); // under the table grid
 
@@ -439,7 +444,7 @@ void PulsarEditor::resized()
         auto r = col.removeFromTop(h);
         col.removeFromTop(8);
         panels.push_back({ title, r });
-        return r.withTrimmedTop(22).reduced(8, 2);
+        return content(r);
     };
     auto labelled = [&](juce::Rectangle<int> r, juce::Label& l, juce::Slider& s, int labelWidth = 92) {
         l.setBounds(r.removeFromLeft(labelWidth));

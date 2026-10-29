@@ -65,7 +65,8 @@ if(PULSARGEN_BUILD_PLUGIN)
     target_sources(PulsarGenerator PRIVATE
         src/plugin/PluginProcessor.cpp
         src/plugin/PluginEditor.cpp
-        src/plugin/TableView.cpp)
+        src/plugin/TableView.cpp
+        src/plugin/ClassicLook.cpp)
 
     target_compile_definitions(PulsarGenerator PUBLIC
         JUCE_WEB_BROWSER=0

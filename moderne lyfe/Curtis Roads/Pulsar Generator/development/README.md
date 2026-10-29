@@ -6,6 +6,8 @@ The original's SuperCollider source was recovered from the compressed class libr
 
 **Model 2** is the same instrument with the original's quirks corrected: a header switch chooses Model 1 (the original) or Model 2, each fix can be switched on its own, and A/B plays Model 1 against the current fixes live. [docs/MODEL2.md](docs/MODEL2.md) lists the fixes.
 
+The interface uses the same Classic Mac look as the TurboSynth and Cloud Generator ports: a dithered desktop, the panels and each of the 13 tables as small pinstriped windows (the selected table's title bar is the active one), and 1-bit controls. The **Dark Mode** switch in the header changes to light ink on charcoal; the choice is shared by the standalone and every plugin host.
+
 It loads the original files directly: `.set` table sets, `.bank` banks, and `.wt` wavetables. The original distribution's DemoTables, ExampleTables and El Rey 6 banks are in the parent folder.
 
 ## Layout
