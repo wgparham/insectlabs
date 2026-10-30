@@ -52,7 +52,9 @@ void ModulePanel::show(Patch* p, int i)
     nameEdit.setFont(classic::uiFont(12.0f));
     nameEdit.setText(m->name, false);
     nameEdit.applyColourToAllText(classic::theme().ink); // text keeps the colour it was typed in; follow the theme
-    nameEdit.onReturnKey = nameEdit.onFocusLost = [this] { if (auto* mm = module()) { mm->name = nameEdit.getText().toStdString(); edited(); } };
+    nameEdit.onReturnKey = nameEdit.onFocusLost = [this] {
+        if (auto* mm = module(); mm && mm->name != nameEdit.getText().toStdString()) { mm->name = nameEdit.getText().toStdString(); edited(); }
+    };
     addAndMakeVisible(nameEdit);
     hear.onClick = [this] { if (onPreview) onPreview(index); };
     addAndMakeVisible(hear);
@@ -61,7 +63,13 @@ void ModulePanel::show(Patch* p, int i)
     if (!isOutput) {
         addField("Sample rate (Hz)", 1000, 96000, [m] { return m->sampleRate; }, [m](int v) { m->sampleRate = v; });
         addField("Length (samples)", 1, 2147483, [m] { return m->length; }, [m](int v) { m->length = v; });
-        if (m->type != kOscillator && m->type != kSample && m->type != kNoise) {
+        if (m->type == kSample) { // the Sample info dialog's checkbox (DITL 10005), +13E
+            normalize.setButtonText("Save sound data with document");
+            normalize.setToggleState(m->saveSound, juce::dontSendNotification);
+            normalize.onClick = [this] { if (auto* mm = module()) { mm->saveSound = normalize.getToggleState(); edited(); } };
+            addAndMakeVisible(normalize);
+        } else if (m->type != kOscillator && m->type != kNoise) {
+            normalize.setButtonText("Normalize output");
             normalize.setToggleState(m->normalize, juce::dontSendNotification);
             normalize.onClick = [this] { if (auto* mm = module()) { mm->normalize = normalize.getToggleState(); edited(); } };
             addAndMakeVisible(normalize);
@@ -151,7 +159,7 @@ void ModulePanel::show(Patch* p, int i)
         addAndMakeVisible(removeWave);
         break; }
     case kSample:
-        // The Sample window's tools are in the palette; the sound itself is edited in the Sound window.
+        // The Sample window's tools are in the palette; the sound itself is edited beside them.
         break;
     case kAmpEnv: case kFilter: case kSpectralInverter: case kPitchEnv: {
         if (m->type == kSpectralInverter)
@@ -219,14 +227,13 @@ void ModulePanel::show(Patch* p, int i)
         // What the original's info boxes show: the loop and its frequency, and for the output the crossfade mode.
         const int32_t ls = m->type == kSample ? m->sampA : m->out[3], le = m->type == kSample ? m->sampB : m->out[4];
         juce::String text;
-        if (m->type == kSample) text << (m->embedded.empty() ? "Sound: from file \"" + juce::String(m->name).trim() + "\"" : juce::String("Sound: stored in the document")) << "\n";
         if (ls >= 0 && le > ls) {
             const int rate = m->sampleRate > 0 ? m->sampleRate : 44100;
             text << "Loop: " << (int) ls << " to " << (int) le << "\nLoop frequency: " << juce::String((double) rate / (double) (le - ls), 2) << " Hz\n";
         } else text << "No loop markers\n";
         if (isOutput)
             text << "Crossfade looping: " << (m->out[0] ? (m->out[2] ? "Linear, " : "Equal Power, ") + juce::String(m->out[1]) + " samples" : juce::String("off")) << "\n";
-        text << "Edit the sound and markers in the Sound window.";
+        text << "Drag in the sound to select; the markers set the loop.";
         soundInfo.setText(text, juce::dontSendNotification);
         soundInfo.setFont(classic::smallFont(11.0f));
         soundInfo.setJustificationType(juce::Justification::topLeft);
@@ -260,7 +267,7 @@ void ModulePanel::setupTools(Module& m)
             tools.addBlank(); tools.addBlank();
         } else {
             tools.addTools({ 1008, 1006 }, kMode + 2);
-            tools.addBlank();
+            tools.addTools({ 1001 }, kMode + 8);
             tools.addTools({ 1009 }, kMode + 3);
             tools.addBlank(); tools.addBlank();
             tools.setTip(kMode + 3, "Harmonic mode: the first 64 harmonics");
@@ -277,9 +284,11 @@ void ModulePanel::setupTools(Module& m)
             tools.addTools({ 1113, 1114, 1115, 1116, 1117, 1118, 1119, 1120, 1121, 1122, 1123, 1124, 1125, 1126, 1127 }, kMod);
             for (int k = 0; k < presets::kHarmonicModifiers; ++k) tools.setTip(kMod + k, presets::harmonicModifierName(k));
         } else {
-            tools.remap(1, kMode + 7); // the pencil: the waveform window's only drawing tool, always on
+            tools.remap(1, kMode + 7);
             tools.setTip(kMode + 7, "Pencil: draw the waveform");
-            tools.active = { kMode + 2, kMode + 7 };
+            tools.setTip(kMode + 8, "Eraser: set the samples it passes over to 0");
+            table.eraseValue = [](int) { return (int16_t) 0; }; // F38_031CC: tool 3 stores 0
+            tools.active = { kMode + 2, table.erasing ? kMode + 8 : kMode + 7 };
             tools.addPresetRow({ 1010, 1011, 1012 }, 0);
             tools.addTools({ 1013, 1014, 1015, 1016, 1017, 1018, 1019, 1020, 1021, 1022, 1023, 1024, 1025, 1026, 1027, 1028, 1029, 1030 }, kMod);
             for (int k = 0; k < presets::kWaveModifiers; ++k) tools.setTip(kMod + k, presets::waveModifierName(k));
@@ -296,8 +305,14 @@ void ModulePanel::setupTools(Module& m)
                 juce::MessageManager::callAsync([self] { if (self) self->show(self->patch, self->index); });
                 return;
             }
+            if (code == kMode + 7 || code == kMode + 8) {
+                table.erasing = code == kMode + 8;
+                tools.active = { kMode + 2, code };
+                tools.repaint();
+                return;
+            }
             if (code >= kMode + 4) {
-                if (code != kMode + 5 && code != kMode + 6) return; // the pencil is always on
+                if (code != kMode + 5 && code != kMode + 6) return;
                 harmEditor.rake = code == kMode + 6;
                 tools.active = { kMode + 3, code };
                 tools.repaint();
@@ -383,8 +398,8 @@ void ModulePanel::setupTools(Module& m)
             };
             tools.setTip(10, "Crossfade looping (a mode: it applies to whatever reaches the output)");
         }
-        tools.setTip(7, "Loop start marker: click in the Sound window to place it");
-        tools.setTip(8, "Loop end marker: click in the Sound window to place it");
+        tools.setTip(7, "Loop start marker: click in the sound to place it");
+        tools.setTip(8, "Loop end marker: click in the sound to place it");
         tools.setTip(9, "Loop window: line up the loop end and start");
         break; }
     default: // the breakpoint envelopes

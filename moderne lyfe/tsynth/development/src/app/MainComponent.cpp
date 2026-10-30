@@ -4,6 +4,44 @@
 
 using namespace turbosynth;
 
+// A module's window: its settings and tools, and for a Sample or Output module
+// the sound beside them (the original's palette on the left, sound on the right).
+struct MainComponent::ModuleWindow {
+    struct Body : juce::Component {
+        explicit Body(ModulePanel& p) : panel(p) { addAndMakeVisible(panel); }
+        void resized() override
+        {
+            auto r = getLocalBounds();
+            if (sound) { panel.setBounds(r.removeFromLeft(300)); stripArea = r; if (strip) strip->setBounds(r); }
+            else panel.setBounds(r);
+        }
+        void paint(juce::Graphics& g) override
+        {
+            g.fillAll(classic::theme().paper);
+            if (sound && !strip && shot.isValid()) g.drawImageAt(shot, stripArea.getX(), stripArea.getY()); // as it was last shown
+        }
+        ModulePanel& panel;
+        bool sound = false;
+        juce::Component* strip = nullptr;
+        juce::Image shot;
+        juce::Rectangle<int> stripArea;
+    };
+    int index = 0;
+    ModulePanel panel;
+    Body body { panel };
+    std::unique_ptr<InnerWindow> win;
+};
+
+void MainComponent::SoundStrip::resized()
+{
+    auto r = getLocalBounds();
+    auto buttons = r.removeFromLeft(84).reduced(8, 10);
+    play.setBounds(buttons.removeFromTop(26));
+    buttons.removeFromTop(8);
+    stop.setBounds(buttons.removeFromTop(26));
+    wave.setBounds(r.reduced(4));
+}
+
 namespace {
 enum MenuIds {
     kNew = 1, kOpen, kSave, kSaveAs, kExport, kQuit,
@@ -54,50 +92,35 @@ MainComponent::MainComponent(int forceTheme)
         params.padStereo = s->getBoolValue("stPadStereo", true);
         params.openBoth = s->getBoolValue("stOpenBoth", true);
         params.stereoRate = juce::jlimit(15, 18, s->getIntValue("stRate", 15));
+        params.monoScale = s->getBoolValue("stMonoScale", true);
+        params.emptyStereo = s->getBoolValue("stEmptyStereo", false);
     }
     setLookAndFeel(&lnf);
     juce::LookAndFeel::setDefaultLookAndFeel(&lnf);
 
     addAndMakeVisible(menuBar);
     patchView.patch = &patch;
-    patchView.onSelect = [this](int i) { modulePanel.show(&patch, i); showSoundEditor(); };
-    modulePanel.onSoundTool = [this](int code) { soundTool(code); };
+    patchView.onSelect = [this](int) { showSoundEditor(); };
     waveView.onLoopChanged = [this] { setLoop(waveView.loopStart, waveView.loopEnd); };
-    patchView.onChanged = [this] { modulePanel.show(&patch, patchView.selected); changed(); };
+    patchView.onChanged = [this] { refreshModuleWindows(); changed(); };
+    patchView.onRemoving = [this](int i) { moduleRemoved(i); };
     patchView.onNewModule = [this](Module& m) { applyDefaults(m); };
     patchView.onConnected = [this](int from, int to) { inheritFrom(from, to); };
     patchView.onPreview = [this](int i) { render(i, true); };
-    modulePanel.onEdited = [this] {
-        if (applyEditRules(patchView.selected)) { // refresh the fields once the edit is done
-            juce::Component::SafePointer<MainComponent> self(this);
-            juce::MessageManager::callAsync([self] { if (self) self->modulePanel.show(&self->patch, self->patchView.selected); });
-        }
-        patchView.repaint();
-        changed();
+    patchView.onOpen = [this](int i) {
+        openModuleWindow(i);
+        // F28_00628: opening an empty Sample module asks for a sound
+        if (i >= 1 && i <= (int) patch.modules.size() && patch.modules[(size_t) i - 1].type == kSample && patch.modules[(size_t) i - 1].length == 0)
+            loadSoundFor(i);
     };
-    modulePanel.onSaveWaveform = [this](const Waveform& w) {
-        chooser = std::make_unique<juce::FileChooser>("Save the waveform", (file.existsAsFile() ? file.getParentDirectory() : juce::File()).getChildFile(juce::String(w.name)), "*");
-        chooser->launchAsync(juce::FileBrowserComponent::saveMode | juce::FileBrowserComponent::warnAboutOverwriting, [w](const juce::FileChooser& fc) {
-            std::string err;
-            if (fc.getResult() != juce::File() && !saveWaveform(fc.getResult().getFullPathName().toStdString(), w, &err))
-                juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "TurboSynth", err);
-        });
-    };
-    modulePanel.onPreview = [this](int i) { render(i, true); };
-    modulePanel.onLoadSound = [this](int i) { loadSoundFor(i); };
-    modulePanel.onChooseWaveform = [this](std::function<void(const juce::File&)> done) {
-        chooser = std::make_unique<juce::FileChooser>("Load a waveform", file.existsAsFile() ? file.getParentDirectory() : juce::File(), "*");
-        chooser->launchAsync(juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles, [done](const juce::FileChooser& fc) {
-            if (fc.getResult() != juce::File()) done(fc.getResult());
-        });
-    };
-    addAndMakeVisible(patchView);
-    addAndMakeVisible(modulePanel);
-    addAndMakeVisible(waveView);
     playButton.onClick = [this] { if (previewModule || renderPending || rendering) render(0, true); else play(); };
     stopButton.onClick = [this] { stop(); };
-    addAndMakeVisible(playButton);
-    addAndMakeVisible(stopButton);
+    addAndMakeVisible(desktop);
+    desktop.setInterceptsMouseClicks(false, true); // the dither shows through; windows take the clicks
+    patchWindow = std::make_unique<InnerWindow>("Untitled", patchView, false);
+    patchWindow->onActivate = [this] { for (auto& w : moduleWindows) w->win->setActive(false); };
+    desktop.addAndMakeVisible(*patchWindow);
+    patchWindow->setActive(true);
 
     if (forceTheme < 0) devices.initialiseWithDefaultDevices(0, 2); // no audio device for snapshots
     syncRender = forceTheme >= 0;
@@ -150,7 +173,7 @@ juce::PopupMenu MainComponent::getMenuForIndex(int index, const juce::String&)
         m.addSeparator();
         m.addItem(kQuit, "Quit");
     } else if (index == 1) {
-        // With a Sample module's sound in the Sound window, the Edit menu works on its selection.
+        // With a Sample module's sound shown in its window, the Edit menu works on its selection.
         const bool snd = soundSelectionActive(), sndSel = snd && waveView.hasSelection();
         add(kUndo, "Undo", "Ctrl+Z", !undoStack.empty());
         add(kRedo, "Redo", "Ctrl+Shift+Z", !redoStack.empty());
@@ -199,7 +222,7 @@ void MainComponent::menuItemSelected(int id, int)
     case kStereo: // mono jack <-> the two halves of the stereo jack; Output R's cords go with it
         setStereo(patch, !isStereo(patch));
         patchView.selected = 0;
-        modulePanel.show(&patch, 0);
+        closeAllModuleWindows();
         patchView.repaint();
         changed();
         break;
@@ -241,34 +264,135 @@ void MainComponent::menuItemSelected(int id, int)
 void MainComponent::paint(juce::Graphics& g)
 {
     classic::fillDesktop(g, getLocalBounds().withTrimmedTop(menuBar.getHeight()));
-    const juce::String name = file.existsAsFile() ? file.getFileName() : juce::String("Untitled");
-    classic::drawWindow(g, patchFrame, name + (dirty ? " *" : ""));
-    classic::drawWindow(g, infoFrame, "Module Info");
-    juce::String soundTitle = previewModule ? "Sound: " + juce::String(patch.modules[(size_t) previewModule - 1].name) : juce::String("Sound");
-    if (rendering || renderPending) soundTitle << " (rendering...)";
-    classic::drawWindow(g, soundFrame, soundTitle);
 }
 
 void MainComponent::resized()
 {
     auto r = getLocalBounds();
     menuBar.setBounds(r.removeFromTop(22));
-    r.reduce(10, 10);
-    auto bottom = r.removeFromBottom(210);
-    auto right = r.removeFromRight(330);
-    r.removeFromRight(12);
-    bottom.removeFromTop(12);
-    patchFrame = r;
-    infoFrame = right;
-    soundFrame = bottom;
-    patchView.setBounds(patchFrame.reduced(1).withTrimmedTop(classic::kTitleHeight));
-    modulePanel.setBounds(infoFrame.reduced(1).withTrimmedTop(classic::kTitleHeight));
-    auto sound = soundFrame.reduced(1).withTrimmedTop(classic::kTitleHeight);
-    auto buttons = sound.removeFromLeft(90).reduced(10, 12);
-    playButton.setBounds(buttons.removeFromTop(28));
-    buttons.removeFromTop(8);
-    stopButton.setBounds(buttons.removeFromTop(28));
-    waveView.setBounds(sound.reduced(4));
+    desktop.setBounds(r);
+    if (patchWindow && patchWindow->getBounds().isEmpty()) // first layout: the patch window on the left
+        patchWindow->setBounds(10, 10, juce::jmin(600, r.getWidth() - 20), r.getHeight() - 20);
+}
+
+// ---------------------------------------------------------------------------
+void MainComponent::configurePanel(ModulePanel& p)
+{
+    p.onSoundTool = [this](int code) { soundTool(code); };
+    p.onEdited = [this] {
+        if (applyEditRules(patchView.selected)) { // refresh the fields once the edit is done
+            juce::Component::SafePointer<MainComponent> self(this);
+            juce::MessageManager::callAsync([self] { if (self) self->refreshModuleWindows(); });
+        }
+        for (auto& w : moduleWindows) if (w->index >= 1 && w->index <= (int) patch.modules.size()) w->win->setTitle(patch.modules[(size_t) w->index - 1].name);
+        patchView.repaint();
+        changed();
+    };
+    p.onSaveWaveform = [this](const Waveform& w) { saveWaveformAs(w); };
+    p.onPreview = [this](int i) { render(i, true); };
+    p.onLoadSound = [this](int i) { loadSoundFor(i); };
+    p.onChooseWaveform = [this](std::function<void(const juce::File&)> done) {
+        chooser = std::make_unique<juce::FileChooser>("Load a waveform", file.existsAsFile() ? file.getParentDirectory() : juce::File(), "*");
+        chooser->launchAsync(juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles, [done](const juce::FileChooser& fc) {
+            if (fc.getResult() != juce::File()) done(fc.getResult());
+        });
+    };
+}
+
+void MainComponent::saveWaveformAs(const Waveform& w)
+{
+    chooser = std::make_unique<juce::FileChooser>("Save the waveform", (file.existsAsFile() ? file.getParentDirectory() : juce::File()).getChildFile(juce::String(w.name)), "*");
+    chooser->launchAsync(juce::FileBrowserComponent::saveMode | juce::FileBrowserComponent::warnAboutOverwriting, [w](const juce::FileChooser& fc) {
+        std::string err;
+        if (fc.getResult() != juce::File() && !saveWaveform(fc.getResult().getFullPathName().toStdString(), w, &err))
+            juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "TurboSynth", err);
+    });
+}
+
+void MainComponent::openModuleWindow(int index)
+{
+    if (index < 1 || index > (int) patch.modules.size()) return;
+    for (auto& w : moduleWindows)
+        if (w->index == index) { w->win->activate(); return; }
+    const Module& m = patch.modules[(size_t) index - 1];
+    auto mw = std::make_unique<ModuleWindow>();
+    mw->index = index;
+    configurePanel(mw->panel);
+    mw->body.sound = m.type == kSample || m.type == kOutput || m.type == kOutputR;
+    mw->win = std::make_unique<InnerWindow>(juce::String(m.name), mw->body, true);
+    auto* raw = mw.get();
+    mw->win->onClose = [this, raw] {
+        juce::Component::SafePointer<MainComponent> self(this);
+        juce::MessageManager::callAsync([self, raw] { if (self) self->closeModuleWindow(raw); }); // not while its own handler runs
+    };
+    mw->win->onActivate = [this, raw] {
+        patchWindow->setActive(false);
+        for (auto& w : moduleWindows) if (w.get() != raw) w->win->setActive(false);
+        patchView.selected = raw->index; // the front window's module is the one the menus act on
+        patchView.repaint();
+        showSoundEditor();
+    };
+    // Cascaded to the right of the patch window, like new windows in the original.
+    const int k = (int) moduleWindows.size() % 8;
+    const int w = mw->body.sound ? 760 : m.type == kOscillator ? 600 : 420;
+    const int h = mw->body.sound ? 360 : 480;
+    const int x = juce::jlimit(10, juce::jmax(10, desktop.getWidth() - w - 10), patchWindow->getRight() - 120 + 22 * k);
+    const int y = juce::jlimit(10, juce::jmax(10, desktop.getHeight() - h - 10), 30 + 22 * k);
+    desktop.addAndMakeVisible(*mw->win);
+    mw->win->setBounds(x, y, w, h);
+    mw->panel.show(&patch, index);
+    moduleWindows.push_back(std::move(mw));
+    raw->win->activate();
+}
+
+void MainComponent::closeModuleWindow(ModuleWindow* mw)
+{
+    if (soundHost == mw) { mw->body.removeChildComponent(&soundStrip); mw->body.strip = nullptr; soundHost = nullptr; }
+    moduleWindows.erase(std::remove_if(moduleWindows.begin(), moduleWindows.end(), [mw](const auto& w) { return w.get() == mw; }), moduleWindows.end());
+    if (!moduleWindows.empty()) moduleWindows.back()->win->activate(); else patchWindow->activate();
+}
+
+void MainComponent::closeAllModuleWindows()
+{
+    if (soundHost) { soundHost->body.removeChildComponent(&soundStrip); soundHost->body.strip = nullptr; soundHost = nullptr; }
+    moduleWindows.clear();
+    if (patchWindow) patchWindow->setActive(true);
+}
+
+void MainComponent::refreshModuleWindows()
+{
+    for (size_t k = moduleWindows.size(); k-- > 0;)
+        if (moduleWindows[k]->index > (int) patch.modules.size()) closeModuleWindow(moduleWindows[k].get());
+    for (auto& w : moduleWindows) {
+        w->panel.show(&patch, w->index);
+        w->win->setTitle(patch.modules[(size_t) w->index - 1].name);
+    }
+}
+
+void MainComponent::moduleRemoved(int index)
+{
+    for (size_t k = moduleWindows.size(); k-- > 0;)
+        if (moduleWindows[k]->index == index) closeModuleWindow(moduleWindows[k].get());
+    for (auto& w : moduleWindows) if (w->index > index) --w->index;
+}
+
+void MainComponent::placeSoundStrip()
+{
+    ModuleWindow* target = nullptr;
+    for (auto& w : moduleWindows) if (w->index == patchView.selected && w->body.sound) target = w.get();
+    if (target == soundHost) return;
+    if (soundHost) {
+        if (!soundStrip.getBounds().isEmpty()) soundHost->body.shot = soundStrip.createComponentSnapshot(soundStrip.getLocalBounds());
+        soundHost->body.removeChildComponent(&soundStrip);
+        soundHost->body.strip = nullptr;
+        soundHost->body.repaint();
+    }
+    soundHost = target;
+    if (target) {
+        target->body.addAndMakeVisible(soundStrip);
+        target->body.strip = &soundStrip;
+        target->body.resized();
+    }
 }
 
 bool MainComponent::keyPressed(const juce::KeyPress& k)
@@ -314,7 +438,7 @@ void MainComponent::newPatch()
     dirty = false;
     resetHistory();
     patchView.selected = 0;
-    modulePanel.show(&patch, 0);
+    closeAllModuleWindows();
     render();
     updateTitle();
     repaint();
@@ -342,7 +466,7 @@ void MainComponent::openFile(const juce::File& f)
     dirty = false;
     resetHistory();
     patchView.selected = 0;
-    modulePanel.show(&patch, 0);
+    closeAllModuleWindows();
     render();
     updateTitle();
     repaint();
@@ -373,21 +497,35 @@ void MainComponent::exportSound()
         auto f = fc.getResult();
         if (f == juce::File()) return;
         if (!f.hasFileExtension("wav;aif;aiff")) f = f.withFileExtension("wav");
+        if (result.right.empty()) { writeSound(f, false); return; }
+        // A stereo sound: a stereo file, or one channel folded per Stereo Preferences (F27_01BCC).
+        juce::Component::SafePointer<MainComponent> self(this);
+        juce::AlertWindow::showAsync(juce::MessageBoxOptions().withIconType(juce::MessageBoxIconType::QuestionIcon).withTitle("Export the sound")
+                                         .withMessage("Save the stereo sound as a stereo file or a mono file?")
+                                         .withButton("Stereo").withButton("Mono").withAssociatedComponent(this),
+                                     [self, f](int r) { if (self) self->writeSound(f, r == 0); });
+    });
+}
+
+void MainComponent::writeSound(juce::File f, bool mono)
+{
+    {
         std::unique_ptr<juce::AudioFormat> fmt;
         if (f.hasFileExtension("wav")) fmt = std::make_unique<juce::WavAudioFormat>(); else fmt = std::make_unique<juce::AiffAudioFormat>();
         f.deleteFile();
         std::unique_ptr<juce::OutputStream> stream(f.createOutputStream().release());
-        const int ch = result.right.empty() ? 1 : 2;
+        const int ch = result.right.empty() || mono ? 1 : 2;
         std::unique_ptr<juce::AudioFormatWriter> w(stream ? fmt->createWriterFor(stream.get(), result.sampleRate, (unsigned) ch, 16, {}, 0) : nullptr);
         if (!w) { juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "TurboSynth", "Cannot write " + f.getFileName()); return; }
         stream.release();
-        juce::AudioBuffer<float> b(ch, (int) result.left.size());
+        const auto& first = mono && !result.right.empty() ? foldToMono(result.left, result.right, params.monoScale) : result.left;
+        juce::AudioBuffer<float> b(ch, (int) first.size());
         for (int i = 0; i < b.getNumSamples(); ++i) {
-            b.setSample(0, i, result.left[(size_t) i] / 32768.0f);
+            b.setSample(0, i, first[(size_t) i] / 32768.0f);
             if (ch == 2) b.setSample(1, i, result.right[(size_t) i] / 32768.0f);
         }
         w->writeFromAudioSampleBuffer(b, 0, b.getNumSamples());
-    });
+    }
 }
 
 void MainComponent::loadSoundFor(int index)
@@ -395,7 +533,19 @@ void MainComponent::loadSoundFor(int index)
     chooser = std::make_unique<juce::FileChooser>("Choose a sound (WAV, AIFF or Sound Designer)", juce::File(), "*");
     chooser->launchAsync(juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles, [this, index](const juce::FileChooser& fc) {
         const auto f = fc.getResult();
-        if (f == juce::File() || index < 1 || index > (int) patch.modules.size()) return;
+        if (index < 1 || index > (int) patch.modules.size()) return;
+        if (f == juce::File()) {
+            // F28_00628: cancelled on an empty, unlinked Sample module with
+            // "Empty Sample module: Stereo" makes it an empty linked pair.
+            const auto& m = patch.modules[(size_t) index - 1];
+            if (params.emptyStereo && m.type == kSample && m.length == 0 && !samplePartner(patch, index)) {
+                makeStereoSample(patch, index, patchView.visibleRight());
+                refreshModuleWindows();
+                patchView.repaint();
+                changed();
+            }
+            return;
+        }
         juce::AudioFormatManager fm;
         fm.registerBasicFormats();
         std::unique_ptr<juce::AudioFormatReader> rd(fm.createReaderFor(f));
@@ -460,7 +610,7 @@ void MainComponent::loadSoundFile(int index, const juce::File& f, int channel)
     }
     if (std::find(halves.begin(), halves.end(), patchView.selected) == halves.end()) patchView.selected = halves[0];
     index = patchView.selected;
-    modulePanel.show(&patch, index);
+    refreshModuleWindows();
     showSoundEditor();
     patchView.repaint();
     changed();
@@ -503,7 +653,7 @@ void MainComponent::render(int module, bool playWhenReady)
     }
     ++latestRequest;
     jobReady.notify_one();
-    repaint(soundFrame);
+    soundStrip.repaint();
 }
 
 void MainComponent::workerLoop()
@@ -541,7 +691,7 @@ void MainComponent::applyResult(RenderResult r, int module, bool playNow)
     previewModule = module > 0 && module <= (int) patch.modules.size() ? module : 0;
     waveView.setSamples(result.left, result.right, result.sampleRate,
                         previewModule ? juce::String(patch.modules[(size_t) previewModule - 1].name) : juce::String("Output"));
-    repaint(soundFrame);
+    soundStrip.repaint();
     showSoundEditor();
     if (playNow) play();
 }
@@ -597,12 +747,13 @@ void MainComponent::setDark(bool dark)
     lnf.refresh();
     sendLookAndFeelChange();
     waveView.themeChanged();
-    modulePanel.show(&patch, patchView.selected);
+    refreshModuleWindows();
     repaint();
 }
 
 void MainComponent::updateTitle()
 {
+    if (patchWindow) patchWindow->setTitle((file.existsAsFile() ? file.getFileName() : juce::String("Untitled")) + (dirty ? " *" : ""));
     if (auto* w = findParentComponentOfClass<juce::DocumentWindow>())
         w->setName("TurboSynth - " + (file.existsAsFile() ? file.getFileName() : juce::String("Untitled")) + (dirty ? " *" : ""));
 }
@@ -625,9 +776,9 @@ void MainComponent::stepHistory(std::vector<Patch>& from, std::vector<Patch>& to
     patch = from.back();
     from.pop_back();
     committed = patch;
-    modulePanel.forgetAnalysis();
+    for (auto& w : moduleWindows) w->panel.forgetAnalysis();
     patchView.selected = juce::jmin(patchView.selected, (int) patch.modules.size());
-    modulePanel.show(&patch, patchView.selected);
+    refreshModuleWindows();
     soundShown = -1; // force the Sound window to re-read the sound
     showSoundEditor();
     patchView.repaint();
@@ -651,10 +802,11 @@ void MainComponent::clearSelected()
     const int i = patchView.selected;
     if (!i || patchView.isOutput(i)) return; // the output jack cannot be erased
     const int p = samplePartner(patch, i); // both halves of a stereo sample are selected, so both go
+    moduleRemoved(juce::jmax(i, p));
     removeModule(patch, juce::jmax(i, p));
-    if (p) removeModule(patch, juce::jmin(i, p));
+    if (p) { moduleRemoved(juce::jmin(i, p)); removeModule(patch, juce::jmin(i, p)); }
     patchView.selected = 0;
-    modulePanel.show(&patch, 0);
+    refreshModuleWindows();
     patchView.repaint();
     changed();
 }
@@ -686,7 +838,7 @@ void MainComponent::paste(const Module& source, const Module* partner)
         patch.modules.back().sampC[2] = 0; // a copy of one half alone is mono
     }
     patchView.selected = added[0];
-    modulePanel.show(&patch, patchView.selected);
+    refreshModuleWindows();
     patchView.repaint();
     changed();
 }
@@ -696,7 +848,7 @@ void MainComponent::convertToDualMono()
     const int i = patchView.selected;
     if (!samplePartner(patch, i)) return;
     unlinkSample(patch, i); // F28_00532: both halves become ordinary Sample modules where they stand
-    modulePanel.show(&patch, i);
+    refreshModuleWindows();
     patchView.repaint();
     changed();
 }
@@ -717,7 +869,7 @@ void MainComponent::convertToSample()
     patch.modules[(size_t) i - 1] = s;
     auto& cs = patch.connections;
     cs.erase(std::remove_if(cs.begin(), cs.end(), [i](const Connection& c) { return c.to == i; }), cs.end());
-    modulePanel.show(&patch, i);
+    refreshModuleWindows();
     patchView.repaint();
     changed();
 }
@@ -727,10 +879,6 @@ RenderOptions MainComponent::renderOptions() const
     RenderOptions o;
     o.padStereo = params.padStereo;
     o.stereoRate = params.stereoRate;
-    if (file.existsAsFile()) {
-        o.soundFolders.push_back(file.getParentDirectory().getFullPathName().toStdString());
-        o.soundFolders.push_back(file.getParentDirectory().getParentDirectory().getFullPathName().toStdString());
-    }
     return o;
 }
 
@@ -827,6 +975,7 @@ void MainComponent::showParameterManager()
 // patch's sound with the loop markers.
 void MainComponent::showSoundEditor()
 {
+    placeSoundStrip();
     const int i = patchView.selected;
     const Module* m = i >= 1 && i <= (int) patch.modules.size() ? &patch.modules[(size_t) i - 1] : nullptr;
     waveView.editable = waveView.selectable = false;
@@ -860,13 +1009,7 @@ std::vector<int16_t>* MainComponent::sampleData(int index)
 {
     if (index < 1 || index > (int) patch.modules.size() || patch.modules[(size_t) index - 1].type != kSample) return nullptr;
     Module& m = patch.modules[(size_t) index - 1];
-    if (m.embedded.empty()) { // a sound read from a file: keep it in the document from now on
-        Engine engine(patch, renderOptions());
-        const auto sound = engine.moduleOutput(index);
-        if (sound.empty()) return nullptr;
-        m.embedded = sound;
-    }
-    return &m.embedded;
+    return m.embedded.empty() ? nullptr : &m.embedded;
 }
 
 std::vector<int> MainComponent::sampleHalves(int index) const
@@ -886,7 +1029,7 @@ void MainComponent::sampleEdited(int index)
         if (m.sampB > m.length) m.sampB = -1;
     }
     if (waveView.selEnd > patch.modules[(size_t) index - 1].length) waveView.selStart = waveView.selEnd = -1;
-    modulePanel.show(&patch, index);
+    refreshModuleWindows();
     showSoundEditor();
     changed();
 }
@@ -909,7 +1052,7 @@ void MainComponent::setLoop(int32_t start, int32_t end)
     waveView.loopStart = start;
     waveView.loopEnd = end;
     waveView.repaint();
-    modulePanel.show(&patch, i);
+    refreshModuleWindows();
     changed();
     syncLoopWindow();
 }
@@ -1082,7 +1225,7 @@ void MainComponent::soundTool(int code)
                 mm.out[0] = on ? 1 : 0;
                 mm.out[1] = len;
                 mm.out[2] = linear ? 1 : 0;
-                modulePanel.show(&patch, i);
+                refreshModuleWindows();
                 changed();
             }
         });
@@ -1103,9 +1246,18 @@ void MainComponent::openLoopWindow()
     }
     if (m.type == kSample) sampleData(i);
     if (!loopWindow) {
-        loopWindow = std::make_unique<LoopWindow>("Loop");
+        loopWindow = std::make_unique<LoopWindow>("Loop Window");
         loopWindow->view.onChanged = [this] { if (loopWindow) setLoop(loopWindow->view.loopStart, loopWindow->view.loopEnd); };
         loopWindow->view.onPlay = [this] { playLoop(); };
+        loopWindow->view.onInfo = [this] {
+            if (!loopWindow) return;
+            const auto& v = loopWindow->view;
+            const int i = patchView.selected;
+            const int rate = i >= 1 && i <= (int) patch.modules.size() && patch.modules[(size_t) i - 1].sampleRate > 0 ? patch.modules[(size_t) i - 1].sampleRate : 44100;
+            juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::NoIcon, "Loop Window",
+                "Loop start: " + juce::String(v.loopStart) + "\nLoop end: " + juce::String(v.loopEnd) + "\nLoop length: " + juce::String(v.loopEnd - v.loopStart)
+                + " samples\nLoop frequency: " + juce::String((double) rate / (double) juce::jmax(1, v.loopEnd - v.loopStart), 2) + " Hz");
+        };
         loopWindow->setLookAndFeel(&lnf);
         loopWindow->centreAroundComponent(this, loopWindow->getWidth(), loopWindow->getHeight());
     }
@@ -1125,7 +1277,9 @@ void MainComponent::syncLoopWindow()
     v.data = isSample ? m->embedded : (m->type == kOutputR && !result.right.empty() ? result.right : result.left);
     v.loopStart = isSample ? m->sampA : m->out[3];
     v.loopEnd = isSample ? m->sampB : m->out[4];
-    loopWindow->setName("Loop: " + juce::String(m->name));
+    // F28_01380: "Loop Window", with L or R and the name for a linked stereo half.
+    const int ch = isSample && samplePartner(patch, i) ? m->sampC[2] : 0;
+    loopWindow->setName(ch == 1 ? "Loop Window L " + juce::String(m->name) : ch == 2 ? "Loop Window R " + juce::String(m->name) : juce::String("Loop Window"));
     v.repaint();
 }
 
@@ -1178,7 +1332,7 @@ void MainComponent::saveLoopAsWaveform()
     w.name = m.name + " loop";
     const auto wave = sampleedit::loopAsWaveform(src, ls, le);
     std::copy(wave.begin(), wave.end(), w.samples.begin());
-    modulePanel.onSaveWaveform(w);
+    saveWaveformAs(w);
 }
 
 void MainComponent::showStereoPreferences()
@@ -1193,6 +1347,10 @@ void MainComponent::showStereoPreferences()
     w->getComboBoxComponent("rate")->setSelectedItemIndex(params.stereoRate - 15);
     w->addComboBox("open", { "Open both channels", "Open specified channel" }, "Opening stereo sound files:");
     w->getComboBoxComponent("open")->setSelectedItemIndex(params.openBoth ? 0 : 1);
+    w->addComboBox("scale", { "Scale", "Don't scale" }, "Stereo to mono:");
+    w->getComboBoxComponent("scale")->setSelectedItemIndex(params.monoScale ? 0 : 1);
+    w->addComboBox("empty", { "Mono", "Stereo" }, "Empty Sample module:");
+    w->getComboBoxComponent("empty")->setSelectedItemIndex(params.emptyStereo ? 1 : 0);
     w->addButton("OK", 1, juce::KeyPress(juce::KeyPress::returnKey));
     w->addButton("Cancel", 0, juce::KeyPress(juce::KeyPress::escapeKey));
     juce::Component::SafePointer<MainComponent> self(this);
@@ -1205,7 +1363,10 @@ void MainComponent::showStereoPreferences()
         p.openBoth = w->getComboBoxComponent("open")->getSelectedItemIndex() == 0;
         auto* s = self->settings.getUserSettings();
         s->setValue("stNewDocStereo", p.newDocStereo); s->setValue("stPadStereo", p.padStereo); s->setValue("stRate", p.stereoRate);
+        p.monoScale = w->getComboBoxComponent("scale")->getSelectedItemIndex() == 0;
+        p.emptyStereo = w->getComboBoxComponent("empty")->getSelectedItemIndex() == 1;
         s->setValue("stOpenBoth", p.openBoth);
+        s->setValue("stMonoScale", p.monoScale); s->setValue("stEmptyStereo", p.emptyStereo);
         self->render(); // the stereo sound may change
     }), true);
 }

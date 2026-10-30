@@ -7,8 +7,10 @@
 //
 // The original evaluated everything with SANE 80-bit arithmetic and stored
 // most intermediates as 32-bit floats. This port keeps every float store,
-// truncation and 16-bit conversion of the original, but computes the 80-bit
-// intermediates in 64-bit double so results are identical on every platform.
+// truncation and 16-bit conversion of the original. The oscillator phase and
+// the mix, where 80-bit rounding changes samples, use a software extended type
+// (sane::Extended); the other 80-bit intermediates are computed in 64-bit
+// double. Results are identical on every platform.
 //
 // Model 2 is the same engine with the original's quirks corrected. Each
 // correction is a separate switch in Fixes so their effects can be compared
@@ -49,7 +51,7 @@ struct Fixes {
     bool keepCloudTail = false;  // grains near the end ring out instead of being cut or dropped
 
     // Sound-defining choices (not part of the Model 2 preset).
-    bool fullScaleEnvelope = false; // Gaussian peaks at full scale instead of ~0.80
+    bool fullScaleEnvelope = false; // Gaussian peaks at 32767 instead of 32758
     bool logFrequency = false;      // frequencies spread evenly in pitch rather than in Hz
 
     static Fixes model1() { return {}; }
@@ -96,6 +98,9 @@ struct CloudParams {
 
     Fixes fixes;                    // all off = Model 1
     double sampleRate = kSampleRate; // output rate; anything but 44100 is a Model 2 feature
+    // Verification only: out-of-range 16-bit conversions keep the low 16 bits,
+    // as the Basilisk II emulator's FMOVE.W does, instead of SANE's -32768.
+    bool wrapIntegerOverflow = false;
 };
 
 // The waveform editor's 512-point float buffer (amplitude +/-32767).

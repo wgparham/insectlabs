@@ -10,8 +10,9 @@ namespace {
 // 80-bit constants exactly as stored in the original code.
 // 2*pi literal used for the sine table (exp $4001, mantissa C90FDAA2922A7E48).
 const double kTwoPiLiteral = std::ldexp((double) 0xC90FDAA2922A7E48ull, 2 - 63);
-// "3.14159" literal used for the Gaussian (exp $4001, mantissa C90FCF80DC33721D).
-const double kPiLiteral = std::ldexp((double) 0xC90FCF80DC33721Dull, 1 - 63);
+// "6.28318" literal used for the Gaussian (exp $4001, mantissa C90FCF80DC33721D);
+// CODE 5 takes its square root (F8_046C) for the 1/sqrt(2 pi) normalisation.
+const double kTwoPiGaussLiteral = std::ldexp((double) 0xC90FCF80DC33721Dull, 2 - 63);
 // sqrt(2*pi) literal (exp $4000, mantissa A0624DD2F1A9FBE7).
 const double kSqrtTwoPiLiteral = std::ldexp((double) 0xA0624DD2F1A9FBE7ull, 1 - 63);
 
@@ -60,9 +61,10 @@ const std::array<int16_t, kTableSize + 1>& gaussTable(bool fullScale)
 {
     static const auto build = [](bool full) {
         std::array<int16_t, kTableSize + 1> t{};
-        // The original divides by pi, not sqrt(2 pi); the full-scale variant
-        // drops the normalisation so the peak is 1.
-        const double scale = full ? 1.0 / kSqrtTwoPiLiteral : 1.0 / kPiLiteral;
+        // The original normalises by 1/sqrt(6.28318) and scales by the 2.506
+        // literal, so the peak is 32758.8 (checked against the original in an
+        // emulator); the full-scale variant uses 1/2.506 so the peak is 32767.
+        const double scale = full ? 1.0 / kSqrtTwoPiLiteral : 1.0 / std::sqrt(kTwoPiGaussLiteral);
         const double step = 6.0 / 512.0;
         for (int i = 0; i <= kTableSize; ++i) {
             const double x = i * step - 3.0;
@@ -78,7 +80,7 @@ const std::array<int16_t, kTableSize + 1>& gaussTable(bool fullScale)
 double gaussEnvelope(double position, bool fullScale)
 {
     const double x = position * 6.0 - 3.0;
-    const double peak = fullScale ? 32767.0 : 32767.0 * kSqrtTwoPiLiteral / kPiLiteral;
+    const double peak = fullScale ? 32767.0 : 32767.0 * kSqrtTwoPiLiteral / std::sqrt(kTwoPiGaussLiteral);
     return peak * std::exp(-(x * x) / 2.0);
 }
 

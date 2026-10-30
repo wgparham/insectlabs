@@ -19,8 +19,14 @@ enum ModuleType : int16_t {
 };
 
 // One oscillator waveform: 256 points at a time position (also .WVFM files).
+// Name fields are fixed-size Pascal strings. The original writes the whole
+// field, so the bytes after the string (whatever its memory held) are kept
+// from the document and written back under the current name.
+template <size_t N> using NameField = std::array<uint8_t, N>;
+
 struct Waveform {
     std::string name;
+    NameField<32> nameField{};
     int16_t timeMs = 0;              // +32E
     std::array<int16_t, 4> rect{};   // +330
     std::array<int16_t, 257> samples{}; // [256] is the interpolation guard
@@ -33,6 +39,7 @@ struct Module {
     std::array<int16_t, 4> rect{};   // icon position
     int16_t kind = 0;                // 2000 osc, 2001 samp, 3000..3012, 7000..7002
     std::string name;
+    NameField<256> nameField{};
     int32_t sampleRate = 44100;      // +110
     bool normalize = false;          // +115
     int32_t length = 0;              // +11A, samples
@@ -47,7 +54,11 @@ struct Module {
     // Sample module
     int32_t sampA = 0, sampB = 0;    // +12E, +132
     std::array<int16_t, 3> sampC{};  // +154 id, +152 partner's id, +156 channel (1 left, 2 right)
-    std::vector<int16_t> embedded;   // sound data stored in the document
+    std::vector<int16_t> embedded;   // the sound
+    // +13E "Save sound data with document" (on for new modules). When off the
+    // document holds no samples, and the module reads back empty (length 0):
+    // the original keeps no link to a sound file.
+    bool saveSound = true;
     // Output module
     std::array<int32_t, 5> out{};
 };
@@ -56,6 +67,7 @@ struct Connection { int16_t from = 0, to = 0; }; // 1-based module numbers
 
 struct Patch {
     int16_t version = 0;
+    std::vector<uint8_t> printRecord; // the 120-byte TPrint, written back as read
     std::vector<Module> modules;
     std::vector<Connection> connections;
 };

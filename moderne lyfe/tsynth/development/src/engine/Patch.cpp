@@ -26,6 +26,11 @@ struct Reader {
         return s;
     }
     void skip(size_t n) { if (need(n)) o += n; }
+    template <size_t N> std::string name(std::array<uint8_t, N>& raw)
+    {
+        if (need(N)) std::copy(d.begin() + (long) o, d.begin() + (long) (o + N), raw.begin());
+        return pstr(N);
+    }
 };
 
 } // namespace
@@ -47,8 +52,9 @@ const char* moduleTypeName(int type)
 bool readPatch(const std::vector<uint8_t>& data, Patch& patch, std::string* error)
 {
     Reader r{ data };
-    r.skip(120); // print record
     patch = Patch{};
+    if (r.need(120)) patch.printRecord.assign(data.begin(), data.begin() + 120);
+    r.skip(120);
     patch.version = r.i16();
     const int ver = patch.version;
     if (ver > 2 && ver < 5) r.skip(1);
@@ -61,13 +67,14 @@ bool readPatch(const std::vector<uint8_t>& data, Patch& patch, std::string* erro
         for (auto& v : mod.rect) v = r.i16();
         mod.kind = r.i16();
         if (ver <= 4) r.skip(1);
-        mod.name = r.pstr(256);
+        mod.name = r.name(mod.nameField);
         mod.sampleRate = r.i32();
         mod.normalize = r.u8() != 0; // +115
         mod.length = r.i32();
         switch (mod.type) {
         case kOutput: case kOutputR:
-            if (ver == 1) { r.skip(2); mod.out[3] = r.i32(); mod.out[4] = r.i32(); }
+            // Version 1 has no +146/+148/+14C; they keep the initializer's 0, 0, 1 (CODE 36).
+            if (ver == 1) { r.skip(2); mod.out[2] = 1; mod.out[3] = r.i32(); mod.out[4] = r.i32(); }
             else { mod.out[0] = r.u8(); mod.out[1] = r.i32(); mod.out[2] = r.u8(); mod.out[3] = r.i32(); mod.out[4] = r.i32(); }
             break;
         case kOscillator: {
@@ -75,7 +82,7 @@ bool readPatch(const std::vector<uint8_t>& data, Patch& patch, std::string* erro
             const int n = r.i16();
             for (int i = 0; i < n && r.ok; ++i) {
                 Waveform w;
-                w.name = r.pstr(32);
+                w.name = r.name(w.nameField);
                 w.timeMs = r.i16();
                 for (auto& v : w.rect) v = r.i16();
                 for (int k = 0; k < 256; ++k) w.samples[(size_t) k] = r.i16();
@@ -85,10 +92,11 @@ bool readPatch(const std::vector<uint8_t>& data, Patch& patch, std::string* erro
         case kSample: {
             mod.sampA = r.i32(); mod.sampB = r.i32();
             if (ver > 3) for (auto& v : mod.sampC) v = r.i16();
-            if (r.u8()) {
+            mod.saveSound = r.u8() != 0;
+            if (mod.saveSound) {
                 mod.embedded.resize((size_t) std::max(0, mod.length));
                 for (auto& v : mod.embedded) v = r.i16();
-            }
+            } else mod.length = 0; // F9 at 083C
             break; }
         case kAmpEnv: case kFilter: case kSpectralInverter: case kPitchEnv: {
             // F9_00856 reads +136 only for version > 1; older documents keep the
@@ -120,6 +128,21 @@ bool readPatch(const std::vector<uint8_t>& data, Patch& patch, std::string* erro
     const int nc = r.i16();
     for (int i = 0; i < nc && r.ok; ++i) { Connection c; c.from = r.i16(); c.to = r.i16(); patch.connections.push_back(c); }
     if (!r.ok) { if (error) *error = "The document is truncated."; return false; }
+    // F9 at 17A6: an output whose +146 flag is clear takes its first input's
+    // rate and length (the first module, and the right output of a stereo
+    // document). This is what gives version-1 outputs, stored as 0, a rate.
+    for (size_t i = 0; i < patch.modules.size(); ++i) {
+        auto& o = patch.modules[i];
+        if ((o.type != kOutput || i != 0) && o.type != kOutputR) continue;
+        if (o.out[0] != 0) continue;
+        for (const auto& c : patch.connections)
+            if (c.to == (int) i + 1 && c.from >= 1 && c.from <= (int) patch.modules.size()) {
+                const auto& src = patch.modules[(size_t) c.from - 1];
+                o.sampleRate = src.sampleRate;
+                o.length = src.length;
+                break;
+            }
+    }
     linkSamples(patch);
     return true;
 }
@@ -153,7 +176,7 @@ bool loadWaveform(const std::string& path, Waveform& out, std::string* error)
     std::vector<uint8_t> d(std::istreambuf_iterator<char>(f), {});
     if (d.size() != 554) { if (error) *error = "Not a TurboSynth waveform file"; return false; }
     Reader r { d };
-    out.name = r.pstr(32);
+    out.name = r.name(out.nameField);
     out.timeMs = r.i16();
     for (auto& v : out.rect) v = r.i16();
     for (int k = 0; k < 256; ++k) out.samples[(size_t) k] = r.i16();
@@ -177,21 +200,29 @@ struct Writer {
         d.insert(d.end(), s.begin(), s.begin() + (long) n);
         d.insert(d.end(), field - 1 - n, 0);
     }
+    // The string over the field's old bytes, as copying it into the record does.
+    template <size_t N> void name(const std::string& s, const std::array<uint8_t, N>& raw)
+    {
+        const size_t at = d.size(), n = std::min(s.size(), N - 1);
+        d.insert(d.end(), raw.begin(), raw.end());
+        d[at] = (uint8_t) n;
+        std::copy(s.begin(), s.begin() + (long) n, d.begin() + (long) at + 1);
+    }
 };
 } // namespace
 
 std::vector<uint8_t> writePatch(const Patch& patch)
 {
     Writer w;
-    w.d.assign(120, 0); // print record
-    w.d[1] = 3;         // iPrVersion
+    if (patch.printRecord.size() == 120) w.d = patch.printRecord;
+    else { w.d.assign(120, 0); w.d[1] = 3; } // a blank print record (iPrVersion 3)
     w.i16(5);
     w.i16((int) patch.modules.size());
     for (const auto& m : patch.modules) {
         w.i16(m.type);
         for (int v : m.rect) w.i16(v);
         w.i16(m.kind);
-        w.pstr(m.name, 256);
+        w.name(m.name, m.nameField);
         w.i32(m.sampleRate);
         w.u8(m.normalize ? 1 : 0);
         w.i32(m.length);
@@ -201,7 +232,7 @@ std::vector<uint8_t> writePatch(const Patch& patch)
             w.i32(m.oscFreq);
             w.i16((int) m.waveforms.size());
             for (const auto& wf : m.waveforms) {
-                w.pstr(wf.name, 32); w.i16(wf.timeMs);
+                w.name(wf.name, wf.nameField); w.i16(wf.timeMs);
                 for (int v : wf.rect) w.i16(v);
                 for (int k = 0; k < 256; ++k) w.i16(wf.samples[(size_t) k]);
             }
@@ -209,8 +240,8 @@ std::vector<uint8_t> writePatch(const Patch& patch)
         case kSample:
             w.i32(m.sampA); w.i32(m.sampB);
             for (int v : m.sampC) w.i16(v);
-            w.u8(m.embedded.empty() ? 0 : 1);
-            if (!m.embedded.empty())
+            w.u8(m.saveSound ? 1 : 0);
+            if (m.saveSound)
                 for (int32_t i = 0; i < m.length; ++i) w.i16(i < (int32_t) m.embedded.size() ? m.embedded[(size_t) i] : 0);
             break;
         case kAmpEnv: case kFilter: case kSpectralInverter: case kPitchEnv:
@@ -243,7 +274,7 @@ bool savePatch(const std::string& path, const Patch& patch, std::string* error)
 bool saveWaveform(const std::string& path, const Waveform& wf, std::string* error)
 {
     Writer w;
-    w.pstr(wf.name, 32);
+    w.name(wf.name, wf.nameField);
     w.i16(wf.timeMs);
     for (int v : wf.rect) w.i16(v);
     for (int k = 0; k < 256; ++k) w.i16(wf.samples[(size_t) k]);

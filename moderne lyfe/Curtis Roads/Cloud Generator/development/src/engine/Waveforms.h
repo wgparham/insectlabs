@@ -15,7 +15,7 @@ Waveform makeSawtooth(bool correctFirstPoint = false);
 Waveform importWaveform(const SourceSound& sound);
 
 // The 513-entry int16 Gaussian grain envelope ("gauss envelope" segment).
-// fullScale (Model 2 option): peak 32767 instead of ~26137.
+// fullScale (Model 2 option): peak 32767 instead of 32758.
 const std::array<int16_t, kTableSize + 1>& gaussTable(bool fullScale = false);
 
 // Continuous Gaussian envelope at grain position 0..1, in the table's units

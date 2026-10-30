@@ -18,13 +18,13 @@ juce::Rectangle<float> LoopView::arrows(bool endPoint) const
     // The step-and-Auto control (icons 5600 / 5601) under each half.
     const auto p = plot();
     const float cx = endPoint ? p.getX() + p.getWidth() * 0.25f : p.getX() + p.getWidth() * 0.75f;
-    return { cx - 34.0f, p.getBottom() + 4.0f, 68.0f, 32.0f };
+    return { cx - 34.0f, p.getBottom() - 34.0f, 68.0f, 32.0f };
 }
 
 LoopView::Hit LoopView::hitAt(juce::Point<float> pos, int* direction) const
 {
-    for (int slot = 0; slot < 5; ++slot)
-        if (iconRect(slot).contains(pos)) return (Hit) (ZoomInV + slot);
+    for (int slot = 0; slot < 6; ++slot)
+        if (iconRect(slot).contains(pos)) return (Hit) (Info + slot);
     for (bool endPoint : { true, false }) {
         const auto r = arrows(endPoint);
         if (!r.contains(pos)) continue;
@@ -39,17 +39,16 @@ void LoopView::paint(juce::Graphics& g)
 {
     const auto& t = classic::theme();
     g.fillAll(t.paper);
-    // Zoom (8000..8003) and the speaker.
-    const int icons[] = { 8000, 8001, 8002, 8003, 1003 };
-    for (int slot = 0; slot < 5; ++slot) classic::drawIcon(g, icons[slot], iconRect(slot), pressed == ZoomInV + slot);
+    const int icons[] = { 1002, 1003, 8000, 8001, 8002, 8003 }; // Info, speaker, zoom
+    for (int slot = 0; slot < 6; ++slot) {
+        classic::drawIcon(g, icons[slot], iconRect(slot), pressed == Info + slot);
+        g.setColour(t.ink);
+        g.drawRect(iconRect(slot), 1.0f);
+    }
     g.setColour(t.ink);
-    g.setFont(classic::smallFont(10.0f));
-    g.drawText("Loop " + juce::String(loopStart) + " .. " + juce::String(loopEnd) + "   (" + juce::String(loopEnd - loopStart) + " samples)",
-               juce::Rectangle<float>(190.0f, 4.0f, (float) getWidth() - 196.0f, 32.0f), juce::Justification::centredRight);
+    g.drawVerticalLine((int) kPalette - 1, 0.0f, (float) getHeight());
 
     const auto p = plot();
-    g.drawRect(p, 1.0f);
-    g.setColour(t.gray);
     g.drawHorizontalLine((int) p.getCentreY(), p.getX(), p.getRight());
     const float dash[] = { 2.0f, 3.0f };
     g.setColour(t.ink);
@@ -74,9 +73,6 @@ void LoopView::paint(juce::Graphics& g)
             const float y = juce::jlimit(p.getY(), p.getBottom(), p.getCentreY() - (float) v / 32768.0f * vzoom * p.getHeight() * 0.5f);
             g.fillRect(x - 1.5f, y - 1.5f, 3.0f, 3.0f);
         }
-    g.setFont(classic::smallFont(9.0f));
-    g.drawText("End", p.withWidth(p.getWidth() * 0.5f).reduced(4.0f), juce::Justification::topLeft);
-    g.drawText("Start", p.withTrimmedLeft(p.getWidth() * 0.5f).reduced(4.0f), juce::Justification::topRight);
     for (bool endPoint : { true, false }) {
         const bool down = pressed == (endPoint ? EndStep : StartStep) || pressed == (endPoint ? EndAuto : StartAuto);
         const bool autoDown = pressed == (endPoint ? EndAuto : StartAuto);
@@ -110,6 +106,7 @@ void LoopView::mouseDown(const juce::MouseEvent& e)
     case ZoomInH: span = juce::jmax(8, span / 2); break;
     case ZoomOutH: span = juce::jmin(16384, span * 2); break;
     case Play: if (onPlay) onPlay(); break;
+    case Info: if (onInfo) onInfo(); break;
     case EndStep: move(true, dir, false); break;
     case EndAuto: move(true, dir, true); break;
     case StartStep: move(false, dir, false); break;
@@ -136,7 +133,7 @@ void LoopView::mouseUp(const juce::MouseEvent&)
 void LoopView::mouseMove(const juce::MouseEvent& e)
 {
     int dir = 0;
-    static const char* const tips[] = { "", "Taller", "Shorter", "Fewer samples (zoom in)", "More samples (zoom out)", "Hear the loop",
+    static const char* const tips[] = { "", "Loop points and frequency", "Hear the loop", "Taller", "Shorter", "Fewer samples (zoom in)", "More samples (zoom out)",
                                         "Move the loop end one sample", "Move the loop end to the best-matching sample in that direction",
                                         "Move the loop start one sample", "Move the loop start to the best-matching sample in that direction" };
     setTooltip(tips[hitAt(e.position, &dir)]);

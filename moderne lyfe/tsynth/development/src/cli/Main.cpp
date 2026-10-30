@@ -72,16 +72,12 @@ int main(int argc, char** argv)
     for (const auto& s : wide) fixed.push_back(const_cast<char*>(s.c_str()));
     if ((int) fixed.size() == argc) argv = fixed.data();
 #endif
-    if (argc < 3) { std::fprintf(stderr, "usage: tsynth-cli patch out.wav [sounds=folder] [info] [module=N]\n"); return 1; }
+    if (argc < 3) { std::fprintf(stderr, "usage: tsynth-cli patch out.wav [info] [module=N]\n"); return 1; }
     RenderOptions opt;
-    const auto dir = std::filesystem::u8path(argv[1]).parent_path();
-    opt.soundFolders.push_back(dir.u8string());
-    opt.soundFolders.push_back(dir.parent_path().u8string());
     bool info = false;
     int only = 0;
     for (int i = 3; i < argc; ++i) {
-        if (!std::strncmp(argv[i], "sounds=", 7)) opt.soundFolders.push_back(argv[i] + 7);
-        else if (!std::strcmp(argv[i], "info")) info = true;
+        if (!std::strcmp(argv[i], "info")) info = true;
         else if (!std::strncmp(argv[i], "module=", 7)) only = std::atoi(argv[i] + 7);
         else { std::fprintf(stderr, "unknown argument: %s\n", argv[i]); return 1; }
     }

@@ -44,7 +44,7 @@ These change the character of the sound rather than fix errors.
 
 | Option | Effect |
 | --- | --- |
-| `fullScaleEnvelope` | The original normalizes the Gaussian by 1/π instead of 1/√(2π), so grains peak at ≈0.80 of full scale. This makes them peak at full scale (+2 dB) |
+| `fullScaleEnvelope` | The original's Gaussian peaks at 32758 (its 2.506 and 6.28318 literals do not quite cancel). This makes it peak at exactly 32767, a difference of 0.002 dB |
 | `logFrequency` | Frequencies are spread evenly in pitch between the bandlimits instead of evenly in Hz. With linear spread a 100 Hz–10 kHz cloud clusters in the top octaves; with log spread its median is near 1 kHz |
 
 ## Measured differences

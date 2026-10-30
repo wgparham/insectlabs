@@ -48,6 +48,7 @@ struct Cloud {
     std::vector<int16_t>& out;
     std::vector<double> mix; // Fixes::floatMix accumulator, int16 units
     std::vector<double> grainBuffer;
+    std::array<sane::Extended, kTableSize + 1> gaussOver32767; // gauss[k] / 32767, as the mix computes it
 
     Cloud(const CloudParams& params, const Waveform& wave, const SourceSound* src, bool audio, std::vector<int16_t>& buffer)
         : p(params), fx(params.fixes), rnd(params.seed), table(oscillatorTable(wave, params.fixes.wavetableWrap)),
@@ -68,6 +69,8 @@ struct Cloud {
         panFinal = p.stereoFinal.random ? kRandomPan : (float) ((double) (float) p.stereoFinal.position / 100.0f);
         grainInitial = p.grainDurationInitial;
         grainFinal = p.grainDurationFinal;
+        for (size_t k = 0; k < gauss.size(); ++k)
+            gaussOver32767[k] = sane::Extended(gauss[k]) / sane::Extended(32767.0);
     }
 
     double longestGrain() const
@@ -84,17 +87,19 @@ struct Cloud {
 
     // Wavetable oscillator with linear interpolation. In the original the
     // difference between neighbouring entries is a 16-bit subtraction that can
-    // wrap and the result is truncated to 16 bits.
-    double oscillator(double phase) const
+    // wrap and the result is truncated to 16 bits. The phase and the
+    // interpolation are extended: the output lands close enough to an integer
+    // often enough for double rounding to change samples.
+    double oscillator(const sane::Extended& phase) const
     {
-        double ip;
-        const double frac = std::modf(phase, &ip);
-        const int32_t i = (int32_t) ip;
+        const sane::Extended ip = phase.trunc();
+        const sane::Extended frac = phase - ip;
+        const int32_t i = (int32_t) ip.toInt64();
         const int16_t s0 = table[i];
         if (fx.oscillatorNoWrap)
-            return (double) s0 + ((double) table[i + 1] - (double) s0) * frac;
+            return (double) s0 + ((double) table[i + 1] - (double) s0) * frac.toDouble();
         const int16_t d = (int16_t) (table[i + 1] - s0);
-        return sane::toInt16((double) d * frac + (double) s0);
+        return sane::toInt16(sane::Extended(d) * frac + sane::Extended(s0), p.wrapIntegerOverflow);
     }
 
     float densityAt(float t) const
@@ -153,7 +158,7 @@ struct Cloud {
 
     // Per-grain parameters shared by both cloud types. presetDuration >= 0 is
     // a duration already drawn by the caller (Fixes::grainDurationRange).
-    GrainEvent makeGrain(float t, double& phaseInc, int32_t& onset, int32_t& length, float presetDuration = -1.0f)
+    GrainEvent makeGrain(float t, sane::Extended& phaseInc, int32_t& onset, int32_t& length, float presetDuration = -1.0f)
     {
         if (p.randomGrainDuration && !fx.grainDurationRange) {
             const float g = (float) ((double) std::abs(rnd()) * kInvRandMax * p.grainDurationInitial + p.grainDurationFinal);
@@ -177,7 +182,7 @@ struct Cloud {
 
         const float pan = pickPan(t);
 
-        phaseInc = (double) freq / (double) rate * 512.0;
+        phaseInc = sane::Extended(freq) / sane::Extended(rate) * sane::Extended(512.0);
         onset = (int32_t) std::trunc((double) t * rate);
         const float gd = presetDuration >= 0.0f ? presetDuration : interp(start, lateDenom(), t, grainInitial, grainFinal);
         length = sane::toInt32((double) rate * (double) gd);
@@ -282,56 +287,69 @@ struct Cloud {
         }
     }
 
-    static int16_t mix16(int16_t existing, double env, double sample, float amp, double gain)
+    // The original's mix, in extended: gauss / 32767 * sample * amp * gain + existing.
+    int16_t mix16(int16_t existing, const sane::Extended& envOver32767, double sample, float amp, const sane::Extended& gain) const
     {
-        double v = env / 32767.0;
-        v *= sample;
-        v *= amp;
-        v *= gain;
-        v += existing;
-        return sane::toInt16(v);
+        sane::Extended v = envOver32767 * sane::Extended(sample);
+        v = v * sane::Extended(amp);
+        v = v * gain;
+        v = v + sane::Extended(existing);
+        return sane::toInt16(v, p.wrapIntegerOverflow);
+    }
+
+    size_t envelopeIndex(int32_t n, int32_t length) const
+    {
+        return (size_t) sane::toInt16((double) n / (double) length * 512.0);
     }
 
     double envelopeAt(int32_t n, int32_t length) const
     {
         if (fx.smoothEnvelope)
             return gaussEnvelope(((double) n + 0.5) / (double) length, fx.fullScaleEnvelope);
-        return gauss[(size_t) sane::toInt16((double) n / (double) length * 512.0)];
+        return gauss[envelopeIndex(n, length)];
     }
 
-    void mixGrain(const GrainEvent& g, int32_t onset, int32_t length, double phaseInc)
+    void mixGrain(const GrainEvent& g, int32_t onset, int32_t length, const sane::Extended& phaseInc)
     {
         const int32_t stop = onset + length;
         const float amp = g.amplitude;
-        const double left = 1.0 - (double) g.pan;
-        double phase = 0.0;
+        const sane::Extended right(g.pan), left = sane::Extended(1.0) - right;
+        const sane::Extended wrapAt(512.0);
+        sane::Extended phase;
         int32_t n = 0;
         for (int32_t i = onset; i < stop && i < bufferFrames; ++i, ++n) {
-            const double env = envelopeAt(n, length);
             double sl, sr;
             if (p.source == SourceKind::Synthetic) {
                 sl = oscillator(phase);
                 sr = oscillator(phase);
-                phase += phaseInc;
-                if (phase >= 512.0) phase -= 512.0;
+                phase = phase + phaseInc;
+                if (phase >= wrapAt) phase = phase - wrapAt;
             } else {
                 sl = grainBuffer[(size_t) n * 2];
                 sr = grainBuffer[(size_t) n * 2 + 1];
             }
-            if (fx.floatMix) {
-                mix[(size_t) i * 2] += env / 32767.0 * sl * amp * left;
-                mix[(size_t) i * 2 + 1] += env / 32767.0 * sr * amp * g.pan;
+            int16_t& l = out[(size_t) i * 2];
+            int16_t& r = out[(size_t) i * 2 + 1];
+            if (fx.floatMix || fx.smoothEnvelope) {
+                const double env = envelopeAt(n, length) / 32767.0;
+                const double gl = env * sl * amp * (1.0 - (double) g.pan), gr = env * sr * amp * g.pan;
+                if (fx.floatMix) {
+                    mix[(size_t) i * 2] += gl;
+                    mix[(size_t) i * 2 + 1] += gr;
+                } else {
+                    l = sane::toInt16(gl + l);
+                    r = sane::toInt16(gr + r);
+                }
             } else {
-                int16_t& l = out[(size_t) i * 2];
-                int16_t& r = out[(size_t) i * 2 + 1];
+                const sane::Extended& env = gaussOver32767[envelopeIndex(n, length)];
                 l = mix16(l, env, sl, amp, left);
-                r = mix16(r, env, sr, amp, g.pan);
+                r = mix16(r, env, sr, amp, right);
             }
         }
     }
 
     // Everything after the grain's parameters are known.
-    void emit(GrainEvent g, int32_t onset, int32_t length, double phaseInc, bool synchronous, RenderResult& result)
+    void emit(GrainEvent g, int32_t onset, int32_t length, const sane::Extended& phaseInc, bool synchronous, RenderResult& result)
     {
         g.amplitude = (float) ((double) g.amplitude / 100.0f);
         if (p.source == SourceKind::Granulated)
@@ -353,7 +371,7 @@ struct Cloud {
             if (ratio < randUnit(rnd))
                 continue;
 
-            double phaseInc;
+            sane::Extended phaseInc;
             int32_t onset, length;
             const GrainEvent g = makeGrain(t, phaseInc, onset, length);
             emit(g, onset, length, phaseInc, false, result);
@@ -376,7 +394,7 @@ struct Cloud {
                 break;
             const float density = densityAt(t);
 
-            double phaseInc;
+            sane::Extended phaseInc;
             int32_t onset, length;
             const GrainEvent g = makeGrain(t, phaseInc, onset, length, drawn);
             if (!fx.keepCloudTail && 2 * ((int64_t) length + onset) > 2 * (int64_t) frames) {

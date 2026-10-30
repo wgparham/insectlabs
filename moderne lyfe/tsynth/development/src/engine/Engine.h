@@ -18,8 +18,6 @@ struct RenderResult {
 };
 
 struct RenderOptions {
-    // Folders searched for sound files of sample modules without embedded data.
-    std::vector<std::string> soundFolders;
     // Stereo Preferences (F23_02DDC / F23_02F6E): pad the shorter channel (or
     // truncate the longer), and which rate a stereo sound plays at when the
     // two sides differ: 15 highest, 16 lowest, 17 the left's, 18 the right's.
@@ -65,6 +63,11 @@ private:
 // Crossfade looping (Output and Sample modules): blend length samples around
 // the loop start and end so the loop joins smoothly. False if it does not fit.
 bool crossfadeLoop(std::vector<int16_t>& buf, int32_t length, int32_t loopStart, int32_t loopEnd, bool linear);
+
+// A stereo sound saved to a mono file (F27_01BCC): each sample is
+// q15(g·L + g·R), g = 0x3FFF with Stereo Preferences "Scale" or 0x7FFF with
+// "Don't scale" (which can wrap). The shorter channel counts as silence.
+std::vector<int16_t> foldToMono(const std::vector<int16_t>& left, const std::vector<int16_t>& right, bool scale);
 
 // The TSWT "Sine Wave" resource used by the Noise module.
 extern const int16_t kSineTable[256];

@@ -323,7 +323,8 @@ void waveModifier(Waveform& w, int n, Random& rng)
         break;
     default: return;
     }
-    s[256] = s[0];
+    // The guard point is left as it was (checked against the original); the
+    // engine sets it before rendering.
 }
 
 void synthesize(const Harmonics& h, Waveform& w) { synthesizeHarmonics(h, w); }

@@ -11,7 +11,7 @@ int main(int argc, char** argv)
     for (int a = 1; a < argc; ++a) {
         Patch p; std::string err;
         if (!loadPatch(argv[a], p, &err)) { std::printf("%s: %s\n", argv[a], err.c_str()); continue; }
-        RenderOptions o; o.soundFolders.push_back(std::filesystem::u8path(argv[a]).parent_path().u8string());
+        RenderOptions o;
         Engine e(p, o);
         for (int i = 1; i <= (int) p.modules.size(); ++i) {
             const auto& b = e.moduleOutput(i);

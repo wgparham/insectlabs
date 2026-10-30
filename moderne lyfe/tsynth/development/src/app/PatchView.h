@@ -16,6 +16,8 @@ public:
     std::function<void(int)> onSelect;
     std::function<void()> onChanged;    // structure or positions changed
     std::function<void(int)> onPreview; // hear one module
+    std::function<void(int)> onOpen;    // open a module (Info tool or double-click)
+    std::function<void(int)> onRemoving; // a module is about to be erased
     std::function<void(turbosynth::Module&)> onNewModule; // a module about to be placed (defaults)
     std::function<void(int, int)> onConnected;            // a new cord, from and to (1-based)
 
@@ -35,10 +37,10 @@ public:
     int visibleRight() const { return (int) toPatch({ (float) getWidth(), 0.0f }).x; }
 
 private:
-    enum class Tool { Arrow, Cord, Eraser, Place };
+    enum class Tool { Arrow, Cord, Eraser, Info, Hear, Place };
     struct PaletteItem { int icon; int type; juce::String tip; };
     std::vector<PaletteItem> palette() const;
-    static constexpr int kPaletteWidth = 82;
+    static constexpr int kPaletteWidth = 100; // three 33 px cells
     juce::Rectangle<int> paletteArea() const { return getLocalBounds().removeFromLeft(kPaletteWidth); }
     juce::Rectangle<float> paletteCell(int i) const;
     juce::Rectangle<float> iconBounds(int index) const;

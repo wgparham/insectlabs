@@ -77,7 +77,7 @@ const FixInfo kFixInfo[] = {
     { "Signal quality", "Keep cloud tail", &cloudgen::Fixes::keepCloudTail,
       "Grains near the end ring out instead of being cut off or dropped." },
     { "Sound-defining", "Full-scale envelope", &cloudgen::Fixes::fullScaleEnvelope,
-      "The Gaussian peaks at full scale instead of about 0.80 (louder grains)." },
+      "The Gaussian peaks at exactly full scale instead of 0.99975 of it (a 0.002 dB difference)." },
     { "Sound-defining", "Logarithmic frequency spread", &cloudgen::Fixes::logFrequency,
       "Grain frequencies are spread evenly in pitch between the bandlimits rather than evenly in Hz." },
 };

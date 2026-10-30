@@ -52,7 +52,7 @@ Big-endian throughout.
 1. **Print record:** 120 bytes (TPrint, `iPrVersion` 3).
 2. **Header:**
    - version `int16`: 1 = TurboSynth 2.0 files, 5 = 2.22.
-   - if 2 < version < 5: 1 byte. If version == 1: 3 × `int32`.
+   - if 2 < version < 5: 1 byte. If version == 1: 3 × `int32`, read into a local and dropped (F9_00E40).
 3. **Module count:** `int16`.
 4. **Each module:** type `int16`, then the base record, then the type record.
 5. **Connection count:** `int16`, then (from `int16`, to `int16`) per connection.
@@ -88,6 +88,14 @@ Big-endian throughout.
 | 20 | Diffuser | 3012 | 3 × `int16` |
 
 All 29 example documents parse with this layout.
+
+**After the connections** (F9 at 17A6): an output whose +146 flag is clear takes its first input's rate (+110), length (+11A) and buffer. This applies to the first module (always the Output) and, in a stereo document, to Output R. Version-1 outputs are stored with rate and length 0, and +146/+148/+14C keep the initializer's 0, 0, 1 (CODE 36), so they get their source's rate and length here.
+
+**Saving** writes version 5 in the same layout, whatever version was read.
+- **Byte-level check (2026-10-30).**
+  - All 13 version-5 example documents, read and written by the port, come back byte for byte. That needs the port to keep the 120-byte print record and every name field whole. Str255 and Str31 fields are stored complete, and the bytes after the string are whatever memory held. They are part of the document, so the port keeps them and writes the current name over them.
+  - In the emulator, the original opened and saved Vibrato Example (version 5) and three version-1 documents: AM Example #2, Stretch Example #1 and Cheez-Verb. The port's save of the same input is identical for Vibrato Example. For the version-1 documents it is identical except for 7 bytes of the print record (bytes 1 and 13–23). Simple Reverb Model (version 5) shows the same 7 bytes. The original rewrites a print record that does not match the emulator's printer (these had `iPrVersion` 3; Vibrato Example's already matched), always to the same values. This is the Print Manager, so it depends on the printer, and the port leaves the record as read.
+  - Not reproducible: the print record of a new document (the port writes a blank one with `iPrVersion` 3) and the leftover bytes in the name fields of new modules (the port writes zeros).
 
 ## DSP kernels (ACreate, CODE 29)
 
@@ -174,7 +182,7 @@ TDELAY isn't listed, so it inherits a compute method (to be found).
 
 ## Sample (TSAMP, compute F29_00A66)
 
-The compute method only previews. The buffer is the loaded sound: data embedded in the document, or the sound file, which is loaded elsewhere (ASamp/ASoundFile, to be read).
+The compute method only previews. The buffer is the loaded sound: data embedded in the document, or nothing. With +13E ("Save sound data with document", DITL 10005, on for new modules) cleared, the writer (CODE 10) stores no samples and the reader (F9 at 083C) sets the length to 0. No link to a sound file is kept: reopened, the module is empty and double-clicking it asks for a file (checked in the emulator, 2026-10-30).
 
 ## Spectral Inverter (TSI, compute F29_012D2, kernel F29_016A6)
 
@@ -288,23 +296,18 @@ The compute method only previews. The buffer is the loaded sound: data embedded 
 
 - **Parameters:** as for the expander. P = FixDiv(sr, FixRatio(coarse·100 + fine, 10)), or sr if the pitch is 0.
 - **Lengths:** L = P·(101 − amount)/10 (crossfade length). S = start·10·sr/1000. slope = 7FFF0000 / L.
-- **Kernel** (argument order to confirm against the pushes: L, P, slope, S, outLen, out, inLen, in):
-  1. Copy in → out until in + S.
+- **Kernel** (arguments L, P, slope, S, outLen, out, inLen, in; confirmed):
+  1. Copy in → out until in + S. It is a do-while: at least one sample is copied even when S is 0 (verified in the emulator).
   2. Loop:
      - B = A + P; end = A + L; gA = 7FFF0000, gB = 0.
      - While A < end: out = (hi(gA)·in[A++] + hi(gB)·in[B++]) << 1 >> 16; gA −= slope; gB += slope.
      - Then A = B.
-  3. Stop at outLen. Zeros once B (or A) passes the input's end.
+  3. Stop at outLen. Zeros once B (before each crossfade sample) or A (in the first copy) reaches the input's end.
 - **Effect:** the output is shorter by about L/(L + P).
 
-## Still open
+## Formerly open (2026-10-29)
 
-- Types 15/17/18 against the classes TEXPANDER, TCOMPRESS and TNOISE. The CODE 9 allocations use A5 class-info offsets `$157C` (15), `$15B4` (17) and `$1584` (18), all size 13A. They need resolving: through the A5 init data, or the module UI code in CODE 45 (ACompand) and CODE 47 (ANoise).
-- Exact FixRatio, FixMul and FixDiv semantics (rounding).
-- F1_020CA and F1_020FE (long multiply and divide).
-- Remaining modules: Pitch Shifter (F29_02D12, kernels F29_02FB6 / F29_03044), Pitch Env (F29_030F8, kernel F29_03488), Noise (F29_03540, kernel F29_037C0), Diffuser host (F29_03854, kernel F29_03AA4) and the Diffuser DSP program (`SACD` 110, 56000 code).
-- The sample module's sound-file loading (CODE 27 ASoundFile, CODE 28 ASamp): the SFIL (Sound Designer) format, and how the file is located.
-- The Output module: what it does with its input (writing a file, sample rate) — CODE 37 AOutput. Also the Output L/R pair (types 100/101).
+All the items once listed here are settled: the class of each module type, the Toolbox and long arithmetic (see "Arithmetic"), every module's kernel, and the Output's behaviour. Every module except the Diffuser is verified against the original in an emulator (see "Verification against the original"). Sample modules whose sound is not stored come back empty, in the original and in the port (see "Sample").
 
 ## Pitch Shifter (TPSHIFT, compute F29_02D12, kernel F29_02FB6). Type 14, 3 words
 
@@ -316,7 +319,7 @@ The compute method only previews. The buffer is the loaded sound: data embedded 
   - Position P = 0 (16.16); limit = in + inLen − 3 samples.
   - Per sample: i = P >> 16 (signed); f = lo(P). D = in[i+1] − in[i]. If D ≥ 0: out = in[i] + ((D·f) >> 16) (`mulu`); else out = in[i] − ((−D·f) >> 16). Then P += rate.
   - On signed overflow: base += 32768 samples, P &= 7FFFFFFF.
-  - Once in + i ≥ limit, zeros.
+  - The limit is tested against the previous read's address (D2, 0 before the first read), as in the Modulator's mode 3, so one more sample is interpolated once the limit is passed; zeros from then on. (Found by the stress patches, 2026-10-30.)
 - **Blend:** if mix < 100: out = (in·dry + out·wet)·2 >> 16, with dry = (100 − mix)·7FFF/100 and wet = mix·7FFF/100, over the input's length.
 - **Normalization:** afterwards, if `+115` is set.
 
@@ -364,7 +367,7 @@ The values: 0.5, 0.66667, 0.79459, 0.94379, 0.98499, 1.0, 1.01500, 1.05951, 1.25
 - **Parameters:** `+132` coarse, `+134` fine, `+136` amount (%).
 - **Delay:** D = FixRound(FixMul(FixDiv(sr, 10000), FixRatio(coarse·100 + fine, 10))) samples (A840 = FixRound), clamped to length.
 - **Gain:** g16 = amount·7FBCh/100 (long multiply and divide).
-- **Lines:** three delay lines of D samples each, all zero at the start, with one shared circular index.
+- **Lines:** three delay lines of D samples each in one block (NewPtr(D·6), L2 at +D, L3 at +2D), all zero at the start, with one shared circular index that wraps before use. With D = 0 the block is empty and all three lines are the same cell just past it, so each stage's write feeds the next stage; the original starts that cell with whatever memory held, the port with 0.
 - **Without a card:** BlockMove input → output (input length; the rest of the buffer is untouched). The port uses the card algorithm (the user's decision).
 - **Host protocol** (56001 host port, `tools/re/dsp56dis`): host command 93h (vector P:$26 → $6A). Parameter words: G = g16<<8, N = length (24 bits), flag. Per sample i (0..N−1), with k = i mod D:
   - send x (input or 0); send L1[k], receive L1[k]; send L2[k], receive L2[k]; send L3[k], receive out[i], receive L3[k].
@@ -377,6 +380,13 @@ The values: 0.5, 0.66667, 0.79459, 0.94379, 0.98499, 1.0, 1.01500, 1.05951, 1.25
   - **Precision:** W1 and W2 carry 8 extra bits between stages. Line values and the output are truncated to 16 bits.
 - **Transfer function:** each stage is (g + z^−D)/(1 + g·z^−D), and the three stages are cascaded.
 - **Normalization:** afterwards, if `+115` is set.
+- **Cross-checked (2026-10-29):** the host code (F29_03854, F29_03AA4) was re-read against the port step by step, and the DSP program was run on an independent DSP56001 emulator (the core of Hatari, the Atari Falcon emulator) with the host port driven exactly as F29_03AA4 drives the card. Its output equals the port's for all ten Diffusers in Bright Hall 01, Non-Linear Reverb and Simple Reverb Model (up to 154,605 samples each) and for edge cases: amount 100 with a full-scale input (saturation), delays of 0, 1 and 4410, and output longer than the input. That run found one fix, the shared cell for D = 0. The harness (Hatari's GPL DSP core plus a driver) is kept outside the repository, in `C:UserswgparhamMacEmudsptest`.
+- **Host code run on a 68K emulator (2026-10-30).** TurboSynth's own CODE 29 runs on the Musashi 68K core: F29_03854, with F29_00164, F29_0006C and the card loop F29_03AA4. The card's host-port registers (base + 3 + 4·n) are wired to the Hatari DSP56001 core running SACD 110.
+  - Only calls that leave CODE 29 are stubbed: FixRatio/FixDiv/FixMul/FixRound, long multiply and divide, NewPtr (returning junk-filled memory), input lookup, program load and notifications.
+  - The result equals the port's for all ten example Diffusers, and for these edge cases: delay 0, delay 1, amount 100, delay 0 with amount 100, an output 20,000 samples longer than its input, and a delay clamped to the length. The stack comes back balanced.
+  - So the whole Diffuser path is now checked by execution, not just by reading: host setup, host protocol and DSP program. Only the card hardware itself is assumed.
+  - Size coarse above 327 overflows the original's `muls.w` (coarse·100 in 16 bits) and gives a negative delay. The port wraps the same way, but what the original then does (NewPtr of a negative size) is undefined.
+  - The harness is `harness68k.cpp` in `C:\Users\wgparham\MacEmu\dsptest`, outside the repository, with Musashi in `MacEmu\musashi`.
 
 ## Resolved
 
@@ -384,7 +394,7 @@ The values: 0.5, 0.66667, 0.79459, 0.94379, 0.98499, 1.0, 1.01500, 1.05951, 1.25
 - **Rates:** every module keeps its own sample rate and length. Buffers pass between modules unconverted (a 30 kHz sample can feed a 31.25 kHz envelope); a module's rate only scales its own timing.
 - **Output** (types 100/101, kinds 7000/7001/7002): has no compute method of its own (TBLOCK default), so its result is its input's buffer. Type 100 is mono "Output" or "Output L"; 101 is "Output R".
 - **Sound Designer I (SFIL/XFER):** header size in the first word (0538h = 1336); data length in bytes at 94h and B8h; then big-endian `int16` samples. The rest of the header is mostly uninitialised memory. The port takes the rate and length from the patch's module.
-- **Sample modules without embedded data:** the port looks for a file named after the module (trailing spaces trimmed) next to the patch, in "Sound files", or in a user search folder.
+- **Sample modules without embedded data** come back empty (length 0), as in the original. The port no longer looks for sound files by name.
 
 ## Arithmetic (verified in the emulator except where noted)
 
@@ -398,7 +408,7 @@ The values: 0.5, 0.66667, 0.79459, 0.94379, 0.98499, 1.0, 1.01500, 1.05951, 1.25
 ## Verification against the original (2026-10-29)
 
 - **Setup:** Basilisk II (kanjitalk755/macemu, built with MSYS2 MinGW32, JIT off) with a Quadra 650 ROM and System 7.5.3 runs the original Turbosynth SC 2.22 from the extracted HFS volume. A host folder is mapped as a drive the Mac sees (Basilisk's ExtFS; Finder type/creator live in `.finf\<name>`, so documents get TRBD/TRBS). For each patch the original's File > Save Output As writes a Sound Designer II file (data fork: big-endian 16-bit samples, interleaved for stereo) straight to the host, and a small tool compares it sample for sample with `tsynth-cli`. Renders are deterministic: the same patch saved twice gives identical files.
-- **Result:** all 45 example patches that can run without a Digidesign card match the original exactly, including the four stereo patches and the output crossfade. Bright Hall 01, Non-Linear Reverb and Simple Reverb Model use the Diffuser, which the original refuses without the DSP card ("A Digidesign DSP Card is required to use the Diffuser"), so the Diffuser is still checked only against its DSP program. Seven test patches with a single Noise module (none of the examples uses one) also match exactly, so every module except the Diffuser is now verified.
+- **Result:** all 45 example patches that can run without a Digidesign card match the original exactly, including the four stereo patches and the output crossfade. Bright Hall 01, Non-Linear Reverb and Simple Reverb Model use the Diffuser, which the original refuses without the DSP card ("A Digidesign DSP Card is required to use the Diffuser"), so the Diffuser is still checked only against its DSP program. Seven test patches with a single Noise module (none of the examples uses one) also match exactly, Seven test patches with a compressing Stretcher (also unused by the examples) match too, after one fix (its first copy always takes a sample), so every module except the Diffuser is now verified.
 - **Method for a mismatch:** a probe patch connects one module straight to the Output (written by the port as a version-5 document); rendering probes in both programs shows the first module that differs.
 - **What the comparison corrected:**
   - FixRatio truncates (above). It set every oscillator's phase increment off by a few units.
@@ -406,11 +416,17 @@ The values: 0.5, 0.66667, 0.79459, 0.94379, 0.98499, 1.0, 1.01500, 1.05951, 1.25
   - The Filter (F29_011C2) stops when head ≥ input end, one sample earlier than the port did.
   - The Pitch Envelope (F29_03488) also tests the previous read position before each read; an overflow resets it to the new base.
   - The expanding Stretcher (F30_010BC / F29_029BA) fills zeros as soon as the read position reaches the input's end, in the crossfade or the copy; it does not restart from the crossfade's other position.
+  - The compressing Stretcher (F29_02C72) copies at least one sample before its first crossfade, even with a start of 0.
   - **Version-1 documents** (the TS Files patches): the reader (F9_00BCC) stores the Stretcher amount as 100 − amount; and the envelope reader (F9_00856) does not read `+136`, so the module keeps its initial value 1 (CODE 36 initializers). For the Spectral Inverter that selects step 80h instead of 40h.
+- **Stress patches (2026-10-30):** 15 patches built to reach the kernels' rare paths, rendered in the original and compared sample for sample:
+  - Match: the oscillator's 16-bit interpolation wrap (a table alternating ±full scale, a hashed table at 9973 Hz, a full-scale saw); the Delay and Resonator at 99 % feedback, both signs, over full-scale input (the saturation rule); the Modulator's modes 1 and 3 at full depth over 100,000 samples (read position passing 32768); the Pitch Shifter an octave down; the Pitch Envelope 0 → 100 → 0 over 100,000 samples; the Amplitude Envelope and Filter at full level on a full-scale square.
+  - Fixed: the Pitch Shifter an octave up wrote one sample too few at the end (above).
+  - Not reproducible: the Modulator's mode 2 at depth 32767 reads up to ±16384 samples away from the carrier position, outside its buffer; the original then reads whatever memory lies there. Every sample read inside the buffer matches.
+  - All 45 earlier example references and the Noise and compressing-Stretcher probes still match.
 
 ## Engine status (2026-10-28)
 
-- **Code:** `src/engine` (Patch, Engine, MacMath, SineTable) and `src/cli` (`tsynth-cli patch out.wav [sounds=dir] [info] [module=N]`). It builds warning-free with MSVC /W4.
+- **Code:** `src/engine` (Patch, Engine, MacMath, SineTable) and `src/cli` (`tsynth-cli patch out.wav [info] [module=N]`). It builds warning-free with MSVC /W4.
 - **Example patches:** all 29 render (2.22 TS Files, Best of Disk 1 and 2, Sample Files), with no missing sound files.
 - **Checks** (`tests/modstats.cpp`):
   - The Analog Synth Model oscillators measure 110, 55, 55 and 1.5 Hz, matching the stored Fixed frequencies.
@@ -419,16 +435,16 @@ The values: 0.5, 0.66667, 0.79459, 0.94379, 0.98499, 1.0, 1.01500, 1.05951, 1.25
 - **Port decisions:**
   - Outputs are the input of type 100 (left/mono) and 101 (right).
   - A version-1 output with rate 0 takes its source's rate.
-  - Sample files are found by module name.
+  - Sample modules have no sound-file lookup; a sound is either stored in the document or absent.
 - **Next:** the JUCE standalone app (patch view, module editors, render/play/export), CI workflow, README/ALGORITHM docs, then Model 2.
 
 ## App status (2026-10-28)
 
 - **Look:** a JUCE standalone in `src/app` with a Classic Mac look (the user asked for one "closer to its original look", with a dark mode). Light is black on white with a dither desktop and pinstriped windows; View > Dark Mode is the same drawing in warm light ink on charcoal, saved in `TurboSynth.settings`.
 - **Icons:** the original ICON resources are embedded in `src/app/ClassicIcons.cpp`, generated from the 2.22 resource fork. Module icons are numbered by kind: 2000 osc, 2001 sample, 2002 noise, 3000–3012 processors (3008 expanding stretcher, 3010 compressing stretcher), 7000–7002 outputs. Tool icons: 1000 arrow, 1001 eraser, 1003 speaker, 1005 patch cord, 1006 pencil, 1007 rake (Harmonic window). 7001 and 7002 are the left and right halves of the stereo jack (each lacks one border), and 2004 and 2003 the left and right halves of a linked stereo sample.
-- **Patch window:** a two-column palette; place a module by clicking its icon, then the patch. Patch cord or Shift-drag connects, the eraser removes, double-click hears a module. The view fits large patches.
-- **Module Info:** numeric fields per type, a breakpoint editor (envelope family), and drawable tables (oscillator waves, shaper).
-- **Sound window:** waveform, Play/Stop, play cursor. File > Export Sound writes 16-bit WAV or AIFF.
+- **Patch window:** the original's palette, three to a row: arrow, patch cord, eraser; Mixer, Info, speaker; then the module types in the original's order (checked in the emulator 2026-10-30). Place a module by clicking its icon, then the patch. Patch cord or Shift-drag connects, the eraser removes, the speaker tool hears a module, and the Info tool or a double-click opens it (an empty Sample module asks for a sound, F28_00628). Without a DSP card the original shows the Diffuser crossed out (icon 3013); the port computes it, so it shows 3012. The view fits large patches.
+- **Windows (2026-10-30):** as in the original, a desktop holds the patch window and one window per opened module (double-click, or the Info tool). Windows move by the title bar, resize by the grow box and close by the close box; the front one has the pinstriped title and is the module the menus act on. A module window holds its settings: numeric fields, a breakpoint editor (envelope family), drawable tables (oscillator waves, shaper) and the tool palette.
+- **Sound:** a Sample or Output window shows its sound beside its palette, with Play and Stop and the play cursor; one live sound view moves to whichever of those windows is in front, and the others keep a picture of theirs. File > Export Sound writes 16-bit WAV or AIFF.
 - **Snapshots:** `TurboSynth [patch] --snapshot out.png [--dark] [--select N]` renders the window off screen (for docs and tests).
 - **Tests:**
   - Real-click on Windows: selecting, placing a module from the palette, connecting, Dark Mode from the menu, Play.
@@ -465,6 +481,7 @@ The module windows' palettes, recovered from the window code and ported in `src/
   - The bows square v + 0x8000 with the 32-bit LMUL, which wraps above 46341; dividing by 65536 and keeping 16 bits makes the wrap vanish, so the port reproduces it as is.
   - The window's eraser re-draws the straight line (i − 128) << 8 where it is dragged.
 - **Waveforms (CODE 38, used by the Oscillator window CODE 39 through the jump table).** Dispatch at F38_03F70 (presets, codes 7–18) and F38_0406E (modifiers in waveform mode, codes 19–36; the flag at +33A picks it; harmonic mode has its own 15-entry table at F38_041A6, see below).
+  - Drawing tools in waveform mode: the pencil (icon 1006, tool 2) and the eraser (1001, tool 3), beside the mode icon. The tracker (F38_03058, F38_031CC) stores 0x7FFF − (y << 8) for the pencil and 0 for the eraser at the point under the mouse, then fills the points between it and the previous one by linear interpolation, so the eraser clears what it passes over. The port has both.
   - A preset is a harmonic recipe: 65 records of (level, phase) at +22A, phase 0..255 of a cycle (0x80 = inverted). F38_00CEC clears them; F38_0098C sums them into a 32-bit buffer with the TSWT sine table (F38_04A54: buf += q15(sine[(phase + n·k) & 255] · level)), finds the peak (04ABC) and, if it is over 0x7FFF, scales by LoWord(FixDiv(0x7FF8, peak)); otherwise by 0xFFFF (04AF0: hi·scale + ext((lo·scale) >> 16), low word kept). A sum under 100% therefore stays unnormalized, as the manual says.
   - Recipes: sine (00D28); triangle, odd k at 0x6872/k² with alternating phase (00D5E); saw, 0x7FFF/k (00DEA); square, odd k (00E3E); k = 1 or even at 0x70A2/k (00E9A); k ≡ 1 mod 4 at 0x5C8C/k, alternating (00F06); k ≡ 1 mod 3 (00F94); formant, the fundamental plus k 20–25 at 0x7FFF divided by 3, 2, 1, 1, 2, 3 (00FF8); Fibonacci harmonics (01086) and primes plus 1 (010F4), both Pascal sets stored as bitmaps just before each routine; octaves (01162). Code 18 is the disk: load a waveform file.
   - Modifiers: ×10/9 on the positive half (011C4), negative half (01232), both (012A0); fade in ×(i+245)/500 (0130A); fade out ×(500−i)/500 (0135E); ×9/10 (013B2); +2000 (013FE); −2000 (0144C); normalize to 0x7FFF (0149A; the original divides by zero on silence, the port skips); resample with a falling step from the left (0155E), from the right (015E0), both (01678), interpolating with F38_00C5A; rotate 4 samples left (01692) and right (016EE); invert (0174C); add Random/32 (01796); smooth using the guard point (01806); smooth wrapping round the cycle (01968).
@@ -473,6 +490,13 @@ The module windows' palettes, recovered from the window code and ported in `src/
   - Modifiers: levels ×9/10 (00704); (level+1)×10/9 up to 100 (0075E); times from the second point ×9/10, kept increasing (007CC; 9·time is a 16-bit `muls.w`, so it wraps past 3640 ms, as in the original); times ×10/9 + 1, then points past the end are dropped (00852, 0005A); levels toward 50 (008C4); away from 50, applied twice (00928).
   - F40_00C2C keeps a handle rectangle with each point: SetRect(time−1, 99−level, time+2, 102−level), stored in the point's extra words. The port fills it whenever it creates or edits points.
 
+- **Checked in the emulator (2026-10-30).** Each tool was applied in the original TurboSynth and the document saved after every step. The port then replayed the step on the previous saved state and compared the stored tables.
+  - Waveshaper: all 8 presets and 10 modifiers identical.
+  - Waveform: all 11 recipes and 18 modifiers identical.
+  - Harmonic mode: all 15 modifiers identical.
+  - Envelope: all 8 presets and 6 modifiers identical, including the handle rectangles, and including Expand time applied four times in a row so points fall off the end.
+  - The random tools match when `randSeed` starts at 1 (its value after InitGraf) and carries over from tool to tool: random walk (TickCount mod 8 was 0), Randomize, Add noise and harmonic Randomize.
+  - One fix: the waveform modifiers no longer set the guard point `[256]`. The original leaves it alone; the engine sets it before rendering, so only the saved bytes changed.
 ## Stereo output (2026-10-28)
 
 - **In the documents:** a stereo document has Output L (type 100, kind 7001) and Output R (type 101, kind 7002), R exactly 32 px right of L, so the two half icons make one jack. A mono document has Output (type 100, kind 7000). Checked on Early Reflections and Rotating Speaker.
@@ -507,10 +531,29 @@ The module windows' palettes, recovered from the window code and ported in `src/
 - **Edit commands (CODE 16, MacApp command objects with Do/Undo):** Reverse F16_01B10 (F28_05A28 both ways); Silence F16_01D1E (F29_0006C clears the selection); Cut F16_00B2C removes the selection, leaves the insertion point at its start, and if the loop end is now at or past the end clears both loop markers; Paste F16_00FE0 / F16_013D8 inserts the clipboard (replacing a selection) and selects what was pasted; Clear F16_018B6 removes the selection and leaves the markers alone. The selection is `+140`/`+144`. Loop markers do not move with the edits. The port follows these.
 - **Extend Loop (F28_01FF0, rect `+78`):** the info box's Length sets the buffer size first; the command then fills from the loop end to the end of the buffer with copies of the loop (BlockMove from the loop start each time), overwriting what was there. The port resizes to the module's Length and does the same.
 - **Loop points to selection (rect `+98`):** selection = loop start .. loop end, for a stereo partner too.
-- **Save Loop As Waveform (F25_002B6):** step = FixRatio(loop length as a word, 256); the oscillator's resampler F39_02870 makes 256 points (a + ((b−a)·(frac >> 1))·2 >> 16 with 16-bit differences; the last point reads the sample at the loop end); then the module normalize (F23_008B8 + F29_000A2). The file it writes is 0x2A bytes copied from the start of the sample buffer (not a name and time: that is why waveform files saved from loops have header bytes equal to their first samples) followed by the 512 bytes of samples. The port resamples and normalizes the same way but writes a proper name. When it loads a waveform file it takes the name from the file name, since such headers are junk (19 of the 20 original files in TS Files' Waveforms folder).
+- **Save Loop As Waveform (F25_002B6):** step = FixRatio(loop length as a word, 256); the oscillator's resampler F39_02870 makes 256 points (a + ((b−a)·(frac >> 1))·2 >> 16 with 16-bit differences; the last point reads the sample at the loop end); then the module normalize (F23_008B8 + F29_000A2). The file it writes is 0x2A bytes of whatever the buffer held (not a name and time; in the emulator they matched nothing in the sound) followed by the 512 bytes of samples. The port resamples and normalizes the same way but writes a proper name. When it loads a waveform file it takes the name from the file name, since such headers are junk (19 of the 20 original files in TS Files' Waveforms folder).
 - **Palette click mapping (verified, CODE 38/40/41):** each tool has a rectangle at `+38 + 8·code` in the window object, set with SetRect. Waveshaper and envelope palettes are 64 px wide: codes 1–4 are 32 px icons, the preset codes are 16 px quarters across the top halves of the two preset icons, then the bottom halves, then 32 px modifiers two to a row. The Waveform/Harmonic window palette is 96 px wide (three icons): row 1 waveform mode (1008), pencil (1006) or arrow (1000), eraser (1001) or rake (1007); row 2 harmonic mode (1009), info, speaker; row 3 the three preset icons, codes 7–12 across their top halves and 13–18 across the bottom halves; then the modifiers three to a row. The port's earlier two-wide waveform palette had some waveform presets in the wrong quarters; it now uses the original layout. The waveform window's eraser is not ported (its action was not traced).
-- **Still the port's own:** the Loop window's layout and zoom steps, and playing the loop for about four seconds. Direct sampling (Sound Accelerator + AD In) is not offered.
+- **Loop window layout (checked in the emulator 2026-10-30):** titled "Loop Window" ("Loop Window L"/"R" plus the name for a linked half). A two-column palette on the left holds Info, the speaker and the four zoom icons, and the two halves fill the rest, split by the dotted line, each with its step and Auto arrows at the bottom. The port matches; its Info icon lists the loop points and frequency. Still the port's own: the zoom steps, playing the loop for about four seconds, and refusing to open without both loop markers (the original opens with empty halves). Direct sampling (Sound Accelerator + AD In) is not offered.
 - **Loop window Auto arrows (CODE 35 F35_00EE4, search F6_00DDA):** each arrow scans a whole range one sample at a time: loop end ← from the end to loopStart + 1 (1 without a start), loop end → to length − 1, loop start ← to 0, loop start → to loopEnd − 1 (length − 2 without an end). At each position p, with d the direction, score = |s[p] − s[r−d]| + |s[p+d] − s[r]| + |s[p+2d] − s[r+d]| where r is the other loop point; the lowest score wins, a tie going to the later position, and the new point is p + d (the middle of the three). So it always moves, and it goes to the best match in the range however far away. The port follows this exactly (it replaced an earlier search of the port's own that stopped at the first close match nearby).
+
+- **Checked in the emulator (2026-10-30).** Each step was done in the original on Simple Reverb Model's Finger Snap and the document saved; the port replayed it on the previous saved state.
+  - Identical:
+    - Sample Rate Conversion down (44100→32000) and up (32000→48000)
+    - Gain 37 % and 250 % (clipping)
+    - Normalize
+    - Envelope Removal at 20 ms
+    - Reverse of everything and of a selection
+    - Silence of a selection
+    - Extend Loop
+    - five Auto arrow presses in the Loop window, in all four directions
+    - Save Loop As Waveform's 256 points
+  - Upsampling: the last sample differs. The original interpolates with whatever follows the buffer (587 here, where the sound ends in zeros); the port uses 0.
+  - Save Loop As Waveform's 0x2A-byte header held 21 values found nowhere in the sound. It is whatever the buffer held, not necessarily the sound's first samples.
+  - Where the tools are in the original:
+    - Sample window palette: Sample Rate Conversion and Extend Loop are the fourth row, Gain Change and Envelope Removal the fifth.
+    - The Loop window is the magnifier icon at the bottom right.
+    - Edit menu shortcuts: Reverse ⌘R, Silence ⌘E.
+    - Save Loop As Waveform is in the File menu.
 
 ## Parameter Manager rules (2026-10-28)
 
@@ -530,11 +573,21 @@ The module windows' palettes, recovered from the window code and ported in `src/
 - **Monitor loop at output:** when the output is previewed, the loop points go to the playback routine and the loop repeats.
 - **The port** (`src/engine/Rules.cpp`) applies all of this after edits in Module Info, new cords and loaded sounds; it replaced the port's earlier "compute and trim the tail" rule. Monitor loop at output repeats the output's loop for about 20 seconds after Play.
 
+- **Checked in the emulator (2026-10-30)** on Simple Reverb Model (Sample → Diffuser → Delay → Mixer → Output). The Sample module's Length or Rate was changed in its Info box under different Parameter Manager settings, and every module's length and rate compared with the port's rules. All identical:
+  - all on: Length 8000, Rate 22050
+  - all off: Length 12000, Rate 32000
+  - Dynamic length only: Length 9000 (the Delay's dynamic length 27516)
+  - Inherit length only: Length 7000 (the Mixer takes its longest input)
+  - Inherit rate only: Rate 48000
+  - Not checked: the rules on making a cord.
+
 ## Stereo Preferences (2026-10-28)
 
 - **Dialog (DITL 10040, CODE 6 F6_0178E):** new document Mono/Stereo (items 4/5, a field of the application object); open both channels / a specified channel of a stereo file (7/8, `-$518`); matching channel lengths pad/truncate (12/13, `-$513`); sample rate highest / lowest / left's / right's (15–18, `-$516` holds the item number); stereo to mono scale / don't (20/21, `-$517`); direct sampling mono/stereo (23/24, `-$519`); empty Sample module mono/stereo (26/27, `-$51A`).
 - **Stereo sound (F23_02DDC, F23_02F6E):** the rate is chosen from the two outputs' sources per `-$516` (or the one output that has a source), and the length is the longer channel padded (pad) or the shorter (truncate, which also clears loop points past it).
-- **The port:** new documents as stereo, pad/truncate and the rate choice (`RenderOptions`), open both channels (linked pairs, below) or a specified channel, chosen when the file opens. Not ported: stereo empty Sample modules (`-$51A`), direct sampling, and the stereo-to-mono scale (the port plays and exports stereo).
+- **The port:** new documents as stereo, pad/truncate and the rate choice (`RenderOptions`), open both channels (linked pairs, below) or a specified channel, chosen when the file opens, the stereo-to-mono scale and empty stereo Sample modules (below). Not ported: direct sampling.
+- **Stereo to mono (`-$517`, DFLB 7, default Scale).** Save Output As writes a stereo document's sound to a mono file through F27_01BCC. It runs the Mixer's kernel (F29_02122) over the two outputs with gains 0x3FFF each (Scale) or 0x7FFF each (Don't scale, which can wrap): q15(g·L + g·R), over the padded or truncated length. Playback folds the same way (F23_02F6E) only on hardware without stereo, which the port never uses. In the port, exporting a stereo sound offers a mono file (`foldToMono`).
+- **Empty Sample module (`-$51A`, DFLB 11, default Mono).** F28_00628 asks for a sound when an empty Sample module is opened. If that is cancelled on a module with no sound and no partner, and the preference is Stereo, the module becomes an empty linked pair (F28_00D8A) and the right half's window opens. The port does the same when Load Sound is cancelled.
 
 ## Linked stereo Sample modules (2026-10-28)
 
@@ -558,5 +611,6 @@ The module windows' palettes, recovered from the window code and ported in `src/
   - Loop points are copied to the partner.
   - F28_01380 titles the Loop windows "Loop Window L" / "Loop Window R" plus the name, for both halves.
   - Hearing a linked half plays both channels as stereo (F29_00A66 → F29_00234 with the channel).
+- **Checked in the emulator (2026-10-30):** a stereo AIFF opened with "Open both channels" into a new Sample module, next to an existing mono one. The port's `makeStereoSample` gives the same ids (2 and 3 after the mono module's 1), partner ids, channels, icon kinds (2004/2003) and positions (the right half 32 px below). Gain Change at 50 % from the L half's window changed both halves exactly as the port does.
 - **Deleting one half** unlinks the other (F16_03A66). In the port, Clear on a selected pair deletes both halves; the eraser deletes only the one it touches.
 - **Paste (CODE 16 ~F16_025xx):** pasted Sample modules get new ids (F16_02458 / F16_023EC, which also points a partner's `+152` at the new id). Two pasted halves that find each other by id, with equal lengths, are linked again (F16_02314 → F28_01040); otherwise they go mono. Their positions are then lined up 32 px apart (F16_024C4). In the port, Copy and Duplicate of a selected pair carry both halves, and Paste makes a new linked pair; one half pasted alone is mono.

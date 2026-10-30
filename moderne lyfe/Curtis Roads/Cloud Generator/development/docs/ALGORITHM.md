@@ -38,10 +38,10 @@ When Random is checked for grain duration, the fields are relabelled **Maximum**
 **Gaussian envelope** (CODE 5), 513 entries, `i = 0…512`, `x = i·6/512 − 3`:
 
 ```
-gauss[i] = (int16) trunc( (1/3.14159) · exp(−x²/2) · √(2π) · 32767 )
+gauss[i] = (int16) trunc( exp(−x²/2) / √6.28318 · 2.506 · 32767 )      (80-bit SANE)
 ```
 
-The normalization uses 1/π, not 1/√(2π), so the peak is 26137 (≈0.798 of full scale) rather than 32767.
+The constants are the literals 6.28318 (under a square root, F8_046C) and 2.506, so the peak is 32758 (0.99975 of full scale), and gauss[0] = 363. An earlier reading took the first constant as 3.14159 used as a divisor, giving a peak of 26137; rendering in an emulator showed the original peaks at 32758 (verified 2026-10-30 with a square-wave grain, which reproduces the original exactly).
 
 **Waveforms** (CODE 2) fill a 512-point float buffer `W`:
 
@@ -53,7 +53,7 @@ The normalization uses 1/π, not 1/√(2π), so the peak is 26137 (≈0.798 of f
 | Import | | first 512 left-channel samples of the chosen AIFF |
 | Editor | | drawn |
 
-**Oscillator table** (CODE 4): `T[i] = (int16) trunc(W[i])` for i = 0…510 only, so `T[511]` stays 0. The table is followed in memory by the Gaussian table, so the oscillator's read of `T[512]` returns `gauss[0]` = 290.
+**Oscillator table** (CODE 4): `T[i] = (int16) trunc(W[i])` for i = 0…510 only, so `T[511]` stays 0. The table is followed in memory by the Gaussian table, so the oscillator's read of `T[512]` returns `gauss[0]` = 363.
 
 **Oscillator** (F3_054A0): for phase `φ ∈ [0, 512)`, `i = ⌊φ⌋`, `f = φ − i`:
 
@@ -61,6 +61,8 @@ The normalization uses 1/π, not 1/√(2π), so the peak is 26137 (≈0.798 of f
 d = (int16)(T[i+1] − T[i])        16-bit subtraction, can wrap
 out = (int16) trunc(d·f + T[i])
 ```
+
+The phase, `f` and the interpolation are SANE extended (64-bit significand). The port computes them with a software extended type (`sane::Extended`), because in double the result often lands on the other side of an integer and changes the truncated sample. At a sawtooth's jump `d·f + T[i]` exceeds 32767 and the conversion overflows (see the next section).
 
 ## Interpolation (F2_0167E)
 
@@ -85,7 +87,7 @@ end    = (float)(start + duration)
 frames = trunc(end · 44100)
 ```
 
-The buffer is `frames` stereo int16 frames, zeroed. Every mix writes `buf = (int16) trunc(existing + contribution)`. SANE returns −32768 for an out-of-range integer conversion, so overloads wrap to −32768; they do not clip.
+The buffer is `frames` stereo int16 frames, zeroed. Every mix writes `buf = (int16) trunc(existing + contribution)`. SANE returns −32768 for an out-of-range integer conversion, so overloads wrap to −32768; they do not clip. The whole mix expression is evaluated in extended, with `env/32767` rounded first. In the Basilisk II emulator an out-of-range conversion keeps the low 16 bits of the integer instead, because its `FMOVE.W` goes through int32 (`fpu_ieee.cpp`). That is an emulator artefact: a real 68881/68040 saturates, and software SANE returns −32768. The port keeps SANE's −32768; `CloudParams::wrapIntegerOverflow` reproduces the emulator for verification.
 
 ## Per-grain parameters
 
@@ -177,3 +179,23 @@ Frequency is 0 for granulated clouds. The two integer columns come from globals 
 ## Random numbers
 
 Metrowerks `rand()`: `seed = seed·1103515245 + 12345; return (seed >> 16) & 0x7FFF`. The original calls `srand((unsigned short) time())` per generation, so its outputs are not reproducible. The port takes the seed as a parameter.
+
+## Verification against the original
+
+Renders by the original 68K application in the Basilisk II emulator (Quadra 650 ROM, System 7.5.3), compared with the port at the recovered random seed and with `wrapIntegerOverflow` set. Each cloud lasts 1 s at 44.1 kHz. With both Output buttons on (the console allows it), one Generate writes an AIFF and a Text file from the same seed:
+
+| Cloud | Settings | Result |
+|---|---|---|
+| cg1 | synchronous, sine, density 10, amp 80 %, 200–2000 Hz, 0.05 s grains, centre | identical (seed 17854) |
+| cg2 | synchronous, square, 10 Hz, density 1, amp 100 %, pan 1 | identical (seed 0) |
+| cg3 | asynchronous, sawtooth, density 20→5, amp 60→90 %, high 4000→500, low 100→300 Hz, grains 0.02→0.08 s, both pans random | identical (seed 10555) |
+| cg4 | cg4t's settings, an earlier render | identical (seed 35533) |
+| cg4t | asynchronous, sawtooth, start 0.5 s, random grain duration (Maximum 0.02, Minimum 0.08), initial pan centre, final pan random; other settings as cg3 | identical (seed 9194) |
+| cg4x | the same cloud as Text output | identical text |
+| cg5 | cg4t's settings, granulated from cg1, Random selection | identical except one grain that reads past the end of the source (frames 47262–49062): the original reads whatever memory follows the sound, the port reads silence |
+| cg5x | the same cloud as Text output | identical text (seed 37281) |
+| cg6, cg6x | cg5 with Statistical Evolution selection | identical audio and text (seed 55288) |
+| cg7, cg7x | cg5 with Deterministic Progression selection | identical text (seed 63328); audio identical except two grains that read past the end of the source (frames 64193–64236 and 64502–65002) |
+| cg8, cg8x | synchronous, granulated from cg1, Statistical Evolution, otherwise as cg5 | identical audio and text (seed 6885) |
+
+Before the extended arithmetic, cg1 had 2 samples off by 1. cg3 also had 61 overflow samples at the sawtooth jump, which match only in wrap mode.

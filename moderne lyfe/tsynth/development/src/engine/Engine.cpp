@@ -250,21 +250,7 @@ void Engine::oscillator(Module& m, std::vector<int16_t>& out)
 
 void Engine::sample(Module& m, std::vector<int16_t>& out)
 {
-    std::vector<int16_t> data = m.embedded;
-    if (data.empty()) {
-        std::string nm = m.name;
-        while (!nm.empty() && nm.back() == ' ') nm.pop_back();
-        bool found = false;
-        for (const auto& folder : options.soundFolders) {
-            for (const char* sub : { "", "Sound files", "Sound Files" }) {
-                const auto p = std::filesystem::u8path(folder) / sub / std::filesystem::u8path(nm);
-                std::error_code ec;
-                if (std::filesystem::is_regular_file(p, ec) && loadSoundDesigner(p.u8string(), data, nullptr)) { found = true; break; }
-            }
-            if (found) break;
-        }
-        if (!found) warnings.push_back("Sound file not found for sample module '" + nm + "'");
-    }
+    const auto& data = m.embedded;
     for (size_t i = 0; i < out.size() && i < data.size(); ++i) out[i] = data[i];
 }
 
@@ -600,8 +586,15 @@ void Engine::stretch(Module& m, std::vector<int16_t>& out, const std::vector<int
         const int32_t L = ldiv(lmul(P, 101 - m.p[3]), 10);
         if (L <= 0) return;
         const int32_t slope = ldiv(0x7FFF0000, L);
-        while (pos < len && A < inLen && A < S0) put(in[(size_t) A++]);
-        while (pos < len) {
+        // F29_02C72: the first copy is a do-while, so it copies at least one
+        // sample even with a start of 0; reaching the input's end means zeros.
+        bool ended = false;
+        do {
+            if (pos >= len) break;
+            if (A >= inLen) { ended = true; break; }
+            put(in[(size_t) A++]);
+        } while (A < S0);
+        while (!ended && pos < len) {
             int64_t B = A + P;
             const int64_t end = A + L;
             int32_t gA = 0x7FFF0000, gB = 0;
@@ -633,9 +626,11 @@ void Engine::pitchShifter(Module& m, std::vector<int16_t>& out, const std::vecto
     const int64_t limit = (int64_t) inLen - 3;
     int32_t P = 0;
     int32_t pos = 0;
+    int64_t prev = INT64_MIN; // F29_02FB6 tests the previous read against the limit (D2 starts at 0), so it reads one more
     while (pos < len) {
+        if (prev >= limit) break;
         const int64_t i = base + (P >> 16);
-        if (i >= limit) break;
+        prev = i;
         out[(size_t) pos++] = interp(at(in, i), at(in, i + 1), (uint16_t) loWord(P));
         int64_t np = (int64_t) P + rate;
         if (np > 0x7FFFFFFF || np < -0x80000000LL) { base += 32768; np = (uint32_t) np & 0x7FFFFFFF; }
@@ -679,7 +674,12 @@ void Engine::diffuser(Module& m, std::vector<int16_t>& out, const std::vector<in
     const Fixed size = fixRatio((int16_t) (m.p[0] * 100 + m.p[1]), 10);
     int32_t D = fixRound(fixMul(fixDiv(m.sampleRate, 10000), size));
     if (D > m.length) D = m.length;
-    if (D <= 0) D = 1;
+    // With D = 0 the host's three lines are an empty block (NewPtr(0)), so all
+    // three point at the same cell just past it and each stage's write feeds the
+    // next stage (F29_03AA4). The original's initial value there is whatever
+    // memory held; the port starts it at 0.
+    const bool shared = D <= 0;
+    if (shared) D = 1;
     const int16_t g16 = (int16_t) ldiv(lmul(m.p[2], 0x7FBC), 100);
     const int64_t G = (int64_t) g16 << 8;
     std::vector<int16_t> L1((size_t) D, 0), L2((size_t) D, 0), L3((size_t) D, 0);
@@ -694,11 +694,14 @@ void Engine::diffuser(Module& m, std::vector<int16_t>& out, const std::vector<in
     for (int32_t i = 0; i < m.length; ++i) {
         const int64_t X = (int64_t) (i < inLen ? in[(size_t) i] : 0) << 8;
         int64_t W1, W2, W3;
-        L1[k] = send(stage(X, L1[k], W1));
-        L2[k] = send(stage(W1, L2[k], W2));
-        const int64_t S3 = stage(W2, L3[k], W3);
+        int16_t& c1 = L1[k];
+        int16_t& c2 = shared ? L1[k] : L2[k];
+        int16_t& c3 = shared ? L1[k] : L3[k];
+        c1 = send(stage(X, c1, W1));
+        c2 = send(stage(W1, c2, W2));
+        const int64_t S3 = stage(W2, c3, W3);
         out[(size_t) i] = send(W3);
-        L3[k] = send(S3);
+        c3 = send(S3);
         if (++k >= (size_t) D) k = 0;
     }
 }
@@ -729,4 +732,22 @@ bool crossfadeLoop(std::vector<int16_t>& buf, int32_t length, int32_t loopStart,
     }
     return true;
 }
+} // namespace turbosynth
+
+namespace turbosynth {
+
+std::vector<int16_t> foldToMono(const std::vector<int16_t>& left, const std::vector<int16_t>& right, bool scale)
+{
+    // F27_01BCC: the Mixer's kernel (F29_02122) over two inputs with equal gains.
+    const int16_t g = scale ? 0x3FFF : 0x7FFF;
+    std::vector<int16_t> out(std::max(left.size(), right.size()));
+    for (size_t j = 0; j < out.size(); ++j) {
+        int32_t sum = 0;
+        if (j < left.size()) sum += muls(g, left[j]);
+        if (j < right.size()) sum += muls(g, right[j]);
+        out[j] = q15(sum);
+    }
+    return out;
+}
+
 } // namespace turbosynth

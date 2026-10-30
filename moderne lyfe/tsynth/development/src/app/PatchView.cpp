@@ -21,23 +21,25 @@ int PatchView::iconFor(const Module& m)
 
 std::vector<PatchView::PaletteItem> PatchView::palette() const
 {
+    // The original's palette, three to a row (checked in the emulator). Without a
+    // DSP card it shows the Diffuser crossed out (3013); the port computes it.
     return {
-        { 1000, -1, "Arrow: select and move" }, { 1005, -2, "Patch cord: drag from a module to another" }, { 1001, -3, "Eraser: remove a module or cord" },
+        { 1000, -1, "Arrow: select and move; double-click opens" }, { 1005, -2, "Patch cord: drag from a module to another" }, { 1001, -3, "Eraser: remove a module or cord" },
+        { 3005, kMixer, "Mixer" }, { 1002, -4, "Info: click a module to open it" }, { 1003, -5, "Speaker: click a module to hear it" },
         { 2000, kOscillator, "Oscillator" }, { 2001, kSample, "Sample" }, { 2002, kNoise, "Noise" },
         { 3000, kAmpEnv, "Amplitude Envelope" }, { 3001, kFilter, "Filter" }, { 3002, kSpectralInverter, "Spectral Inverter" },
-        { 3011, kPitchEnv, "Pitch Envelope" }, { 3003, kModulator, "Modulator" }, { 3004, kWaveshaper, "Waveshaper" },
-        { 3005, kMixer, "Mixer" }, { 3006, kDelay, "Delay" }, { 3009, kResonator, "Resonator" },
-        { 3007, kPitchShifter, "Pitch Shifter" }, { 3008, kStretchExpand, "Stretcher (expand)" },
-        { 3010, kStretchCompress, "Stretcher (compress)" }, { 3012, kDiffuser, "Diffuser" }, // the output jack is always there (Sound > Stereo Output)
+        { 3006, kDelay, "Delay" }, { 3008, kStretchExpand, "Stretcher (expand)" }, { 3010, kStretchCompress, "Stretcher (compress)" },
+        { 3007, kPitchShifter, "Pitch Shifter" }, { 3011, kPitchEnv, "Pitch Envelope" }, { 3003, kModulator, "Modulator" },
+        { 3009, kResonator, "Resonator" }, { 3012, kDiffuser, "Diffuser" }, { 3004, kWaveshaper, "Waveshaper" },
+        // the output jack is always there (Sound > Stereo Output)
     };
 }
 
 juce::Rectangle<float> PatchView::paletteCell(int i) const
 {
-    // Two columns, tools first, as in the original palette.
     const auto a = paletteArea();
-    const float w = (float) (a.getWidth() - 1) / 2.0f, h = 38.0f;
-    return { (float) a.getX() + w * (float) (i % 2), (float) a.getY() + h * (float) (i / 2), w, h };
+    const float w = (float) (a.getWidth() - 1) / 3.0f, h = w;
+    return { (float) a.getX() + w * (float) (i % 3), (float) a.getY() + h * (float) (i / 3), w, h };
 }
 
 juce::Point<float> PatchView::toPatch(juce::Point<float> p) const { return (p - origin) / scale; }
@@ -104,7 +106,8 @@ void PatchView::paint(juce::Graphics& g)
     for (int i = 0; i < (int) items.size(); ++i) {
         const auto cell = paletteCell(i);
         const bool on = (items[(size_t) i].type == -1 && tool == Tool::Arrow) || (items[(size_t) i].type == -2 && tool == Tool::Cord)
-                     || (items[(size_t) i].type == -3 && tool == Tool::Eraser) || (tool == Tool::Place && items[(size_t) i].type == placeType);
+                     || (items[(size_t) i].type == -3 && tool == Tool::Eraser) || (items[(size_t) i].type == -4 && tool == Tool::Info)
+                     || (items[(size_t) i].type == -5 && tool == Tool::Hear) || (tool == Tool::Place && items[(size_t) i].type == placeType);
         if (on) { g.setColour(t.ink); g.fillRect(cell); }
         classic::drawIcon(g, items[(size_t) i].icon, cell.reduced(2.0f), on);
         g.setColour(t.ink);
@@ -154,7 +157,8 @@ void PatchView::mouseDown(const juce::MouseEvent& e)
         for (int i = 0; i < (int) items.size(); ++i)
             if (paletteCell(i).contains(e.position)) {
                 const int type = items[(size_t) i].type;
-                tool = type == -1 ? Tool::Arrow : type == -2 ? Tool::Cord : type == -3 ? Tool::Eraser : Tool::Place;
+                tool = type == -1 ? Tool::Arrow : type == -2 ? Tool::Cord : type == -3 ? Tool::Eraser
+                     : type == -4 ? Tool::Info : type == -5 ? Tool::Hear : Tool::Place;
                 placeType = type;
                 setMouseCursor(tool == Tool::Arrow ? juce::MouseCursor::NormalCursor : juce::MouseCursor::CrosshairCursor);
             }
@@ -175,8 +179,18 @@ void PatchView::mouseDown(const juce::MouseEvent& e)
         return;
     }
     if (tool == Tool::Eraser) {
-        if (hit) { if (!isOutput(hit)) { removeModule(*patch, hit); selected = 0; if (onSelect) onSelect(0); if (onChanged) onChanged(); } } // the output jack cannot be erased
+        if (hit) { if (!isOutput(hit)) { if (onRemoving) onRemoving(hit); removeModule(*patch, hit); selected = 0; if (onSelect) onSelect(0); if (onChanged) onChanged(); } } // the output jack cannot be erased
         else if (const int c = cordAt(e.position); c >= 0) { patch->connections.erase(patch->connections.begin() + c); if (onChanged) onChanged(); }
+        repaint();
+        return;
+    }
+    if (tool == Tool::Info || tool == Tool::Hear) { // these tools stay chosen, as in the original
+        if (hit) {
+            selected = hit;
+            if (onSelect) onSelect(hit);
+            if (tool == Tool::Info) { if (onOpen) onOpen(hit); }
+            else if (onPreview) onPreview(hit);
+        }
         repaint();
         return;
     }
@@ -229,7 +243,7 @@ void PatchView::mouseUp(const juce::MouseEvent& e)
 void PatchView::mouseDoubleClick(const juce::MouseEvent& e)
 {
     if (tool != Tool::Arrow) return;
-    if (const int hit = moduleAt(e.position); hit && onPreview) onPreview(hit);
+    if (const int hit = moduleAt(e.position); hit && onOpen) onOpen(hit); // opens the module, as in the original
 }
 
 void PatchView::showModuleMenu(int index)

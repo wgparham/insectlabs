@@ -15,6 +15,7 @@ public:
     int32_t loopStart = 0, loopEnd = 0;
     std::function<void()> onChanged; // loop points moved
     std::function<void()> onPlay;    // hear the loop
+    std::function<void()> onInfo;    // the Info icon
 
     void paint(juce::Graphics&) override;
     void mouseDown(const juce::MouseEvent&) override;
@@ -22,9 +23,13 @@ public:
     void mouseMove(const juce::MouseEvent&) override;
 
 private:
-    enum Hit { None, ZoomInV, ZoomOutV, ZoomInH, ZoomOutH, Play, EndStep, EndAuto, StartStep, StartAuto };
-    juce::Rectangle<float> plot() const { return getLocalBounds().toFloat().reduced(6.0f).withTrimmedTop(40.0f).withTrimmedBottom(40.0f); }
-    juce::Rectangle<float> iconRect(int slot) const { return { 6.0f + 34.0f * (float) slot, 4.0f, 32.0f, 32.0f }; }
+    // The original's layout: a two-column palette on the left (Info, speaker,
+    // then the four zoom icons) and the two halves filling the rest, each
+    // with its step and Auto arrows at the bottom.
+    enum Hit { None, Info, Play, ZoomInV, ZoomOutV, ZoomInH, ZoomOutH, EndStep, EndAuto, StartStep, StartAuto };
+    static constexpr float kPalette = 66.0f;
+    juce::Rectangle<float> plot() const { return getLocalBounds().toFloat().withTrimmedLeft(kPalette); }
+    juce::Rectangle<float> iconRect(int slot) const { return { 33.0f * (float) (slot % 2), 33.0f * (float) (slot / 2), 33.0f, 33.0f }; }
     juce::Rectangle<float> arrows(bool endPoint) const;
     Hit hitAt(juce::Point<float>, int* direction) const;
     void move(bool endPoint, int direction, bool automatic);
