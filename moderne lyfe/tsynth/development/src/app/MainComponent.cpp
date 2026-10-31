@@ -48,7 +48,7 @@ enum MenuIds {
     kNew = 1, kOpen, kSave, kSaveAs, kExport, kQuit,
     kUndo = 10, kCut, kCopy, kPaste, kClear, kDuplicate, kConvert, kRedo, kReverse, kSilence,
     kDualMono = 50, kConvertEnv, kConvertOsc, kSendLoop,
-    kSaveLoopWave = 7, kGetInfo = 8,
+    kSaveLoopWave = 7, kGetInfo = 8, kSelectAll = 70,
     kPlay = 20, kStop, kHearSelected, kStereo,
     kAutoPreview = 30, kParams, kStereoPrefs,
     kDark = 40,
@@ -187,6 +187,7 @@ juce::PopupMenu MainComponent::getMenuForIndex(int index, const juce::String&)
         add(kCopy, "Copy", "Ctrl+C", snd ? sndSel : editable);
         add(kPaste, "Paste", "Ctrl+V", snd ? !soundClipboard.empty() : clipboard.has_value());
         add(kClear, "Clear", "Ctrl+B", snd ? sndSel : editable);
+        add(kSelectAll, "Select All", "Ctrl+A", snd);
         add(kDuplicate, "Duplicate", "Ctrl+D", editable);
         add(kReverse, "Reverse", "Ctrl+R", sndSel);
         add(kSilence, "Silence", "Ctrl+E", sndSel);
@@ -246,6 +247,13 @@ void MainComponent::menuItemSelected(int id, int)
     case kReverse: case kSilence: if (soundSelectionActive()) soundEdit(id); break;
     case kSaveLoopWave: saveLoopAsWaveform(); break;
     case kClear: if (soundSelectionActive()) soundEdit(kClear); else clearSelected(); break;
+    case kSelectAll: // the whole Sample's sound becomes the selection
+        if (auto* d = soundSelectionActive() ? sampleData(soundShown) : nullptr) {
+            waveView.selStart = 0;
+            waveView.selEnd = (int32_t) d->size();
+            waveView.repaint();
+        }
+        break;
     case kDuplicate:
         if (patchView.selected && !patchView.isOutput(patchView.selected)) {
             const int p = samplePartner(patch, patchView.selected);
@@ -434,6 +442,7 @@ bool MainComponent::keyPressed(const juce::KeyPress& k)
     if (cmd && k.getKeyCode() == 'R') { menuItemSelected(kReverse, 1); return true; }
     if (cmd && k.getKeyCode() == 'E') { menuItemSelected(kSilence, 1); return true; }
     if (cmd && k.getKeyCode() == 'D') { menuItemSelected(kDuplicate, 1); return true; }
+    if (cmd && k.getKeyCode() == 'A') { menuItemSelected(kSelectAll, 1); return true; }
     if (cmd && k.getKeyCode() == 'B') { menuItemSelected(kClear, 1); return true; }
     if (cmd && k.getKeyCode() == 'T') { menuItemSelected(kAutoPreview, 3); return true; }
     if (cmd && k.getKeyCode() == 'Y') { showParameterManager(); return true; }
@@ -954,6 +963,12 @@ void MainComponent::clearSelected()
 
 void MainComponent::paste(const Module& source, const Module* partner)
 {
+    // The original refuses a paste that would not fit in memory.
+    const int64_t incoming = source.length + (partner ? partner->length : 0);
+    if (DocumentInfo::samplesUsed(patch.modules) + incoming > DocumentInfo::kModel1Budget) {
+        juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "TurboSynth", DocumentInfo::kMemoryMessage);
+        return;
+    }
     // Pasted below and to the right of the original, without connections.
     // Pasted Sample modules get new ids (F16_02458); the two halves of a
     // stereo sample are linked to each other again (F16_02314) and lined up

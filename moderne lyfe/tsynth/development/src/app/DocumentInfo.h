@@ -15,6 +15,18 @@ public:
     // Model 1 stand-in for the Mac's free memory at launch: 32 MB of 16-bit samples (16,777,216 samples).
     static constexpr int64_t kModel1Budget = 32LL * 1024 * 1024 / 2;
 
+    // The original's message when the memory cannot take a new module, paste or longer length.
+    static constexpr const char* kMemoryMessage = "Memory cannot be allocated for some or all modules.  Perhaps you can reduce usage elsewhere.";
+
+    // The samples the modules use: the sum of their lengths.
+    template <class Modules>
+    static int64_t samplesUsed(const Modules& modules)
+    {
+        int64_t used = 0;
+        for (const auto& m : modules) used += m.length;
+        return used;
+    }
+
     DocumentInfo();
 
     // used and budget are in samples (1 sample = 2 bytes), as the original shows them.

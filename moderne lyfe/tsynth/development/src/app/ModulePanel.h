@@ -35,6 +35,7 @@ private:
         int lo = -32768, hi = 32767;
         std::function<int()> hiNow; // when set, the upper limit depends on the current settings
         std::function<bool(int)> accepts; // when set, a new value the original would refuse is reverted
+        const char* refusal = nullptr;    // the alert for a refused value (default: the rate and length message)
     };
     void addField(const juce::String& name, int lo, int hi, std::function<int()> get, std::function<void(int)> set);
     void commit(Field&);

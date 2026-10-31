@@ -319,6 +319,10 @@ void PatchView::place(int type, juce::Point<float> at)
     for (const auto& m : patch->modules) if (m.type == kOutput && m.sampleRate > 0) { sr = m.sampleRate; len = m.length > 0 ? m.length : sr; break; }
     auto m = makeModule(type, sr, len);
     if (onNewModule) onNewModule(m);
+    if (DocumentInfo::samplesUsed(patch->modules) + m.length > DocumentInfo::kModel1Budget) { // the original refuses a module that will not fit
+        if (onRefused) onRefused(DocumentInfo::kMemoryMessage);
+        return;
+    }
     const auto pos = toPatch(at);
     m.rect = { (int16_t) (pos.y - 16), (int16_t) (pos.x - 16), (int16_t) (pos.y + 16), (int16_t) (pos.x + 16) };
     int count = 1;

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include "ClassicLook.h"
+#include "DocumentInfo.h"
 #include "PatchView.h"
 #include "Presets.h"
 
@@ -40,7 +41,7 @@ void ModulePanel::commit(Field& f)
     f.edit->setText(juce::String(v), false);
     if (f.accepts && !f.accepts(v)) { // the original refuses the change with an alert
         f.edit->setText(juce::String(f.get()), false);
-        juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "TurboSynth", "Inappropriate values abound!  Don't panic.  Please make sure all values are reasonable.");
+        juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "TurboSynth", f.refusal ? f.refusal : "Inappropriate values abound!  Don't panic.  Please make sure all values are reasonable.");
         return;
     }
     if (v != f.get()) {
@@ -86,6 +87,9 @@ void ModulePanel::show(Patch* p, int i)
         });
         // The original caps a sound at 32 seconds at its sample rate (1,411,200 samples at 44,100 Hz; 1,400,000 is fine at 43,750 Hz).
         fields.back()->hiNow = [m] { return std::min(2147483, 32 * m->sampleRate); };
+        // The original refuses a length that would take the patch past its memory.
+        fields.back()->accepts = [this, m](int v) { return !patch || DocumentInfo::samplesUsed(patch->modules) - m->length + v <= DocumentInfo::kModel1Budget; };
+        fields.back()->refusal = DocumentInfo::kMemoryMessage;
         if (m->type == kSample) { // the Sample info dialog's checkbox (DITL 10005), +13E
             normalize.setButtonText("Save sound data with document");
             normalize.setToggleState(m->saveSound, juce::dontSendNotification);
