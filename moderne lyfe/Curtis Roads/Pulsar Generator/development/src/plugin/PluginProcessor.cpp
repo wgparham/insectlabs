@@ -38,6 +38,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout makeLayout()
 
 float value(const juce::AudioProcessorValueTreeState& p, const char* id) { return p.getRawParameterValue(id)->load(); }
 
+double nowSeconds() { return juce::Time::getMillisecondCounterHiRes() / 1000.0; }
+
+// TablesBank.copyAndAddSet runs as PG.doTasks while playing: 14 table copies,
+// the library update, then newCurrentTables, one task every 0.03 s.
+constexpr double kSwitchDelay = 15 * 0.03;
+
 void setParam(juce::AudioProcessorValueTreeState& p, const char* id, float v)
 {
     if (auto* param = p.getParameter(id))
@@ -171,8 +177,29 @@ void PulsarProcessor::timerCallback()
         stopRecording();
         stoppedAtEnd.store(false);
     }
+    if (switchPending) {
+        if (!engineRunning.load()) switchPending = false; // stopped before it began
+        else if (nowSeconds() >= switchAt) beginSwitch();
+    }
     if (morph.active())
         applySettingsToParams(morph.advance(1.0 / 30.0));
+
+    // PGControlPanel.synthHasStopped: with Loop on, stopping releases Freeze
+    // and Backwards (the original ignores both buttons with Loop off).
+    const bool loopOn = p.loop->load() > 0.5f;
+    const bool runningNow = engineRunning.load();
+    if (wasRunning && !runningNow && loopOn) {
+        setParam(params, "freeze", 0.0f);
+        setParam(params, "backwards", 0.0f);
+    }
+    wasRunning = runningNow;
+    // The Train Duration box also releases Freeze, as does every settings
+    // change that sets it.
+    const float dur = p.trainDur->load();
+    if (dur != lastTrainDur) {
+        if (lastTrainDur >= 0.0f && loopOn) setParam(params, "freeze", 0.0f);
+        lastTrainDur = dur;
+    }
 }
 
 void PulsarProcessor::applySettingsToParams(const pulsar::Settings& s)
@@ -223,21 +250,37 @@ void PulsarProcessor::pushTables(bool crossfade)
 
 void PulsarProcessor::tablesEdited() { pushTables(false); }
 
+void PulsarProcessor::beginSwitch()
+{
+    // PG.newCurrentTables / beginXFade, once the copying tasks are done.
+    switchPending = false;
+    pushTables(true);
+    if (value(params, "linkSettings") > 0.5f) {
+        pulsar::Settings now = current.settings;
+        readControls().toSettings(now);
+        morph.begin(now, current.settings, value(params, "fadeTime"));
+    }
+}
+
+bool PulsarProcessor::xFadeLocked() const { return isRunning() && nowSeconds() < fadeLockedUntil; }
+
 void PulsarProcessor::useTables(const pulsar::TableSet& set)
 {
-    previous = current;
-    current = set;
-    const bool linked = value(params, "linkSettings") > 0.5f;
     if (isRunning()) {
-        pushTables(true);
-        if (linked) {
-            pulsar::Settings now = current.settings;
-            readControls().toSettings(now);
-            morph.begin(now, set.settings, value(params, "fadeTime"));
-        }
+        // TablesBank.makeCurrent refuses while a crossfade is under way.
+        if (xFadeLocked()) return;
+        previous = current;
+        current = set;
+        switchPending = true;
+        switchAt = nowSeconds() + kSwitchDelay;
+        fadeLockedUntil = switchAt + value(params, "fadeTime");
     } else {
+        previous = current;
+        current = set;
+        // PG.newCurrentTables: while stopped, a set's settings always apply;
+        // Link Play Controls only governs switching during a run.
         pushTables(false);
-        if (linked) applySettingsToParams(set.settings);
+        applySettingsToParams(set.settings);
     }
     if (onTablesChanged) onTablesChanged();
 }
@@ -252,6 +295,7 @@ void PulsarProcessor::randomizeControls()
         pulsar::Settings now = current.settings;
         readControls().toSettings(now);
         morph.begin(now, target, value(params, "fadeTime"));
+        fadeLockedUntil = nowSeconds() + value(params, "fadeTime"); // lockXFade for the fade
     } else {
         applySettingsToParams(target);
     }
@@ -270,7 +314,9 @@ bool PulsarProcessor::loadBank(const juce::File& file, juce::String& error)
     if (sets.empty()) { error = "None of the bank's table sets could be read."; return false; }
     bank = std::move(sets);
     bankName = file.getFileNameWithoutExtension();
-    selectBankSet(0);
+    // TablesBank.loadBankOfTableSets fills the bank; the current tables stay.
+    selectedSet = -1;
+    if (onTablesChanged) onTablesChanged();
     return true;
 }
 
@@ -309,19 +355,22 @@ bool PulsarProcessor::saveCurrentSet(const juce::File& file, juce::String& error
     return true;
 }
 
-void PulsarProcessor::addCurrentToBank()
+bool PulsarProcessor::addCurrentToBank()
 {
+    // TablesBank.hasFreeSpace: 18 entries, two of them the reserved current and default sets.
+    if (bank.size() >= 16) return false;
     captureSettings();
     pulsar::TableSet s = current;
     if (s.name.empty()) s.name = "Set " + std::to_string(bank.size() + 1);
     bank.push_back(s);
     selectedSet = (int) bank.size() - 1;
     if (onTablesChanged) onTablesChanged();
+    return true;
 }
 
 void PulsarProcessor::selectBankSet(int index)
 {
-    if (index < 0 || index >= (int) bank.size()) return;
+    if (index < 0 || index >= (int) bank.size() || xFadeLocked()) return;
     selectedSet = index;
     useTables(bank[(size_t) index]); // a copy becomes current, as in the original
 }

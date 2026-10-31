@@ -174,6 +174,8 @@ private:
     int checkCounter = 0, checkInterval = 1470;
     std::array<float, kNumTables> ctlValues{};
     std::array<float, kNumTables> ctlNext{}; // smoothControls: values at the next block's start
+    std::array<float, kNumTables> ctlPrev{}; // K2A: the previous block's control values
+    bool k2aStarted = false;
     int blockSample = 0;
     bool wrapped = false; // loopEndBothWays: the phase wrapped since the last check
     int controlsDelay = 0; // samples until the control tables start (3 ms after start)
@@ -191,7 +193,9 @@ private:
     float masterGain = 1.0f;
     std::array<float, 2> dcX{}, dcY{};
     std::shared_ptr<const LoopSound> loopSound;
+    std::shared_ptr<const LoopSound> ringSound; // the sound this run uses (loaded before Start)
     double loopPos = 0.0;
+    float prevWet = 0.0f; // Pause level in the previous block
 
     std::array<float, kBlockSize> blockL{}, blockR{};
     int blockRead = kBlockSize;
@@ -199,7 +203,9 @@ private:
 
 // Morphs play-control settings over time the way SettingsLib.xFadeTo does:
 // levels, train duration and edge glide in 0.1 s steps, burst counts step
-// through whole numbers, and switches change at the end.
+// through whole numbers, and switches change at the end. A train switching on
+// fades up from level 0; one switching off fades to 0 before it goes off. The
+// burst switch does the same with the burst off count.
 class SettingsMorph {
 public:
     void begin(const Settings& from, const Settings& to, double fadeTime);
@@ -207,8 +213,13 @@ public:
     // Advance by dt seconds; returns the settings to apply now.
     Settings advance(double dt);
 private:
-    Settings start{}, target{}, current{};
-    double duration = 0.0, elapsed = 0.0, stepElapsed = 0.0;
+    struct Stepper { int slot = 0; int steps = 0; double interval = 0.0; float start = 0.0f, inc = 0.0f; bool done = true; };
+    Settings target{}, current{}, base{};
+    std::array<float, 5> morphInc{};
+    int morphSteps = 1;
+    bool morphDone = true;
+    std::array<Stepper, 2> steppers{};
+    double elapsed = 0.0;
     bool running = false;
 };
 

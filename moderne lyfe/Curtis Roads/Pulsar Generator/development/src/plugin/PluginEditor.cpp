@@ -219,30 +219,37 @@ PulsarEditor::PulsarEditor(PulsarProcessor& p) : AudioProcessorEditor(p), proc(p
     addAndMakeVisible(bankViewport);
 
     loadBank.onClick = [this] {
+        if (refuseWhileRunning("Sorry, no bank load while playing.")) return;
         chooseFile("Load bank", "*.bank", false, [this](const juce::File& f) {
             juce::String err;
             if (proc.loadBank(f, err)) { rebuildBankButtons(); report("Loaded " + f.getFileName()); } else report(err);
         });
     };
     saveBank.onClick = [this] {
+        if (refuseWhileRunning("Sorry, no bank save while playing.")) return;
         chooseFile("Save bank (sets are saved next to it)", "*.bank", true, [this](const juce::File& f) {
             juce::String err;
             if (proc.saveBank(f.withFileExtension("bank"), err)) report("Saved bank " + f.getFileName()); else report(err);
         });
     };
     loadSet.onClick = [this] {
+        if (refuseWhileRunning("Sorry, no loading while Synth is on.")) return;
         chooseFile("Load tables", "*.set", false, [this](const juce::File& f) {
             juce::String err;
             if (proc.loadSetFile(f, err)) { rebuildBankButtons(); report("Loaded " + f.getFileName()); } else report(err);
         });
     };
     saveSet.onClick = [this] {
+        if (refuseWhileRunning("Sorry, no saving while Synth is on.")) return;
         chooseFile("Save tables", "*.set", true, [this](const juce::File& f) {
             juce::String err;
             if (proc.saveCurrentSet(f.withFileExtension("set"), err)) report("Saved " + f.getFileName()); else report(err);
         });
     };
-    addCurrent.onClick = [this] { proc.addCurrentToBank(); rebuildBankButtons(); };
+    addCurrent.onClick = [this] {
+        if (!proc.addCurrentToBank()) { report("Sorry, Bank is full!"); return; }
+        rebuildBankButtons();
+    };
     defaultTables.onClick = [this] { proc.restoreDefaultTables(); };
 
     // Ring modulator
@@ -251,6 +258,7 @@ PulsarEditor::PulsarEditor(PulsarProcessor& p) : AudioProcessorEditor(p), proc(p
     setupSlider(ringMix, ringLabel, "Dry/Wet");
     attachS(ringMix, "ringMix");
     ringLoad.onClick = [this] {
+        if (refuseWhileRunning("Sorry, cannot pick soundfile while Synth is on.")) return;
         chooseFile("Sound for the ring modulator", "*.wav;*.aif;*.aiff;*.flac;*.ogg;*.mp3", false, [this](const juce::File& f) {
             juce::String err;
             if (proc.loadRingModSound(f, err)) report("Ring modulator: " + f.getFileName()); else report(err);
@@ -334,7 +342,10 @@ void PulsarEditor::rebuildBankButtons()
     for (int i = 0; i < (int) proc.bank.size(); ++i) {
         auto* b = bankButtons.add(new juce::TextButton(juce::String(proc.bank[(size_t) i].name)));
         b->setToggleState(i == proc.selectedBankSet(), juce::dontSendNotification); // the current set shows inverted
-        b->onClick = [this, i] { proc.selectBankSet(i); };
+        b->onClick = [this, i] {
+            if (proc.xFadeLocked()) { report("Wait... (crossfade in progress)"); return; } // TablesPanel.xFadeRefused
+            proc.selectBankSet(i);
+        };
         bankList.addAndMakeVisible(b);
     }
     const int w = bankViewport.getMaximumVisibleWidth() > 0 ? bankViewport.getMaximumVisibleWidth() : 200;
@@ -379,7 +390,7 @@ bool PulsarEditor::keyPressed(const juce::KeyPress& key)
 {
     if (key == juce::KeyPress::spaceKey) { proc.setRunning(!proc.isRunning()); return true; }
     if (key.getTextCharacter() == 'z') { proc.undoTableSwitch(); return true; }
-    if (key.getTextCharacter() == 'f') { freezeButton.triggerClick(); return true; }
+    if (key.getTextCharacter() == 'f') { if (freezeButton.isEnabled()) freezeButton.triggerClick(); return true; }
     if (key.getTextCharacter() == 'a') { (showA.getToggleState() ? showB : showA).triggerClick(); return true; } // A/B
     return false;
 }
@@ -389,6 +400,10 @@ void PulsarEditor::timerCallback()
     if (!cycle.isMouseButtonDown()) cycle.setValue(proc.position(), juce::dontSendNotification);
     pulsarCount.setText(juce::String(proc.pulsarCount()) + " pulsars", juce::dontSendNotification);
     updateModelControls();
+    // The original's [F] and <- buttons do nothing with Loop off.
+    const bool loopOn = loopButton.getToggleState();
+    freezeButton.setEnabled(loopOn);
+    backButton.setEnabled(loopOn);
     if (!proc.isRecording() && recordButton.getToggleState()) recordButton.setToggleState(false, juce::dontSendNotification);
 
     if (masterFading) {

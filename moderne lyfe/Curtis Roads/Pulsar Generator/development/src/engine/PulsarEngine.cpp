@@ -99,7 +99,7 @@ const char* Fixes::description(int i)
         "The original's burst counter starts at -2, so the pattern begins on its last step.",
         "The original holds the pulsaret's last value until the envelope cuts it, leaving a DC step after each pulse.",
         "The original rounds the pulsaret to whole samples, so high formants go out of tune and sweeps move in steps.",
-        "The original reads the control tables once per 64 samples, so fast sweeps step audibly.",
+        "The original reads the control tables once per 64 samples, a block late, so fast sweeps step audibly.",
         "The original's DC blocker coefficient is fixed, so its cutoff rises at higher sample rates (15 Hz at 96 kHz).",
         "The original only advances the burst pattern on pulses that won the mask coin, stretching it when masking.",
         "The source meant to drop the cutoff envelope when the lowest formant is at or above the fundamental; a bug disabled it.",
@@ -196,6 +196,11 @@ void Engine::start()
     masterGain = ctl.masterVolume;
     ctlValues.fill(0.0f);
     ctlNext.fill(0.0f);
+    ctlPrev.fill(0.0f);
+    k2aStarted = false;
+    // PG.run decides at the start whether the ring modulator is in the graph.
+    ringSound = loopSound;
+    prevWet = ctl.ringModBlend * 0.3f;
     blockRead = kBlockSize;
     // OscXFadeBank triggers its tables after 3 ms.
     controlsDelay = fixes.controlsAtStart ? 0 : (int) std::ceil(0.003 * sampleRate);
@@ -207,6 +212,10 @@ void Engine::start()
 void Engine::stop()
 {
     running = false;
+    // PG.synthHasStopped: the cycle display goes back to 0 and the phase
+    // offset is cleared, so the next run starts at the beginning.
+    tablePos = lastCheckedPos = 0.0;
+    ringSound.reset();
     for (auto& v : voices) v = Voice{};
     numActiveVoices = 0;
     blockRead = kBlockSize;
@@ -251,6 +260,19 @@ void Engine::controlBlock()
         controlsDelay -= kBlockSize;
     } else {
         readControls(ctlValues, tablePos, x);
+        // Each control reaches the engine through K2A.ar, which ramps from the
+        // previous block's value to this one's, arriving at the block's last
+        // sample. Everything that reads a control (poll, and Impulse's
+        // frequency) takes the first sample of that ramp: one 64th of the way.
+        // K2A starts with its first input, so the first live block has no ramp.
+        if (!k2aStarted) ctlPrev = ctlValues;
+        for (int k = 0; k < kNumTables; ++k) {
+            const float kr = ctlValues[(size_t) k];
+            if (!fixes.smoothControls)
+                ctlValues[(size_t) k] = ctlPrev[(size_t) k] + (kr - ctlPrev[(size_t) k]) / kBlockSize;
+            ctlPrev[(size_t) k] = kr;
+        }
+        k2aStarted = true;
     }
 
     // Phasor: one pass through the tables per train duration.
@@ -463,22 +485,31 @@ void Engine::renderBlock()
         blockR[(size_t) s] = r;
     }
 
-    // Ring modulator with a looping sound (PG.run): out * direct + sound * out * wet.
-    if (loopSound && !loopSound->left.empty()) {
+    // Ring modulator with a looping sound (PG.run): out * direct + Pause.ar({ sound * out }, wet).
+    // Only a sound loaded before Start is used. Pause ramps its level from the
+    // previous block's across the block, and with the level 0 in both it skips
+    // its graph entirely, so the sound file stops where it is.
+    if (ringSound && !ringSound->left.empty()) {
         const float wet = ctl.ringModBlend * 0.3f, direct = 1.0f - ctl.ringModBlend * 0.1f;
-        const double step = loopSound->sampleRate / sampleRate;
-        const size_t len = loopSound->left.size();
-        for (int s = 0; s < kBlockSize; ++s) {
-            const size_t i = (size_t) loopPos % len, j = (i + 1) % len;
-            const float f = (float) (loopPos - std::floor(loopPos));
-            const auto& R = loopSound->right.empty() ? loopSound->left : loopSound->right;
-            const float sl = loopSound->left[i] + (loopSound->left[j] - loopSound->left[i]) * f;
-            const float sr = R[i] + (R[j] - R[i]) * f;
-            blockL[(size_t) s] = blockL[(size_t) s] * direct + sl * blockL[(size_t) s] * wet;
-            blockR[(size_t) s] = blockR[(size_t) s] * direct + sr * blockR[(size_t) s] * wet;
-            loopPos += step;
-            if (loopPos >= (double) len) loopPos -= (double) len;
+        if (wet == 0.0f && prevWet == 0.0f) {
+            for (int s = 0; s < kBlockSize; ++s) { blockL[(size_t) s] *= direct; blockR[(size_t) s] *= direct; }
+        } else {
+            const double step = ringSound->sampleRate / sampleRate;
+            const size_t len = ringSound->left.size();
+            const auto& R = ringSound->right.empty() ? ringSound->left : ringSound->right;
+            for (int s = 0; s < kBlockSize; ++s) {
+                const size_t i = (size_t) loopPos % len, j = (i + 1) % len;
+                const float f = (float) (loopPos - std::floor(loopPos));
+                const float sl = ringSound->left[i] + (ringSound->left[j] - ringSound->left[i]) * f;
+                const float sr = R[i] + (R[j] - R[i]) * f;
+                const float w = prevWet + (wet - prevWet) * (float) s / kBlockSize;
+                blockL[(size_t) s] = blockL[(size_t) s] * direct + sl * blockL[(size_t) s] * w;
+                blockR[(size_t) s] = blockR[(size_t) s] * direct + sr * blockR[(size_t) s] * w;
+                loopPos += step;
+                if (loopPos >= (double) len) loopPos -= (double) len;
+            }
         }
+        prevWet = wet;
     }
 
     // LeakDC(out, 0.999, masterVol), then .reverse swaps the channels.
@@ -517,42 +548,96 @@ void Engine::process(float* left, float* right, int n)
 }
 
 // ---------------------------------------------------------------------------
+namespace {
+constexpr int kSwitches[] = { 1, 2, 3, 21 };
+constexpr int kLinkedLevels[] = { 11, 12, 13, 23 }; // paired with kSwitches
+constexpr int kMorphables[] = { 11, 12, 13, 31, 41 };
+constexpr int kSteppables[] = { 22, 23 };
+bool known(float v) { return v != -99.0f; }
+} // namespace
+
 void SettingsMorph::begin(const Settings& from, const Settings& to, double fadeTime)
 {
-    start = current = from;
+    current = from;
     target = to;
-    duration = fadeTime;
-    elapsed = stepElapsed = 0.0;
+    elapsed = 0.0;
     running = true;
+
+    // makeStartAndTargetLevels: a switch going on starts its level at 0 (and
+    // shows on at once); a switch going off first takes its level to 0.
+    Settings inter = to;
+    for (int k = 0; k < 4; ++k) {
+        const size_t sw = (size_t) kSwitches[k], lev = (size_t) kLinkedLevels[k];
+        if (current[sw] == 0.0f && to[sw] == 1.0f) { current[lev] = 0.0f; current[sw] = 1.0f; }
+        if (current[sw] == 1.0f && to[sw] == 0.0f) inter[lev] = 0.0f;
+    }
+    base = current;
+
+    if (fadeTime <= 0.1) { // morphSteppables: setState(finalState) at once
+        for (size_t i = 0; i < current.size(); ++i) if (known(to[i])) current[i] = to[i];
+        morphDone = true;
+        for (auto& s : steppers) s.done = true;
+        return;
+    }
+
+    // Morphables: numSteps = (fadeTime.round(0.1) / 0.1 - 1).max(1).asInteger,
+    // one step every 0.1 s; the switches and final values follow the last step.
+    const double rounded = std::floor(fadeTime / 0.1 + 0.5) * 0.1;
+    morphSteps = (int) std::max(1.0, rounded / 0.1 - 1.0);
+    morphDone = false;
+    for (int k = 0; k < 5; ++k) {
+        const size_t i = (size_t) kMorphables[k];
+        morphInc[(size_t) k] = known(inter[i]) && known(current[i]) ? (inter[i] - current[i]) / (float) morphSteps : 0.0f;
+    }
+
+    // Steppables: one whole number per step spread over the fade, or at most
+    // a step every 0.1 s with fractional increments.
+    for (int k = 0; k < 2; ++k) {
+        auto& s = steppers[(size_t) k];
+        s.slot = kSteppables[k];
+        s.start = current[(size_t) s.slot];
+        s.done = true;
+        if (!known(inter[(size_t) s.slot]) || !known(s.start)) continue;
+        const float diff = inter[(size_t) s.slot] - s.start;
+        s.steps = (int) std::fabs(diff);
+        if (s.steps == 0) continue; // never scheduled: the value stays
+        s.inc = diff > 0.0f ? 1.0f : -1.0f;
+        s.interval = fadeTime / s.steps;
+        if (s.interval < 0.1) {
+            s.steps = (int) std::ceil(fadeTime / 0.1);
+            s.interval = fadeTime / s.steps;
+            s.inc = diff / (float) s.steps;
+        }
+        s.done = false;
+    }
 }
 
 Settings SettingsMorph::advance(double dt)
 {
     if (!running) return current;
     elapsed += dt;
-    if (duration <= 0.1 || elapsed >= duration) {
-        // Final step: everything, including the switches, at the target.
-        for (int i : { 1, 2, 3, 21, 11, 12, 13, 31, 41, 22, 23 })
-            if (target[(size_t) i] != -99.0f) current[(size_t) i] = target[(size_t) i];
-        running = false;
-        return current;
+    constexpr double eps = 1e-9;
+
+    if (!morphDone) {
+        const int done = std::min(morphSteps, (int) std::floor(elapsed / 0.1 + eps));
+        for (int k = 0; k < 5; ++k) {
+            const size_t i = (size_t) kMorphables[k];
+            if (known(base[i])) current[i] = base[i] + morphInc[(size_t) k] * (float) done;
+        }
+        if (done == morphSteps) {
+            for (int i : kSwitches) if (known(target[(size_t) i])) current[(size_t) i] = target[(size_t) i];
+            for (int i : kMorphables) if (known(target[(size_t) i])) current[(size_t) i] = target[(size_t) i];
+            morphDone = true;
+        }
     }
-    // Morphables move in 0.1 s steps; numSteps as in SettingsLib.xFadeTo.
-    const int numSteps = std::max(1, (int) (std::round(duration / 0.1) - 1));
-    const int stepsDone = std::min(numSteps, (int) (elapsed / 0.1));
-    for (int i : { 11, 12, 13, 31, 41 }) {
-        if (target[(size_t) i] == -99.0f || start[(size_t) i] == -99.0f) continue;
-        current[(size_t) i] = start[(size_t) i] + (target[(size_t) i] - start[(size_t) i]) * (float) stepsDone / (float) numSteps;
+    bool allDone = morphDone;
+    for (auto& s : steppers) {
+        if (s.done) continue;
+        const int done = std::min(s.steps, (int) std::floor(elapsed / s.interval + eps));
+        if (done == s.steps) { current[(size_t) s.slot] = target[(size_t) s.slot]; s.done = true; }
+        else { current[(size_t) s.slot] = s.start + s.inc * (float) done; allDone = false; }
     }
-    // Steppables count through whole numbers spread over the fade.
-    for (int i : { 22, 23 }) {
-        if (target[(size_t) i] == -99.0f || start[(size_t) i] == -99.0f) continue;
-        const float diff = target[(size_t) i] - start[(size_t) i];
-        const int steps = (int) std::fabs(diff);
-        if (steps == 0) continue;
-        const int taken = std::min(steps, (int) (elapsed / (duration / steps)));
-        current[(size_t) i] = start[(size_t) i] + (diff > 0 ? 1.0f : -1.0f) * (float) taken;
-    }
+    running = !allDone;
     return current;
 }
 

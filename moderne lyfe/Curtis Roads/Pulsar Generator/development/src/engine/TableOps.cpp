@@ -44,11 +44,23 @@ void clipNegative(Table& t) { map(t, [](float x) { return std::max(0.0f, x); });
 
 void smooth(Table& t)
 {
+    // signal_smooth_ds: four passes of a 7-point Hann kernel,
+    // 0.125 * (1 + cos(pi k / 4)) for k = -3..3, wrapping around the table.
+    // Only tables whose size is a power of two are smoothed.
     const size_t n = t.size();
-    if (n < 3) return;
-    Table src = t;
-    for (size_t i = 0; i < n; ++i)
-        t[i] = (src[(i + n - 1) % n] + src[i] + src[(i + 1) % n]) / 3.0f;
+    if (n == 0 || (n & (n - 1)) != 0) return;
+    const double x = 0.25 * std::sqrt(2.0);
+    const double norm = 1.0 / (2.0 * (0.5 - x + 0.5 + 0.5 + x) + 1.0);
+    const double w3 = (0.5 - x) * norm, w2 = 0.5 * norm, w1 = (0.5 + x) * norm, w0 = norm;
+    const size_t mask = n - 1;
+    Table src(n);
+    for (int pass = 0; pass < 4; ++pass) {
+        src = t;
+        for (size_t i = 0; i < n; ++i) {
+            auto at = [&](long k) { return (double) src[(size_t) ((long) i + k) & mask]; };
+            t[i] = (float) (w2 * (at(-2) + at(2)) + w3 * (at(-3) + at(3)) + w1 * (at(-1) + at(1)) + w0 * at(0));
+        }
+    }
 }
 
 void scale(Table& t, float factor) { map(t, [factor](float x) { return x * factor; }); }
@@ -62,45 +74,48 @@ void scaleTo(Table& t, float lo, float hi)
     map(t, [=](float x) { return lo + (x - a) / (b - a) * (hi - lo); });
 }
 
+// The windows divide by the table size, not size - 1 (signal_hanning_ds,
+// signal_welch_ds, signal_parzen_ds).
 void hanningWindow(Table& t)
 {
+    const double n = (double) t.size();
     for (size_t i = 0; i < t.size(); ++i)
-        t[i] *= (float) (0.5 - 0.5 * std::cos(2.0 * kPi * pos(i, t.size())));
+        t[i] *= (float) (0.5 - 0.5 * std::cos(2.0 * kPi * (double) i / n));
 }
 
 void parzenWindow(Table& t)
 {
-    for (size_t i = 0; i < t.size(); ++i)
-        t[i] *= (float) (1.0 - std::fabs(2.0 * pos(i, t.size()) - 1.0));
+    // A triangle rising by 0.5 / size per point from both ends, so it peaks
+    // at 0.25 in the middle (the original's constant, kept).
+    const size_t n = t.size();
+    const double slope = 0.5 / (double) n;
+    for (size_t i = 0; i < n / 2; ++i) {
+        const float w = (float) (slope * (double) i);
+        t[i] *= w;
+        t[n - 1 - i] *= w;
+    }
 }
 
 void welchWindow(Table& t)
 {
-    for (size_t i = 0; i < t.size(); ++i) {
-        const double x = 2.0 * pos(i, t.size()) - 1.0;
-        t[i] *= (float) (1.0 - x * x);
-    }
+    // A half sine.
+    const double n = (double) t.size();
+    for (size_t i = 0; i < t.size(); ++i)
+        t[i] *= (float) std::sin(kPi * (double) i / n);
 }
 
 void comb(Table& t, float spacing, bool odd)
 {
-    // Multiply the spectrum by a raised-cosine comb (discrete Fourier series).
+    // CombTableDialog: each point plus (odd comb) or minus (even comb) the
+    // point size/spacing further on, wrapping, halved.
     const size_t n = t.size();
-    if (n == 0 || spacing <= 0.0f) return;
-    std::vector<std::complex<double>> spec(n / 2 + 1);
-    for (size_t k = 0; k < spec.size(); ++k) {
-        std::complex<double> s = 0.0;
-        for (size_t i = 0; i < n; ++i) s += (double) t[i] * std::polar(1.0, -2.0 * kPi * (double) (k * i) / (double) n);
-        const double phase = 2.0 * kPi * (double) k / spacing + (odd ? kPi : 0.0);
-        spec[k] = s * (0.5 - 0.5 * std::cos(phase));
-    }
+    if (n == 0 || spacing == 0.0f) return;
+    long d = (long) ((double) n / spacing);
+    if (d <= 1) d = std::max(1L, (long) n / 2);
+    const Table src = t;
     for (size_t i = 0; i < n; ++i) {
-        double x = spec[0].real();
-        for (size_t k = 1; k < spec.size(); ++k) {
-            const double w = (k == n / 2 && n % 2 == 0) ? 1.0 : 2.0;
-            x += w * (spec[k] * std::polar(1.0, 2.0 * kPi * (double) (k * i) / (double) n)).real();
-        }
-        t[i] = (float) (x / (double) n);
+        const float a = src[i], b = src[(i + (size_t) d) % n];
+        t[i] = 0.5f * (odd ? a + b : a - b);
     }
 }
 
@@ -150,27 +165,51 @@ void phaseModFill(Table& t, float carrier, float modulator, float index)
     }
 }
 
-void buzzFill(Table& t, int lowHarmonic, int numHarmonics, float coefficient)
+void buzzFill(Table& t, int lowHarmonic, int numHarmonics, float coefficient, bool bilateral)
 {
+    // GBuzzFillDialog: the closed-form sum, with the phase starting at pi so
+    // the pulse peaks in the middle of the table, then normalized.
     const size_t n = t.size();
-    lowHarmonic = std::max(1, lowHarmonic);
-    numHarmonics = std::max(1, numHarmonics);
+    const double r = coefficient, nh = numHarmonics, low = lowHarmonic;
+    const double rn = std::pow(r, nh);
     for (size_t i = 0; i < n; ++i) {
-        double x = 0.0, a = 1.0;
-        for (int h = 0; h < numHarmonics; ++h, a *= coefficient)
-            x += a * std::cos(2.0 * kPi * (double) (lowHarmonic + h) * (double) i / (double) n);
+        const double th = kPi + 2.0 * kPi * (double) i / (double) n;
+        const double denom = 1.0 + r * r - 2.0 * r * std::cos(th);
+        const bool degenerate = denom <= 1e-5 && denom >= -1e-5;
+        double x;
+        if (bilateral) {
+            // A symmetric spectrum of 2n+1 lines around the lowest harmonic.
+            const double num = (1.0 - r * r) - 2.0 * rn * r * (std::cos((nh + 1.0) * th) - r * std::cos(nh * th));
+            x = degenerate ? 0.0 : std::sin(low * th) * num / denom;
+        } else {
+            const double num = std::cos(low * th) - r * std::cos((low - 1.0) * th)
+                             - rn * std::cos((low + nh) * th) + rn * r * std::cos((low + nh - 1.0) * th);
+            x = degenerate ? nh : num / denom;
+        }
         t[i] = (float) x;
     }
     normalize(t);
 }
 
-void grainEnvelopeFill(Table& t, GrainShape shape)
+void grainEnvelopeFill(Table& t, GrainShape shape, float durationPercent)
 {
+    // GrainEnvFillDialog: the shape rises over the first `ramp` points and
+    // falls over the last, holding 1 in between. The grain duration is the
+    // share of the table that is held.
+    const size_t n = t.size();
+    long ramp = (long) (((double) n - (double) n * durationPercent / 100.0) * 0.5);
+    if (ramp <= 1) ramp = std::max(1L, (long) n / 2);
     fillConstant(t, 1.0f);
-    switch (shape) {
-        case GrainShape::Hanning: hanningWindow(t); break;
-        case GrainShape::Welch: welchWindow(t); break;
-        case GrainShape::Parzen: parzenWindow(t); break;
+    for (long i = 0; i < ramp && (size_t) i < n; ++i) {
+        const double p = (double) i / (double) ramp;
+        double w = 0.0;
+        switch (shape) {
+            case GrainShape::Hanning: w = 0.5 - 0.5 * std::cos(kPi * p); break;
+            case GrainShape::Welch: w = std::sin(0.5 * kPi * p); break;
+            case GrainShape::Parzen: w = p; break;
+        }
+        t[(size_t) i] = (float) w;
+        t[n - 1 - (size_t) i] = (float) w;
     }
 }
 

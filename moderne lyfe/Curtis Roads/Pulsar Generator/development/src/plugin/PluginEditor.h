@@ -55,6 +55,8 @@ private:
     void chooseFile(const juce::String& title, const juce::String& patterns, bool save,
                     std::function<void(const juce::File&)> action);
     void report(const juce::String& message);
+    // The original refuses file operations while the synth runs.
+    bool refuseWhileRunning(const juce::String& message) { if (!proc.isRunning()) return false; report(message); return true; }
     void setupSlider(juce::Slider&, juce::Label&, const juce::String& text);
     void setupToggle(juce::TextButton&, const juce::String& text);
 

@@ -28,7 +28,7 @@ With every fix off the engine is Model 1, bit for bit. This is checked against t
 | --- | --- | --- |
 | `silenceAfterPulsaret` | `Osc1` holds the pulsaret's last table value until the envelope cuts it off. If pulsaret × envelope doesn't end at exactly 0, each pulse leaves a DC step, which LeakDC turns into a low thump | The voice falls silent when the pulsaret ends |
 | `exactFormant` | The pulsaret length is rounded to whole samples, so high formants are out of tune (7 kHz plays as 7.35 kHz at 44.1 kHz) and formant sweeps move in steps | The pulsaret lasts exactly 1/formant seconds |
-| `smoothControls` | The control tables are read once per 64-sample block, so every pulse within a block gets the same values and fast sweeps step | Control values are interpolated per sample, including the fundamental that drives the pulse clock |
+| `smoothControls` | The control tables are read once per 64-sample block and reach the engine a block late (the first sample of a K2A ramp), so every pulse within a block gets the same values and fast sweeps step | Control values are interpolated per sample, with no lag, including the fundamental that drives the pulse clock |
 | `rateIndependentDC` | The DC blocker's 0.999 coefficient is fixed, so its cutoff rises with the sample rate: about 7 Hz at 44.1 kHz, 15 Hz at 96 kHz | The coefficient is scaled so the cutoff stays at the 44.1 kHz value |
 
 ## Optional, not in the preset

@@ -161,8 +161,9 @@ void TableView::showMenu()
     alter.addItem("Square", [this] { apply([](auto& t) { square(t); }); });
     alter.addItem("Cube", [this] { apply([](auto& t) { cube(t); }); });
     alter.addItem("Distort", [this] { apply([](auto& t) { distort(t); }); });
-    alter.addItem("Fade In", [this] { apply([](auto& t) { fadeIn(t); }); });
-    alter.addItem("Fade Out", [this] { apply([](auto& t) { fadeOut(t); }); });
+    // The original greys these out in table windows (they act on a SignalView selection).
+    alter.addItem("Fade In", false, false, [] {});
+    alter.addItem("Fade Out", false, false, [] {});
     alter.addItem("Clip Negative", [this] { apply([](auto& t) { clipNegative(t); }); });
     alter.addItem("Smooth Table", [this] { apply([](auto& t) { smooth(t); }); });
     alter.addItem("Scale...", [this] {
@@ -212,19 +213,28 @@ void TableView::showMenu()
         });
     });
     fill.addItem("Buzz...", [this] {
-        askNumbers("Buzz", { "Lowest harmonic", "Number of harmonics", "Series coefficient" }, { "1", "8", "0.9" }, [this](const juce::StringArray& v) {
-            apply([lo = v[0].getIntValue(), n = v[1].getIntValue(), c = v[2].getFloatValue()](auto& t) { buzzFill(t, lo, n, c); });
+        askNumbers("Buzz", { "Lowest harmonic", "Number of harmonics", "Series coefficient", "Bilateral spectrum (1 or 0)" }, { "1", "8", "0.9", "0" },
+                   [this](const juce::StringArray& v) {
+            apply([lo = v[0].getIntValue(), n = v[1].getIntValue(), c = v[2].getFloatValue(), bi = v[3].getIntValue() != 0](auto& t) { buzzFill(t, lo, n, c, bi); });
         });
     });
     juce::PopupMenu grain;
-    grain.addItem("Hanning", [this] { apply([](auto& t) { grainEnvelopeFill(t, GrainShape::Hanning); }); });
-    grain.addItem("Welch", [this] { apply([](auto& t) { grainEnvelopeFill(t, GrainShape::Welch); }); });
-    grain.addItem("Parzen", [this] { apply([](auto& t) { grainEnvelopeFill(t, GrainShape::Parzen); }); });
+    auto grainItem = [this, &grain](const char* name, GrainShape shape) {
+        grain.addItem(name, [this, shape] {
+            askNumbers("Grain Envelope", { "Grain duration (%)" }, { "50" }, [this, shape](const juce::StringArray& v) {
+                apply([shape, d = v[0].getFloatValue()](auto& t) { grainEnvelopeFill(t, shape, d); });
+            });
+        });
+    };
+    grainItem("Hanning", GrainShape::Hanning);
+    grainItem("Welch", GrainShape::Welch);
+    grainItem("Parzen", GrainShape::Parzen);
     fill.addSubMenu("Grain Envelope", grain);
     fill.addItem("Noise", [this] { apply([](auto& t) { std::mt19937 r{ (uint32_t) juce::Time::getMillisecondCounter() }; noiseFill(t, r, false); }); });
-    fill.addItem("Noise +1/-1", [this] { apply([](auto& t) { std::mt19937 r{ (uint32_t) juce::Time::getMillisecondCounter() }; noiseFill(t, r, true); }); });
 
-    file.addItem("Load Table (.wt)...", [this] {
+    // The original refuses table loading and saving while the synth runs.
+    const bool running = position && position() >= 0.0;
+    file.addItem("Load Table (.wt)...", !running, false, [this] {
         chooser = std::make_unique<juce::FileChooser>("Load table", juce::File(), "*.wt");
         chooser->launchAsync(juce::FileBrowserComponent::openMode | juce::FileBrowserComponent::canSelectFiles, [this](const juce::FileChooser& fc) {
             if (fc.getResult() == juce::File()) return;
@@ -233,7 +243,7 @@ void TableView::showMenu()
                 apply([loaded](auto& t) { t = loaded; });
         });
     });
-    file.addItem("Save Table (.wt)...", [this] {
+    file.addItem("Save Table (.wt)...", !running, false, [this] {
         chooser = std::make_unique<juce::FileChooser>("Save table", juce::File(), "*.wt");
         chooser->launchAsync(juce::FileBrowserComponent::saveMode | juce::FileBrowserComponent::warnAboutOverwriting, [this](const juce::FileChooser& fc) {
             if (fc.getResult() == juce::File() || table == nullptr) return;

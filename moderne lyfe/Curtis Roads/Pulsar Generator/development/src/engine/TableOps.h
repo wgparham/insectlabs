@@ -1,8 +1,8 @@
 // Table editing: the Alter and Fill menus of the original table windows.
 //
-// In SuperCollider 2 these were Signal/Wavetable primitives; the formulas
-// here follow their documented behaviour (see Documentation/Alter_Menu and
-// Fill_Menu in the original distribution).
+// In SuperCollider 2 these were native Signal primitives and dialogs in the
+// runtime (WavetableCommand and the ZPyr...Dialog classes); the formulas here
+// follow their PowerPC code, quirks included.
 #pragma once
 
 #include <random>
@@ -44,10 +44,12 @@ void chebyshevFill(Table&, const std::vector<float>& amps);
 // Phase modulation: sin(2pi c t + index * sin(2pi m t)).
 void phaseModFill(Table&, float carrier, float modulator, float index);
 // Band-limited pulse: numHarmonics harmonics from lowHarmonic, each scaled by
-// coefficient^k.
-void buzzFill(Table&, int lowHarmonic, int numHarmonics, float coefficient);
+// coefficient^k, peaking mid-table. Bilateral: a symmetric spectrum around
+// the lowest harmonic.
+void buzzFill(Table&, int lowHarmonic, int numHarmonics, float coefficient, bool bilateral = false);
 enum class GrainShape { Hanning, Welch, Parzen };
-void grainEnvelopeFill(Table&, GrainShape);
+// Attack and decay of the given shape, holding 1 for durationPercent of the table.
+void grainEnvelopeFill(Table&, GrainShape, float durationPercent = 50.0f);
 void noiseFill(Table&, std::mt19937&, bool binary);
 
 } // namespace pulsar::ops

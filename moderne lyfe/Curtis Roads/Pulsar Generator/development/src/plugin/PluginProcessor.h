@@ -45,6 +45,7 @@ public:
     void useTables(const pulsar::TableSet& set);
     void restoreDefaultTables() { useTables(pulsar::TableSet::defaults()); }
     void undoTableSwitch(); // the "z" key: back to the previous set
+    bool xFadeLocked() const; // a set crossfade or control morph is under way: switching is refused
 
     std::vector<pulsar::TableSet> bank;
     juce::String bankName;
@@ -52,7 +53,7 @@ public:
     bool saveBank(const juce::File& bankFile, juce::String& error);
     bool loadSetFile(const juce::File&, juce::String& error); // into the bank and current
     bool saveCurrentSet(const juce::File&, juce::String& error);
-    void addCurrentToBank();
+    bool addCurrentToBank(); // false: the bank is full (16 sets)
     void selectBankSet(int index);
     int selectedBankSet() const { return selectedSet; }
 
@@ -117,6 +118,11 @@ private:
     std::atomic<double> enginePosition{ 0.0 };
     std::atomic<long long> enginePulsars{ 0 };
     juce::String ringModName;
+    bool wasRunning = false;    // message thread: transport state at the last timer tick
+    float lastTrainDur = -1.0f;
+    bool switchPending = false; // a set switch waiting out the original's copying delay
+    double switchAt = 0.0, fadeLockedUntil = 0.0;
+    void beginSwitch();
 
     juce::TimeSliceThread writerThread{ "Pulsar Generator recorder" };
     std::unique_ptr<juce::AudioFormatWriter::ThreadedWriter> recorder;
