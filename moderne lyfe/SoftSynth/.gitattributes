@@ -1,0 +1,8 @@
+# The surviving originals must keep their exact bytes; see SHA256SUMS.
+/SOFTSYN.INF binary
+/SOFTSYN.RSC binary
+/SOFTSYNT.PRG binary
+/TBWERD1.PRM binary
+/SHA256SUMS text eol=lf
+*.sd binary
+*.wav binary
