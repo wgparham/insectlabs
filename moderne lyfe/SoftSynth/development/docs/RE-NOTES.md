@@ -140,7 +140,7 @@ Limits: these run on an emulated CPU, not checked against a real ST or Hatari. T
 ## Next
 
 1. Standalone Model 1 app, and everything outside the render path: SmartSynth, time slices, the editors, the sampler transfers.
-2. Run the whole program in Hatari as a second check.
+2. Extend the whole-program run in Hatari, see below.
 
 ## Engine (`src/engine/`)
 
@@ -173,3 +173,65 @@ Limits: these run on an emulated CPU, not checked against a real ST or Hatari. T
 | Planted bugs in copies of the engine, 10 | 9 caught. The tenth moved the 8-bit noise's phase, which nothing reads, so it can't change the output. |
 
 **Limits:** all of this compares with the code in this cracked copy on an emulated CPU, not with a real ST or an uncracked copy. Patches from the fuzzer are random, not musical, and only one real patch exists. The render path is the only part ported so far.
+
+## Documentation evidence
+
+No Digidesign manual has been found. The user's *Archival User Guide Reconstruction* (November 2026, kept outside this repo because it reprints magazine images) is a secondary summary. Its links led to two ST reviews, read directly: [START, Oct 1988](https://www.atarimagazines.com/startv3n3/softsynth.php) (v2.1) and [Sound On Sound, Jul 1989](https://www.muzines.co.uk/articles/good-vibrations/5601) (says v2.0). Its other sources have not been read.
+
+**Reviews and this binary agree:**
+
+| Point | Reviews | Binary |
+|---|---|---|
+| Samplers | 15 (START); same models listed (SOS) | 15 Sampler menu entries, 14 models plus MMA SDS, including the SP-1200 |
+| FM | A partial has one modulator; a modulator can drive many partials, or itself (SOS, START) | One modulator slot per partial in `.PRM` routing |
+| Modulator in mix | Optional | "Include modulator in output mix" |
+| Pitch range | 2% or 50%, per partial | Partial screen, Scale 2% / 50% |
+| SmartSynth | 12 characteristics (START); figure matches | 12 groups in the RSC |
+| Display | Four viewing angles | Four perspective entries in the RSC |
+| External D/A | Two supported cartridges | "Use external D/A 1" and "2"; two cartridge ports in the preview code |
+| Protection | Key disk, master in drive A | Consistent with `CRACK-AUDIT.md` |
+
+**From the reviews, not yet confirmed in code:**
+
+- Waveforms are sine, square, triangle, pink or band-limited noise, and white noise. Inferred mapping: wave 4 is the band-limited one, other values the white one.
+- Amplitude has 40 stages and pitch 15. The file holds 42 and 17 records; the two extra in each may be the end points.
+- D/A cartridges are ST Sound Digitizer and ST Replay. Which is D/A 1 is unknown.
+- All MIDI is on channel 1, with no Thru (START, v2.1). START expected a later version to add channel selection.
+- Preview replays without resynthesis unless a parameter changed. Time slice edits interpolate to the adjacent timbre events.
+- Selecting a sampler sets a default sample rate.
+- Color and mono monitors both work. Only mono has been run here.
+- Maximum length 37.5 seconds (SOS, "seems"). The rate it assumes is not stated. The RSC length mask is 4000000.
+
+**Guide points that don't fit this binary:**
+
+- Its FM checklist says one or more modulators per carrier. The file format allows one, as its own earlier text says.
+- Its sampler table omits the SP-1200 and includes names this ST version lacks (Emulator II, Multisampler, Prophet 2002).
+- It reports "phase locking" from the v2.1 announcement. This binary has no such string, and every active partial gets a random start phase. The announcement may mean the Mac version; it has not been read.
+- SOS's "Sustain" has no matching label here. "Secondary level" is a possible match (inferred).
+
+**Leads:** the Nov 1987 Music Technology screenshot shows `A:\SYNTILAT.PRM`, "Syntillating", at 220 Hz, 31250 Hz, 60000 samples, a factory-style patch worth searching for. Reviews mention a 12-sound supplemental disk, a 3-disk library, and a free backup disk for registered owners.
+
+## Whole-program run
+
+Hatari 2.6.1-devel from `MacEmu\hatari`, EmuTOS 1.4 (192 KB US), ST, 1 MB, mono, GEMDOS drive, driven by `tools/re/hatari/`. The original program ran from copies, using its own menus, file selector, Synthesize command and file saving, on Hatari's cycle-exact CPU.
+
+The seed was not chosen. EmuTOS keeps the Random state at 0x25CC; `rng_state.py` steps it back from a RAM dump. The recovered seed reproduced the whole 16 KB noise table in RAM before any audio was compared, so the audio plays no part in choosing it. This also confirms the Random formula under EmuTOS, but not under a real TOS ROM.
+
+| Patch | Samples | Result against the engine |
+|---|---|---|
+| `TBWERD1.PRM`, unmodified | 20,000 | Identical at 41,336 bytes, one continuous pass (SHA-256 starts 235e14f773e49126) |
+| TBWERD1 plus 5 partials, waveforms 1 to 5 | 20,000 | Identical (4836724d44c30099) |
+| TBWERD1, length 300,000 | 300,000 | Identical (a692af48c99e9bec); envelopes end early, so this says nothing about buffer joins |
+| TBWERD1, x values times 50, sustained FM (`stretch_patch.py`) | 800,000 | Identical at 1,601,336 bytes with `--buffer 690512` (7930fa0c51210ad7), and the harness too |
+
+The last row is the strongest check. The GEMDOS trace shows `Fwrite` of 690,512 bytes, so that is the buffer here. One continuous pass first differs at sample 345,256, the first join, confirming the FM buffer bug in the running program. A buffer of 690,514 changes 6 bytes and 690,000 changes 1,517.
+
+**So the original's output depends on the machine:** the buffer follows free memory, and any FM sound longer than the buffer changes with it. There is no single "correct" render of such a sound. Shorter sounds aren't affected. On this setup that means FM sounds under 345,256 samples.
+
+Seen on this setup: normalize on, internal speaker, Akai S900 as the startup defaults. `.PRM` and `.SD` are the file selector masks. Window title format is path, then description.
+
+Opened with no crash: partial editor, FM Patching, time slice (10 timbre events in TBWERD1), SmartSynth Set up, About, the File -> Sampler file selector, and MIDI Keyboard, which is the Record / Play / Pattern dialog. Preview ran and returned, with sound off, so nothing was heard. The About box does not display the "Cracked by The M.C.A." credit that sits in its resource tree.
+
+Not run: SmartSynth Generate, any edit, any sampler transfer, MIDI, colour mode, a real TOS, a floppy boot, or a real ST. The waveform patch and the stretched patch are test edits, not musical sounds; `TBWERD1.PRM` is still the only real patch.
+
+Build notes: use a native make (`C:\perl\c\bin\gmake.exe`, "MinGW Makefiles") with MSYS2 mingw32 gcc, because MSYS make sends GCC's temp files to `C:\WINDOWS`. Copy `SDL2.dll`, `libgcc_s_dw2-1.dll` and `libwinpthread-1.dll` next to the exe. `hatari-windows-control.patch` adds the command file, applied to a separate copy of the source. Set `SDL_VIDEODRIVER=dummy` to run with no window. Put the patch in the test drive after boot, since `hat.py start` copies only the program files.
