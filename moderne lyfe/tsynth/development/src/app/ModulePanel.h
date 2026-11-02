@@ -20,7 +20,7 @@ public:
     std::function<void(std::function<void(const juce::File&)>)> onChooseWaveform; // oscillator: pick a waveform file
     std::function<void(const turbosynth::Waveform&)> onSaveWaveform;                // oscillator: save the current waveform
     // Sample and Output windows: their tools act on the sound, so the main window does them.
-    enum SoundTool { kLoadSound = 1, kRateConvert, kExtendLoop, kGainScale, kRemoveEnvelope, kCrossfade, kLoopToSelection, kStartMarker, kEndMarker, kLoopWindow };
+    enum SoundTool { kLoadSound = 1, kRateConvert, kExtendLoop, kGainScale, kRemoveEnvelope, kCrossfade, kLoopToSelection, kStartMarker, kEndMarker, kLoopWindow, kSampling };
     std::function<void(int)> onSoundTool;
 
     void show(turbosynth::Patch* patch, int index); // index 0 = nothing selected

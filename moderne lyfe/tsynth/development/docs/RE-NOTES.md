@@ -700,7 +700,7 @@ This routine sets the check marks and enabled state of the Options items from gl
 - **Stereo Preferences (6008) and Playback Options (6009):** enabled when −$4EA is clear.
 - **Show Clipboard (35):** enabled/disabled through the same routine (the flag is not yet traced).
 - The routine ends by calling F23_00BD8 with two globals at −$6D0 and −$4E0 (the saved preferences).
-- **Still open:** the meaning of −$4EA (probably "no document" or "stereo state"), the −$4EB and −$4EC flags' mapping to Auto Preview / SampleCell, and whether Hardware Setup's dialog has any field limits.
+- **Still open:** −$4EA is resolved below (sampling input monitor, not a document state); the −$4EB and −$4EC flags' mapping to Auto Preview / SampleCell, and whether Hardware Setup's dialog has any field limits.
 
 ## Stereo Preferences (10040, F6_0178E, CODE 6 at 017C2), traced 2026-10-31
 Item labels from DITL 10040 (extracted resource, scratchpad rsrc/sc222). The OK path stores each group into a global:
@@ -723,6 +723,18 @@ The dialog's OK also writes the new-document choice into the document's record a
 - **Runtime check suggested:** in the emulator, with the Options menu open, note the enabled state of Hardware Setup, Stereo Preferences and Playback Options with no module selected, then with a Sample module selected, then after opening a Sample's window. The change points show which action sets −$4EA.
 - **Emulator check of the Options menu (2026-10-31, user's screens):** in all five states (no selection; Amp Env selected; a Sample selected; a Sample window open, showing "Clarinet"; after closing it) Hardware Setup was greyed out, and Stereo Preferences and Playback Options were enabled. So −$4EA stayed clear in every state. Selecting or opening a Sample is not enough to set it. Hardware Setup is greyed because the DSP card flag is clear (no card in this emulator), which matches F23_02A48.
 - **Next trigger to test:** a Sample action that uses the Sound Manager or direct sampling path (for example Load Sound on an empty Sample, or Direct Sampling if the menu offers it).
+- **Resolved 2026-11-02: −$4EA means "the Sample window's sampling tool is monitoring the input".** The earlier notes' guesses and "no callers" are superseded by this:
+  - **The tool:** the tape icon, right of the disk in the Sample window's palette. The manual: the first click monitors the input and lets you set the trigger threshold, the second samples. In the code the tool is `+B8` = 6 on the Sample window.
+  - **Second setter, missed before:** CODE 28 at $32D6, in the window's click handler. It needs −$4E9 set (else "A Sound Accelerator or AudioMedia is required for sampling.", $36F6) and a buffer (`+11A` non-zero, else "Memory must be allocated before sampling can occur.", $329C). It then sets the flag, calls F1_0060A with 6 or $6A according to −$519, and sets bit 4 of the card register at −$52A + 3 (F30_006E4).
+  - **Window activation, F28_02D28:** its caller is F6_00152 at $1D2, through `jsr $174A(A5)` to F18_01270, a stub into the selector dispatch F18_0001C. That is why no static reference to it exists. Its arguments are (window, now active, was active), and F6_007D4 is the base method. With tool 6 it sets the flag on activation ($2D58) and clears it and bit 4 on deactivation ($2DA0).
+  - **Leaving the tool, F28_0280E:** clears the flag and bit 4 and sets the tool back to 1. Its callers are in CODE 28 at $2E1C, $3630 and $4690.
+  - **Run in the emulator (scratch copy, Quadra 950, 7.5.3), with a write log on the flag:**
+    - As shipped, −$4E9 is 0 and the tape icon gives the Sound Accelerator alert. The flag was never written.
+    - With −$4E9 forced to 1, a dummy card base and Length 1000, clicking the icon wrote 1. Stereo Preferences, Playback Options and Hardware Setup were then grey.
+    - Clicking the patch window wrote 0, returning through the same call in F6_00152. Stereo Preferences and Playback Options came back; Hardware Setup stayed grey with no card.
+    - Reactivating the Sample window wrote 1 at $2D58, confirmed by the code bytes at the write.
+  - **Limits of that run:** with no real card, TurboSynth raises "Could not complete your request because of a program error." after setting the flag, on the click and again on reactivation. The alert hides any later effect. The clear in F28_0280E was not seen because the alert blocked the palette, and the card-register bit is from reading the code. Which call raises the alert wasn't traced; the likely one is F1_0060A. The first write's address was not checked against code bytes; it is $32D6 because it came from the icon click.
+  - **Port:** there is no sampling, so this flag has no equivalent and the Options items it greys stay enabled, as they do on any Mac without the card. The port's Sample palette now has the tape icon (ICON 2107) beside the disk, as in the original, and it always shows the original's Sound Accelerator alert, because the port has no card.
 
 ## Manual check: Playback Options and Hardware Setup (2026-10-31)
 - The SC 2.2 addendum (manual/source/manual.txt, Section 2, "Playback Options", page 12 scan p071) confirms the user's guess: **Hardware Setup** configures the Digidesign DSP card (Pro Tools, Sound Tools II, Audiomedia II): which card and slot, and whether the digital or analog input is used. It is enabled only with a DSP card, which matches the greyed item in the emulator.

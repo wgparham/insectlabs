@@ -1455,6 +1455,9 @@ void MainComponent::soundTool(int code)
     using ST = ModulePanel::SoundTool;
     switch (code) {
     case ST::kLoadSound: loadSoundFor(i); break;
+    case ST::kSampling: // CODE 28 at $36F6: the original needs a card for this, and the port has none
+        alert(juce::String::fromUTF8("A Sound Accelerator™ or AudioMedia™ is required for sampling."));
+        break;
     case ST::kStartMarker: case ST::kEndMarker:
         if (!isSample && previewModule != 0) render(0); // the output's markers sit on the patch's sound
         waveView.tool = code == ST::kStartMarker ? WaveView::Tool::PlaceStart : WaveView::Tool::PlaceEnd;

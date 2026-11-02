@@ -547,7 +547,10 @@ void ModulePanel::setupTools(Module& m)
         // The Sample window's palette (the Output's has the loop tools only).
         const bool sample = m.type == kSample;
         if (sample) {
-            tools.addTools({ 2100, 2106, 2101, 2105, 2104, 8004, 8005 }, 0);
+            tools.addTools({ 2100 }, 0);
+            tools.addTools({ 2107 }, 11); // the tape recorder, beside the disk as in the original
+            tools.setTip(11, "Sampling");
+            tools.addTools({ 2106, 2101, 2105, 2104, 8004, 8005 }, 1);
             const int codes[] = { kLoadSound, kRateConvert, kExtendLoop, kGainScale, kRemoveEnvelope, kCrossfade, kLoopToSelection };
             const char* tips[] = { "Load a sound file into the module", "Sample rate conversion", "Extend the loop to the module's length",
                                    "Gain scaling (or normalize)", "Envelope removal", "Crossfade looping", "Loop points to selection" };
@@ -557,7 +560,7 @@ void ModulePanel::setupTools(Module& m)
             tools.addTools({ 2103 }, 9);
             tools.onTool = [this, codes](int code) {
                 static const int more[] = { kStartMarker, kEndMarker, kLoopWindow };
-                if (onSoundTool) onSoundTool(code < 7 ? codes[code] : more[code - 7]);
+                if (onSoundTool) onSoundTool(code == 11 ? kSampling : code < 7 ? codes[code] : more[code - 7]);
             };
         } else {
             tools.addSplitIcon(7101, 7, 8);
