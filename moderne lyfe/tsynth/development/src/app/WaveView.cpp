@@ -433,7 +433,7 @@ int WaveTimeline::msAt(float x) const
 
 juce::Rectangle<float> WaveTimeline::boxFor(int i) const
 {
-    const int ms = i == dragging ? dragTime : waves[(size_t) i].timeMs;
+    const int ms = moving && selection.count(i) ? juce::jlimit(0, juce::jmin(32767, durationMs), waves[(size_t) i].timeMs + moveMs) : waves[(size_t) i].timeMs;
     return { xFor(ms), 2.0f, 30.0f, (float) getHeight() - 14.0f };
 }
 
@@ -462,7 +462,7 @@ void WaveTimeline::paint(juce::Graphics& g)
     }
     for (int i = 0; i < (int) waves.size(); ++i) {
         const auto r = boxFor(i);
-        const bool sel = i == selected;
+        const bool sel = selection.count(i) != 0;
         g.setColour(sel ? t.ink : t.paper);
         g.fillRect(r);
         g.setColour(t.ink);
@@ -477,33 +477,68 @@ void WaveTimeline::paint(juce::Graphics& g)
         g.setColour(sel ? t.paper : t.ink);
         g.strokePath(p, juce::PathStrokeType(1.0f));
     }
+    if (selecting) {
+        const auto box = juce::Rectangle<float>(dragStart, dragNow);
+        const float dash[] = { 3.0f, 3.0f };
+        g.setColour(t.ink);
+        g.drawDashedLine({ box.getTopLeft(), box.getTopRight() }, dash, 2, 1.0f);
+        g.drawDashedLine({ box.getTopRight(), box.getBottomRight() }, dash, 2, 1.0f);
+        g.drawDashedLine({ box.getBottomRight(), box.getBottomLeft() }, dash, 2, 1.0f);
+        g.drawDashedLine({ box.getBottomLeft(), box.getTopLeft() }, dash, 2, 1.0f);
+    }
 }
 
+// As in the patch window, checked in the emulator: Shift toggles, a click on a member keeps the
+// group, any other click selects that one, and a drag from empty space draws a selection box.
 void WaveTimeline::mouseDown(const juce::MouseEvent& e)
 {
+    if (placing) {
+        placing = false;
+        setMouseCursor(juce::MouseCursor::NormalCursor);
+        if (onPlace) onPlace(msAt(e.position.x));
+        return;
+    }
     const int i = hit(e.position);
-    if (i < 0) return;
-    selected = i;
-    if (onSelect) onSelect(i);
-    dragging = i;
-    dragTime = waves[(size_t) i].timeMs;
-    grabDx = e.position.x - boxFor(i).getX();
+    const bool shift = e.mods.isShiftDown();
+    dragStart = dragNow = e.position;
+    moveMs = 0;
+    if (i >= 0) {
+        if (shift) { if (!selection.erase(i)) selection.insert(i); }
+        else if (!selection.count(i)) selection = { i };
+        moving = selection.count(i) != 0;
+        if (onSelect) onSelect(moving ? i : -1);
+    } else {
+        if (!shift) { selection.clear(); if (onSelect) onSelect(-1); }
+        selecting = true;
+        boxToggles = shift;
+    }
     repaint();
 }
 
 void WaveTimeline::mouseDrag(const juce::MouseEvent& e)
 {
-    if (dragging < 0) return;
-    dragTime = msAt(e.position.x - grabDx);
-    repaint();
+    dragNow = e.position;
+    const float dx = e.position.x - dragStart.x;
+    if (moving) moveMs = dx >= 0.0f ? msAt(2.0f + dx) : -msAt(2.0f - dx);
+    if (moving || selecting) repaint();
 }
 
 void WaveTimeline::mouseUp(const juce::MouseEvent&)
 {
-    if (dragging < 0) return;
-    const int i = dragging, ms = dragTime;
-    dragging = -1;
-    if (ms != waves[(size_t) i].timeMs && onMoved) onMoved(i, ms);
+    if (selecting) {
+        selecting = false;
+        const auto box = juce::Rectangle<float>(dragStart, dragNow);
+        if (!box.isEmpty()) { // a waveform the box only touches counts
+            for (int i = 0; i < (int) waves.size(); ++i)
+                if (boxFor(i).intersects(box)) { if (!boxToggles || !selection.erase(i)) selection.insert(i); }
+            if (onSelect) onSelect(-1);
+        }
+    } else if (moving) {
+        const int by = moveMs;
+        moving = false;
+        moveMs = 0;
+        if (by != 0 && onMoved) onMoved(by);
+    }
     repaint();
 }
 

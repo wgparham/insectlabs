@@ -7,11 +7,22 @@
 
 #include <juce_gui_basics/juce_gui_basics.h>
 
+#include <set>
+#include <vector>
+
 class PatchView : public juce::Component, public juce::TooltipClient
 {
 public:
     turbosynth::Patch* patch = nullptr;
-    int selected = 0; // 1-based module, 0 = none
+    int selected = 0; // 1-based module, 0 = none; in a group, the one the single-module commands act on
+    std::set<int> alsoSelected; // the rest of a group: the original keeps a selected flag on each module (+0E)
+
+    void select(int index) { selected = index; alsoSelected.clear(); }
+    bool isSelected(int index) const;
+    std::vector<int> selection() const; // every selected module in order, both halves of a stereo pair
+    void setSelection(const std::vector<int>&);
+    void selectAll(); // Edit > Select All (F15_00DCE)
+    void nextTool();  // the Tab key: Arrow, Patch Cord, Eraser
 
     std::function<void(int)> onSelect;
     std::function<void()> onChanged;    // structure or positions changed
@@ -61,6 +72,10 @@ private:
     juce::Point<float> origin { 100.0f, 10.0f };
     int dragging = 0;
     bool connecting = false;
+    bool selecting = false; // dragging a selection box from empty space
+    bool boxToggles = false; // with Shift the box toggles what it touches
     juce::Point<float> dragStart, dragNow;
-    std::array<int16_t, 4> rectAtStart{}, partnerRectAtStart{};
+    struct Held { int index; std::array<int16_t, 4> rect; };
+    std::vector<Held> held; // the group being moved, where each was at the start
+    void toggleSelected(int index);
 };

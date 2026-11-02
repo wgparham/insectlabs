@@ -48,7 +48,7 @@ enum MenuIds {
     kNew = 1, kOpen, kSave, kSaveAs, kExport, kQuit,
     kUndo = 10, kCut, kCopy, kPaste, kClear, kDuplicate, kConvert, kRedo, kReverse, kSilence,
     kDualMono = 50, kConvertEnv, kConvertOsc, kSendLoop,
-    kSaveLoopWave = 7, kGetInfo = 8, kSelectAll = 70,
+    kSaveLoopWave = 7, kGetInfo = 8, kSelectAll = 70, kShowClipboard = 71,
     kPlay = 20, kStop, kHearSelected, kStereo,
     kAutoPreview = 30, kParams, kStereoPrefs,
     kDark = 40,
@@ -102,7 +102,7 @@ MainComponent::MainComponent(int forceTheme)
 
     addAndMakeVisible(menuBar);
     patchView.patch = &patch;
-    patchView.onSelect = [this](int) { showSoundEditor(); };
+    patchView.onSelect = [this](int) { committedSelection = patchView.selection(); showSoundEditor(); };
     waveView.onLoopChanged = [this] { setLoop(waveView.loopStart, waveView.loopEnd); };
     patchView.onChanged = [this] { refreshModuleWindows(); changed(); };
     patchView.onRemoving = [this](int i) { moduleRemoved(i); };
@@ -159,7 +159,9 @@ juce::StringArray MainComponent::getMenuBarNames() { return { "File", "Edit", "S
 juce::PopupMenu MainComponent::getMenuForIndex(int index, const juce::String&)
 {
     juce::PopupMenu m;
-    const bool sel = patchView.selected > 0, editable = sel && !patchView.isOutput(patchView.selected);
+    const bool sel = patchView.selected > 0;
+    const bool editable = firstSelected([this](int i) { return !patchView.isOutput(i); }) != 0; // an Output can't be cut, copied, cleared or duplicated
+    auto* waves = frontWavePanel();
     auto add = [&m](int id, const juce::String& text, const juce::String& key, bool enabled = true, bool ticked = false) {
         juce::PopupMenu::Item it(text);
         it.itemID = id; it.isEnabled = enabled; it.isTicked = ticked; it.shortcutKeyDescription = key;
@@ -183,24 +185,29 @@ juce::PopupMenu MainComponent::getMenuForIndex(int index, const juce::String&)
         add(kUndo, "Undo", "Ctrl+Z", !undoStack.empty());
         add(kRedo, "Redo", "Ctrl+Shift+Z", !redoStack.empty());
         m.addSeparator();
-        add(kCut, "Cut", "Ctrl+X", snd ? sndSel : editable);
-        add(kCopy, "Copy", "Ctrl+C", snd ? sndSel : editable);
-        add(kPaste, "Paste", "Ctrl+V", snd ? !soundClipboard.empty() : clipboard.has_value());
-        add(kClear, "Clear", "Ctrl+B", snd ? sndSel : editable);
-        add(kSelectAll, "Select All", "Ctrl+A", snd);
-        add(kDuplicate, "Duplicate", "Ctrl+D", editable);
+        // In an Oscillator window only Clear, Select All and Duplicate apply (checked in the emulator).
+        add(kCut, "Cut", "Ctrl+X", !waves && (snd ? sndSel : editable));
+        add(kCopy, "Copy", "Ctrl+C", !waves && (snd ? sndSel : editable));
+        add(kPaste, "Paste", "Ctrl+V", !waves && (snd ? !soundClipboard.empty() : !clipboard.empty()));
+        add(kClear, "Clear", "Ctrl+B", waves ? waves->wavesSelected() : snd ? sndSel : editable);
+        // F23_035D4: from the patch window, while some module is unselected.
+        add(kSelectAll, "Select All", "Ctrl+A", waves ? waves->canSelectAllWaves() : snd || (patchWindow->isActive() && patchView.selection().size() < patch.modules.size()));
+        add(kDuplicate, "Duplicate", "Ctrl+D", waves ? waves->wavesSelected() : editable);
         add(kReverse, "Reverse", "Ctrl+R", sndSel);
         add(kSilence, "Silence", "Ctrl+E", sndSel);
         m.addSeparator();
         // The original's Edit menu (MENU 3); the conversions are enabled as in
         // CODE 23's SetupMenus: Envelope and Oscillator for a mono Sample module.
         const Module* sm = sel ? &patch.modules[(size_t) patchView.selected - 1] : nullptr;
-        const bool monoSample = sm && sm->type == kSample && samplePartner(patch, patchView.selected) == 0;
-        add(kConvert, "Convert to Sample...", "Ctrl+H", editable && sm->type != kSample);
+        const bool monoSample = firstSelected(monoSampleTest()) != 0;
+        add(kConvert, "Convert to Sample...", "Ctrl+H", firstSelected(convertibleTest()) != 0);
         add(kConvertEnv, "Convert to Envelope...", "Ctrl+J", monoSample);
         add(kConvertOsc, "Convert to Oscillator...", "Ctrl+K", monoSample);
         add(kSendLoop, "Send Loop to Output", "Ctrl+L", sm && sm->type == kSample && sm->sampA >= 0 && sm->sampB >= 0);
-        m.addItem(kDualMono, "Convert Stereo Sample to Dual Mono", sel && samplePartner(patch, patchView.selected) != 0);
+        m.addItem(kDualMono, "Convert Stereo Sample to Dual Mono", firstSelected(linkedHalfTest()) != 0);
+        // The original lists Show Clipboard here, after a separator, and it is always greyed out (RE-NOTES: F23_02A48).
+        m.addSeparator();
+        m.addItem(kShowClipboard, "Show Clipboard", false);
     } else if (index == 2) {
         m.addItem(kPlay, "Play", true);
         m.addItem(kStop, "Stop");
@@ -234,40 +241,49 @@ void MainComponent::menuItemSelected(int id, int)
     case kHearSelected: render(patchView.selected, true); break;
     case kStereo: // mono jack <-> the two halves of the stereo jack; Output R's cords go with it
         setStereo(patch, !isStereo(patch));
-        patchView.selected = 0;
+        patchView.select(0);
         closeAllModuleWindows();
         patchView.repaint();
         changed();
         break;
     case kUndo: undo(); break;
     case kRedo: redo(); break;
-    case kCut: if (soundSelectionActive()) soundEdit(kCut); else { copySelected(); clearSelected(); } break;
-    case kCopy: if (soundSelectionActive()) soundEdit(kCopy); else copySelected(); break;
-    case kPaste: if (soundSelectionActive()) soundEdit(kPaste); else if (clipboard) paste(*clipboard, clipboardPartner ? &*clipboardPartner : nullptr); break;
+    case kCut: if (frontWavePanel()) break; if (soundSelectionActive()) soundEdit(kCut); else { copySelected(); clearSelected(); } break;
+    case kCopy: if (frontWavePanel()) break; if (soundSelectionActive()) soundEdit(kCopy); else copySelected(); break;
+    case kPaste: if (frontWavePanel()) break; if (soundSelectionActive()) soundEdit(kPaste); else paste(clipboard); break;
     case kReverse: case kSilence: if (soundSelectionActive()) soundEdit(id); break;
     case kSaveLoopWave: saveLoopAsWaveform(); break;
-    case kClear: if (soundSelectionActive()) soundEdit(kClear); else clearSelected(); break;
-    case kSelectAll: // the whole Sample's sound becomes the selection
-        if (auto* d = soundSelectionActive() ? sampleData(soundShown) : nullptr) {
-            waveView.selStart = 0;
-            waveView.selEnd = (int32_t) d->size();
-            waveView.repaint();
-        }
+    case kClear:
+        if (auto* waves = frontWavePanel()) waves->clearWaves();
+        else if (soundSelectionActive()) soundEdit(kClear);
+        else clearSelected();
+        break;
+    case kSelectAll:
+        if (auto* waves = frontWavePanel()) waves->selectAllWaves();
+        else if (soundSelectionActive()) { // the whole Sample's sound becomes the selection
+            if (auto* d = sampleData(soundShown)) {
+                waveView.selStart = 0;
+                waveView.selEnd = (int32_t) d->size();
+                waveView.repaint();
+            }
+        } else if (patchWindow->isActive()) patchView.selectAll();
         break;
     case kDuplicate:
-        if (patchView.selected && !patchView.isOutput(patchView.selected)) {
-            const int p = samplePartner(patch, patchView.selected);
-            const Module m = patch.modules[(size_t) patchView.selected - 1];
-            const Module partner = p ? patch.modules[(size_t) p - 1] : Module{};
-            paste(m, p ? &partner : nullptr);
+        if (auto* waves = frontWavePanel()) waves->duplicateWaves();
+        else {
+            // The copies become the selection, but a selected Output stays selected (checked in the emulator).
+            std::vector<int> outputs;
+            for (const int i : patchView.selection()) if (patchView.isOutput(i)) outputs.push_back(i);
+            paste(selectedItems(), outputs);
         }
         break;
-    case kConvert: convertToSample(); break;
-    case kConvertEnv: convertSample(false); break;
-    case kConvertOsc: convertSample(true); break;
+    // With a group, these act on the first selected module they apply to.
+    case kConvert: if (const int i = firstSelected(convertibleTest())) { patchView.selected = i; convertToSample(); } break;
+    case kConvertEnv: if (const int i = firstSelected(monoSampleTest())) { patchView.selected = i; convertSample(false); } break;
+    case kConvertOsc: if (const int i = firstSelected(monoSampleTest())) { patchView.selected = i; convertSample(true); } break;
     case kSendLoop: sendLoopToOutput(); break;
     case kGetInfo: showDocumentInfo(); break;
-    case kDualMono: convertToDualMono(); break;
+    case kDualMono: if (const int i = firstSelected(linkedHalfTest())) { patchView.selected = i; convertToDualMono(); } break;
     case kAutoPreview:
         autoPreview = !autoPreview;
         settings.getUserSettings()->setValue("autoPreview", autoPreview);
@@ -352,7 +368,8 @@ void MainComponent::openModuleWindow(int index)
     mw->win->onActivate = [this, raw] {
         patchWindow->setActive(false);
         for (auto& w : moduleWindows) if (w.get() != raw) w->win->setActive(false);
-        patchView.selected = raw->index; // the front window's module is the one the menus act on
+        patchView.select(raw->index); // the front window's module is the one the menus act on
+        committedSelection = patchView.selection();
         patchView.repaint();
         showSoundEditor();
     };
@@ -432,6 +449,7 @@ bool MainComponent::keyPressed(const juce::KeyPress& k)
         return keyPressed(juce::KeyPress('A' + k.getKeyCode() - 1, k.getModifiers().withFlags(juce::ModifierKeys::commandModifier), 0));
     const bool cmd = k.getModifiers().isCommandDown();
     if (k == juce::KeyPress::spaceKey) { if (transport.isPlaying()) stop(); else { if (previewModule || renderPending || rendering) render(0, true); else play(); } return true; }
+    if (k.getKeyCode() == juce::KeyPress::tabKey && patchWindow->isActive()) { patchView.nextTool(); return true; } // the Tab key, checked in the emulator
     if (cmd && k.getKeyCode() == 'S') { save(k.getModifiers().isShiftDown()); return true; }
     if (cmd && k.getKeyCode() == 'O') { choosePatch(); return true; }
     if (cmd && k.getKeyCode() == 'N') { newPatch(); return true; }
@@ -461,19 +479,15 @@ void MainComponent::newPatch()
     stop();
     patch = Patch{};
     patch.version = 5;
+    // A new document holds only the Output, at this place (F23_02C24); a stereo pair's right jack goes beside it.
     auto out = makeModule(kOutput, params.rate, params.length);
-    out.rect = { 100, 380, 132, 412 };
-    auto osc = makeModule(kOscillator, params.rate, params.length);
-    osc.name = "Osc-1"; osc.rect = { 100, 80, 132, 112 }; osc.oscFreq = params.frequency << 16;
-    auto env = makeModule(kAmpEnv, params.rate, params.length);
-    env.name = "Amp Env-1"; env.rect = { 100, 230, 132, 262 };
-    patch.modules = { out, osc, env };
-    patch.connections = { { 2, 3 }, { 3, 1 } };
+    out.rect = { 192, 64, 224, 96 };
+    patch.modules = { out };
     if (params.newDocStereo) setStereo(patch, true); // Stereo Preferences: new documents as stereo
     file = juce::File();
     dirty = false;
     resetHistory();
-    patchView.selected = 0;
+    patchView.select(0);
     closeAllModuleWindows();
     render();
     updateTitle();
@@ -502,7 +516,7 @@ void MainComponent::openFile(const juce::File& f)
     file = f;
     dirty = false;
     resetHistory();
-    patchView.selected = 0;
+    patchView.select(0);
     closeAllModuleWindows();
     render();
     updateTitle();
@@ -646,7 +660,7 @@ void MainComponent::loadSoundFile(int index, const juce::File& f, int channel)
         m.name = f.getFileNameWithoutExtension().toStdString();
         rules::lengthChanged(patch, halves[k], ruleOptions()); // the new length reaches the modules it feeds
     }
-    if (std::find(halves.begin(), halves.end(), patchView.selected) == halves.end()) patchView.selected = halves[0];
+    if (std::find(halves.begin(), halves.end(), patchView.selected) == halves.end()) patchView.select(halves[0]);
     index = patchView.selected;
     refreshModuleWindows();
     showSoundEditor();
@@ -658,9 +672,10 @@ void MainComponent::loadSoundFile(int index, const juce::File& f, int channel)
 void MainComponent::changed()
 {
     // One undo step per edit: keep the state from before it.
-    undoStack.push_back(committed);
+    undoStack.push_back({ committed, committedSelection });
     if (undoStack.size() > 40) undoStack.erase(undoStack.begin());
     committed = patch;
+    committedSelection = patchView.selection();
     redoStack.clear(); // a new edit ends the redo chain
     dirty = true;
     renderPending = 8; // about a quarter of a second after the last edit
@@ -837,8 +852,7 @@ void MainComponent::refreshDocumentInfo()
 
 void MainComponent::releaseClipboard()
 {
-    clipboard.reset();
-    clipboardPartner.reset();
+    clipboard.clear();
     soundClipboard.clear();
     soundClipboardRight.clear();
 }
@@ -914,20 +928,22 @@ void MainComponent::resetHistory()
     undoStack.clear();
     redoStack.clear();
     committed = patch;
+    committedSelection.clear();
 }
 
 void MainComponent::undo() { stepHistory(undoStack, redoStack); }
 void MainComponent::redo() { stepHistory(redoStack, undoStack); }
 
-void MainComponent::stepHistory(std::vector<Patch>& from, std::vector<Patch>& to)
+void MainComponent::stepHistory(std::vector<HistoryEntry>& from, std::vector<HistoryEntry>& to)
 {
     if (from.empty()) return;
-    to.push_back(patch);
-    patch = from.back();
+    to.push_back({ patch, patchView.selection() });
+    patch = from.back().patch;
+    patchView.setSelection(from.back().selection);
     from.pop_back();
     committed = patch;
+    committedSelection = patchView.selection();
     for (auto& w : moduleWindows) w->panel.forgetAnalysis();
-    patchView.selected = juce::jmin(patchView.selected, (int) patch.modules.size());
     refreshModuleWindows();
     soundShown = -1; // force the Sound window to re-read the sound
     showSoundEditor();
@@ -938,62 +954,110 @@ void MainComponent::stepHistory(std::vector<Patch>& from, std::vector<Patch>& to
     repaint();
 }
 
+int MainComponent::firstSelected(const std::function<bool(int)>& test) const
+{
+    for (const int i : patchView.selection()) if (test(i)) return i;
+    return 0;
+}
+
+std::function<bool(int)> MainComponent::convertibleTest() const
+{
+    return [this](int i) { return !patchView.isOutput(i) && patch.modules[(size_t) i - 1].type != kSample; };
+}
+
+std::function<bool(int)> MainComponent::monoSampleTest() const
+{
+    return [this](int i) { return patch.modules[(size_t) i - 1].type == kSample && samplePartner(patch, i) == 0; };
+}
+
+std::function<bool(int)> MainComponent::linkedHalfTest() const
+{
+    return [this](int i) { return samplePartner(patch, i) != 0; };
+}
+
+ModulePanel* MainComponent::frontWavePanel() const
+{
+    for (auto& w : moduleWindows)
+        if (w->win->isActive() && w->index >= 1 && w->index <= (int) patch.modules.size() && patch.modules[(size_t) w->index - 1].type == kOscillator)
+            return &w->panel;
+    return nullptr;
+}
+
+std::vector<MainComponent::ClipItem> MainComponent::selectedItems() const
+{
+    std::vector<ClipItem> items;
+    std::vector<int> from;
+    for (const int i : patchView.selection())
+        if (!patchView.isOutput(i)) { items.push_back({ patch.modules[(size_t) i - 1] }); from.push_back(i); }
+    for (size_t k = 0; k < from.size(); ++k) { // both halves of a stereo sample are selected together
+        const auto p = std::find(from.begin(), from.end(), samplePartner(patch, from[k]));
+        if (p != from.end()) items[k].partner = (int) (p - from.begin());
+    }
+    return items;
+}
+
 void MainComponent::copySelected()
 {
-    const int i = patchView.selected;
-    if (!i || patchView.isOutput(i)) return;
-    clipboard = patch.modules[(size_t) i - 1];
-    clipboardPartner.reset();
-    if (const int p = samplePartner(patch, i)) clipboardPartner = patch.modules[(size_t) p - 1]; // both halves are selected
+    auto items = selectedItems();
+    if (!items.empty()) clipboard = std::move(items);
 }
 
 void MainComponent::clearSelected()
 {
-    const int i = patchView.selected;
-    if (!i || patchView.isOutput(i)) return; // the output jack cannot be erased
-    const int p = samplePartner(patch, i); // both halves of a stereo sample are selected, so both go
-    moduleRemoved(juce::jmax(i, p));
-    removeModule(patch, juce::jmax(i, p));
-    if (p) { moduleRemoved(juce::jmin(i, p)); removeModule(patch, juce::jmin(i, p)); }
-    patchView.selected = 0;
+    // A selected Output stays, still selected (checked in the emulator); its index follows the removals.
+    std::vector<int> gone, kept;
+    for (const int i : patchView.selection()) {
+        if (!patchView.isOutput(i)) gone.push_back(i);
+        else kept.push_back(i);
+    }
+    if (gone.empty()) return;
+    for (auto& k : kept) k -= (int) (std::lower_bound(gone.begin(), gone.end(), k) - gone.begin());
+    for (auto it = gone.rbegin(); it != gone.rend(); ++it) { moduleRemoved(*it); removeModule(patch, *it); }
+    patchView.setSelection(kept);
     refreshModuleWindows();
     patchView.repaint();
     changed();
 }
 
-void MainComponent::paste(const Module& source, const Module* partner)
+void MainComponent::paste(const std::vector<ClipItem>& items, const std::vector<int>& alsoSelect)
 {
+    if (items.empty()) return;
     // The original refuses a paste that would not fit in memory.
-    const int64_t incoming = source.length + (partner ? partner->length : 0);
+    int64_t incoming = 0;
+    for (const auto& item : items) incoming += item.module.length;
     if (DocumentInfo::samplesUsed(patch.modules) + incoming > DocumentInfo::kModel1Budget) {
         juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "TurboSynth", DocumentInfo::kMemoryMessage);
         return;
     }
-    // Pasted below and to the right of the original, without connections.
+    // Pasted 32 px below and to the right of the original, without connections,
+    // even between the pasted modules (checked in the emulator).
     // Pasted Sample modules get new ids (F16_02458); the two halves of a
     // stereo sample are linked to each other again (F16_02314) and lined up
     // 32 px apart (F16_024C4).
-    int added[2] = { 0, 0 };
-    const Module* src[2] = { &source, partner };
-    for (int k = 0; k < 2 && src[k]; ++k) {
-        Module m = *src[k];
-        m.rect = { (int16_t) (m.rect[0] + 24), (int16_t) (m.rect[1] + 24), (int16_t) (m.rect[2] + 24), (int16_t) (m.rect[3] + 24) };
+    std::vector<int> added;
+    for (const auto& item : items) {
+        Module m = item.module;
+        m.rect = { (int16_t) (m.rect[0] + 32), (int16_t) (m.rect[1] + 32), (int16_t) (m.rect[2] + 32), (int16_t) (m.rect[3] + 32) };
         if (m.type == kSample) { m.sampC[0] = 0; m.sampC[1] = 0; m.kind = 2001; }
         patch.modules.push_back(m);
-        added[k] = (int) patch.modules.size();
-        if (m.type == kSample) sampleId(patch, added[k]);
+        added.push_back((int) patch.modules.size());
+        if (m.type == kSample) sampleId(patch, added.back());
     }
-    if (added[1]) {
-        const bool firstIsLeft = source.sampC[2] == 1;
-        const int l = firstIsLeft ? added[0] : added[1], r = firstIsLeft ? added[1] : added[0];
-        linkSamplePair(patch, l, r);
-        auto& lr = patch.modules[(size_t) l - 1].rect;
-        auto& rr = patch.modules[(size_t) r - 1].rect;
-        lr = { rr[0], (int16_t) (rr[1] - 32), rr[2], (int16_t) (rr[3] - 32) };
-    } else if (patch.modules.back().type == kSample) {
-        patch.modules.back().sampC[2] = 0; // a copy of one half alone is mono
+    for (size_t k = 0; k < items.size(); ++k) {
+        if (items[k].partner > (int) k) {
+            const bool firstIsLeft = items[k].module.sampC[2] == 1;
+            const int a = added[k], b = added[(size_t) items[k].partner];
+            const int l = firstIsLeft ? a : b, r = firstIsLeft ? b : a;
+            linkSamplePair(patch, l, r);
+            auto& lr = patch.modules[(size_t) l - 1].rect;
+            auto& rr = patch.modules[(size_t) r - 1].rect;
+            lr = { rr[0], (int16_t) (rr[1] - 32), rr[2], (int16_t) (rr[3] - 32) };
+        } else if (items[k].partner < 0 && items[k].module.type == kSample) {
+            patch.modules[(size_t) added[k] - 1].sampC[2] = 0; // a copy of one half alone is mono
+        }
     }
-    patchView.selected = added[0];
+    for (const int i : alsoSelect) added.push_back(i);
+    patchView.setSelection(added);
     refreshModuleWindows();
     patchView.repaint();
     changed();
@@ -1322,8 +1386,9 @@ void MainComponent::setLoop(int32_t start, int32_t end)
 
 bool MainComponent::soundSelectionActive() const
 {
+    // Only with the Sample's window in front; from the patch window the Edit menu works on the modules (F15_00DCE).
     const int i = patchView.selected;
-    return i >= 1 && i <= (int) patch.modules.size() && patch.modules[(size_t) i - 1].type == kSample && soundShown == i;
+    return !patchWindow->isActive() && i >= 1 && i <= (int) patch.modules.size() && patch.modules[(size_t) i - 1].type == kSample && soundShown == i;
 }
 
 void MainComponent::soundEdit(int id)

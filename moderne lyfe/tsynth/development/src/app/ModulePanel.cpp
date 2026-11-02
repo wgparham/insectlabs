@@ -37,19 +37,115 @@ void ModulePanel::addField(const juce::String& name, int lo, int hi, std::functi
 void ModulePanel::commit(Field& f)
 {
     const int hi = f.hiNow ? f.hiNow() : f.hi;
-    const int v = juce::jlimit(f.lo, hi, f.edit->getText().getIntValue());
-    f.edit->setText(juce::String(v), false);
-    if (f.accepts && !f.accepts(v)) { // the original refuses the change with an alert
+    const auto refuse = [&f](const char* message) { // the original refuses the change with an alert
         f.edit->setText(juce::String(f.get()), false);
-        juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "TurboSynth", f.refusal ? f.refusal : "Inappropriate values abound!  Don't panic.  Please make sure all values are reasonable.");
-        return;
+        juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "TurboSynth", message);
+    };
+    const char* const outOfRange = "Inappropriate values abound!  Don't panic.  Please make sure all values are reasonable.";
+    const auto text = f.edit->getText();
+    if (f.refuses) { // checked in the emulator on the Mixer's Info box: "-1", "12a" and "1.5" are not numbers; an empty field is 0
+        if (!text.containsOnly("0123456789")) { refuse("Enter only numbers to this field."); return; }
+        const auto wide = text.getLargeIntValue();
+        if (text.length() > 10 || wide < f.lo || wide > hi) { refuse(outOfRange); return; }
     }
+    const int v = juce::jlimit(f.lo, hi, text.getIntValue());
+    f.edit->setText(juce::String(v), false);
+    if (f.accepts && !f.accepts(v)) { refuse(f.refusal ? f.refusal : outOfRange); return; }
     if (v != f.get()) {
         f.set(v);
         edited();
         if (hasEnvelope) // the breakpoints may have changed: redraw the envelope
             juce::MessageManager::callAsync([self = juce::Component::SafePointer<ModulePanel>(this)] { if (self) self->show(self->patch, self->index); });
     }
+}
+
+// The waveforms stay in time order; the selection and the current waveform follow them.
+void ModulePanel::sortWaves(Module& m)
+{
+    std::vector<int> order(m.waveforms.size());
+    for (size_t k = 0; k < order.size(); ++k) order[k] = (int) k;
+    std::stable_sort(order.begin(), order.end(), [&m](int a, int b) { return m.waveforms[(size_t) a].timeMs < m.waveforms[(size_t) b].timeMs; });
+    std::vector<Waveform> sorted;
+    std::set<int> selected;
+    int current = 0;
+    for (size_t k = 0; k < order.size(); ++k) {
+        sorted.push_back(m.waveforms[(size_t) order[k]]);
+        if (waveSelection.count(order[k])) selected.insert((int) k);
+        if (order[k] == wave) current = (int) k;
+    }
+    m.waveforms = std::move(sorted);
+    waveSelection = std::move(selected);
+    wave = current;
+}
+
+bool ModulePanel::wavesSelected() const
+{
+    return !waveSelection.empty();
+}
+
+bool ModulePanel::canSelectAllWaves() const // F39_012D2: there are waveforms and some are not selected
+{
+    const auto* m = module();
+    return m && waveSelection.size() < m->waveforms.size();
+}
+
+void ModulePanel::selectAllWaves() // F39_01398: sets each waveform's flag (+338)
+{
+    const auto* m = module();
+    if (!m) return;
+    waveSelection.clear();
+    for (int k = 0; k < (int) m->waveforms.size(); ++k) waveSelection.insert(k);
+    timeline.selection = waveSelection;
+    timeline.repaint();
+}
+
+void ModulePanel::clearWaves() // The original allows none to be left, and a new Oscillator starts with none.
+{
+    auto* m = module();
+    if (!m || waveSelection.empty()) return;
+    for (auto it = waveSelection.rbegin(); it != waveSelection.rend(); ++it) m->waveforms.erase(m->waveforms.begin() + *it);
+    waveSelection.clear();
+    wave = 0;
+    harmIndex = -1;
+    edited();
+    show(patch, index);
+}
+
+// F39_0242C and F39_02482: the copies are shifted right by the span of the selected icons, from the
+// left edge of the first to the right edge of the last, and become the selection.
+void ModulePanel::duplicateWaves()
+{
+    auto* m = module();
+    if (!m || waveSelection.empty()) return;
+    constexpr int kIconWidth = 32;
+    int first = 32767, last = 0;
+    for (const int i : waveSelection) {
+        first = juce::jmin(first, (int) m->waveforms[(size_t) i].timeMs);
+        last = juce::jmax(last, (int) m->waveforms[(size_t) i].timeMs + kIconWidth);
+    }
+    const int span = last - first;
+    std::set<int> copies;
+    for (const int i : waveSelection) {
+        Waveform w = m->waveforms[(size_t) i];
+        w.timeMs = (int16_t) juce::jmin(32767, w.timeMs + span);
+        w.rect[1] = (int16_t) (w.rect[1] + span);
+        w.rect[3] = (int16_t) (w.rect[3] + span);
+        copies.insert((int) m->waveforms.size());
+        m->waveforms.push_back(w);
+    }
+    waveSelection = std::move(copies);
+    wave = *waveSelection.begin();
+    sortWaves(*m);
+    harmIndex = -1;
+    edited();
+    show(patch, index);
+}
+
+void ModulePanel::armWave(const Waveform& w)
+{
+    armedWave = w;
+    timeline.placing = true;
+    timeline.setMouseCursor(juce::MouseCursor::CrosshairCursor);
 }
 
 void ModulePanel::show(Patch* p, int i)
@@ -78,15 +174,17 @@ void ModulePanel::show(Patch* p, int i)
         addField("Sample rate (Hz)", 100, 100000, [m] { return m->sampleRate; }, [m](int v) { m->sampleRate = v; });
         // The original refuses a rate that would leave the length over 32 seconds (checked by hand: 1,411,200 at 40,000 Hz; the Oscillator uses the same bound, F39_004EC).
         fields.back()->accepts = [m](int rate) { return m->length <= 32 * rate; };
-        // The envelope box accepts down to 0 samples (checked by hand); the Oscillator refuses below 32.
-        addField("Length (samples)", m->type == kOscillator ? 32 : 0, m->type == kOscillator ? 2147483 : 1411200, [m] { return m->length; }, [m](int v) {
+        fields.back()->refuses = true;
+        // The envelope and Mixer boxes accept down to 0 samples (checked in the emulator); the Oscillator refuses below 32.
+        addField("Length (samples)", m->type == kOscillator ? 32 : 0, 2147483, [m] { return m->length; }, [m](int v) {
             m->length = v;
             // Breakpoints past the new end are dropped, as the original does.
             const int64_t endMs = (int64_t) v * 1000 / juce::jmax(1, m->sampleRate);
             m->points.erase(std::remove_if(m->points.begin(), m->points.end(), [endMs](const EnvPoint& p) { return p.timeMs > endMs; }), m->points.end());
         });
-        // The original caps a sound at 32 seconds at its sample rate (1,411,200 samples at 44,100 Hz; 1,400,000 is fine at 43,750 Hz).
+        // The original caps a sound at 32 seconds at its sample rate (1,411,200 samples at 44,100 Hz; 2,147,483 at 100,000 Hz, where that lower cap applies).
         fields.back()->hiNow = [m] { return std::min(2147483, 32 * m->sampleRate); };
+        fields.back()->refuses = true;
         // The original refuses a length that would take the patch past its memory.
         fields.back()->accepts = [this, m](int v) { return !patch || DocumentInfo::samplesUsed(patch->modules) - m->length + v <= DocumentInfo::kModel1Budget; };
         fields.back()->refusal = DocumentInfo::kMemoryMessage;
@@ -120,20 +218,43 @@ void ModulePanel::show(Patch* p, int i)
         timeline.durationMs = (int) juce::jlimit<int64_t>(1, 32767, (int64_t) m->length * 1000 / juce::jmax(1, m->sampleRate));
         timeline.waves.clear();
         for (const auto& w : m->waveforms) timeline.waves.push_back({ w.timeMs, &w.samples, juce::String(w.name) });
-        timeline.selected = wave;
+        if (waveSelectionFor != index) { waveSelection = { wave }; waveSelectionFor = index; } // a window opens with its current waveform chosen
+        for (auto it = waveSelection.begin(); it != waveSelection.end();) it = *it < (int) m->waveforms.size() ? std::next(it) : waveSelection.erase(it);
+        timeline.selection = waveSelection;
         timeline.onSelect = [this](int i) {
-            wave = i;
+            waveSelection = timeline.selection;
+            if (i >= 0) wave = i;
+            else if (!waveSelection.empty() && !waveSelection.count(wave)) wave = *waveSelection.begin();
             juce::Component::SafePointer<ModulePanel> self(this);
             juce::MessageManager::callAsync([self] { if (self) self->show(self->patch, self->index); });
         };
-        timeline.onMoved = [this](int i, int ms) {
+        timeline.onPlace = [this](int ms) {
             auto* mm = module();
-            if (!mm || i >= (int) mm->waveforms.size()) return;
-            mm->waveforms[(size_t) i].timeMs = (int16_t) ms;
-            const Waveform moved = mm->waveforms[(size_t) i];
-            std::stable_sort(mm->waveforms.begin(), mm->waveforms.end(), [](const Waveform& a, const Waveform& b) { return a.timeMs < b.timeMs; });
-            for (int k = 0; k < (int) mm->waveforms.size(); ++k)
-                if (mm->waveforms[(size_t) k].timeMs == moved.timeMs && mm->waveforms[(size_t) k].name == moved.name) { wave = k; break; }
+            if (!mm || !armedWave) return;
+            Waveform w = *armedWave;
+            armedWave.reset();
+            w.timeMs = (int16_t) ms;
+            w.rect = { 0, w.timeMs, 32, (int16_t) (w.timeMs + 32) };
+            wave = (int) mm->waveforms.size();
+            mm->waveforms.push_back(w);
+            sortWaves(*mm);
+            harmIndex = -1;
+            edited();
+            juce::Component::SafePointer<ModulePanel> self(this);
+            juce::MessageManager::callAsync([self] { if (self) self->show(self->patch, self->index); });
+        };
+        timeline.onMoved = [this](int by) {
+            auto* mm = module();
+            if (!mm) return;
+            const int top = juce::jmin(32767, timeline.durationMs);
+            for (const int i : waveSelection) {
+                auto& w = mm->waveforms[(size_t) i];
+                const int16_t was = w.timeMs;
+                w.timeMs = (int16_t) juce::jlimit(0, top, w.timeMs + by);
+                w.rect[1] = (int16_t) (w.rect[1] + w.timeMs - was);
+                w.rect[3] = (int16_t) (w.rect[3] + w.timeMs - was);
+            }
+            sortWaves(*mm);
             harmIndex = -1;
             edited();
             juce::Component::SafePointer<ModulePanel> self(this);
@@ -178,15 +299,17 @@ void ModulePanel::show(Patch* p, int i)
         }
         addWave.onClick = [this] {
             if (auto* mm = module()) {
-                Waveform w = mm->waveforms.empty() ? makeModule(kOscillator, 44100, 1).waveforms[0] : mm->waveforms[(size_t) wave];
-                w.timeMs = (int16_t) juce::jmin(32767, w.timeMs + 100);
+                const bool first = mm->waveforms.empty();
+                Waveform w = first ? sineWaveform() : mm->waveforms[(size_t) wave];
+                w.timeMs = (int16_t) (first ? 0 : juce::jmin(32767, w.timeMs + 100));
                 mm->waveforms.insert(mm->waveforms.begin() + (mm->waveforms.empty() ? 0 : wave + 1), w);
                 wave = mm->waveforms.empty() ? 0 : wave + 1;
+                waveSelection = { wave };
                 edited(); show(patch, index);
             }
         };
         removeWave.onClick = [this] {
-            if (auto* mm = module(); mm && mm->waveforms.size() > 1) { mm->waveforms.erase(mm->waveforms.begin() + wave); wave = juce::jmax(0, wave - 1); edited(); show(patch, index); }
+            if (auto* mm = module(); mm && mm->waveforms.size() > 1) { mm->waveforms.erase(mm->waveforms.begin() + wave); wave = juce::jmax(0, wave - 1); waveSelection = { wave }; edited(); show(patch, index); }
         };
         addAndMakeVisible(addWave);
         addAndMakeVisible(removeWave);
@@ -273,7 +396,7 @@ void ModulePanel::show(Patch* p, int i)
         soundInfo.setColour(juce::Label::textColourId, classic::theme().ink);
         addAndMakeVisible(soundInfo);
     }
-    if (m->type == kWaveshaper || hasEnvelope || (m->type == kOscillator && !m->waveforms.empty()) || m->type == kSample || isOutput) setupTools(*m);
+    if (m->type == kWaveshaper || hasEnvelope || m->type == kOscillator || m->type == kSample || isOutput) setupTools(*m);
     resized();
     repaint();
 }
@@ -330,8 +453,14 @@ void ModulePanel::setupTools(Module& m)
         tools.setTip(presets::kWavePresets, "Load a waveform file...");  // the disk, the last quarter
         tools.onTool = [this](int code) {
             auto* mm = module();
-            if (!mm || wave >= (int) mm->waveforms.size()) return;
+            if (!mm) return;
+            armedWave.reset();
+            timeline.placing = false;
+            timeline.setMouseCursor(juce::MouseCursor::NormalCursor);
             const int w = wave;
+            // With no waveform selected a preset or file goes on the time line at the next click, as in the
+            // original's Oscillator window (checked in the emulator); with one selected it changes that waveform.
+            const bool placing = waveSelection.empty();
             if (code == kMode + 2 || code == kMode + 3) {
                 harmonicMode = code == kMode + 3;
                 juce::Component::SafePointer<ModulePanel> self(this);
@@ -353,9 +482,9 @@ void ModulePanel::setupTools(Module& m)
             }
             if (code == presets::kWavePresets) {
                 if (onChooseWaveform)
-                    onChooseWaveform([this, w](const juce::File& f) {
+                    onChooseWaveform([this, w, placing](const juce::File& f) {
                         auto* m2 = module();
-                        if (!m2 || w >= (int) m2->waveforms.size()) return;
+                        if (!m2 || (!placing && w >= (int) m2->waveforms.size())) return;
                         Waveform loaded;
                         std::string err;
                         if (!loadWaveform(f.getFullPathName().toStdString(), loaded, &err)) {
@@ -363,6 +492,7 @@ void ModulePanel::setupTools(Module& m)
                             return;
                         }
                         loaded.name = f.getFileName().substring(0, 31).toStdString(); // most original files hold junk in the name field
+                        if (placing) { armWave(loaded); return; }
                         loaded.timeMs = m2->waveforms[(size_t) w].timeMs; // keeps its place on the time line
                         loaded.rect = m2->waveforms[(size_t) w].rect;
                         m2->waveforms[(size_t) w] = loaded;
@@ -372,6 +502,13 @@ void ModulePanel::setupTools(Module& m)
                     });
                 return;
             }
+            if (placing && code < kMod) {
+                Waveform preset;
+                presets::wavePreset(preset, code);
+                armWave(preset);
+                return;
+            }
+            if (w >= (int) mm->waveforms.size()) return;
             auto& wf = mm->waveforms[(size_t) w];
             if (harmonicMode) {
                 if (code < kMod) { presets::harmonicPreset(harm, code); wf.name = presets::wavePresetName(code); }

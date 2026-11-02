@@ -442,7 +442,7 @@ The values: 0.5, 0.66667, 0.79459, 0.94379, 0.98499, 1.0, 1.01500, 1.05951, 1.25
 
 - **Look:** a JUCE standalone in `src/app` with a Classic Mac look (the user asked for one "closer to its original look", with a dark mode). Light is black on white with a dither desktop and pinstriped windows; View > Dark Mode is the same drawing in warm light ink on charcoal, saved in `TurboSynth.settings`.
 - **Icons:** the original ICON resources are embedded in `src/app/ClassicIcons.cpp`, generated from the 2.22 resource fork. Module icons are numbered by kind: 2000 osc, 2001 sample, 2002 noise, 3000–3012 processors (3008 expanding stretcher, 3010 compressing stretcher), 7000–7002 outputs. Tool icons: 1000 arrow, 1001 eraser, 1003 speaker, 1005 patch cord, 1006 pencil, 1007 rake (Harmonic window). 7001 and 7002 are the left and right halves of the stereo jack (each lacks one border), and 2004 and 2003 the left and right halves of a linked stereo sample.
-- **Patch window:** the original's palette, three to a row: arrow, patch cord, eraser; Mixer, Info, speaker; then the module types in the original's order (checked in the emulator 2026-10-30). Place a module by clicking its icon, then the patch. Patch cord or Shift-drag connects, the eraser removes, the speaker tool hears a module, and the Info tool or a double-click opens it (an empty Sample module asks for a sound, F28_00628). Without a DSP card the original shows the Diffuser crossed out (icon 3013); the port computes it, so it shows 3012. The view fits large patches.
+- **Patch window:** the original's palette, three to a row: arrow, patch cord, eraser; Mixer, Info, speaker; then the module types in the original's order (checked in the emulator 2026-10-30). Place a module by clicking its icon, then the patch. The patch cord connects, the eraser removes, the speaker tool hears a module, and the Info tool or a double-click opens it (an empty Sample module asks for a sound, F28_00628). Without a DSP card the original shows the Diffuser crossed out (icon 3013); the port computes it, so it shows 3012. The view fits large patches.
 - **Windows (2026-10-30):** as in the original, a desktop holds the patch window and one window per opened module (double-click, or the Info tool). Windows move by the title bar, resize by the grow box and close by the close box; the front one has the pinstriped title and is the module the menus act on. A module window holds its settings: numeric fields, a breakpoint editor (envelope family), drawable tables (oscillator waves, shaper) and the tool palette.
 - **Sound:** a Sample or Output window shows its sound beside its palette, with Play and Stop and the play cursor; one live sound view moves to whichever of those windows is in front, and the others keep a picture of theirs. File > Export Sound writes 16-bit WAV or AIFF.
 - **Snapshots:** `TurboSynth [patch] --snapshot out.png [--dark] [--select N]` renders the window off screen (for docs and tests).
@@ -624,7 +624,7 @@ The module windows' palettes, recovered from the window code and ported in `src/
 - **Convert to Oscillator (dialog 10015, F6_00F62):** "Extract a waveform every" ms, default 50, 20–1000; the fundamental, default FixDiv(rate, loop length) with a loop or the Parameter Manager's default frequency without, accepted 20 Hz to rate / 2; "Track frequency changes", off. The new module (F36_001C8) is an Oscillator at that frequency with the Sample's rate, length, name and position. P = rate / FixRound(freq) samples; window min(P, 200); search span (P·3 as a word) / 2. Every interval (time = i · interval ms, while time · rate / 1000 ≤ length − rate / 30, at least once): the cycle start is the position in [t, t + span] whose window + 1 samples best match those at the previous cycle's end (F6_01154: least summed |difference|, ties to the later position; the first match is against the sound's start); the end is start + P, or with tracking the best match for the start's window in [start + 2P/3, … + span]; then end − 2 is refined over 5 positions on the single first sample. The cycle is resampled to 256 points by F39_02870 (step FixRatio(cycle bytes, 512)) without normalizing, named "Waveform", with `+32E` its time and the rect (time, 0, time + 32, 32). The original reads past the buffer near the end; the port reads zeros there.
 - **Send Loop to Output (Sample window, CODE 28):** messages 14 (loop start) and 15 (loop end), then 13. TBLOCK passes 14 and 15 on to the modules it feeds (F23_014F4); TOUTPUT (F23_018F4) stores them as its loop start `+12E` and end `+132` and redraws.
 - **In the port (2026-10-31):** Edit has Convert to Sample (now with the confirmation), Convert to Envelope, Convert to Oscillator and Send Loop to Output with the original's shortcuts and enabling; File has Get Info (⌘I), which opens the module's window. `sampleedit::extractEnvelope` and `extractWaveforms` follow F6_011B0 and F6_00F62. The port keeps its own Undo for the conversions, where the original could not undo them.
-- **Not ported:** Select All (the port selects one module at a time), Save a Copy In, Save Waveform from the menu (the Oscillator window has it), Show Clipboard, printing, Auto Update SampleCell, Playback Options and Hardware Setup.
+- **Not ported:** Save a Copy In, Save Waveform from the menu (the Oscillator window has it), Show Clipboard, printing, Auto Update SampleCell, Playback Options and Hardware Setup.
 
 ## Cord rules (traced 2026-10-31, not yet compared with the port)
 
@@ -788,3 +788,128 @@ Labels (DITL 10009): Sample Rate Default, Length Default, Frequency Default (440
 - **−4EA setter callers:** no reference to F28_02D28 exists in the code or in any resource header, so it is reached indirectly. A static trace can't find its callers; a breakpoint trace in the emulator is needed.
 - **Output box write-back:** unresolved. F37_00492 does no range check, but whether an edited value is stored has not been traced. Needs an emulator test.
 - **Click tests (item 1):** not done by me. Keyboard shortcuts and menu popups did not reach the app from the test script, so the Info box, Compact Memory, Release Clipboard, Parameter Manager, and frequency ceiling need a manual click test.
+
+## Show Clipboard (item 35) enable state (traced 2026-11-01)
+- **Menu resource:** MENU 3 (Edit) lists Show Clipboard as the last item (19). Its enable flags are all set, so it starts enabled.
+- **Enable routine:** F23_02A48 (CODE 23, A5 jump table entry JT[846] at A5+$1A90) writes the menu state for the Options and Edit items. It first calls F5_0072C (JT[180]), which enables item 35 with flag 1 (along with item 36, Quit). Then it writes item 35 again: `move.w #$23`, `clr.w`, `jsr $6DA`, which passes flag 0. That write comes last, so the item ends up disabled.
+- **Helper:** F5_01DB6 (JT[215]) takes the item and a flag byte. A non-zero flag calls the EnableItem trap (A939); zero calls DisableItem (A93A).
+- **Result:** Show Clipboard is disabled whenever F23_02A48 runs, and nothing in the code sets it back to enabled. This matches the emulator: it stays greyed out in every case tried.
+- **Runtime caller (confirmed 2026-11-02, MAME Quadra 950):** there is no direct call to JT[846]. It is reached through `jsr $17FA(A5)` (JT slot at A5+$17F8, CODE 18 offset $13FC), which leaves the stack unchanged, so it acts as a method dispatch. The two call sites are F5_01298, passing the object in global −$752, and F5_0047A, passing the next object from field +2 of the current one (in F5_00462, which F5_0072C calls first). This looks like MacApp's menu setup walking its target chain, with F23_02A48 as the application-level override. The MacApp names are inferred, not read from the binary.
+- **Trace result:** the JT[846] slot was hit 5 times during launch and two scripted Cmd-A presses. The first hit is at the unloaded stub, so it is probably counted twice by the segment load, which leaves 4 calls. That matches 4 calls to JT[180] and 4 writes of item 35 with flag 0, all from return address F23_02ABE. Edit menu enableFlags bit 19 (Show Clipboard) read 1 before the first menu setup and 0 at every later sample (every 5 frames). F5_0072C's enable at F5_00756 uses a direct call, so the jump table breakpoint can't see it; that part remains static evidence.
+- **Other enables:** a byte search of all CODE resources found no other `move.w #$23` followed by the enable helper. This wouldn't catch an item number passed in another form.
+- **Edit title after Cmd-A (user's check and scripted run, 2026-11-02):** in a new document holding only the Output, Cmd-A selects the Output and the Edit title goes grey (enableFlags 00000000). Clicking it opens the menu with every item grey, and the title stays grey (the user's report and the scripted run agree). It greys because nothing is enabled: the Output can't be cut or copied, and Select All disables itself once everything is selected. With a Mixer as well, Cmd-A leaves Undo, Cut, Copy, Clear and Duplicate enabled and the title black. After Cmd-A and a click in empty space, Select All is enabled and the title black. Port difference: the port's menu titles never grey, and Select All from the patch window isn't in the port yet.
+- **Manual versus SC 2.22:** the reconstructed manual says of this item, "Displays the contents of the clipboard", and its Edit menu figure doesn't mark it disabled. SC 2.22 disables it every time, and the user found no state that enables it. The port follows the program. Whether an earlier version enabled it hasn't been checked.
+- **Port:** the port shows Show Clipboard greyed out in Edit, which matches.
+
+## Parameter Manager frequency limit (confirmed 2026-11-01)
+- CODE 6 at 015CC–015E6: the default sample rate (global −$4F2) is divided by 2 (F1_020FE, via A5 $2BA), then the value goes through the range check F1_01B2A, which refuses a frequency above that Nyquist limit. This matches the port's `jlimit(0, rate / 2, …)` in the Parameter Manager OK handler.
+
+## Mixer Info box (partial, 2026-11-01)
+- F16_04390 (CODE 16) creates the dialog and stores the module (already known). It does not check fields.
+- F16_043F0 (CODE 16) is a drawing routine (MoveTo and LineTo calls), not a field check.
+- The Mixer's field check is still not located. Until it is, the port's Mixer uses the envelope box's rules, which the notes say the Mixer shares. Confirm in the emulator.
+
+## Mixer window layout (manual figure p033_b, 2026-11-01)
+- The manual's Mixer window shows one column per connected input: the module's name, a vertical slider, and the level as a percentage under it (for example "81%", "22%", "66%"). A scroll bar along the bottom reaches the rest when there are more inputs than fit. The window's title is "Mixer-1".
+- The port's Mixer (ModulePanel.cpp, kMixer) shows only text fields labelled "Input N level", 0 to 100. It has no sliders, no module names and no scroll bar. This is a layout difference, not a limit difference.
+- The figure is a degraded scan, so the exact slider geometry should be checked in the emulator when the manual images are recovered.
+
+## Cord rules compared with the port (2026-11-01)
+- The port's PatchView::cordRefusal matches F16_045B6 in order: duplicate cords and the output message, the input limits (Oscillator, Sample and Noise 0; Modulator 2; Mixer 32; others 1), and the feedback check (a path from the destination back to the source). The port's feedback check walks upstream from the source, which finds the same loops as the original's forward check.
+- **Fixed:** a cord from a module to itself is now refused silently, as the original does. The port previously let it through the feedback check.
+
+## Range-check callers (2026-11-01, for the Mixer field search)
+- The range check is A5 $1B2A (JT[865], F24_00152). It has 15 call sites: CODE 6 (3, Parameter Manager), CODE 15 (2, Convert to Oscillator: 20–1000 ms and 20 Hz to rate ÷ 2), CODE 23 (2), CODE 28 (4, Sample), CODE 35 (2), CODE 38 (1), CODE 39 (3).
+- The CODE 23 call at $1324 checks a value against $7D00 (32000) and a limit from the module; the call at $13EC checks against $186A0 (100000, the rate maximum). These are the nearest to a generic module-box check. Which module types reach them is not yet traced, and the Mixer is one candidate.
+- The Mixer's Info box field checks are therefore not yet identified. The next step is the type dispatch leading to CODE 23 at $1290–$1330.
+
+## Mixer field limits: method-table route (2026-11-01, partly traced)
+- ts_methods.txt maps each method selector to its per-type routine. For TMIX the selectors are @00D94 (F9_00AB4), @00DD2 (F10_01490), @00E10 (F10_01470), @00E4E (F16_0213E), @00E70 (F23_02612), @00EB8 (F29_01DAA), @00F3E (F43_002CE) and @0188A (F43_00004).
+- @00E4E (F16_0213E) sets the Mixer's input limit to 32. This is the cord rule already compared with the port.
+- @00E70 (F23_02612) is a switch on a code value in D4 (5, 1, 4, 6 and others), with a per-type branch for each module type, the Mixer included. It is the likely home of the Mixer's Info field checks. The code values are not yet mapped to meanings, so the checks themselves are not yet identified.
+- Faster route: test the Mixer's Info box in the emulator (enter a Length or rate past the envelope's limits and see whether it is refused, and at what value).
+
+## F23_02612 (Mixer branch of @00E70), read 2026-11-01
+- The routine switches on the message code in D4: codes 5 and 10 (at $2674 and $268C), 1 (at $2644), 6, 7 and 8 (at $26C4), and anything else goes to F23_014F4.
+- Code 1 reads the Mixer's input list (module field +$12A) and passes the entries to $862.
+- Code 10 calls F23_025B8 and then F23_00E4C. F23_00E4C is not a Mixer limit: it doubles a sample count into bytes and compares it with the buffer size (+$116 and +$11A), so it is the memory-fit check.
+- No check against a 0–100 range appears in this routine. The manual's sliders are 0–100%, and the port's Mixer fields use that range. The limit is probably enforced by the slider, not a check.
+- Result: the Mixer's input levels are 0–100% (manual figure p033_b), matching the port. The Mixer's Length and Sample rate checks are not in this routine, so they still use the shared box rules.
+
+## Mixer Length and Sample rate (2026-11-01)
+- The other Mixer method routines are record-sizing and allocation: F10_01470 (base size 64 bytes plus F10_00A02) and F10_01490 (allocates the record). F29_01DAA is the Mixer's handle-locking routine. None of them checks a field.
+- So the Mixer's Length and Sample rate limits come from the shared Info box (the same box type as the envelope). The port already applies the envelope rules to the Mixer: Length up to 32 × rate and rate 100 to 100000.
+- Measured in the emulator 2026-11-02 (see the next section).
+
+## Mixer Info box, measured (2026-11-02)
+Run on SC 2.22 in MAME (Quadra 950, System 7.5.3), scripted with `MacEmu\tools\mame-scripts\drive.lua`, on a Mixer with no inputs. The box is opened with Cmd-I from the Mixer's window. The Info tool in the palette opens the document's memory box instead. "Stored" means the value was still there when the box was reopened.
+
+| Length | Sample Rate | Result |
+|---|---|---|
+| 0 | 44100 | accepted, stored |
+| empty | 44100 | accepted, stored as 0 |
+| 1411200 | 44100 | accepted, stored |
+| 1411201 | 44100 | "Inappropriate values abound!" |
+| 1000 | 99 | "Inappropriate values abound!" |
+| 1000 | 100 | accepted |
+| 1000 | 100000 | accepted, stored |
+| 1000 | 100001 | "Inappropriate values abound!" |
+| 2147483 | 100000 | accepted, stored |
+| 2147484 | 100000 | "Inappropriate values abound!" |
+| 2147483 | 44100 | "Inappropriate values abound!" |
+| 1411200 | 44099 | "Inappropriate values abound!" |
+| -1, 12a, 1.5 | 44100 | "Enter only numbers to this field." |
+
+- This confirms the shared rule above for the Mixer: Length 0 to min(2147483, 32 × rate), and rate from max(length / 32, 100) to 100000. So 1,411,200 is 32 × 44,100, not a fixed cap. The Mixer accepts up to 2,147,483 at 100,000 Hz.
+- After a refusal the box stays open with the entered text, and OK can be pressed again after correcting it. Length 1411200 and above leaves the watch cursor up for a while after OK.
+- The memory check wasn't exercised: 2,147,483 samples fitted in the 2,814,080 free in this session.
+- **Port:** the limits already matched, because the Length field's `hiNow` overrides its fixed maximum. The difference was that the port clamped an out-of-range value silently. Its Length and Sample Rate fields (ModulePanel.cpp) now refuse with the original's two alerts and put the old value back, whereas the original leaves the box open with the entered text. This applies to every module with those fields, on the strength of the same range check in the code (F23_011C0, F28_02396, F39_004EC). Only the Mixer's was run here. The "Enter only numbers" string is in CODE 6, 23, 28 and 39. The fixed 1,411,200 maximum, which had no effect, was changed to 2,147,483.
+
+## Select All and group selection, measured (2026-11-02)
+Run on SC 2.22 in MAME (Quadra 950, System 7.5.3), scripted with `MacEmu\tools\mame-scripts\drive.lua`, on new documents.
+
+**Code:**
+- Patch window: F15_00DCE at $1236 walks the modules and sets each one's selected flag (`+0E`, callback F15_00DB6), between two F18_0120C highlight calls.
+- Oscillator window: F39_01398 at $141A walks the waveforms and sets each one's flag (`+338`, callback F39_01380), then sends message 13. F39_012D2 enables the item when some waveform is unselected and there is at least one.
+- Waveform Duplicate: F39_0242C finds the leftmost left edge (`+332`) and rightmost right edge (`+336`) of the selected icons, and F39_02482 shifts each copy by that span, adding it to the time (`+32E`) and offsetting the rect. The copies are selected and the originals are not.
+
+**Patch window, seen on screen:**
+- Cmd-A selects every module, Output included. Select All then greys, and Cut, Copy, Clear and Duplicate stay enabled.
+- A plain click selects one module. A click on a member of a group keeps the group. Shift-click adds or removes one. A click in empty space deselects.
+- A drag from empty space draws a box that selects anything it touches, even partly. With Shift it toggles what it touches.
+- Dragging a member moves the whole group, Output included.
+- Duplicate and Paste place copies 32 px right and 32 px down, and copy no cords, even between copied modules. The copies become the selection.
+- A selected Output is never copied. After Duplicate it stays selected; after Paste it doesn't.
+- Clear and Cut remove the selected modules and their cords. A selected Output stays and stays selected.
+- Undo restores the modules, cords and selection. One exception: after Cmd-A, Duplicate and Undo, the Output came back unselected.
+- The Tab key cycles Arrow, Patch Cord, Eraser. Shift doesn't connect modules in the original.
+
+**Oscillator window, seen on screen:**
+- A new Oscillator has no waveforms, and Select All is grey until one is placed.
+- Cmd-A selects every waveform. With waveforms selected, Clear and Duplicate are enabled; Cut, Copy and Paste stay grey.
+- Shift-click and the selection box work as in the patch window, the box touching counts, and dragging moves the whole group.
+- Duplicate of waveforms at x 231 and 331 put copies at 363 and 463: a shift of 132, the span of the two 32-wide icons. Scale here is 1 px to 1 ms.
+- Clear can remove every waveform. Undo restores them, selected.
+
+**In the port:** `PatchView` and `WaveTimeline` now hold a selection set and behave as above. Cut, Copy, Paste, Clear and Duplicate work on the whole group, the paste offset is 32 (it was 24, which nothing had measured), and Undo restores the selection. Tab is added. The port's own Shift-drag cord shortcut is gone, because Shift now extends the selection as in the original. The Edit menu now works on the modules whenever the patch window is in front, even with a Sample selected; it used to act on the Sample's sound.
+
+**Empty Oscillators in the port (user's decision, 2026-11-02):** a placed Oscillator now starts with no waveforms, as in the original, and renders silence. With no waveform selected, a palette preset or loaded file goes on the time line at the next click and stays unselected, as in the original's Oscillator window. With one selected, the preset changes that waveform, because the port has one window where the original has separate Oscillator and Waveform windows. The + button still adds a waveform, a sine at 0 ms when there are none. Waveform rects now follow Move and Duplicate, and an empty Oscillator saved and reloaded correctly in the port (not tried in the original). A temporary 20-check test (since removed) passed.
+
+**Checked in the port:** a temporary 38-check test (since removed) drove the real MainComponent through fabricated mouse events and the menu commands, and all passed. Real mouse input and a stereo Sample pair in a group were not run.
+
+**Differences left in the port:**
+- After Cmd-A, Duplicate and Undo, the Output comes back selected.
+- The patch window's title is "Untitled", where the original says "Untitled-1".
+- With a group, the Convert commands act on the first selected module that qualifies, as the original's menu test finds it (F2_0095E). Running them on a group in the original wasn't tested.
+
+**Not tested in the original:** whether a second Paste lands further along, Select All in other module windows, and Shift-drag of a group.
+
+## Module names and the new document (2026-11-02)
+- **Names (CODE 16, table at $35FE):** Osc-, Samp-, Noise-, Amp Env-, Filter-, Spectral Inv-, Delay-, Stretcher- (expanding, type 15), Time Comp- (compressing, type 18), Pitch Shifter-, Pitch Env-, Modulator-, Resonator-, Diffuse-, Waveshaper-, Mixer-. Osc-1, Mixer-1 and Amp Env-1 were also seen in the emulator; the rest come from the code.
+- **Number (F16_02BAA, F16_02B60, F16_02B20):** the lowest n from 1 for which no module in the document has that exact name (F1_0239C is case-sensitive). So a cleared or renamed module's number comes back. The port had counted the modules of the same type.
+- **New document (F23_02C24):** only the Output, at SetRect(64, 192, 96, 224). In stereo the right jack is at left 96, 32 px beside it, which `setStereo` already does.
+- **Port:** `nextModuleName` follows this, and a new document matches. It is silent until something is patched, as in the original. The patch view now caps its zoom at 1.5, its default, where it could reach 2.5, which would have made a lone Output very large. Small patches therefore show at 1.5, and the view still shrinks as a patch outgrows the window. The old starter patch fitted at about 1.1, so icons in a new document look larger than they did. This also limits how far a small saved patch enlarges. A temporary 27-check test (since removed) passed.
+
+## Memory indicator "Lo!" (resolved 2026-11-01)
+- "Lo!" is not a text string in the resources or the code, so the earlier search found nothing. The indicator's ten levels are the icon resources ICON 9150 to 9159 (extracted as ts/rsrc/sc222/ICON_9150.bin to ICON_9159.bin). Level 9 (ICON 9159) is the "Lo!" cell, so the label is part of that bitmap.
+- The port matches: its palette and Info box draw level 9 with "Lo!".

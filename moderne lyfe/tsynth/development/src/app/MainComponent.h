@@ -67,11 +67,19 @@ private:
     // Edit menu.
     void undo();
     void redo();
-    void stepHistory(std::vector<turbosynth::Patch>& from, std::vector<turbosynth::Patch>& to);
+    struct HistoryEntry { turbosynth::Patch patch; std::vector<int> selection; }; // Undo puts the selection back too
+    void stepHistory(std::vector<HistoryEntry>& from, std::vector<HistoryEntry>& to);
     void resetHistory();          // a new or opened document starts without undo
     void copySelected();
     void clearSelected();
-    void paste(const turbosynth::Module&, const turbosynth::Module* partner = nullptr); // partner: the other half of a stereo sample
+    struct ClipItem { turbosynth::Module module; int partner = -1; }; // partner: the slot of the other half of a stereo sample
+    std::vector<ClipItem> selectedItems() const; // the selected modules, without Outputs
+    void paste(const std::vector<ClipItem>&, const std::vector<int>& alsoSelect = {});
+    int firstSelected(const std::function<bool(int)>&) const; // the first selected module that qualifies, as the original's menu tests find it (F2_0095E)
+    std::function<bool(int)> convertibleTest() const; // Convert to Sample: neither an Output nor a Sample
+    std::function<bool(int)> monoSampleTest() const;  // Convert to Envelope or Oscillator: a Sample with no partner
+    std::function<bool(int)> linkedHalfTest() const;  // Convert Stereo Sample to Dual Mono
+    ModulePanel* frontWavePanel() const;              // the panel of an Oscillator window in front, whose Edit menu works on its waveforms
     void convertToSample();
     void doConvertToSample(int index);
     void convertSample(bool oscillator); // Convert to Envelope / Oscillator
@@ -145,10 +153,10 @@ private:
 
     turbosynth::Patch patch;
     turbosynth::Patch committed;                 // the patch as of the last edit
-    std::vector<turbosynth::Patch> undoStack;    // earlier states, newest last
-    std::vector<turbosynth::Patch> redoStack;    // undone states, newest last
-    std::optional<turbosynth::Module> clipboard; // a cut or copied module
-    std::optional<turbosynth::Module> clipboardPartner; // the other half, when that was a stereo sample
+    std::vector<int> committedSelection;         // the selection going with it
+    std::vector<HistoryEntry> undoStack;         // earlier states, newest last
+    std::vector<HistoryEntry> redoStack;         // undone states, newest last
+    std::vector<ClipItem> clipboard;             // the cut or copied modules
     std::vector<int16_t> soundClipboard;         // a cut or copied piece of a sample (the left, for a stereo pair)
     std::vector<int16_t> soundClipboardRight;    // the right half's piece, when copied from a stereo pair
     int soundShown = 0;                          // the Sample module whose sound the sound view shows, or 0
