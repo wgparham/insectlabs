@@ -167,7 +167,7 @@ private:
     std::unique_ptr<InnerWindow> docWindow;
     bool autoPreview = false;                    // play after every edit
     struct Params {
-        int rate = 44100, length = 88200, frequency = 440;
+        int rate = 44100, length = 44100, frequency = 220; // the shipped DFLT 1, 2 and 3
         bool inheritRate = false, inheritLength = false, dynamicLength = false, convertSamples = false;
         bool monitorLoop = false;   // Parameter Manager item 20: Play loops the output's loop
         // Stereo Preferences (DITL 10040)

@@ -1250,11 +1250,6 @@ void MainComponent::applyDefaults(Module& m) const
     m.sampleRate = params.rate;
     m.length = params.length;
     if (m.type == kOscillator) m.oscFreq = params.frequency << 16;
-    if (!m.points.empty()) { // envelopes end at the new length
-        const int durMs = (int) juce::jmin<int64_t>(32767, (int64_t) m.length * 1000 / juce::jmax(1, m.sampleRate));
-        m.points.back().timeMs = (int16_t) durMs;
-        presets::setPointRect(m.points.back());
-    }
 }
 
 rules::Options MainComponent::ruleOptions() const

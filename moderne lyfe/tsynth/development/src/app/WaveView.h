@@ -61,25 +61,41 @@ private:
     int lastValue = 0;
 };
 
-// Envelope breakpoints, level 0..100 against time in ms. Drag points;
-// double-click adds one, right-click removes one.
-class BreakpointEditor : public juce::Component
+// The breakpoint window, as in the original (CODE 40). One pixel is a
+// millisecond and a level, so the view is as wide as the module is long.
+// With the arrow, press a point to move it or press anywhere else to add one
+// between its neighbours; gray lines follow the mouse until the release. The
+// eraser removes a point.
+class BreakpointEditor : public juce::Component, private juce::ScrollBar::Listener
 {
 public:
     struct Point { int level, timeMs; };
     std::vector<Point> points;
     int durationMs = 1000;
+    bool erasing = false;
+    bool pitchScale = false;              // the Pitch Envelope's scale markings
+    bool showType = false;                // the Spectral Inverter's Type: A = 1, B = 2
+    int type = 1;
     std::function<void()> onEdited;
+    std::function<void(int)> onType;
+    std::function<bool()> spaceIsLow;     // while it is low a new point is refused
+    BreakpointEditor();
+    void refresh();                       // after the points or the length changed
     void paint(juce::Graphics&) override;
+    void resized() override;
     void mouseDown(const juce::MouseEvent&) override;
     void mouseDrag(const juce::MouseEvent&) override;
-    void mouseUp(const juce::MouseEvent&) override { if (dragged >= 0 && onEdited) onEdited(); dragged = -1; }
-    void mouseDoubleClick(const juce::MouseEvent&) override;
+    void mouseUp(const juce::MouseEvent&) override;
 private:
-    juce::Rectangle<float> plot() const { return getLocalBounds().toFloat().reduced(6.0f, 8.0f); }
-    juce::Point<float> toScreen(const Point&) const;
-    int hit(juce::Point<float>) const;
-    int dragged = -1;
+    enum class Track { None, Add, Move, Erase };
+    void scrollBarMoved(juce::ScrollBar*, double) override { repaint(); }
+    juce::Point<int> viewPoint(juce::Point<float>) const;
+    juce::Point<int> constrain(juce::Point<int>) const;
+    juce::ScrollBar scroll { false };
+    Track track = Track::None;
+    int trackIndex = 0;
+    juce::Point<int> cursor, prev, next;
+    bool toEnd = false;                   // the last point: the second line runs level to the end of the view
 };
 
 // The Harmonic window: harmonics 1..64 as bars, 0..100% (level 0..0x7FFF).

@@ -2,6 +2,7 @@
 #include "ClassicLook.h"
 
 #include <algorithm>
+#include <cmath>
 
 void WaveView::setSamples(const std::vector<int16_t>& left, const std::vector<int16_t>& right, int sampleRate, const juce::String& text)
 {
@@ -181,75 +182,218 @@ void TableEditor::draw(juce::Point<float> pos)
 }
 
 // ---------------------------------------------------------------------------
-juce::Point<float> BreakpointEditor::toScreen(const Point& p) const
+namespace {
+// CURS 1001, the original's eraser, hot spot (7, 8).
+juce::MouseCursor eraserCursor()
 {
-    const auto r = plot();
-    return { r.getX() + (float) p.timeMs / (float) juce::jmax(1, durationMs) * r.getWidth(),
-             r.getBottom() - (float) p.level / 100.0f * r.getHeight() };
+    static const uint16_t data[16] = { 0x0000, 0x0000, 0x0000, 0x0000, 0x0111, 0x0223, 0x0447, 0x088F, 0x111E, 0x223C, 0x4478, 0xAAF0, 0xDDE0, 0xAAC0, 0xFF80, 0x0000 };
+    static const uint16_t mask[16] = { 0x0000, 0x0000, 0x0000, 0x01FF, 0x03FF, 0x07FF, 0x0FFF, 0x1FFF, 0x3FFF, 0x7FFE, 0xFFFC, 0xFFF8, 0xFFF0, 0xFFE0, 0xFFC0, 0xFF80 };
+    juce::Image im(juce::Image::ARGB, 16, 16, true);
+    for (int y = 0; y < 16; ++y)
+        for (int x = 0; x < 16; ++x)
+            if (mask[y] & (0x8000 >> x))
+                im.setPixelAt(x, y, data[y] & (0x8000 >> x) ? juce::Colours::black : juce::Colours::white);
+    return juce::MouseCursor(im, 7, 8);
 }
 
-int BreakpointEditor::hit(juce::Point<float> pos) const
+// A one-bit canvas for what QuickDraw draws with patterns and in XOR.
+class Bits
 {
-    for (int i = 0; i < (int) points.size(); ++i)
-        if (toScreen(points[(size_t) i]).getDistanceFrom(pos) < 6.0f) return i;
-    return -1;
+public:
+    Bits(juce::Image& im, juce::Colour inkIn, juce::Colour paperIn, int originX)
+        : pixels(im, juce::Image::BitmapData::readWrite), ink(inkIn), paper(paperIn), origin(originX), w(im.getWidth()), h(im.getHeight()) {}
+    void set(int x, int y, bool on = true) { x -= origin; if (x >= 0 && x < w && y >= 0 && y < h) pixels.setPixelColour(x, y, on ? ink : paper); }
+    void invert(int x, int y)
+    {
+        x -= origin;
+        if (x >= 0 && x < w && y >= 0 && y < h) pixels.setPixelColour(x, y, pixels.getPixelColour(x, y) == ink ? paper : ink);
+    }
+    template <class Plot>
+    void line(int x0, int y0, int x1, int y1, Plot plot) const
+    {
+        if (juce::jmax(x0, x1) < origin || juce::jmin(x0, x1) >= origin + w) return;
+        const int dx = std::abs(x1 - x0), dy = -std::abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1;
+        int err = dx + dy;
+        for (;;) {
+            plot(x0, y0);
+            if (x0 == x1 && y0 == y1) break;
+            const int e2 = 2 * err;
+            if (e2 >= dy) { err += dy; x0 += sx; }
+            if (e2 <= dx) { err += dx; y0 += sy; }
+        }
+    }
+private:
+    juce::Image::BitmapData pixels;
+    juce::Colour ink, paper;
+    int origin, w, h;
+};
+bool gray(int x, int y) { return ((x + y) & 1) == 0; }                                // qd.gray
+bool ltGray(int x, int y) { return (y & 1) == 0 ? (x & 3) == 0 : (x & 3) == 2; }      // qd.ltGray
+
+// The point's rectangle (F40_00C2C), grown by `by`, as PtInRect tests it.
+bool inPoint(const BreakpointEditor::Point& p, juce::Point<int> at, int by)
+{
+    const int h = p.timeMs, v = 100 - p.level;
+    return at.x >= h - 1 - by && at.x < h + 2 + by && at.y >= v - 1 - by && at.y < v + 2 + by;
+}
+constexpr int kPlotHeight = 102, kRuler = 103, kScrollBar = 16;
+}
+
+BreakpointEditor::BreakpointEditor()
+{
+    scroll.setAutoHide(false);
+    scroll.addListener(this);
+    addAndMakeVisible(scroll);
+}
+
+void BreakpointEditor::refresh()
+{
+    setMouseCursor(erasing ? eraserCursor() : juce::MouseCursor::NormalCursor);
+    resized();
+    repaint();
+}
+
+void BreakpointEditor::resized()
+{
+    scroll.setBounds(1, getHeight() - kScrollBar - 1, juce::jmax(0, getWidth() - 2), kScrollBar);
+    scroll.setRangeLimits(0.0, (double) juce::jmax(durationMs, getWidth() - 2));
+    scroll.setCurrentRange(scroll.getCurrentRangeStart(), (double) juce::jmax(1, getWidth() - 2));
+}
+
+juce::Point<int> BreakpointEditor::viewPoint(juce::Point<float> pos) const
+{
+    return { (int) std::floor(pos.x) - 1 + (int) scroll.getCurrentRangeStart(), (int) std::floor(pos.y) - 1 };
+}
+
+// F40_01B72, after MacApp keeps the mouse in the view.
+juce::Point<int> BreakpointEditor::constrain(juce::Point<int> p) const
+{
+    int h = juce::jlimit(0, durationMs, p.x);
+    if (trackIndex == 0) h = 0;
+    else {
+        h = juce::jmax(h, prev.x + 1);
+        h = juce::jmin(h, toEnd ? durationMs : next.x - 1);
+    }
+    return { h, juce::jlimit(0, 100, p.y) };
 }
 
 void BreakpointEditor::paint(juce::Graphics& g)
 {
     const auto& t = classic::theme();
     g.fillAll(t.paper);
+    const int left = (int) scroll.getCurrentRangeStart(), width = juce::jmax(1, getWidth() - 2);
+    juce::Image im(juce::Image::ARGB, width, kPlotHeight, false);
+    im.clear(im.getBounds(), t.paper);
+    {
+        Bits bits(im, t.ink, t.paper, left); // writes back when it goes out of scope
+        const auto solid = [&bits](int x, int y) { bits.set(x, y); };
+        if (pitchScale) // F40_01290: eleven lines ten pixels apart; the middle one is darker
+            for (int k = 0; k <= 10; ++k)
+                bits.line(left, k * 10, left + width, k * 10, [&bits, k](int x, int y) { if (k == 5 ? gray(x, y) : ltGray(x, y)) bits.set(x, y); });
+        int h = 0, v = pitchScale ? 50 : 100;
+        for (const auto& p : points) { bits.line(h, v, p.timeMs, 100 - p.level, solid); h = p.timeMs; v = 100 - p.level; }
+        if (!points.empty()) bits.line(h, v, durationMs, v, solid);
+        for (int k = 0; k < (int) points.size(); ++k) {
+            const int ph = points[(size_t) k].timeMs, pv = 100 - points[(size_t) k].level;
+            const bool erase = track == Track::Erase && k == trackIndex;
+            for (int y = -1; y <= 1; ++y)
+                for (int x = -1; x <= 1; ++x)
+                    bits.set(ph + x, pv + y, (x != 0 || y != 0) && (!erase || gray(ph + x, pv + y)));
+        }
+        if (track == Track::Add || track == Track::Move) { // F40_01AD2: drawn in gray, in XOR
+            const auto ghost = [&bits](int x, int y) { if (gray(x, y)) bits.invert(x, y); };
+            bits.line(prev.x, prev.y, cursor.x, cursor.y, ghost);
+            bits.line(cursor.x, cursor.y, toEnd ? durationMs + 1 : next.x, toEnd ? cursor.y : next.y, ghost);
+        }
+    }
+    g.setImageResamplingQuality(juce::Graphics::lowResamplingQuality);
+    g.drawImageAt(im, 1, 1);
+    g.saveState();
+    g.reduceClipRegion(1, 1, width, juce::jmax(0, getHeight() - kScrollBar - 3));
+    g.setOrigin(1 - left, 1);
+    g.setColour(t.ink);
+    g.setFont(classic::smallFont(9.0f));
+    if (pitchScale) {
+        static const char* const marks[11] = { "+12", "+7", "+4", "+1", nullptr, nullptr, nullptr, "-1", "-4", "-7", "-12" };
+        for (int k = 0; k <= 10; ++k)
+            if (marks[k]) g.drawSingleLineText(marks[k], 0, k * 10 + 4);
+    }
+    // F23_00246: a tick every 50 ms and a label every 100 ms.
+    for (int k = juce::jmax(0, left / 50 - 1); k * 50 <= left + width; ++k) {
+        g.fillRect(k * 50, kRuler, 1, 3);
+        if ((k & 1) == 0) g.drawSingleLineText(juce::String(k * 50 / 1000.0, 3) + " sec", k * 50, kRuler + 12);
+    }
+    if (showType) { // F40_01290: the mark goes beside the current type; any other value shows none
+        constexpr int kBaseline = 140, kA = 37, kB = 55, kMark = 6;
+        g.drawSingleLineText("Type:", 2, kBaseline);
+        g.drawSingleLineText("A", kA, kBaseline);
+        g.drawSingleLineText("B", kB, kBaseline);
+        if (type == 1 || type == 2)
+            g.fillEllipse((float) ((type == 1 ? kA : kB) - kMark), (float) kBaseline - 5.0f, 5.0f, 5.0f);
+    }
+    g.restoreState();
     g.setColour(t.ink);
     g.drawRect(getLocalBounds(), 1);
-    const auto r = plot();
-    g.setColour(t.gray);
-    for (int i = 1; i < 4; ++i) g.drawHorizontalLine((int) (r.getY() + r.getHeight() * (float) i / 4.0f), r.getX(), r.getRight());
-    g.setColour(t.ink);
-    juce::Path p;
-    for (size_t i = 0; i < points.size(); ++i) {
-        const auto s = toScreen(points[i]);
-        if (i == 0) p.startNewSubPath(s); else p.lineTo(s);
-    }
-    if (!points.empty()) p.lineTo(r.getRight(), toScreen(points.back()).y);
-    g.strokePath(p, juce::PathStrokeType(1.0f));
-    for (const auto& pt : points) {
-        const auto s = toScreen(pt);
-        g.setColour(t.paper); g.fillRect(juce::Rectangle<float>(7, 7).withCentre(s));
-        g.setColour(t.ink); g.drawRect(juce::Rectangle<float>(7, 7).withCentre(s), 1.0f);
-    }
 }
 
 void BreakpointEditor::mouseDown(const juce::MouseEvent& e)
 {
-    dragged = hit(e.position);
-    if (e.mods.isPopupMenu() && dragged >= 0 && points.size() > 1) {
-        points.erase(points.begin() + dragged);
-        dragged = -1;
+    track = Track::None;
+    if (e.mods.isPopupMenu()) return;
+    const auto at = viewPoint(e.position);
+    // F40_01674: the Type comes first, with either tool.
+    if (showType && at.x >= 30 && at.x < 70 && at.y >= 130 && at.y < 145) {
+        type = (at.x - 30) / 20 + 1;
         repaint();
-        if (onEdited) onEdited();
+        if (onType) onType(type);
+        return;
     }
+    // F40_01506: a point's own rectangle first; then, from the left, the first point the mouse is
+    // near or short of, which is the point a new one goes before.
+    const int count = (int) points.size();
+    int index = count;
+    bool on = false;
+    for (int k = 0; k < count && !on; ++k)
+        if (inPoint(points[(size_t) k], at, 0)) { index = k; on = true; }
+    for (int k = 0; k < count && !on; ++k) {
+        if (inPoint(points[(size_t) k], at, 4)) { index = k; on = true; }
+        else if (at.x < points[(size_t) k].timeMs - 5) { index = k; break; }
+    }
+    if (erasing) { if (on && index > 0) track = Track::Erase; } // the first point stays
+    else if (on) track = Track::Move;
+    else if (!spaceIsLow || !spaceIsLow()) track = Track::Add;
+    if (track == Track::None) return;
+    // F40_018D2: the neighbours the gray lines run to.
+    trackIndex = index;
+    const auto toView = [](const Point& p) { return juce::Point<int>(p.timeMs, 100 - p.level); };
+    prev = count > 0 ? toView(points[(size_t) juce::jmax(0, index - 1)]) : at;
+    const int following = track == Track::Add ? index : index + 1;
+    toEnd = following >= count;
+    next = toEnd ? juce::Point<int>(durationMs, 0) : toView(points[(size_t) following]);
+    cursor = constrain(at);
+    beginDragAutoRepeat(50);
+    repaint();
 }
 
 void BreakpointEditor::mouseDrag(const juce::MouseEvent& e)
 {
-    if (dragged < 0) return;
-    const auto r = plot();
-    auto& pt = points[(size_t) dragged];
-    pt.level = juce::jlimit(0, 100, (int) std::round((r.getBottom() - e.position.y) / r.getHeight() * 100.0f));
-    int tms = (int) std::round((e.position.x - r.getX()) / r.getWidth() * (float) durationMs);
-    const int lo = dragged > 0 ? points[(size_t) dragged - 1].timeMs : 0;
-    const int hi = dragged + 1 < (int) points.size() ? points[(size_t) dragged + 1].timeMs : durationMs;
-    pt.timeMs = dragged == 0 ? 0 : juce::jlimit(lo, hi, tms);
+    if (track == Track::None) return;
+    const int inner = getWidth() - 2;
+    if (e.x < 1) scroll.setCurrentRangeStart(scroll.getCurrentRangeStart() + juce::jmax(-16, e.x - 1));
+    else if (e.x > inner) scroll.setCurrentRangeStart(scroll.getCurrentRangeStart() + juce::jmin(16, e.x - inner));
+    cursor = constrain(viewPoint(e.position));
     repaint();
 }
 
-void BreakpointEditor::mouseDoubleClick(const juce::MouseEvent& e)
+void BreakpointEditor::mouseUp(const juce::MouseEvent& e)
 {
-    const auto r = plot();
-    Point p { juce::jlimit(0, 100, (int) std::round((r.getBottom() - e.position.y) / r.getHeight() * 100.0f)),
-              juce::jlimit(0, durationMs, (int) std::round((e.position.x - r.getX()) / r.getWidth() * (float) durationMs)) };
-    auto it = std::find_if(points.begin(), points.end(), [&](const Point& q) { return q.timeMs > p.timeMs; });
-    points.insert(it, p);
+    if (track == Track::None) return;
+    cursor = constrain(viewPoint(e.position));
+    const Point p { 100 - cursor.y, cursor.x };
+    if (track == Track::Add) points.insert(points.begin() + trackIndex, p);
+    else if (track == Track::Move) points[(size_t) trackIndex] = p;
+    else points.erase(points.begin() + trackIndex);
+    track = Track::None;
     repaint();
     if (onEdited) onEdited();
 }

@@ -332,17 +332,21 @@ Module makeModule(int type, int32_t sampleRate, int32_t length)
     m.sampleRate = sampleRate;
     m.length = length;
     m.rect = { 0, 0, 32, 32 };
-    const int durMs = (int) ((int64_t) length * 1000 / std::max(1, sampleRate));
-    auto env = [&](int a, int b) { m.points = { EnvPoint{ (int16_t) a, 0, {} }, EnvPoint{ (int16_t) b, (int16_t) std::min(durMs, 32767), {} } }; };
+    // F36 starts every envelope at +136 = 1. F16 then gives it one point at time 0:
+    // level 100 (F40_006AA), or level 50 for the Pitch Envelope (F40_00650).
+    auto env = [&m](int level) {
+        m.points = { EnvPoint{ (int16_t) level, 0, { (int16_t) (99 - level), -1, (int16_t) (102 - level), 2 } } };
+        m.envMode = 1;
+    };
     switch (type) {
     case kOscillator: {
         m.kind = 2000;
-        m.oscFreq = 440 << 16;
+        m.oscFreq = 220 << 16;
         break; }
     case kSample: m.kind = 2001; break;
-    case kAmpEnv: m.kind = 3000; env(100, 0); m.normalize = false; break;
-    case kFilter: m.kind = 3001; env(100, 0); break;
-    case kSpectralInverter: m.kind = 3002; env(0, 100); m.envMode = 1; break;
+    case kAmpEnv: m.kind = 3000; env(100); m.normalize = false; break;
+    case kFilter: m.kind = 3001; env(100); break;
+    case kSpectralInverter: m.kind = 3002; env(100); break;
     case kModulator: m.kind = 3003; m.p = { 50, 100, 1, 1, 2 }; break;
     case kWaveshaper: m.kind = 3004; for (int i = 0; i <= 256; ++i) m.shaper[(size_t) i] = (int16_t) std::clamp(i * 256 - 32768, -32768, 32767); break;
     case kMixer: m.kind = 3005; m.mixGains.fill(100); break;
@@ -352,7 +356,7 @@ Module makeModule(int type, int32_t sampleRate, int32_t length)
     case kStretchCompress: m.kind = 3010; m.p = { 1, 0, 1, 50, 0 }; break;
     case kResonator: m.kind = 3009; m.p = { 4, 40, 90, 1, 100 }; break;
     case kNoise: m.kind = 2002; m.p = { 44, 0, 50, 50, 0 }; break;
-    case kPitchEnv: m.kind = 3011; env(50, 50); break;
+    case kPitchEnv: m.kind = 3011; env(50); break;
     case kDiffuser: m.kind = 3012; m.p = { 3, 0, 60, 0, 0 }; break;
     case kOutput: m.kind = 7000; m.name = "Output"; break;
     case kOutputR: m.kind = 7002; m.name = "Output R"; break;
@@ -394,7 +398,7 @@ void setStereo(Patch& patch, bool stereo)
     }
     if (isStereo(patch)) return;
     if (left == patch.modules.end()) {
-        patch.modules.push_back(makeModule(kOutput, 44100, 88200));
+        patch.modules.push_back(makeModule(kOutput, 44100, 44100));
         left = patch.modules.end() - 1;
     }
     left->kind = 7001;

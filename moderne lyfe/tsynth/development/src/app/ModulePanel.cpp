@@ -318,12 +318,16 @@ void ModulePanel::show(Patch* p, int i)
         // The Sample window's tools are in the palette; the sound itself is edited beside them.
         break;
     case kAmpEnv: case kFilter: case kSpectralInverter: case kPitchEnv: {
-        if (m->type == kSpectralInverter)
-            addField("Pattern (1 = every other sample)", 0, 1, [m] { return (int) m->envMode; }, [m](int v) { m->envMode = (int16_t) v; });
         hasEnvelope = true;
         envelope.points.clear();
         for (const auto& pt : m->points) envelope.points.push_back({ pt.level, pt.timeMs });
         envelope.durationMs = (int) juce::jmax<int64_t>(1, (int64_t) m->length * 1000 / juce::jmax(1, m->sampleRate));
+        envelope.pitchScale = m->type == kPitchEnv;
+        envelope.showType = m->type == kSpectralInverter;
+        envelope.type = m->envMode;
+        envelope.onType = [this](int type) { if (auto* mm = module()) { mm->envMode = (int16_t) type; edited(); } };
+        envelope.spaceIsLow = [this] { return patch != nullptr && DocumentInfo::spaceIsLow(patch->modules); };
+        envelope.refresh();
         envelope.onEdited = [this] {
             if (auto* mm = module()) {
                 mm->points.clear();
@@ -576,18 +580,30 @@ void ModulePanel::setupTools(Module& m)
         tools.setTip(9, "Loop window: line up the loop end and start");
         break; }
     default: // the breakpoint envelopes
+        tools.addTools({ 1000, 1001 }, kMode);
         tools.addPresetPair(3100, 3101, 0);
         tools.addTools({ 3102, 3103, 3104, 3105, 3106, 3107 }, kMod);
+        tools.setTip(kMode, "Arrow: press a point to move it, or anywhere else to add one");
+        tools.setTip(kMode + 1, "Eraser: click a point to remove it");
         for (int p = 0; p < presets::kEnvPresets; ++p) tools.setTip(p, presets::envPresetName(p));
         for (int k = 0; k < presets::kEnvModifiers; ++k) tools.setTip(kMod + k, presets::envModifierName(k));
+        tools.active = { envelope.erasing ? kMode + 1 : kMode };
         tools.onTool = [this](int code) {
             auto* mm = module();
             if (!mm) return;
+            if (code >= kMode) {
+                envelope.erasing = code == kMode + 1;
+                envelope.refresh();
+                tools.active = { code };
+                tools.repaint();
+                return;
+            }
+            if (DocumentInfo::spaceIsLow(patch->modules)) return; // F40_01674: presets and modifiers do nothing while memory is low
             if (code < kMod) presets::envPreset(*mm, code);
             else presets::envModifier(*mm, code - kMod);
             envelope.points.clear();
             for (const auto& pt : mm->points) envelope.points.push_back({ pt.level, pt.timeMs });
-            envelope.repaint();
+            envelope.refresh();
             edited();
         };
         break;

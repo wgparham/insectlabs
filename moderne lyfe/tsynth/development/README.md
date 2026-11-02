@@ -18,6 +18,8 @@ You patch modules together to build a sound: oscillators, samples, noise, envelo
 | Select | Click a module, Shift-click to add or remove one, drag a box from empty space, or Edit > Select All. Dragging a member moves the group, and the Edit commands work on all of it. In an Oscillator window the same works on waveforms |
 | Remove | Use the eraser tool on a module or a cord, or select a module and press Delete |
 | Edit | Double-click a module to open its window: settings, breakpoint envelope or waveform |
+| Envelope breakpoints | With the arrow, press anywhere in the envelope window to add a point: gray lines run from its neighbours until you release. Press a point to move it. The eraser removes a point. One pixel is 1 ms, and the window scrolls |
+| Spectral Inverter type | Click A or B beside Type in its window |
 | Presets and modifiers | The tool palette beside the envelope, waveform or waveshaper editor, with the original icons: each preset icon holds four presets, one per quarter. Hover for names. The waveshaper also has the pencil and the eraser (puts back the straight line) |
 | Waveforms | A new Oscillator has none. With none selected, click a preset icon, then click the time line to place it; with one selected, a preset changes it. The + button adds a waveform too |
 | Stereo | Sound > Stereo Output switches the output jack between mono and the L/R pair |

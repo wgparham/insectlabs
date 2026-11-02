@@ -194,7 +194,7 @@ The compute method only previews. The buffer is the loaded sound: data embedded 
   - While d > 7FFF, d < −8000 or Δs > 7FFF: d /= 2, Δs /= 2.
   - slope = FixRatio(d, LoWord(Δs)). end = t[k+1]·sr/1000.
   - Last segment: g[last], slope 0, end = length.
-- **Step:** `+136` == 1 → step 80h; otherwise 40h.
+- **Step:** `+136` is the window's Type. 1 (A) → step 80h; otherwise 40h (B, stored as 2). See "The breakpoint window".
 - **Kernel:** a byte phase p, starting at 0, with p += step after each sample.
   - p == 0: out = in.
   - p == 80h: out = (gh·in·2) >> 16, where gh = hi(gain).
@@ -970,7 +970,7 @@ Run on SC 2.22 in MAME (Quadra 950, System 7.5.3), scripted with `MacEmu\tools\m
 - **The alert:** F5_009CE runs on each event. While low, F1_00444 shows ALRT 115 ("Memory space is low.  Some commands may be disabled.") once the tick count passes a stored time, then sets that time 7200 ticks ahead (`-$702`, set at CODE 3 $CFA), which is two minutes. While not low it keeps the time at now, so the alert comes at once on the next low event.
 - **The patch window, while low (silently):** the Mixer icon ($1D12) and module icons ($1EC2) do nothing; clicking in the patch with a module chosen places nothing and the tool stays ($1BE6); the cord tool does nothing on a module or a cord, and the eraser does nothing on a cord ($1B8E). The arrow, the tool icons, the eraser on a module, the speaker and Option-click still work.
 - **Sample crossfade (CODE 28 $21E8):** refused with "There is not enough memory to do crossfade looping."
-- **Also gated, not traced further and not ported:** two length changes in CODE 23 ($EA0, $2254), the enabling of commands 103, 104 and 3000 (CODE 23 $3694 to $36D2, and 3000 again at CODE 39 $133E and $13D6), and clicks in CODE 39 ($1868), CODE 40 ($1152, $11DE, $17A2) and CODE 48 ($58A).
+- **Also gated, not traced further and not ported:** two length changes in CODE 23 ($EA0, $2254), the enabling of commands 103, 104 and 3000 (CODE 23 $3694 to $36D2, and 3000 again at CODE 39 $133E and $13D6), and clicks in CODE 39 ($1868) and CODE 48 ($58A). The clicks in CODE 40 are now traced; see "The breakpoint window".
 - **Correction to "Conversions and memory":** a cord drag making no cord fits this check. "Edit showed only Select All" doesn't come from it, because CODE 15 calls it only for those clicks. Nothing being selected is the likelier reason, after the alert took the clicks.
 
 **In the port:** `DocumentInfo::samplesFree` is the budget less the module lengths and 500 samples per waveform (measured: 100,112 for 200). New modules, pastes and longer lengths are refused against that, and the Info box shows it, while "used" and the indicator still count lengths only, as the original's do. Below 22,048 samples free the patch window and the crossfade behave as above, and the alert follows the same two-minute rule. The other memory changes the emulator measured (about 20,000 samples when a Sample module first appeared, for example) are left out, because they aren't modelled.
@@ -979,6 +979,36 @@ Run on SC 2.22 in MAME (Quadra 950, System 7.5.3), scripted with `MacEmu\tools\m
 - After Cmd-A, Duplicate and Undo, the Output comes back unselected, as measured.
 - The first document is "Untitled-1" and each New Patch counts up.
 - A menu with nothing enabled has a grey title, and it stays grey when opened.
+
+## The breakpoint window (traced and measured 2026-11-02)
+Amp Env, Filter, Spectral Inverter and Pitch Env share this window (CODE 40). The user noticed that the port edited breakpoints differently, and that it had no Type control.
+
+**The view:** 1 pixel is 1 ms and 1 level, so time = h and level = 100 − v. The view is length·1000/rate wide and 192 high, and it scrolls (F40_009F8). Each point has a 3×3 rectangle, left = t − 1, top = 99 − level (F40_00C2C).
+
+**Clicks (F40_01674):**
+- **Type:** tested first, with either tool, in the Spectral Inverter only. Left 30, top 130, right 70, bottom 145; `+136` = (h − 30) / 20 + 1, so A is h 30–49 and B is h 50–69. It makes no command, so the original can't undo it. The port can, as with conversions.
+- **Which point (F40_01506):** a point's own rectangle wins. Otherwise, from the left, a point whose rectangle grown by 4 holds the mouse counts as hit, and the first point with h < its left − 5 is the one a new point goes before. With neither, the new point goes last.
+- **Arrow:** on a point it moves it; elsewhere it adds one, unless memory is low (F2_0043E). **Eraser:** removes a point, but never the first.
+- **Palette (F40_00C78):** arrow 0,0; eraser 32,0; Info 0,32; speaker 32,32; eight 16×16 presets from 0,64; six modifiers from 0,96. While memory is low the presets and modifiers do nothing.
+
+**The tracker (a MacApp command, F40_018D2 to F40_01E94):**
+- **Gray lines (F40_01AD2):** from the previous point to the mouse, then to the next point. After the last point the second line runs level to the end of the view. They are drawn in `qd.gray` in XOR, which is why the two points they touch look filled while the mouse is down, and why the lines look dotted or dashed by slope. Nothing changes until the release.
+- **Limits (F40_01B72):** the first point stays at time 0. Otherwise h ≥ previous h + 1, then h ≤ next h − 1, or the view's end after the last point. v stays in 0–100, so the mouse can go over the ruler while the point stops at level 0. Measured in the emulator: above the view v stops at 0.
+- **Undo:** Do and Undo restore the point.
+
+**Drawing (F40_01290):** the line starts at the view's left at v = 100 (v = 50 for the Pitch Envelope), so there is a vertical line up to the first point; measured. It ends level at the view's end. The Pitch Envelope has eleven lines ten pixels apart (`ltGray`, the middle one `gray`), with +12, +7, +4, +1, −1, −4, −7 and −12. The ruler (F23_00246) has a tick every 50 ms at v = 103 and a label every 100 ms at v = 115. The Type is at v = 140, in Geneva 9.
+
+**New modules:** F16 calls F40_006AA after F36: one point, level 100 at time 0. The Pitch Envelope gets level 50 at time 0 (F40_00650). All have `+136` = 1. The port had started them with two points and had moved the last to the end.
+
+**Type A and B compared with the original (MAME, scratch disks):** Oscillator (first preset) → Spectral Inverter → Output, 44,100 samples at 44,100 Hz, with breakpoints 50@0, 40@3, 60@100, 100@150 placed with the mouse. The Type click wrote 1 and 2 to `+136`. Reading the Oscillator's and the inverter's buffers from memory and running the port's kernel on that input gave 44,100 of 44,100 equal samples for each type. With the other type 11,037 are equal.
+
+**Presets:** the engine and the document reader were already right, because `+136` is read, written and used as stored for version 2 and later, and version-1 documents get 1. All four Spectral Inverters in the supplied patches are version 1, so Type A. A Type B preset already rendered correctly. The port's "Pattern" field was the problem: it offered 0 and 1, so B could only be had as 0, which isn't a value the original writes, and typing in a B preset's field clamped it to A. A document holding 0 still sounds like B; as in the original, neither type is marked.
+
+**In the port:** `BreakpointEditor` follows all of the above, with arrow and eraser in the palette. The double-click to add and right-click to remove are gone. The window keeps the port's fields, and its Hear button stands in for the palette's Info and speaker icons, which aren't added. A temporary test sent fabricated mouse events through the real windows; all 62 checks passed, and its source was removed afterwards. Real mouse input wasn't run.
+
+**Default length and frequency:** the shipped `DFLT` resources are rate 44,100 (1), length 44,100 (2) and frequency 220 (3, 00DC0000 as Fixed). In the emulator a new Oscillator was 44,100 samples long with 219 upward zero crossings in that second. The port had started with 88,200 and 440; it now uses the shipped values. Values already saved in the port's settings still apply.
+
+**A misreading caught by the emulator:** I first read F40_01506's test as h < the grown rectangle's right. A press near the first point at another level showed it is the left.
 
 ## Memory indicator "Lo!" (resolved 2026-11-01)
 - "Lo!" is not a text string in the resources or the code, so the earlier search found nothing. The indicator's ten levels are the icon resources ICON 9150 to 9159 (extracted as ts/rsrc/sc222/ICON_9150.bin to ICON_9159.bin). Level 9 (ICON 9159) is the "Lo!" cell, so the label is part of that bitmap.
