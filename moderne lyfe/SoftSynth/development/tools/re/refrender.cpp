@@ -13,6 +13,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <string>
+#include <initializer_list>
 #include <vector>
 #include "../../src/engine/StFloat.h"
 extern "C" {
@@ -113,12 +114,80 @@ static void returnFromStub(uint32_t d0, bool setD0)
     m68k_set_reg(M68K_REG_PC, rd32(s));
 }
 
+// --edit-test: what the stubs answer for the GEM calls. edit_test.inc has the test.
+static const uint32_t kEditRte = 0x00700020, kTree = 0x00600000, kEditStack = 0x00700000, kEditArg = 0x00700010;
+static bool editMode = false, hung = false;
+static int editAlerts = 0, dialogExit = 0;
+static size_t dialogAt = 0;
+static std::vector<int> dialogObjects, dialogMouse, dialogNumbers;
+static bool dialogSelected[16] = {};
+static uint32_t editSpA4() { return m68k_get_reg(nullptr, M68K_REG_A4); }
+
+// Returns true if the routine at text offset t is a stubbed GEM call.
+static bool editStub(uint32_t t)
+{
+    const uint32_t s = sp();
+    switch (t) {
+    case 0x8DA2: case 0x2794: case 0x9F6C: case 0x36B2: case 0x3D1C: case 0x5308: case 0x5486:
+    case 0x6C8E: case 0x77AA: case 0x2AFA: case 0x2C68: case 0x3A8C: case 0xC5A:
+    case 0x1A28: case 0x226E:
+        returnFromStub(0, false);
+        return true;
+    case 0x2A56: { // F0027E0's mix checkbox: disabled unless the partial is a modulator
+        const uint32_t a4 = editSpA4();
+        const int partial = (int16_t) rd16(s + 4);
+        bool used = false;
+        for (uint32_t i = 0; i < 32; ++i)
+            used = used || (int8_t) mem[a4 - 0x7BB + i * 2] == partial + 1;
+        wr16(rd32(s + 6) + 0xFA, (uint16_t) (used ? (mem[a4 - 0x7BC + (uint32_t) partial * 2] != 0 ? 4 : 0) : 8));
+        returnFromStub(0, false);
+        return true;
+    }
+    case 0xCD96:  // "used all the break points"
+        ++editAlerts;
+        returnFromStub(0, false);
+        return true;
+    case 0x22FE:  // the save prompt, answered No
+        returnFromStub(1, true);
+        return true;
+    case 0x3C18:  // puts up a dialog: returns its tree
+        returnFromStub(kTree, true);
+        return true;
+    case 0x5892:  // rsrc_gaddr
+        wr32(rd32(s + 8), kTree);
+        returnFromStub(0, true);
+        return true;
+    case 0x3B90:  // a whole dialog: returns its exit button
+        returnFromStub((uint32_t) dialogExit, true);
+        return true;
+    case 0x7974:  // atoi of the next field
+        returnFromStub((uint32_t) (int32_t) dialogNumbers[dialogAt++], true);
+        return true;
+    case 0x3DF2:  // is the button selected?
+        returnFromStub(dialogSelected[rd16(s + 8) & 15] ? 1 : 0, true);
+        return true;
+    case 0x5524:  // form_do: the next click
+        if (dialogAt < dialogMouse.size())
+            wr16(editSpA4() - 0x4EC, (uint16_t) dialogMouse[dialogAt]);
+        returnFromStub((uint32_t) dialogObjects[dialogAt++], true);
+        return true;
+    case 0x54F2:  // objc_offset
+        wr16(rd32(s + 10), 0);
+        wr16(rd32(s + 14), 0);
+        returnFromStub(0, true);
+        return true;
+    default:
+        return false;
+    }
+}
+
 extern "C" void host_instr_hook(unsigned int pc)
 {
     pc &= 0xFFFFFF;
     if (pc == kStop || pc == startupEnd) { stopped = true; m68k_end_timeslice(); return; }
     if (pc < kText) { std::fprintf(stderr, "stray jump to %#x\n", pc); fatal = true; stopped = true; m68k_end_timeslice(); return; }
     const uint32_t t = pc - kText;
+    if (editMode && editStub(t)) return;
     switch (t) {
     case 0x394:   // Mshrink in the startup code
         m68k_set_reg(M68K_REG_D0, 0);
@@ -291,6 +360,9 @@ static int fpTest(int perOp, const std::vector<uint8_t>& prm)
     return (bad || wrong) ? 1 : 0;
 }
 
+#include "Edit.h"
+#include "edit_test.inc"
+
 static void writeWav(const std::string& path, const std::vector<int16_t>& s, uint32_t rate)
 {
     FILE* f = std::fopen(path.c_str(), "wb");
@@ -309,11 +381,13 @@ int main(int argc, char** argv)
     if (argc < 4) { std::fprintf(stderr, "usage: refrender SOFTSYNT.PRG file.prm out.sd [--seed N | --zero-random] [--no-normalize] [--buffer BYTES] [--wav out.wav]\n"); return 2; }
     bool normalize = true;
     uint32_t bufferBytes = 0x200000;
-    std::string wavPath;
-    int fpOps = 0;
+    std::string wavPath, goldenPath;
+    int fpOps = 0, editSteps = 0;
     for (int i = 4; i < argc; ++i) {
         const std::string a = argv[i];
         if (a == "--fp-test" && i + 1 < argc) fpOps = std::atoi(argv[++i]);
+        else if (a == "--edit-test" && i + 1 < argc) editSteps = std::atoi(argv[++i]);
+        else if (a == "--edit-golden" && i + 1 < argc) goldenPath = argv[++i];
         else if (a == "--seed" && i + 1 < argc) seed = (uint32_t) std::strtoul(argv[++i], nullptr, 0);
         else if (a == "--zero-random") zeroRandom = true;
         else if (a == "--no-normalize") normalize = false;
@@ -360,6 +434,8 @@ int main(int argc, char** argv)
     const uint32_t a4 = m68k_get_reg(nullptr, M68K_REG_A4);
     if (fatal) return 1;
     if (fpOps > 0) return fpTest(fpOps, readFile(argv[2]));
+    if (editSteps > 0) return editTest(editSteps, readFile(argv[2]), a4);
+    if (!goldenPath.empty()) return editGolden(goldenPath, readFile(argv[2]), a4);
     call(0x1CB7A); // waveform table pointers (jump table 0x34E)
     call(0x1CBA0); // noise table pointer (jump table 0x354)
 
