@@ -186,7 +186,7 @@ void ModulePanel::show(Patch* p, int i)
         fields.back()->hiNow = [m] { return std::min(2147483, 32 * m->sampleRate); };
         fields.back()->refuses = true;
         // The original refuses a length that would take the patch past its memory.
-        fields.back()->accepts = [this, m](int v) { return !patch || DocumentInfo::samplesUsed(patch->modules) - m->length + v <= DocumentInfo::kModel1Budget; };
+        fields.back()->accepts = [this, m](int v) { return !patch || v - m->length <= DocumentInfo::samplesFree(patch->modules); };
         fields.back()->refusal = DocumentInfo::kMemoryMessage;
         if (m->type == kSample) { // the Sample info dialog's checkbox (DITL 10005), +13E
             normalize.setButtonText("Save sound data with document");
@@ -194,7 +194,7 @@ void ModulePanel::show(Patch* p, int i)
             normalize.onClick = [this] { if (auto* mm = module()) { mm->saveSound = normalize.getToggleState(); edited(); } };
             addAndMakeVisible(normalize);
         } else if (m->type != kOscillator && m->type != kNoise) {
-            normalize.setButtonText("Normalize output");
+            normalize.setButtonText("Normalize");
             normalize.setToggleState(m->normalize, juce::dontSendNotification);
             normalize.onClick = [this] { if (auto* mm = module()) { mm->normalize = normalize.getToggleState(); edited(); } };
             addAndMakeVisible(normalize);

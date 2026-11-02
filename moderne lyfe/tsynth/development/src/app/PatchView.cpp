@@ -26,7 +26,7 @@ std::vector<PatchView::PaletteItem> PatchView::palette() const
     // DSP card it shows the Diffuser crossed out (3013); the port computes it.
     return {
         { 1000, -1, "Arrow: select and move; double-click opens" }, { 1005, -2, "Patch cord: drag from a module to another" }, { 1001, -3, "Eraser: remove a module or cord" },
-        { 3005, kMixer, "Mixer" }, { 1002, -4, "Info: click a module to open it" }, { 1003, -5, "Speaker: click a module to hear it" },
+        { 3005, kMixer, "Mixer" }, { 1002, -4, "Info: the document's memory" }, { 1003, -5, "Speaker: hear the output; Option-click a module to hear it" },
         { 2000, kOscillator, "Oscillator" }, { 2001, kSample, "Sample" }, { 2002, kNoise, "Noise" },
         { 3000, kAmpEnv, "Amplitude Envelope" }, { 3001, kFilter, "Filter" }, { 3002, kSpectralInverter, "Spectral Inverter" },
         { 3006, kDelay, "Delay" }, { 3008, kStretchExpand, "Stretcher (expand)" }, { 3010, kStretchCompress, "Stretcher (compress)" },
@@ -99,9 +99,7 @@ int PatchView::cordAt(juce::Point<float> p) const
 
 int PatchView::memoryLevel() const
 {
-    int64_t used = 0;
-    if (patch) for (const auto& m : patch->modules) used += m.length;
-    return DocumentInfo::levelOf(used, DocumentInfo::kModel1Budget);
+    return patch ? DocumentInfo::levelOf(DocumentInfo::samplesUsed(patch->modules), DocumentInfo::kModel1Budget) : 0;
 }
 
 void PatchView::paint(juce::Graphics& g)
@@ -114,8 +112,8 @@ void PatchView::paint(juce::Graphics& g)
     for (int i = 0; i < (int) items.size(); ++i) {
         const auto cell = paletteCell(i);
         const bool on = (items[(size_t) i].type == -1 && tool == Tool::Arrow) || (items[(size_t) i].type == -2 && tool == Tool::Cord)
-                     || (items[(size_t) i].type == -3 && tool == Tool::Eraser) || (items[(size_t) i].type == -4 && tool == Tool::Info)
-                     || (items[(size_t) i].type == -5 && tool == Tool::Hear) || (tool == Tool::Place && items[(size_t) i].type == placeType);
+                     || (items[(size_t) i].type == -3 && tool == Tool::Eraser) || (items[(size_t) i].type == pressedIcon && pressedIcon != 0)
+                     || (tool == Tool::Place && items[(size_t) i].type == placeType);
         if (on) { g.setColour(t.ink); g.fillRect(cell); }
         classic::drawIcon(g, items[(size_t) i].icon == 1002 ? 9150 + memoryLevel() : items[(size_t) i].icon, cell.reduced(2.0f), on);
         g.setColour(t.ink);
@@ -229,8 +227,11 @@ void PatchView::mouseDown(const juce::MouseEvent& e)
         for (int i = 0; i < (int) items.size(); ++i)
             if (paletteCell(i).contains(e.position)) {
                 const int type = items[(size_t) i].type;
-                tool = type == -1 ? Tool::Arrow : type == -2 ? Tool::Cord : type == -3 ? Tool::Eraser
-                     : type == -4 ? Tool::Info : type == -5 ? Tool::Hear : Tool::Place;
+                // F15_0167C at $1D44 and $1DB0: Info and the speaker act and leave the tool as it was.
+                if (type == -4 || type == -5) { pressedIcon = type; break; }
+                // With memory low the module icons don't respond ($1D12, $1EC2).
+                if (type >= 0 && patch && DocumentInfo::spaceIsLow(patch->modules)) break;
+                tool = type == -1 ? Tool::Arrow : type == -2 ? Tool::Cord : type == -3 ? Tool::Eraser : Tool::Place;
                 placeType = type;
                 setMouseCursor(tool == Tool::Arrow ? juce::MouseCursor::NormalCursor : juce::MouseCursor::CrosshairCursor);
             }
@@ -244,6 +245,17 @@ void PatchView::mouseDown(const juce::MouseEvent& e)
         repaint();
         return;
     }
+    // F15_0167C: Option-click plays that module whatever the tool, and leaves nothing selected.
+    if (hit && e.mods.isAltDown()) {
+        select(0);
+        if (onSelect) onSelect(0);
+        if (onPreview) onPreview(hit);
+        repaint();
+        return;
+    }
+    // With memory low a new module or a cord is refused without a word, and the tool stays ($1B8E, $1BE6).
+    const bool low = DocumentInfo::spaceIsLow(patch->modules);
+    if (low && (tool == Tool::Place || (tool == Tool::Cord && (hit || cordAt(e.position) >= 0)) || (tool == Tool::Eraser && !hit && cordAt(e.position) >= 0))) return;
     if (tool == Tool::Place) {
         place(placeType, e.position);
         tool = Tool::Arrow;
@@ -253,16 +265,6 @@ void PatchView::mouseDown(const juce::MouseEvent& e)
     if (tool == Tool::Eraser) {
         if (hit) { if (!isOutput(hit)) { if (onRemoving) onRemoving(hit); removeModule(*patch, hit); select(0); if (onSelect) onSelect(0); if (onChanged) onChanged(); } } // the output jack cannot be erased
         else if (const int c = cordAt(e.position); c >= 0) { patch->connections.erase(patch->connections.begin() + c); if (onChanged) onChanged(); }
-        repaint();
-        return;
-    }
-    if (tool == Tool::Info || tool == Tool::Hear) { // these tools stay chosen, as in the original
-        if (hit) {
-            select(hit);
-            if (onSelect) onSelect(hit);
-            if (tool == Tool::Info) { if (onOpen) onOpen(hit); }
-            else if (onPreview) onPreview(hit);
-        }
         repaint();
         return;
     }
@@ -344,6 +346,14 @@ const char* PatchView::cordRefusal(int from, int to) const
 
 void PatchView::mouseUp(const juce::MouseEvent& e)
 {
+    if (pressedIcon != 0) {
+        const int icon = pressedIcon;
+        pressedIcon = 0;
+        repaint();
+        if (icon == -4 && onInfo) onInfo();
+        if (icon == -5 && onSpeaker) onSpeaker();
+        return;
+    }
     if (!patch) return;
     if (selecting) {
         selecting = false;
@@ -419,7 +429,7 @@ void PatchView::place(int type, juce::Point<float> at)
     for (const auto& m : patch->modules) if (m.type == kOutput && m.sampleRate > 0) { sr = m.sampleRate; len = m.length > 0 ? m.length : sr; break; }
     auto m = makeModule(type, sr, len);
     if (onNewModule) onNewModule(m);
-    if (DocumentInfo::samplesUsed(patch->modules) + m.length > DocumentInfo::kModel1Budget) { // the original refuses a module that will not fit
+    if (m.length > DocumentInfo::samplesFree(patch->modules)) { // the original refuses a module that will not fit
         if (onRefused) onRefused(DocumentInfo::kMemoryMessage);
         return;
     }

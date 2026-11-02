@@ -55,7 +55,7 @@ private:
     int index = 0;
     std::vector<std::unique_ptr<Field>> fields;
     juce::TextEditor nameEdit;
-    juce::ToggleButton normalize { "Normalize output" };
+    juce::ToggleButton normalize { "Normalize" };
     juce::TextButton hear { "Hear" }, loadSound { "Load Sound..." }, addWave { "+" }, removeWave { "-" }, saveWave { "Save" };
     WaveTimeline timeline;
     std::set<int> waveSelection;

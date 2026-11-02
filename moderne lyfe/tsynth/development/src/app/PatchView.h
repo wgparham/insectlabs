@@ -26,9 +26,11 @@ public:
 
     std::function<void(int)> onSelect;
     std::function<void()> onChanged;    // structure or positions changed
-    std::function<void(int)> onPreview; // hear one module
+    std::function<void(int)> onPreview; // hear one module (Option-click)
+    std::function<void()> onSpeaker;    // the palette's speaker: hear the Output
+    std::function<void()> onInfo;       // the palette's Info icon: the document's Info box
     int memoryLevel() const; // the palette's Info icon: the memory level, 0 to 9 (see DocumentInfo)
-    std::function<void(int)> onOpen;    // open a module (Info tool or double-click)
+    std::function<void(int)> onOpen;    // open a module (double-click)
     std::function<void(int)> onRemoving; // a module is about to be erased
     std::function<void(turbosynth::Module&)> onNewModule; // a module about to be placed (defaults)
     std::function<void(int, int)> onConnected;            // a new cord, from and to (1-based)
@@ -50,7 +52,7 @@ public:
     int visibleRight() const { return (int) toPatch({ (float) getWidth(), 0.0f }).x; }
 
 private:
-    enum class Tool { Arrow, Cord, Eraser, Info, Hear, Place };
+    enum class Tool { Arrow, Cord, Eraser, Place };
     struct PaletteItem { int icon; int type; juce::String tip; };
     std::vector<PaletteItem> palette() const;
     static constexpr int kPaletteWidth = 100; // three 33 px cells
@@ -68,6 +70,7 @@ private:
 
     Tool tool = Tool::Arrow;
     int placeType = 0;
+    int pressedIcon = 0; // the Info or speaker icon while it is held: neither is a tool
     float scale = 1.5f;
     juce::Point<float> origin { 100.0f, 10.0f };
     int dragging = 0;

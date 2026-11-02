@@ -23,11 +23,10 @@ int DocumentInfo::levelOf(int64_t used, int64_t total)
     return (int) std::min<int64_t>(9, level);
 }
 
-void DocumentInfo::setCounts(int64_t u, int64_t b)
+void DocumentInfo::setCounts(int64_t u, int64_t f)
 {
     used = u;
-    budget = juce::jmax<int64_t>(1, b);
-    const int64_t freeSamples = juce::jmax<int64_t>(0, budget - used);
+    const int64_t freeSamples = juce::jmax<int64_t>(0, f);
     usedLabel.setText("Memory used: " + juce::String(used) + " Samples", juce::dontSendNotification);
     freeLabel.setText("Memory free: " + juce::String(freeSamples) + " Samples", juce::dontSendNotification);
     repaint();
@@ -54,7 +53,7 @@ void DocumentInfo::paint(juce::Graphics& g)
 
     // The indicator: ten cells that fill as memory is used. "Lo!" when the top level is reached.
     auto cells = getLocalBounds().reduced(12).withTrimmedTop(44).withHeight(40).withTrimmedBottom(0);
-    const int level = levelOf(used, budget);
+    const int level = levelOf(used, kModel1Budget);
     const float cellW = cells.getWidth() / 10.0f;
     for (int i = 0; i < 10; ++i) {
         juce::Rectangle<float> cell(cells.getX() + i * cellW, (float) cells.getY(), cellW - 2.0f, (float) cells.getHeight());

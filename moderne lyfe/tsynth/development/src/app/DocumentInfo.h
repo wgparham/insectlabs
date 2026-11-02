@@ -18,6 +18,17 @@ public:
     // The original's message when the memory cannot take a new module, paste or longer length.
     static constexpr const char* kMemoryMessage = "Memory cannot be allocated for some or all modules.  Perhaps you can reduce usage elsewhere.";
 
+    // The original's message while memory is low (ALRT 115), and how often it can come back: 7200 ticks.
+    static constexpr const char* kLowMessage = "Memory space is low.  Some commands may be disabled.";
+    static constexpr int kLowAlertSeconds = 120;
+
+    // A waveform takes memory that "samples used" doesn't count: 100,112 samples for 200, measured in the emulator.
+    static constexpr int64_t kWaveformCost = 500;
+
+    // Memory is low with less than MacApp's reserve free: the mem! resources 0 and 1000 add up to 44,096 bytes.
+    // The emulator agrees, with 29,840 samples free not low and 13,656 low.
+    static constexpr int64_t kLowReserve = 44096 / 2;
+
     // The samples the modules use: the sum of their lengths.
     template <class Modules>
     static int64_t samplesUsed(const Modules& modules)
@@ -27,10 +38,22 @@ public:
         return used;
     }
 
+    // The samples left in the budget, after the modules and their waveforms.
+    template <class Modules>
+    static int64_t samplesFree(const Modules& modules)
+    {
+        int64_t waves = 0;
+        for (const auto& m : modules) waves += (int64_t) m.waveforms.size();
+        return kModel1Budget - samplesUsed(modules) - waves * kWaveformCost;
+    }
+
+    template <class Modules>
+    static bool spaceIsLow(const Modules& modules) { return samplesFree(modules) < kLowReserve; }
+
     DocumentInfo();
 
-    // used and budget are in samples (1 sample = 2 bytes), as the original shows them.
-    void setCounts(int64_t used, int64_t budget);
+    // used and free are in samples (1 sample = 2 bytes), as the original shows them.
+    void setCounts(int64_t used, int64_t free);
 
     // The original's indicator level for a use of used out of total: round(10 × used / total), at most 9.
     static int levelOf(int64_t used, int64_t total);
@@ -41,7 +64,7 @@ public:
     void resized() override;
 
 private:
-    int64_t used = 0, budget = 1;
+    int64_t used = 0;
     juce::Label usedLabel, freeLabel;
     juce::TextButton compact { "Compact Memory" }, release { "Release Clipboard" };
 };

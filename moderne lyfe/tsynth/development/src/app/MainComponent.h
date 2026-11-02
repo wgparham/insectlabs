@@ -61,6 +61,8 @@ private:
     void workerLoop();
     void applyResult(turbosynth::RenderResult r, int module, bool play, bool popup = false);
     void play();
+    void hearOutput(); // the speaker icon, the space bar and Play: refused with no cord into the Output
+    void checkMemorySpace(); // each tick: the low-memory alert
     void stop();
     void setDark(bool);
     void updateTitle();
@@ -108,7 +110,7 @@ private:
     void playSamples(const std::vector<int16_t>& left, const std::vector<int16_t>& right, int rate);
     void saveLoopAsWaveform();
     void saveWaveformAs(const turbosynth::Waveform&);
-    // Module windows (double-click or the Info tool opens one).
+    // Module windows (a double-click opens one).
     struct ModuleWindow;
     struct HearPopup;
     void openModuleWindow(int index);
@@ -120,7 +122,7 @@ private:
     void refreshDocumentInfo();    // after edits, while the Info box is open
     void releaseClipboard();
     void placeSoundStrip();        // the sound view goes to the selected module's window, if it has one
-    void openHearPopup(int module);     // the speaker icon: the module's waveform in a popup, kept until closed
+    void openHearPopup(int module);     // hearing one module: its waveform in a popup, kept until closed
     void closeHearPopup(HearPopup*);
     void refreshHearPopups();           // after edits: every open popup renders its module again
     void nextHearRefresh();             // starts the next popup's render once the worker is free
@@ -142,7 +144,7 @@ private:
     std::unique_ptr<InnerWindow> patchWindow;
     std::vector<std::unique_ptr<ModuleWindow>> moduleWindows;
     ModuleWindow* soundHost = nullptr; // the window showing soundStrip
-    // The speaker icon's popups: one per module, kept until closed and re-rendered after edits.
+    // The popups for hearing one module: one per module, kept until closed and re-rendered after edits.
     struct HearPopup {
         int index = 0;
         WaveView view;
@@ -177,7 +179,12 @@ private:
         bool directStereo = false;  // Direct Sampling Mono or Stereo (-$519); direct sampling itself is not ported, so the choice is only kept
     } params;
     juce::File file;
+    int untitledNumber = 0;     // MacApp numbers new documents: Untitled-1, Untitled-2
+    juce::String documentName() const;
     bool dirty = false;
+    uint32_t nextSpaceAlert = 0;
+    int menuTitleTicks = 0;
+    uint32_t menuTitles = 0;    // which menus have something enabled, to repaint the bar when that changes
     int renderPending = 0;      // countdown in timer ticks
     int previewModule = 0;
     turbosynth::RenderResult result;

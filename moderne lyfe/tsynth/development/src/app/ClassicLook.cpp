@@ -279,11 +279,19 @@ void LookAndFeel::drawMenuBarBackground(juce::Graphics& g, int w, int h, bool, j
     g.drawHorizontalLine(h - 1, 0.0f, (float) w);
 }
 
-void LookAndFeel::drawMenuBarItem(juce::Graphics& g, int w, int h, int, const juce::String& text, bool over, bool open,
-                                  bool, juce::MenuBarComponent&)
+void LookAndFeel::drawMenuBarItem(juce::Graphics& g, int w, int h, int index, const juce::String& text, bool over, bool open,
+                                  bool, juce::MenuBarComponent& bar)
 {
-    if (open || over) { g.setColour(current.ink); g.fillRect(0, 0, w, h - 1); }
-    g.setColour(open || over ? current.paper : current.ink);
+    // A menu with nothing enabled has a grey title, and stays grey when opened (checked in the emulator).
+    bool live = false;
+    if (auto* model = bar.getModel()) {
+        const auto menu = model->getMenuForIndex(index, text);
+        for (juce::PopupMenu::MenuItemIterator it(menu); it.next();)
+            live = live || (it.getItem().isEnabled && !it.getItem().isSeparator);
+    }
+    const bool hi = live && (open || over);
+    if (hi) { g.setColour(current.ink); g.fillRect(0, 0, w, h - 1); }
+    g.setColour(hi ? current.paper : live ? current.ink : current.gray);
     g.setFont(uiFont(12.0f));
     g.drawText(text, 0, 0, w, h - 1, juce::Justification::centred);
 }

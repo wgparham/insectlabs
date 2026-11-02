@@ -442,7 +442,7 @@ The values: 0.5, 0.66667, 0.79459, 0.94379, 0.98499, 1.0, 1.01500, 1.05951, 1.25
 
 - **Look:** a JUCE standalone in `src/app` with a Classic Mac look (the user asked for one "closer to its original look", with a dark mode). Light is black on white with a dither desktop and pinstriped windows; View > Dark Mode is the same drawing in warm light ink on charcoal, saved in `TurboSynth.settings`.
 - **Icons:** the original ICON resources are embedded in `src/app/ClassicIcons.cpp`, generated from the 2.22 resource fork. Module icons are numbered by kind: 2000 osc, 2001 sample, 2002 noise, 3000–3012 processors (3008 expanding stretcher, 3010 compressing stretcher), 7000–7002 outputs. Tool icons: 1000 arrow, 1001 eraser, 1003 speaker, 1005 patch cord, 1006 pencil, 1007 rake (Harmonic window). 7001 and 7002 are the left and right halves of the stereo jack (each lacks one border), and 2004 and 2003 the left and right halves of a linked stereo sample.
-- **Patch window:** the original's palette, three to a row: arrow, patch cord, eraser; Mixer, Info, speaker; then the module types in the original's order (checked in the emulator 2026-10-30). Place a module by clicking its icon, then the patch. The patch cord connects, the eraser removes, the speaker tool hears a module, and the Info tool or a double-click opens it (an empty Sample module asks for a sound, F28_00628). Without a DSP card the original shows the Diffuser crossed out (icon 3013); the port computes it, so it shows 3012. The view fits large patches.
+- **Patch window:** the original's palette, three to a row: arrow, patch cord, eraser; Mixer, Info, speaker; then the module types in the original's order (checked in the emulator 2026-10-30). Place a module by clicking its icon, then the patch. The patch cord connects, the eraser removes, and a double-click opens a module (an empty Sample module asks for a sound, F28_00628). The speaker and Info icons are not tools: see "The speaker and Info icons". Without a DSP card the original shows the Diffuser crossed out (icon 3013); the port computes it, so it shows 3012. The view fits large patches.
 - **Windows (2026-10-30):** as in the original, a desktop holds the patch window and one window per opened module (double-click, or the Info tool). Windows move by the title bar, resize by the grow box and close by the close box; the front one has the pinstriped title and is the module the menus act on. A module window holds its settings: numeric fields, a breakpoint editor (envelope family), drawable tables (oscillator waves, shaper) and the tool palette.
 - **Sound:** a Sample or Output window shows its sound beside its palette, with Play and Stop and the play cursor; one live sound view moves to whichever of those windows is in front, and the others keep a picture of theirs. File > Export Sound writes 16-bit WAV or AIFF.
 - **Snapshots:** `TurboSynth [patch] --snapshot out.png [--dark] [--select N]` renders the window off screen (for docs and tests).
@@ -516,7 +516,7 @@ The module windows' palettes, recovered from the window code and ported in `src/
 ## Group 2 in the port (2026-10-28)
 
 - **Oscillator time line:** the waveforms sit at their times on a 50 ms scale and are dragged in time; on release they are re-sorted by time. Save writes the 554-byte waveform file.
-- **Edit menu:** Undo (40 steps, one per edit), Cut, Copy, Paste, Clear, Duplicate and Convert to Sample (the module's computed sound becomes a Sample module's stored sound, its input cords go, its output cords stay), with the original shortcuts.
+- **Edit menu:** Undo (40 steps, one per edit), Cut, Copy, Paste, Clear, Duplicate and Convert to Sample (the module's computed sound becomes a Sample module's stored sound, its input cords go, its output cords stay; **the original removes the output cords too**, see "Conversions and memory"), with the original shortcuts.
 - **Options menu:** Auto Preview (⌘T), the Parameter Manager (⌘Y) and Stereo Preferences, saved in the settings. The defaults (rate, length, frequency) apply to new documents and newly placed modules. The rate and length rules are traced; see "Parameter Manager rules" below.
 - **Keyboard:** the window passes keys no control takes to the shortcuts, and Ctrl+letter arriving as a control character is mapped back.
 
@@ -656,7 +656,7 @@ The module windows' palettes, recovered from the window code and ported in `src/
 - **Info dispatch (CODE 15, about 01A00–01F60):** one routine opens each module's Info box and chooses between F16_0287C (10000 Oscillator), F16_041D6 (10001 envelope family), F16_04390 (10002 Mixer), with 10003 and 10005 handled in the same routine by module type (type tests with 0x64/0x65/0x6 for Output and the Sample modules). The field checks for 10001 are inside this routine, after the dialog is shown; not yet separated out.
 - **Limits for the envelope Time field (not found):** the range checks that go through F24_00152 in CODE 15 are only at 00FF4 and 1004E, which belong to other tools. The envelope field's own check is not in CODE 15, CODE 36 or CODE 40 by a constant search. Conclusion so far: its check is not in the Info routine itself, and DITL 10001 is shared with the waveform time (see above), so the envelope's limit is probably set by the waveform path's rules. Needs a runtime test in the emulator to settle.
 - **Emulator attempt (2026-10-31), inconclusive:** TurboSynth runs in Basilisk II (Turbosynth disk). An envelope placed from the palette opens an editor window ("Amp Env-1") on double-click, with breakpoints and time ruler, not a Time field. Get Info (⌘I) and the Info tool did not open a box for the selected envelope. The envelope's Info dialog was not reached, so its Time limits are still unmeasured.
-- **Envelope Info box, seen in the emulator (2026-10-31, user's screen):** the box for "Amp Env-1" has Name, Length (44100 samples), Sample Rate (44100 Hertz) and a Normalize check box, with Cancel and OK. It has no Time field, so the envelope family's Info matches the port's Name / Length / Sample Rate / Normalize fields. The port labels the check box "Normalize output"; the original says "Normalize". Limits for Length and Sample Rate are not yet measured.
+- **Envelope Info box, seen in the emulator (2026-10-31, user's screen):** the box for "Amp Env-1" has Name, Length (44100 samples), Sample Rate (44100 Hertz) and a Normalize check box, with Cancel and OK. It has no Time field, so the envelope family's Info matches the port's Name / Length / Sample Rate / Normalize fields. The port now labels the check box "Normalize", as the original does. Limits for Length and Sample Rate are not yet measured.
 - **Envelope Length, measured 2026-10-31:** entering 10 samples and pressing OK was accepted with no alert; the box closed and the envelope's curve collapsed to a sliver. So the original's minimum for an envelope's Length is 10 or lower, not 32 (the Oscillator's limit). Not yet measured: the lower limit below 10 and the upper limit.
 - **Envelope Length upper limit (2026-10-31):** 1,000,000 samples accepted; 1,500,000, 2,000,000 and 99,999,999 refused with "Inappropriate values abound! Don't panic. Please make sure all values are reasonable." The limit is between 1,000,000 and 1,500,000 (not pinned down further). The lower limit is 10 or less.
 - **Side effect:** the test changed Amp Env-1's length (to 10, then 1,000,000, then 1,500,000 refused, then back to 44100). Shortening to 10 samples dropped the envelope's breakpoints past the end, so Amp Env-1's curve is now gone and must be redrawn in the original.
@@ -910,8 +910,6 @@ Run on SC 2.22 in MAME (Quadra 950, System 7.5.3), scripted with `MacEmu\tools\m
 **Checked in the port:** a temporary 38-check test (since removed) drove the real MainComponent through fabricated mouse events and the menu commands, and all passed. Real mouse input and a stereo Sample pair in a group were not run.
 
 **Differences left in the port:**
-- After Cmd-A, Duplicate and Undo, the Output comes back selected.
-- The patch window's title is "Untitled", where the original says "Untitled-1".
 - With a group, the Convert commands act on the first selected module that qualifies, as the original's menu test finds it (F2_0095E). Running them on a group in the original wasn't tested.
 
 **Not tested in the original:** whether a second Paste lands further along, Select All in other module windows, and Shift-drag of a group.
@@ -921,6 +919,66 @@ Run on SC 2.22 in MAME (Quadra 950, System 7.5.3), scripted with `MacEmu\tools\m
 - **Number (F16_02BAA, F16_02B60, F16_02B20):** the lowest n from 1 for which no module in the document has that exact name (F1_0239C is case-sensitive). So a cleared or renamed module's number comes back. The port had counted the modules of the same type.
 - **New document (F23_02C24):** only the Output, at SetRect(64, 192, 96, 224). In stereo the right jack is at left 96, 32 px beside it, which `setStereo` already does.
 - **Port:** `nextModuleName` follows this, and a new document matches. It is silent until something is patched, as in the original. The patch view now caps its zoom at 1.5, its default, where it could reach 2.5, which would have made a lone Output very large. Small patches therefore show at 1.5, and the view still shrinks as a patch outgrows the window. The old starter patch fitted at about 1.1, so icons in a new document look larger than they did. This also limits how far a small saved patch enlarges. A temporary 27-check test (since removed) passed.
+
+## Conversions and memory (traced 2026-11-02)
+**There is no memory check on the conversions, because they don't copy the sound.**
+
+**Code (F16_03F4E, the command's Do):**
+- The new module takes the old module's buffer handle: `+116` goes to F36_002AC (Sample), F36_003B2 (Envelope) or F36_001C8 (Oscillator), and the old `+116` is then set to 0 before the old module is released (F18_01818). Name and position are copied.
+- The common tail walks both cord lists. F16_03EE2 removes the module from its sources' output lists, and F16_03F12 removes it from its destinations' input lists and sends them message 12. So all cords go, in both directions.
+
+**Run in the emulator (scratch copy, Quadra 950, 7.5.3), free memory below the module's own length each time:**
+
+| Conversion | Length | Used before / after | Free before / after |
+|---|---|---|---|
+| Noise to Sample | 1,000,000 | 2,400,000 / 2,400,000 | 450,792 / 430,264 |
+| That Sample to Oscillator (200 waveforms expected) | 1,000,000 | 2,400,000 / 2,400,000 | 430,264 / 330,152 |
+| Mixer to Sample | 1,400,000 | 2,400,000 / 2,400,000 | 330,152 / 331,216 |
+| That Sample to Oscillator (280 expected), very low memory | 1,400,000 | 2,700,000 / 2,700,000 | 29,840 / 13,656 |
+| Noise to Sample | 1,200,000 | 2,200,000 / 2,200,000 | 616,376 / 592,984 |
+| That Sample to Envelope | 1,200,000 | 2,200,000 / 2,200,000 | 592,984 / 587,464 |
+
+- None was refused, and none showed the "Memory cannot be allocated" alert. Samples used never changed.
+- **Waveforms cost memory outside "samples used":** the 200-waveform Oscillator took 100,112 samples of free memory, about 1,000 bytes each. The waveform record is $334 (820) bytes, and the rest isn't accounted for.
+- **Very low memory:** with 29,840 free, the conversion raised MacApp's "Memory space is low. Some commands may be disabled." It still finished: the time line runs past 13.9 s of the 14 s sound, seen by scrolling to the middle and the end (not every waveform was counted). Free memory fell only 16,184 samples, far less than the other case's rate; the likely reason is MacApp's low-memory reserve, not checked.
+- **In that low-memory state:** the alert came back on later actions, a cord drag made no cord, Cmd-H and Cmd-J did nothing, and Edit showed only Select All. Freeing memory ended it. I can't say which of these were disabled commands and which were just lost because the alert was up, since my script was blind to it.
+- **Cords:** after Convert to Sample the Output's cord was gone on screen each time, and clicking the speaker gave "A module must be connected to the output." Input cords, and cords on the Envelope and Oscillator conversions, come from the code only, since those Samples had no cords left.
+- **Speaker icon:** clicking the palette's speaker with no module connected to the Output gives that alert. With one connected, it computes the patch at once, so the icon acts directly on the Output. Hearing a single module with it wasn't tried.
+
+**Not tested:** a conversion with too little memory even for the new module's record, which would need less free than 13,656 samples; Track frequency changes; and stereo pairs.
+
+**In the port (2026-11-02):**
+- No memory check on conversions: this already matched.
+- All three conversions now remove every cord of the module. The port had kept output cords.
+- The port keeps Undo for conversions, where the original can't undo them (the user's decision, 2026-11-02).
+
+## The speaker and Info icons (traced 2026-11-02)
+**Neither is a tool.** The patch window's click handler is F15_0167C. Each icon saves the current tool (`+F0`), highlights itself, acts, then puts the tool back.
+
+- **Speaker (rect `+68`, $1DB0):** in a mono document, an Output with no input (`+142` empty) gives "A module must be connected to the output." Otherwise it computes the Output with mode 0 (selector @00EB8, here F23_01DF2). In a stereo document (`+8C`) the alert needs both Outputs empty and reads "A module must be connected to an output."; otherwise F23_02DDC runs both.
+- **Space bar ($138C):** the same tests and alerts, with mode 1.
+- **Info (rect `+60`, $1D44):** the document's Info box (F8_0161A), the same as File > Get Info.
+- **Option-click on a module ($17EE):** with any tool, this clears every selected flag (F15_01666), sets the module's flag (and its stereo partner's), computes it with mode 0, then clears the flag. So it plays that module and leaves nothing selected. The manual says the same.
+- **Compute modes:** 2 only computes, while 0 and 1 go on to the player. What separates 0 from 1 wasn't traced. The manual says holding the button after an edit makes the sound start when it's computed; the port doesn't model this.
+
+**Checked in the emulator (2026-11-02, scratch disks):** with the eraser chosen, the Info icon opened the Memory used / Memory free box and the speaker gave the alert, and the eraser was still chosen after each. Option-click on a selected Noise with the eraser chosen kept the module, cleared the selection and left the eraser chosen. A second new document was "Untitled-2". The stereo alert, the space bar's alert and sound output weren't run there. The alert shows the Stop icon (the hand), where the port's alerts show JUCE's warning icon.
+
+**In the port:** the speaker and Info icons act on release and leave the tool alone. The speaker, the space bar and Play give the two alerts while the patch window is active. Alt-click (Option on a Mac) hears a module with any tool and clears the selection. It also opens that module's waveform popup, which is the port's own (the user's request), and so do the port's right-click and Sound menu items. Real mouse input wasn't run: a temporary test sent fabricated events through the real MainComponent, and all 65 checks in it passed.
+
+## Low memory (traced 2026-11-02)
+- **The test:** F2_0043E, MacApp's low-space check, is true when the reserve handle (`-$9D6`) has been purged. The `mem!` resources 0 and 1000 ask for 4,096 + 40,000 = 44,096 bytes, or 22,048 samples. That falls between the measured 29,840 samples free (not low) and 13,656 (low), but the link from that size to the alert point is inferred from the bracket, not measured.
+- **The alert:** F5_009CE runs on each event. While low, F1_00444 shows ALRT 115 ("Memory space is low.  Some commands may be disabled.") once the tick count passes a stored time, then sets that time 7200 ticks ahead (`-$702`, set at CODE 3 $CFA), which is two minutes. While not low it keeps the time at now, so the alert comes at once on the next low event.
+- **The patch window, while low (silently):** the Mixer icon ($1D12) and module icons ($1EC2) do nothing; clicking in the patch with a module chosen places nothing and the tool stays ($1BE6); the cord tool does nothing on a module or a cord, and the eraser does nothing on a cord ($1B8E). The arrow, the tool icons, the eraser on a module, the speaker and Option-click still work.
+- **Sample crossfade (CODE 28 $21E8):** refused with "There is not enough memory to do crossfade looping."
+- **Also gated, not traced further and not ported:** two length changes in CODE 23 ($EA0, $2254), the enabling of commands 103, 104 and 3000 (CODE 23 $3694 to $36D2, and 3000 again at CODE 39 $133E and $13D6), and clicks in CODE 39 ($1868), CODE 40 ($1152, $11DE, $17A2) and CODE 48 ($58A).
+- **Correction to "Conversions and memory":** a cord drag making no cord fits this check. "Edit showed only Select All" doesn't come from it, because CODE 15 calls it only for those clicks. Nothing being selected is the likelier reason, after the alert took the clicks.
+
+**In the port:** `DocumentInfo::samplesFree` is the budget less the module lengths and 500 samples per waveform (measured: 100,112 for 200). New modules, pastes and longer lengths are refused against that, and the Info box shows it, while "used" and the indicator still count lengths only, as the original's do. Below 22,048 samples free the patch window and the crossfade behave as above, and the alert follows the same two-minute rule. The other memory changes the emulator measured (about 20,000 samples when a Sample module first appeared, for example) are left out, because they aren't modelled.
+
+**Other differences fixed in the same pass:**
+- After Cmd-A, Duplicate and Undo, the Output comes back unselected, as measured.
+- The first document is "Untitled-1" and each New Patch counts up.
+- A menu with nothing enabled has a grey title, and it stays grey when opened.
 
 ## Memory indicator "Lo!" (resolved 2026-11-01)
 - "Lo!" is not a text string in the resources or the code, so the earlier search found nothing. The indicator's ten levels are the icon resources ICON 9150 to 9159 (extracted as ts/rsrc/sc222/ICON_9150.bin to ICON_9159.bin). Level 9 (ICON 9159) is the "Lo!" cell, so the label is part of that bitmap.

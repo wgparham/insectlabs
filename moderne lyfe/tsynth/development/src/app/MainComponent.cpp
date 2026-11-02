@@ -110,17 +110,19 @@ MainComponent::MainComponent(int forceTheme)
     patchView.onConnected = [this](int from, int to) { inheritFrom(from, to); };
     patchView.onRefused = [](const char* text) { juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "TurboSynth", text); };
     patchView.onPreview = [this](int i) { render(i, true); };
+    patchView.onSpeaker = [this] { hearOutput(); };
+    patchView.onInfo = [this] { showDocumentInfo(); };
     patchView.onOpen = [this](int i) {
         openModuleWindow(i);
         // F28_00628: opening an empty Sample module asks for a sound
         if (i >= 1 && i <= (int) patch.modules.size() && patch.modules[(size_t) i - 1].type == kSample && patch.modules[(size_t) i - 1].length == 0)
             loadSoundFor(i);
     };
-    playButton.onClick = [this] { if (previewModule || renderPending || rendering) render(0, true); else play(); };
+    playButton.onClick = [this] { hearOutput(); };
     stopButton.onClick = [this] { stop(); };
     addAndMakeVisible(desktop);
     desktop.setInterceptsMouseClicks(false, true); // the dither shows through; windows take the clicks
-    patchWindow = std::make_unique<InnerWindow>("Untitled", patchView, false);
+    patchWindow = std::make_unique<InnerWindow>("Untitled-1", patchView, false);
     patchWindow->onActivate = [this] { for (auto& w : moduleWindows) w->win->setActive(false); };
     desktop.addAndMakeVisible(*patchWindow);
     patchWindow->setActive(true);
@@ -236,7 +238,7 @@ void MainComponent::menuItemSelected(int id, int)
     case kSaveAs: save(true); break;
     case kExport: exportSound(); break;
     case kQuit: juce::JUCEApplication::getInstance()->systemRequestedQuit(); break;
-    case kPlay: if (previewModule || renderPending || rendering) render(0, true); else play(); break;
+    case kPlay: hearOutput(); break;
     case kStop: stop(); break;
     case kHearSelected: render(patchView.selected, true); break;
     case kStereo: // mono jack <-> the two halves of the stereo jack; Output R's cords go with it
@@ -274,6 +276,8 @@ void MainComponent::menuItemSelected(int id, int)
             // The copies become the selection, but a selected Output stays selected (checked in the emulator).
             std::vector<int> outputs;
             for (const int i : patchView.selection()) if (patchView.isOutput(i)) outputs.push_back(i);
+            // Undo brings back the selection without the Output (checked in the emulator).
+            for (const int i : outputs) committedSelection.erase(std::remove(committedSelection.begin(), committedSelection.end(), i), committedSelection.end());
             paste(selectedItems(), outputs);
         }
         break;
@@ -448,7 +452,7 @@ bool MainComponent::keyPressed(const juce::KeyPress& k)
     if (k.getKeyCode() >= 1 && k.getKeyCode() <= 26 && k.getKeyCode() != 8 && k.getKeyCode() != 9 && k.getKeyCode() != 13) // not Backspace, Tab, Return
         return keyPressed(juce::KeyPress('A' + k.getKeyCode() - 1, k.getModifiers().withFlags(juce::ModifierKeys::commandModifier), 0));
     const bool cmd = k.getModifiers().isCommandDown();
-    if (k == juce::KeyPress::spaceKey) { if (transport.isPlaying()) stop(); else { if (previewModule || renderPending || rendering) render(0, true); else play(); } return true; }
+    if (k == juce::KeyPress::spaceKey) { if (transport.isPlaying()) stop(); else hearOutput(); return true; }
     if (k.getKeyCode() == juce::KeyPress::tabKey && patchWindow->isActive()) { patchView.nextTool(); return true; } // the Tab key, checked in the emulator
     if (cmd && k.getKeyCode() == 'S') { save(k.getModifiers().isShiftDown()); return true; }
     if (cmd && k.getKeyCode() == 'O') { choosePatch(); return true; }
@@ -485,6 +489,7 @@ void MainComponent::newPatch()
     patch.modules = { out };
     if (params.newDocStereo) setStereo(patch, true); // Stereo Preferences: new documents as stereo
     file = juce::File();
+    ++untitledNumber;
     dirty = false;
     resetHistory();
     patchView.select(0);
@@ -845,9 +850,7 @@ void MainComponent::refreshDocumentInfo()
 {
     if (!docInfo || !docWindow || !docWindow->isVisible()) return;
     // Model 1 stand-in for the Mac's free memory at launch; using system RAM is planned as a Model 2 option.
-    int64_t used = 0;
-    for (const auto& m : patch.modules) used += m.length;
-    docInfo->setCounts(used, DocumentInfo::kModel1Budget);
+    docInfo->setCounts(DocumentInfo::samplesUsed(patch.modules), DocumentInfo::samplesFree(patch.modules));
 }
 
 void MainComponent::releaseClipboard()
@@ -884,6 +887,31 @@ void MainComponent::play()
     playSamples(result.left, result.right, result.sampleRate);
 }
 
+// CODE 15 at $1DEE (the speaker icon) and $138C (the space bar).
+void MainComponent::hearOutput()
+{
+    if (patchWindow->isActive()) {
+        bool connected = false;
+        for (const auto& c : patch.connections) connected = connected || patchView.isOutput(c.to);
+        if (!connected) {
+            juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "TurboSynth",
+                isStereo(patch) ? "A module must be connected to an output." : "A module must be connected to the output.");
+            return;
+        }
+    }
+    if (previewModule || renderPending || rendering) render(0, true); else play();
+}
+
+// F5_009CE and F1_00444: on each event while memory is low, ALRT 115, at most once every two minutes.
+void MainComponent::checkMemorySpace()
+{
+    const auto now = juce::Time::getMillisecondCounter();
+    if (!DocumentInfo::spaceIsLow(patch.modules)) { nextSpaceAlert = now; return; }
+    if (now < nextSpaceAlert || juce::Component::getCurrentlyModalComponent() != nullptr) return;
+    nextSpaceAlert = now + (uint32_t) DocumentInfo::kLowAlertSeconds * 1000;
+    juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "TurboSynth", DocumentInfo::kLowMessage);
+}
+
 void MainComponent::stop()
 {
     transport.stop();
@@ -894,6 +922,18 @@ void MainComponent::stop()
 
 void MainComponent::timerCallback()
 {
+    checkMemorySpace();
+    if (++menuTitleTicks >= 6) { // a menu title goes grey when nothing in the menu is enabled
+        menuTitleTicks = 0;
+        uint32_t titles = 0;
+        const auto names = getMenuBarNames();
+        for (int i = 0; i < names.size(); ++i) {
+            const auto menu = getMenuForIndex(i, names[i]);
+            for (juce::PopupMenu::MenuItemIterator it(menu); it.next();)
+                if (it.getItem().isEnabled && !it.getItem().isSeparator) titles |= 1u << i;
+        }
+        if (titles != menuTitles) { menuTitles = titles; menuBar.repaint(); }
+    }
     if (renderPending > 0 && --renderPending == 0) {
         render(previewModule, autoPreview);
         refreshHearPopups();
@@ -915,11 +955,16 @@ void MainComponent::setDark(bool dark)
     repaint();
 }
 
+juce::String MainComponent::documentName() const
+{
+    return file.existsAsFile() ? file.getFileName() : "Untitled-" + juce::String(untitledNumber);
+}
+
 void MainComponent::updateTitle()
 {
-    if (patchWindow) patchWindow->setTitle((file.existsAsFile() ? file.getFileName() : juce::String("Untitled")) + (dirty ? " *" : ""));
+    if (patchWindow) patchWindow->setTitle(documentName() + (dirty ? " *" : ""));
     if (auto* w = findParentComponentOfClass<juce::DocumentWindow>())
-        w->setName("TurboSynth - " + (file.existsAsFile() ? file.getFileName() : juce::String("Untitled")) + (dirty ? " *" : ""));
+        w->setName("TurboSynth - " + documentName() + (dirty ? " *" : ""));
 }
 
 // ---------------------------------------------------------------------------
@@ -1024,8 +1069,8 @@ void MainComponent::paste(const std::vector<ClipItem>& items, const std::vector<
     if (items.empty()) return;
     // The original refuses a paste that would not fit in memory.
     int64_t incoming = 0;
-    for (const auto& item : items) incoming += item.module.length;
-    if (DocumentInfo::samplesUsed(patch.modules) + incoming > DocumentInfo::kModel1Budget) {
+    for (const auto& item : items) incoming += item.module.length + (int64_t) item.module.waveforms.size() * DocumentInfo::kWaveformCost;
+    if (incoming > DocumentInfo::samplesFree(patch.modules)) {
         juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "TurboSynth", DocumentInfo::kMemoryMessage);
         return;
     }
@@ -1076,8 +1121,7 @@ void MainComponent::convertToDualMono()
 void MainComponent::convertToSample()
 {
     // Freeze the selected module's sound into a Sample module in its place;
-    // its inputs are disconnected, its outputs stay. The original asks first
-    // (ALRT 233).
+    // all its cords go (F16_03EE2, F16_03F12). The original asks first (ALRT 233).
     const int i = patchView.selected;
     if (!i || patchView.isOutput(i) || patch.modules[(size_t) i - 1].type == kSample) return;
     juce::Component::SafePointer<MainComponent> self(this);
@@ -1138,6 +1182,8 @@ void MainComponent::convertSample(bool oscillator)
                 m.name = s.name;
                 m.nameField = s.nameField;
                 s = m;
+                auto& cs = self->patch.connections; // all its cords go, as in Convert to Sample
+                cs.erase(std::remove_if(cs.begin(), cs.end(), [i](const Connection& c) { return c.from == i || c.to == i; }), cs.end());
                 self->refreshModuleWindows();
                 self->patchView.repaint();
                 self->changed();
@@ -1184,7 +1230,7 @@ void MainComponent::doConvertToSample(int i)
     s.embedded = sound;
     patch.modules[(size_t) i - 1] = s;
     auto& cs = patch.connections;
-    cs.erase(std::remove_if(cs.begin(), cs.end(), [i](const Connection& c) { return c.to == i; }), cs.end());
+    cs.erase(std::remove_if(cs.begin(), cs.end(), [i](const Connection& c) { return c.from == i || c.to == i; }), cs.end());
     refreshModuleWindows();
     patchView.repaint();
     changed();
@@ -1546,6 +1592,7 @@ void MainComponent::soundTool(int code)
             const bool on = isSample || static_cast<juce::ToggleButton*>(w.getCustomComponent(0))->getToggleState();
             if (on && len < 8) { juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "TurboSynth", "The Crossfade Length must be at least 8 samples."); return; }
             if (on && len > maxLen) { juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "TurboSynth", "The Crossfade Length is too large."); return; }
+            if (isSample && DocumentInfo::spaceIsLow(patch.modules)) { juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "TurboSynth", "There is not enough memory to do crossfade looping."); return; } // CODE 28 at $21E8
             Module& mm = patch.modules[(size_t) i - 1];
             if (isSample) { // an action on the sample's own sound
                 bool done = false;
