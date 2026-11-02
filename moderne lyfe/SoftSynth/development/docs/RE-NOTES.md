@@ -17,12 +17,23 @@ Digidesign Softsynth 2.1, 1988, adapted for the ST by Rainer Brodersen. The copy
 
 ## Floating point
 
-Values are 8 bytes, consistent with IEEE double. The accumulator is at -$4780(A4).
+Values are 8 bytes with the layout of an IEEE double, but **every result is rounded to a 24-bit mantissa**, so it behaves like single precision in a double's clothing. The accumulator is at -$4780(A4). `src/engine/StFloat.h` is a routine-for-routine port.
 
-- 0x602C (`jsr $D8(A5)`) takes an opword. The high byte is the operand type: 0x2000 word, 0x2800 long, 0x1000 float. The low byte is the operation: 0 add, 2 multiply, 3 divide.
-- 0x60DE long to double, 0x60EE double to long (rounds, see the check below), 0x60FE float to double, 0x610E double to float.
+- 0x602C (`jsr $D8(A5)`) takes an opword. The high byte is the operand type: 0x2000 word, 0x2800 long, 0x1000 float. The low byte indexes the table at -$47A4(A4): 0 add, 1 subtract, 2 multiply, 3 divide, 4 compare, 5 and 6 are the pack routines.
+- 0x60DE long to double, 0x60EE double to long, 0x60FE float to double, 0x610E double to float, each on the accumulator.
+
+| Routine | Address | Behaviour |
+|---|---|---|
+| Pack | 0x5FC2 | Normalizes, rounds to even at bit 8. A 32-bit working value with nothing above bit 7 becomes zero. |
+| Multiply | 0x5E7C | 32×32, with a sticky bit for the low half. |
+| Divide | 0x5DFE | 32-step quotient with no sticky bit, so a remainder can read as an exact tie. Divide by zero gives zero. |
+| Add, subtract | 0x5F28, 0x5F0E | Aligns the smaller operand by truncating, with no sticky bit. An exponent gap above 31 ignores it. |
+| Double to long | 0x61B6 | Truncates toward zero. |
+| Compare | 0x5DBE | 64-bit signed compare after flipping negatives. |
 
 The break-point stage uses this library. The sample kernels are integer only.
+
+**Check:** `refrender --fp-test` runs each routine on Musashi against the port with random operands, including unusual ones. 4.5 million operations, 0 differences. Six deliberately broken copies of the port were all caught, so the test can fail. Native `float` differs from the original, but rarely on ordinary values: the "div gains sticky" variant differed on about 0.1% of divides.
 
 ## `.PRM` file (0x780C bytes, all big-endian)
 
@@ -64,11 +75,11 @@ Amp value:
 - Carrier: y · fader · 0x50CB4
 - Modulator (F009736: some partial's routing names it): y · fader · (fader · 0xA42). **The fader counts twice for modulators.**
 
-Frequency value, in doubles and in this order: base = (frequency >> 3) · ratio, then value = (base·y/div + base) / rate. A phase increment of 1 cycle is 2^29.
+Frequency value, using the float library above, in this order: base = (frequency >> 3) · ratio, passed through double-to-float-to-double around each step as the code does, then value = toLong((base·y/div + base) / rate), where the first record uses toLong(base / rate). A phase increment of 1 cycle is 2^29.
 
 The headroom shift counts how many halvings bring the summed faders (of partials in the mix) to 64 or less.
 
-**Check:** on `TBWERD1.PRM`, `prmdump.py` matches amp time, value and slope 43/43, and frequency time and slope 22/22. Frequency value matches 21/22 using correctly rounded doubles: P5 freq[1] computes 5109594 and stored is 5109593. The original's own code on Musashi reproduces all stored break points, 5109593 included, so the difference is in its float library. A port needs that library's rounding, not native doubles, to match every value. Its add, multiply, divide and double-to-long routines have not been read yet.
+**Check:** on `TBWERD1.PRM`, `prmdump.py` matches amp time, value and slope 43/43, and frequency time and slope 22/22. Frequency value matches only 21/22 using true doubles with rounding: P5 freq[1] computes 5109594 and stored is 5109593. The apparent "rounding" was really 24-bit precision followed by truncation. With `StFloat.h` and the same formulas, all 26 stored frequency values match, including the first records, and the original's own code on Musashi reproduces all stored break points.
 
 ## Kernels
 
@@ -128,6 +139,5 @@ Limits: these run on an emulated CPU, not checked against a real ST or Hatari. T
 
 ## Next
 
-1. Read the float library's add, multiply, divide and double-to-long routines (reached through the table at -$47A4).
-2. C++ engine as a library with no JUCE dependency and an explicit seed, compared sample for sample with `tests/reference/`.
-3. Standalone Model 1 app.
+1. C++ engine as a library with no JUCE dependency and an explicit seed, compared sample for sample with `tests/reference/`.
+2. Standalone Model 1 app.

@@ -6,12 +6,15 @@
 //
 // refrender SOFTSYNT.PRG file.prm out.sd [--seed N | --zero-random] [--no-normalize]
 //           [--buffer BYTES] [--wav out.wav]
+// refrender SOFTSYNT.PRG file.prm unused --fp-test OPS_PER_ROUTINE
+#include <algorithm>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <string>
 #include <vector>
+#include "../../src/engine/StFloat.h"
 extern "C" {
 #include "m68k.h"
 }
@@ -163,6 +166,131 @@ static uint64_t call(uint32_t textOffset)
     return runUntilStop();
 }
 
+// ---- --fp-test: the port of the float library against the 68K routines ------------
+namespace fp = softsynth::stfloat;
+static const uint32_t kArgA = 0x00500000, kArgB = 0x00500010, kFpStack = 0x00510000;
+
+static uint32_t rngState = 0x12345678;
+static uint32_t rng()
+{
+    rngState ^= rngState << 13;
+    rngState ^= rngState >> 17;
+    rngState ^= rngState << 5;
+    return rngState;
+}
+
+static uint64_t call2(uint32_t textOffset, uint32_t a, uint32_t b)
+{
+    m68k_set_reg(M68K_REG_SP, kFpStack);
+    wr32(kFpStack + 4, a);
+    wr32(kFpStack + 8, b);
+    wr32(kFpStack, kStop);
+    m68k_set_reg(M68K_REG_PC, kText + textOffset);
+    return runUntilStop();
+}
+
+static void put(uint32_t a, const fp::Value& v) { wr32(a, v.hi); wr32(a + 4, v.lo); }
+static fp::Value get(uint32_t a) { return { rd32(a), rd32(a + 4) }; }
+
+// A value of the kind the library itself produces, sometimes unusual ones.
+static fp::Value randomValue(fp::Value* pool, int poolSize)
+{
+    switch (rng() % 8) {
+    case 0: return fp::fromLong((int32_t) rng());
+    case 1: return fp::fromLong((int32_t) (rng() >> (rng() % 32)));
+    case 2: return fp::fromLong((int32_t) (rng() % 2001) - 1000);
+    case 3: return {};
+    case 4: return pool[rng() % poolSize];
+    case 5: { fp::Value v = pool[rng() % poolSize]; v.hi ^= (rng() & 7) << 20; return v; }
+    case 6: { fp::Value v = pool[rng() % poolSize]; v.lo ^= 0x20000000u; return v; } // near a neighbour
+    default: { // any exponent, with the low bits the library would write
+        const uint32_t e = 0x300 + rng() % 0x200;
+        return { (rng() & 0x800FFFFFu) | e << 20, rng() & 0xE0000000u };
+    }
+    }
+}
+
+static int fpTest(int perOp, const std::vector<uint8_t>& prm)
+{
+    static const char* names[] = { "add", "sub", "mul", "div", "compare", "fromLong", "toLong", "toFloatBits", "fromFloatBits" };
+    fp::Value pool[64];
+    for (auto& v : pool) v = fp::fromLong((int32_t) rng());
+    uint64_t total = 0, bad = 0;
+    for (int op = 0; op < 9; ++op) {
+        uint64_t opBad = 0;
+        for (int i = 0; i < perOp; ++i) {
+            const fp::Value a = randomValue(pool, 64), b = randomValue(pool, 64);
+            fp::Value want{}, got{};
+            int wantCmp = 0, gotCmp = 0;
+            uint32_t lhs = 0, rhs = 0;
+            put(kArgA, a);
+            put(kArgB, b);
+            switch (op) {
+            case 0: call2(0x5F28, kArgA, kArgB); want = get(kArgA); got = fp::add(a, b); break;
+            case 1: call2(0x5F0E, kArgA, kArgB); want = get(kArgA); got = fp::sub(a, b); break;
+            case 2: call2(0x5E7C, kArgA, kArgB); want = get(kArgA); got = fp::mul(a, b); break;
+            case 3: call2(0x5DFE, kArgA, kArgB); want = get(kArgA); got = fp::div(a, b); break;
+            case 4: {
+                call2(0x5DBE, kArgA, kArgB);
+                const uint32_t a4 = m68k_get_reg(nullptr, M68K_REG_A4);
+                const uint16_t sr = rd16(a4 - 0x4776);
+                const bool n = sr & 8, z = sr & 4, v = sr & 2;
+                wantCmp = z ? 0 : (n != v) ? -1 : 1;
+                gotCmp = fp::compare(a, b);
+                break;
+            }
+            case 5: lhs = rng() >> (rng() % 32); if (rng() & 1) lhs = 0u - lhs; wr32(kArgA, lhs); call2(0x61FE, kArgA, 0); want = get(kArgA); got = fp::fromLong((int32_t) lhs); break;
+            case 6: call2(0x61B6, kArgA, 0); lhs = rd32(kArgA); rhs = (uint32_t) fp::toLong(a); break;
+            case 7: call2(0x613E, kArgA, 0); lhs = rd32(kArgA); rhs = fp::toFloatBits(a); break;
+            case 8: wr32(kArgA, a.hi); call2(0x617C, kArgA, 0); want = get(kArgA); got = fp::fromFloatBits(a.hi); break;
+            }
+            pool[rng() % 64] = want;
+            const bool same = want.hi == got.hi && want.lo == got.lo && wantCmp == gotCmp && lhs == rhs;
+            if (op == 5) { if (want.hi != got.hi || want.lo != got.lo) ++opBad; }
+            else if (!same) {
+                if (opBad < 3)
+                    std::printf("  %s %08x%08x, %08x%08x: 68K %08x%08x/%d/%08x, port %08x%08x/%d/%08x\n", names[op], a.hi, a.lo, b.hi, b.lo,
+                                want.hi, want.lo, wantCmp, lhs, got.hi, got.lo, gotCmp, rhs);
+                ++opBad;
+            }
+            ++total;
+        }
+        std::printf("%-14s %d ops, %llu differ\n", names[op], perOp, (unsigned long long) opBad);
+        bad += opBad;
+    }
+
+    // The break points the original stored in the file, from the port and the formulas.
+    auto be32 = [&](size_t o) { return (uint32_t) prm[o] << 24 | prm[o + 1] << 16 | prm[o + 2] << 8 | prm[o + 3]; };
+    auto be16 = [&](size_t o) { return (int16_t) (prm[o] << 8 | prm[o + 1]); };
+    const int32_t rate = (int32_t) be32(0x77C4), frequency = (int32_t) be32(0x77C8);
+    int checked = 0, wrong = 0;
+    for (int p = 0; p < 32; ++p) {
+        const size_t base = (size_t) p * 956;
+        if (be16(base + 2) == 0) continue;
+        const int32_t ratio = (int32_t) be32(base + 4);
+        const int div = prm[base] == 1 ? 2500 : 100;
+        const uint32_t product = fp::toFloatBits(fp::mul(fp::fromFloatBits(fp::toFloatBits(fp::fromLong(frequency >> 3))), fp::fromLong(ratio)));
+        auto value = [&](int y) {
+            const fp::Value part = fp::div(fp::mul(fp::fromFloatBits(product), fp::fromLong(y)), fp::fromLong(div));
+            return fp::toLong(fp::div(fp::add(fp::fromFloatBits(product), part), fp::fromLong(rate)));
+        };
+        const int n = be16(base + 0x2AA);
+        for (int r = 0; r <= n + 1; ++r) {
+            const size_t rec = base + 0x2AC + (size_t) r * 16;
+            const int32_t stored = (int32_t) be32(rec + 4);
+            const int32_t mine = r == 0 ? fp::toLong(fp::div(fp::fromFloatBits(product), fp::fromLong(rate))) : value(be16(rec + 12));
+            ++checked;
+            if (mine != stored) {
+                ++wrong;
+                std::printf("  P%d freq[%d]: port %d, file %d\n", p + 1, r, mine, stored);
+            }
+        }
+    }
+    std::printf("frequency break points from the port: %d of %d match the file\n", checked - wrong, checked);
+    std::printf("%llu operations, %llu differ\n", (unsigned long long) total, (unsigned long long) bad);
+    return (bad || wrong) ? 1 : 0;
+}
+
 static void writeWav(const std::string& path, const std::vector<int16_t>& s, uint32_t rate)
 {
     FILE* f = std::fopen(path.c_str(), "wb");
@@ -182,9 +310,11 @@ int main(int argc, char** argv)
     bool normalize = true;
     uint32_t bufferBytes = 0x200000;
     std::string wavPath;
+    int fpOps = 0;
     for (int i = 4; i < argc; ++i) {
         const std::string a = argv[i];
-        if (a == "--seed" && i + 1 < argc) seed = (uint32_t) std::strtoul(argv[++i], nullptr, 0);
+        if (a == "--fp-test" && i + 1 < argc) fpOps = std::atoi(argv[++i]);
+        else if (a == "--seed" && i + 1 < argc) seed = (uint32_t) std::strtoul(argv[++i], nullptr, 0);
         else if (a == "--zero-random") zeroRandom = true;
         else if (a == "--no-normalize") normalize = false;
         else if (a == "--buffer" && i + 1 < argc) bufferBytes = (uint32_t) std::strtoul(argv[++i], nullptr, 0);
@@ -229,6 +359,7 @@ int main(int argc, char** argv)
     startupEnd = 0;
     const uint32_t a4 = m68k_get_reg(nullptr, M68K_REG_A4);
     if (fatal) return 1;
+    if (fpOps > 0) return fpTest(fpOps, readFile(argv[2]));
     call(0x1CB7A); // waveform table pointers (jump table 0x34E)
     call(0x1CBA0); // noise table pointer (jump table 0x354)
 
