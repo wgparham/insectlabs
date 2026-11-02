@@ -139,5 +139,37 @@ Limits: these run on an emulated CPU, not checked against a real ST or Hatari. T
 
 ## Next
 
-1. C++ engine as a library with no JUCE dependency and an explicit seed, compared sample for sample with `tests/reference/`.
-2. Standalone Model 1 app.
+1. Standalone Model 1 app, and everything outside the render path: SmartSynth, time slices, the editors, the sampler transfers.
+2. Run the whole program in Hatari as a second check.
+
+## Engine (`src/engine/`)
+
+`Engine.cpp` ports F00C28E, F00B3C8, F00B2A2, F00B336 and both kernels. `StFloat.h` is the float library. `WaveTables.cpp` is generated from the program by `tools/re/extract_tables.py`. `Patch.cpp` reads and writes `.PRM` files. There is no JUCE dependency. `src/cli` renders a patch from the command line, with the same options as `refrender`.
+
+**Behaviour kept on purpose:**
+
+- A modulator's fader counts twice.
+- The lists run from the highest partial down, so a modulator above its carrier is heard one sample sooner than one below it.
+- Waveform 4's plain kernel clears bit 16 of the phase on every sample. Its FM kernel works on a copy and doesn't. So the same patch differs by routing.
+- Waveforms 4 and 5 take no FM input. The other value (`else` in the dispatch) is the 8-bit noise, including waveform 0 and anything above 5.
+- The 8-bit noise in the plain kernel ignores its frequency contour.
+- After its last break point, a kernel reads the next record's time from the file, even if it's a leftover. So unused records can change the sound, and they are kept byte for byte.
+- The one-step FM buffer bug, through `RenderOptions::bufferSamples`. 0 renders in one pass.
+
+**Differences from the original, because it would crash:**
+
+- Equal break point times divide by zero, which bombs an ST. The engine uses a slope of 0 and warns. The fuzzer did not generate this case, so this path has run on neither side.
+- A corrupt record count made the original write through its own memory. The engine stops at the end of the data and warns.
+- Reading past the end of the partials returns 0. The original reads whatever memory follows.
+
+**Verification** (compared with the original's 68K code on Musashi, as whole output files, header included):
+
+| Test | Result |
+|---|---|
+| `tests/test_engine.cpp`, 14 reference renders: seeds, zero Random, normalize, all 5 waveforms with and without FM, small buffer | 14 of 14 identical, with GCC and with MSVC |
+| `tools/re/fuzz.py`, 2000 random patches: odd waveform values, routing, self-modulation, leftover records, small buffers | 1893 identical, 107 rejected by both, 0 failures |
+| 300,000-sample sound, one pass and two buffer sizes | Identical |
+| Damaged files, 2000 | Engine finished on all of them |
+| Planted bugs in copies of the engine, 10 | 9 caught. The tenth moved the 8-bit noise's phase, which nothing reads, so it can't change the output. |
+
+**Limits:** all of this compares with the code in this cracked copy on an emulated CPU, not with a real ST or an uncracked copy. Patches from the fuzzer are random, not musical, and only one real patch exists. The render path is the only part ported so far.

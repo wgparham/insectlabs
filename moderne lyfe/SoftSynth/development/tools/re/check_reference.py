@@ -50,7 +50,7 @@ def main():
     render(exe, prg, prm, p("tbwerd1-zero-raw.sd"), "--zero-random", "--no-normalize")
     render(exe, prg, prm, p("tmp-repeat.sd"), "--seed", "1")
     render(exe, prg, prm, p("tmp-seed2.sd"), "--seed", "2")
-    render(exe, prg, prm, p("tmp-small.sd"), "--seed", "1", "--no-normalize", "--buffer", "0x1000")
+    render(exe, prg, prm, p("tbwerd1-buffer2048-raw.sd"), "--seed", "1", "--no-normalize", "--buffer", "0x1000")
 
     # Variants, because the sample patch only sounds waveforms 1 and 2.
     with open(prm, "rb") as f:
@@ -81,7 +81,7 @@ def main():
     _, zero = samples(p("tbwerd1-zero-raw.sd"))
     file2, _ = samples(p("tmp-repeat.sd"))
     _, seed2 = samples(p("tmp-seed2.sd"))
-    _, small = samples(p("tmp-small.sd"))
+    _, small = samples(p("tbwerd1-buffer2048-raw.sd"))
     _, nofm_full = samples(p("tmp-nofm.sd"))
     _, nofm_small = samples(p("tmp-nofm-small.sd"))
 
