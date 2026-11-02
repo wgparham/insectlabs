@@ -1,5 +1,5 @@
-# TSL development evidence
+# TSL research and development history
 
-The approved incoming source/project are retained as text-suffixed binary/source files in approved-input-2026-10-14. SHA256-alt-historical.json records the superseded alternate build. Experimental revisions remain in ../development/integration-backup; historical logs retain their relative reference links. No experiment is canonical.
+The approved incoming source/project are retained as text-suffixed files in [approved-input-2026-10-14](approved-input-2026-10-14/). The superseded alternate implementation, its checksums, and its revision snapshots are in [historical-alternates](historical-alternates/); none is canonical. The release and repeatable tests are in [TSL 1.0.0](../versions/1.0.0/).
 
-Folder audit: development contains the matched canonical working pair, historical logs and experimental backups; references contains the unique EMS slew research packet; research preserves release provenance; versions/1.0.0 contains the canonical release and repeatable tests. No new audio fixtures or standalone primitive were produced. No .bak files were present in the supplied TSL inventory.
+[Development history](Development-History.md) records early assumptions and test decisions. Use the canonical developer notes and release documentation for current behavior. Shared EMS research is indexed in the [series reference catalog](../../references/README.md), and the module-specific research packet is in [references](../references/).

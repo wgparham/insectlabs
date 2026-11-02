@@ -13,6 +13,7 @@ target_sources(TurboSynth PRIVATE
     ClassicLook.cpp
     ClassicIcons.cpp
     LoopWindow.cpp
+    DocumentInfo.cpp
     InnerWindow.cpp)
 
 target_compile_definitions(TurboSynth PRIVATE

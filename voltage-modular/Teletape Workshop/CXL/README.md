@@ -8,4 +8,4 @@ Canonical version: [1.0.0](versions/1.0.0/README.md). User approved 2026-10-18; 
 - [Research and sources](RESEARCH.md)
 - [EMT and Dattorro source documents](references/)
 
-The development pair mirrors the archive. Future behavior changes require a new release candidate and version.
+The immutable source pair is in [CXL 1.0.0](versions/1.0.0/README.md); start future revisions from that archive. The [DSP design record](DSP-DESIGN.md) and audition comparisons remain available alongside the research.

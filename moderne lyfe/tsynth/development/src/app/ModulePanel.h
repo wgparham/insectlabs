@@ -9,6 +9,8 @@
 
 #include <juce_gui_basics/juce_gui_basics.h>
 
+#include <optional>
+
 class ModulePanel : public juce::Component
 {
 public:
@@ -23,6 +25,12 @@ public:
 
     void show(turbosynth::Patch* patch, int index); // index 0 = nothing selected
     void forgetAnalysis() { harmIndex = -1; } // the waveforms changed behind the panel (undo)
+    // The Edit menu in an Oscillator window works on its selected waveforms.
+    bool wavesSelected() const;
+    bool canSelectAllWaves() const;
+    void selectAllWaves();
+    void clearWaves();
+    void duplicateWaves();
     void paint(juce::Graphics&) override;
     void resized() override;
 
@@ -33,6 +41,10 @@ private:
         std::function<int()> get;
         std::function<void(int)> set;
         int lo = -32768, hi = 32767;
+        std::function<int()> hiNow; // when set, the upper limit depends on the current settings
+        std::function<bool(int)> accepts; // when set, a new value the original would refuse is reverted
+        const char* refusal = nullptr;    // the alert for a refused value (default: the rate and length message)
+        bool refuses = false; // out-of-range text is refused with an alert, as the Info boxes do; otherwise it is clamped
     };
     void addField(const juce::String& name, int lo, int hi, std::function<int()> get, std::function<void(int)> set);
     void commit(Field&);
@@ -46,6 +58,11 @@ private:
     juce::ToggleButton normalize { "Normalize output" };
     juce::TextButton hear { "Hear" }, loadSound { "Load Sound..." }, addWave { "+" }, removeWave { "-" }, saveWave { "Save" };
     WaveTimeline timeline;
+    std::set<int> waveSelection;
+    std::optional<turbosynth::Waveform> armedWave; // chosen from the palette, waiting for its click on the time line
+    void armWave(const turbosynth::Waveform&);
+    int waveSelectionFor = -1; // the module the selection belongs to
+    void sortWaves(turbosynth::Module&);
     HarmonicEditor harmEditor;
     juce::Label soundInfo; // Sample and Output: where the sound is, the loop, crossfade
     bool harmonicMode = false; // the oscillator shows the Harmonic window

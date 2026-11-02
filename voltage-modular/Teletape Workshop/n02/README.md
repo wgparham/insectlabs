@@ -8,4 +8,4 @@ Canonical version: [1.0.0](versions/1.0.0/README.md). User approved 2026-10-16. 
 - [Release review](versions/1.0.0/REVIEW.md)
 - [Final hero](versions/1.0.0/n02_hero.png)
 
-The development folder points to the canonical archive after housekeeping. Publication is deferred under the [Teletape Workshop publication plan](../PUBLICATION-PLAN.md).
+No development candidate is active. Start a future revision from the immutable [1.0.0 source archive](versions/1.0.0/README.md). Publication is deferred under the [Teletape Workshop publication plan](../PUBLICATION-PLAN.md).

@@ -1,5 +1,6 @@
 #include "PatchView.h"
 #include "ClassicLook.h"
+#include "DocumentInfo.h"
 
 #include <algorithm>
 #include <map>
@@ -96,6 +97,13 @@ int PatchView::cordAt(juce::Point<float> p) const
     return -1;
 }
 
+int PatchView::memoryLevel() const
+{
+    int64_t used = 0;
+    if (patch) for (const auto& m : patch->modules) used += m.length;
+    return DocumentInfo::levelOf(used, DocumentInfo::kModel1Budget);
+}
+
 void PatchView::paint(juce::Graphics& g)
 {
     const auto& t = classic::theme();
@@ -109,7 +117,7 @@ void PatchView::paint(juce::Graphics& g)
                      || (items[(size_t) i].type == -3 && tool == Tool::Eraser) || (items[(size_t) i].type == -4 && tool == Tool::Info)
                      || (items[(size_t) i].type == -5 && tool == Tool::Hear) || (tool == Tool::Place && items[(size_t) i].type == placeType);
         if (on) { g.setColour(t.ink); g.fillRect(cell); }
-        classic::drawIcon(g, items[(size_t) i].icon, cell.reduced(2.0f), on);
+        classic::drawIcon(g, items[(size_t) i].icon == 1002 ? 9150 + memoryLevel() : items[(size_t) i].icon, cell.reduced(2.0f), on);
         g.setColour(t.ink);
         g.drawRect(cell, 0.5f);
     }
@@ -136,7 +144,7 @@ void PatchView::paint(juce::Graphics& g)
     // Modules: icon plus name, inverted when selected (as in the Finder).
     for (int i = 1; i <= (int) patch->modules.size(); ++i) {
         const auto& m = patch->modules[(size_t) i - 1];
-        const bool sel = i == selected || (selected && partnerOf(i) == selected); // the halves of a stereo jack or sample go together
+        const bool sel = isSelected(i);
         classic::drawIcon(g, iconFor(m), iconBounds(i), sel);
         const auto font = classic::smallFont(10.0f);
         const int tw = juce::GlyphArrangement::getStringWidthInt(font, m.name) + 4;
@@ -147,6 +155,70 @@ void PatchView::paint(juce::Graphics& g)
         g.setFont(font);
         g.drawText(m.name, lb, juce::Justification::centred, true);
     }
+    if (selecting) {
+        const auto box = juce::Rectangle<float>(dragStart, dragNow);
+        const float dash[] = { 3.0f, 3.0f };
+        g.setColour(t.ink);
+        g.drawDashedLine({ box.getTopLeft(), box.getTopRight() }, dash, 2, 1.0f);
+        g.drawDashedLine({ box.getTopRight(), box.getBottomRight() }, dash, 2, 1.0f);
+        g.drawDashedLine({ box.getBottomRight(), box.getBottomLeft() }, dash, 2, 1.0f);
+        g.drawDashedLine({ box.getBottomLeft(), box.getTopLeft() }, dash, 2, 1.0f);
+    }
+}
+
+bool PatchView::isSelected(int index) const
+{
+    if (!index) return false;
+    if (index == selected || alsoSelected.count(index)) return true;
+    const int p = partnerOf(index); // the halves of a stereo jack or sample go together
+    return p && (p == selected || alsoSelected.count(p));
+}
+
+std::vector<int> PatchView::selection() const
+{
+    std::vector<int> out;
+    if (patch) for (int i = 1; i <= (int) patch->modules.size(); ++i) if (isSelected(i)) out.push_back(i);
+    return out;
+}
+
+void PatchView::setSelection(const std::vector<int>& indices)
+{
+    const int was = selected;
+    select(0);
+    if (!patch) return;
+    std::vector<int> valid;
+    for (const int i : indices) if (i >= 1 && i <= (int) patch->modules.size()) valid.push_back(i);
+    if (valid.empty()) return;
+    // The single-module commands act on the one that was already chosen, or else the first that isn't an Output.
+    selected = std::find(valid.begin(), valid.end(), was) != valid.end() ? was : valid[0];
+    if (isOutput(selected))
+        for (const int i : valid) if (!isOutput(i)) { selected = i; break; }
+    for (const int i : valid) if (i != selected) alsoSelected.insert(i);
+}
+
+void PatchView::selectAll()
+{
+    std::vector<int> all;
+    if (patch) for (int i = 1; i <= (int) patch->modules.size(); ++i) all.push_back(i);
+    setSelection(all);
+    if (onSelect) onSelect(selected);
+    repaint();
+}
+
+void PatchView::toggleSelected(int index)
+{
+    auto now = selection();
+    const int p = partnerOf(index);
+    if (isSelected(index)) now.erase(std::remove_if(now.begin(), now.end(), [&](int i) { return i == index || i == p; }), now.end());
+    else now.push_back(index);
+    setSelection(now);
+}
+
+void PatchView::nextTool()
+{
+    tool = tool == Tool::Arrow ? Tool::Cord : tool == Tool::Cord ? Tool::Eraser : Tool::Arrow;
+    setMouseCursor(tool == Tool::Arrow ? juce::MouseCursor::NormalCursor : juce::MouseCursor::CrosshairCursor);
+    repaint();
 }
 
 void PatchView::mouseDown(const juce::MouseEvent& e)
@@ -168,7 +240,7 @@ void PatchView::mouseDown(const juce::MouseEvent& e)
     if (!patch) return;
     const int hit = moduleAt(e.position);
     if (e.mods.isPopupMenu()) {
-        if (hit) { selected = hit; if (onSelect) onSelect(hit); showModuleMenu(hit); }
+        if (hit) { select(hit); if (onSelect) onSelect(hit); showModuleMenu(hit); }
         repaint();
         return;
     }
@@ -179,14 +251,14 @@ void PatchView::mouseDown(const juce::MouseEvent& e)
         return;
     }
     if (tool == Tool::Eraser) {
-        if (hit) { if (!isOutput(hit)) { if (onRemoving) onRemoving(hit); removeModule(*patch, hit); selected = 0; if (onSelect) onSelect(0); if (onChanged) onChanged(); } } // the output jack cannot be erased
+        if (hit) { if (!isOutput(hit)) { if (onRemoving) onRemoving(hit); removeModule(*patch, hit); select(0); if (onSelect) onSelect(0); if (onChanged) onChanged(); } } // the output jack cannot be erased
         else if (const int c = cordAt(e.position); c >= 0) { patch->connections.erase(patch->connections.begin() + c); if (onChanged) onChanged(); }
         repaint();
         return;
     }
     if (tool == Tool::Info || tool == Tool::Hear) { // these tools stay chosen, as in the original
         if (hit) {
-            selected = hit;
+            select(hit);
             if (onSelect) onSelect(hit);
             if (tool == Tool::Info) { if (onOpen) onOpen(hit); }
             else if (onPreview) onPreview(hit);
@@ -194,43 +266,117 @@ void PatchView::mouseDown(const juce::MouseEvent& e)
         repaint();
         return;
     }
-    selected = hit;
-    if (onSelect) onSelect(hit);
-    dragging = hit;
-    connecting = hit && (tool == Tool::Cord || e.mods.isShiftDown());
     dragStart = dragNow = e.position;
-    if (hit) rectAtStart = patch->modules[(size_t) hit - 1].rect;
-    if (const int p = partnerOf(hit)) partnerRectAtStart = patch->modules[(size_t) p - 1].rect;
+    if (tool == Tool::Cord) {
+        select(hit);
+        if (onSelect) onSelect(hit);
+        dragging = hit;
+        connecting = hit != 0;
+        repaint();
+        return;
+    }
+    // The arrow, checked in the emulator: Shift toggles a module, a click on a member keeps the group,
+    // any other click selects just that module, and a drag from empty space draws a selection box.
+    const bool shift = e.mods.isShiftDown();
+    if (hit) {
+        if (shift) toggleSelected(hit);
+        else if (!isSelected(hit) || alsoSelected.empty()) select(hit);
+        if (onSelect) onSelect(selected);
+        dragging = isSelected(hit) ? hit : 0;
+        held.clear();
+        if (dragging) for (const int i : selection()) held.push_back({ i, patch->modules[(size_t) i - 1].rect });
+    } else {
+        if (!shift) { select(0); if (onSelect) onSelect(0); }
+        selecting = true;
+        boxToggles = shift;
+    }
     repaint();
 }
 
 void PatchView::mouseDrag(const juce::MouseEvent& e)
 {
-    if (!patch || !dragging) return;
+    if (!patch || (!dragging && !selecting)) return;
     dragNow = e.position;
-    if (!connecting) {
+    if (dragging && !connecting) {
         const auto d = (e.position - dragStart) / scale;
-        auto& r = patch->modules[(size_t) dragging - 1].rect;
-        r[0] = (int16_t) (rectAtStart[0] + d.y); r[2] = (int16_t) (rectAtStart[2] + d.y);
-        r[1] = (int16_t) (rectAtStart[1] + d.x); r[3] = (int16_t) (rectAtStart[3] + d.x);
-        if (const int p = partnerOf(dragging)) {
-            auto& pr = patch->modules[(size_t) p - 1].rect;
-            pr[0] = (int16_t) (partnerRectAtStart[0] + d.y); pr[2] = (int16_t) (partnerRectAtStart[2] + d.y);
-            pr[1] = (int16_t) (partnerRectAtStart[1] + d.x); pr[3] = (int16_t) (partnerRectAtStart[3] + d.x);
+        for (const auto& h : held) {
+            auto& r = patch->modules[(size_t) h.index - 1].rect;
+            r[0] = (int16_t) (h.rect[0] + d.y); r[2] = (int16_t) (h.rect[2] + d.y);
+            r[1] = (int16_t) (h.rect[1] + d.x); r[3] = (int16_t) (h.rect[3] + d.x);
         }
     }
     repaint();
 }
 
+// F16_045B6: a duplicate cord is ignored; otherwise a cord from an Output, into
+// a module with no free input, or closing a feedback path is refused with a message.
+const char* PatchView::cordRefusal(int from, int to) const
+{
+    for (const auto& c : patch->connections)
+        if (c.from == from && c.to == to) return "";
+    if (from == to) return ""; // a module cannot be patched to itself; the original ignores it silently
+    const int srcType = patch->modules[(size_t) from - 1].type;
+    if (srcType == kOutput || srcType == kOutputR) return "The output can only terminate the signal path.";
+    const int dstType = patch->modules[(size_t) to - 1].type;
+    int limit = 1; // F18_00E52: TBLOCK's default
+    if (dstType == kOscillator || dstType == kSample || dstType == kNoise) limit = 0;
+    else if (dstType == kModulator) limit = 2;
+    else if (dstType == kMixer) limit = 32;
+    int used = 0;
+    for (const auto& c : patch->connections) if (c.to == to) ++used;
+    if (used >= limit) return "No more inputs available.";
+    // Feedback: does `from` already depend on `to`?
+    std::vector<int> todo{ from };
+    std::vector<bool> seen(patch->modules.size() + 1, false);
+    seen[(size_t) from] = true;
+    while (!todo.empty()) {
+        const int m = todo.back();
+        todo.pop_back();
+        for (const auto& c : patch->connections)
+            if (c.to == m && !seen[(size_t) c.from]) {
+                if (c.from == to) return "Feedback paths are not allowed.";
+                seen[(size_t) c.from] = true;
+                todo.push_back(c.from);
+            }
+    }
+    return nullptr;
+}
+
 void PatchView::mouseUp(const juce::MouseEvent& e)
 {
-    if (!patch || !dragging) return;
+    if (!patch) return;
+    if (selecting) {
+        selecting = false;
+        const auto box = juce::Rectangle<float>(dragStart, dragNow);
+        if (!box.isEmpty()) { // a module the box only touches counts
+            std::set<int> now;
+            for (const int i : selection()) now.insert(i);
+            std::set<int> done;
+            for (int i = 1; i <= (int) patch->modules.size(); ++i) {
+                const int p = partnerOf(i);
+                if (!iconBounds(i).intersects(box) || done.count(i)) continue;
+                done.insert(i); done.insert(p);
+                if (boxToggles && now.count(i)) { now.erase(i); now.erase(p); }
+                else now.insert(i);
+            }
+            setSelection({ now.begin(), now.end() });
+            if (onSelect) onSelect(selected);
+        }
+        repaint();
+        return;
+    }
+    if (!dragging) return;
     if (connecting) {
         const int to = moduleAt(e.position);
         if (to && to != dragging) {
-            patch->connections.push_back({ (int16_t) dragging, (int16_t) to });
-            if (onConnected) onConnected(dragging, to);
-            if (onChanged) onChanged();
+            const char* refusal = cordRefusal(dragging, to);
+            if (refusal == nullptr) {
+                patch->connections.push_back({ (int16_t) dragging, (int16_t) to });
+                if (onConnected) onConnected(dragging, to);
+                if (onChanged) onChanged();
+            } else if (*refusal && onRefused) {
+                onRefused(refusal);
+            }
         }
     } else if (e.position != dragStart && onChanged) {
         onChanged();
@@ -260,7 +406,7 @@ void PatchView::showModuleMenu(int index)
         if (r == 1) { if (onPreview) onPreview(index); return; }
         if (r == 2) cs.erase(std::remove_if(cs.begin(), cs.end(), [index](const Connection& c) { return c.to == index; }), cs.end());
         if (r == 3) cs.erase(std::remove_if(cs.begin(), cs.end(), [index](const Connection& c) { return c.from == index; }), cs.end());
-        if (r == 4) { removeModule(*patch, index); selected = 0; if (onSelect) onSelect(0); }
+        if (r == 4) { removeModule(*patch, index); select(0); if (onSelect) onSelect(0); }
         if (onChanged) onChanged();
         repaint();
     });
@@ -273,13 +419,15 @@ void PatchView::place(int type, juce::Point<float> at)
     for (const auto& m : patch->modules) if (m.type == kOutput && m.sampleRate > 0) { sr = m.sampleRate; len = m.length > 0 ? m.length : sr; break; }
     auto m = makeModule(type, sr, len);
     if (onNewModule) onNewModule(m);
+    if (DocumentInfo::samplesUsed(patch->modules) + m.length > DocumentInfo::kModel1Budget) { // the original refuses a module that will not fit
+        if (onRefused) onRefused(DocumentInfo::kMemoryMessage);
+        return;
+    }
     const auto pos = toPatch(at);
     m.rect = { (int16_t) (pos.y - 16), (int16_t) (pos.x - 16), (int16_t) (pos.y + 16), (int16_t) (pos.x + 16) };
-    int count = 1;
-    for (const auto& o : patch->modules) if (o.type == m.type) ++count;
-    if (m.type != kOutput && m.type != kOutputR) m.name += "-" + std::to_string(count);
+    m.name = nextModuleName(*patch, m.type);
     patch->modules.push_back(m);
-    selected = (int) patch->modules.size();
+    select((int) patch->modules.size());
     if (onSelect) onSelect(selected);
     if (onChanged) onChanged();
     repaint();
@@ -297,7 +445,8 @@ void PatchView::fit()
     }
     if (first) return;
     const auto area = getLocalBounds().withTrimmedLeft(kPaletteWidth).reduced(16).toFloat();
-    scale = juce::jlimit(0.6f, 2.5f, juce::jmin(area.getWidth() / all.getWidth(), area.getHeight() / all.getHeight()));
+    // Never above the usual size, or a new document's lone Output would fill the window and shrink as modules arrive.
+    scale = juce::jlimit(0.6f, 1.5f, juce::jmin(area.getWidth() / all.getWidth(), area.getHeight() / all.getHeight()));
     // Keep the stored layout's own origin when it fits, as the original window did.
     const float ox = all.getX() * scale < 0.0f || all.getRight() * scale > area.getRight() - area.getX() ? area.getX() - all.getX() * scale : area.getX();
     const float oy = all.getY() * scale < 0.0f || all.getBottom() * scale > area.getBottom() - area.getY() ? area.getY() - all.getY() * scale : area.getY();

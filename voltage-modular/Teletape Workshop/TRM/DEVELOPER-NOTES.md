@@ -1,6 +1,6 @@
 # TRM developer notes — 1.0.0
 
-Canonical Teletape Workshop module: **TRM Triple Ring Modulator**, Java class `trm`, package `com.insectlabs.trm`, Processor category. Canonical source pair and hero are `versions/1.0.0/trm.java`, `trm.vmod` and `trm_hero.png`. The editable Designer source is in `development/`. See the [user manual](USER-MANUAL.md), [release review](versions/1.0.0/REVIEW.md), [validation record](versions/1.0.0/VALIDATION.txt) and [DSP design record](versions/1.0.0/DSP-DESIGN.md).
+Canonical Teletape Workshop module: **TRM Triple Ring Modulator**, Java class `trm`, package `com.insectlabs.trm`, Processor category. Canonical source pair and hero are `versions/1.0.0/trm.java`, `trm.vmod` and `trm_hero.png`. Start any future revision from that immutable pair and create a separate candidate. See the [user manual](versions/1.0.0/USER-MANUAL.md), [release review](versions/1.0.0/REVIEW.md), [validation record](versions/1.0.0/VALIDATION.txt), [DSP design record](versions/1.0.0/DSP-DESIGN.md), and [historical scratch notes](research/Notes-Toward-TRM.md).
 
 Each of the three lanes has Carrier and Modulator gains from 0 to 2, defaulting to unity, a four-position T/G/S/Si switch, a level lamp and an output. Selector defaults are lane 1 S (state 2), lane 2 G (state 1), lane 3 Si (state 3). The defaults are intentionally staggered for immediate access to different voices. The lamp tracks the larger absolute gain-staged input and is scaled against 5 V.
 

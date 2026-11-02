@@ -1,5 +1,6 @@
 #include "SampleEdit.h"
 #include "MacMath.h"
+#include "Presets.h"
 
 #include <algorithm>
 #include <climits>
@@ -147,6 +148,101 @@ std::vector<int16_t> loopAsWaveform(const std::vector<int16_t>& data, int32_t lo
     std::copy(body.begin(), body.end(), wave.begin());
     wave[256] = wave[0];
     return wave;
+}
+
+std::vector<EnvPoint> extractEnvelope(const std::vector<int16_t>& data, int32_t rate, int responseMs)
+{
+    std::vector<EnvPoint> points;
+    if (rate <= 0 || responseMs <= 0) return points;
+    const int32_t n = (int32_t) data.size();
+    const int32_t perSecond = (int16_t) (1000 / responseMs);                 // divs.w
+    const int32_t blocks = (int32_t) ((int64_t) n * perSecond / rate);
+    const int32_t blockLen = (int32_t) ((int64_t) rate * responseMs / 1000);
+    int32_t prevTime = -1;
+    int16_t prevLevel = -1, prevPrevLevel = -1;
+    for (int32_t k = 0; k < blocks; ++k) {
+        // F6_00D7C: the largest |x| (-32768 counts as 32767), ties to the later
+        // sample, and the index just after it.
+        const int32_t from = k * blockLen, to = std::min(n, (k + 1) * blockLen);
+        int16_t peak = 0;
+        int32_t after = from + 1;
+        for (int32_t i = from; i < to; ++i) {
+            const int16_t v = data[(size_t) i] == INT16_MIN ? 32767 : (int16_t) std::abs(data[(size_t) i]);
+            if (v >= peak) { peak = v; after = i + 1; }
+        }
+        const int16_t level = (int16_t) ((int32_t) peak * 100 / 32767);
+        const int32_t time = k > 0 ? (int32_t) ((int64_t) after * 1000 / rate) : 0;
+        if (time > prevTime && level != prevLevel && level != prevPrevLevel) {
+            EnvPoint p;
+            p.timeMs = (int16_t) time;
+            p.level = level;
+            presets::setPointRect(p);
+            points.push_back(p);
+            prevTime = time;
+            prevPrevLevel = prevLevel;
+            prevLevel = level;
+        }
+    }
+    return points;
+}
+
+std::vector<Waveform> extractWaveforms(const std::vector<int16_t>& data, int32_t rate, Fixed frequency, int intervalMs, bool track)
+{
+    std::vector<Waveform> waves;
+    const int32_t n = (int32_t) data.size();
+    const int16_t fund = fixRound(frequency);
+    if (n == 0 || rate <= 0 || fund <= 0 || intervalMs <= 0) return waves;
+    auto at = [&](int32_t i) { return i >= 0 && i < n ? data[(size_t) i] : (int16_t) 0; }; // the original reads past the end
+
+    const int16_t period = (int16_t) (rate / fund);
+    const int16_t window = std::min<int16_t>(period, 200);
+    const int16_t range = (int16_t) ((int16_t) (period * 3) / 2);
+    const int32_t step = track ? (int16_t) ((int16_t) (period * 2) / 3) : period;
+    const int32_t endLimit = n - rate / 30;
+
+    // F6_01154: the position in start .. start + range whose window + 1
+    // samples differ least from those at ref (summed |difference|), ties to
+    // the later position.
+    auto match = [&](int32_t ref, int32_t start, int win, int span) {
+        int32_t best = INT32_MAX, pos = start;
+        for (int32_t p = start; p <= start + span; ++p) {
+            int32_t sum = 0;
+            for (int j = 0; j <= win; ++j) sum += std::abs((int32_t) at(p + j) - (int32_t) at(ref + j));
+            if (sum <= best) { best = sum; pos = p; }
+        }
+        return pos;
+    };
+
+    int32_t prevEnd = 0, timeSamples = 0;
+    for (int index = 0;;) {
+        const int32_t cur = match(prevEnd, timeSamples, window, range);
+        int32_t end = cur + step;
+        if (track) end = match(cur, end, window, range);
+        end = match(cur, end - 2, 0, 4);
+        prevEnd = end;
+
+        // F39_02870: 256 points stepping FixRatio(cycle length in bytes, 512).
+        Waveform w;
+        w.name = "Waveform";
+        const Fixed inc = fixRatio((int16_t) ((end - cur) * 2), 512);
+        uint32_t pos = 0;
+        for (int k = 0; k < 256; ++k, pos += (uint32_t) inc) {
+            const int32_t i = cur + (int32_t) (int16_t) (pos >> 16);
+            const int16_t a = at(i), b = at(i + 1);
+            const int16_t d = (int16_t) (b - a);
+            const int16_t f = (int16_t) ((uint16_t) pos >> 1);
+            w.samples[(size_t) k] = (int16_t) (a + (int16_t) ((uint32_t) (muls(d, f) * 2) >> 16));
+        }
+        w.samples[256] = w.samples[0];
+        w.timeMs = (int16_t) (index * intervalMs);
+        w.rect = { 0, w.timeMs, 32, (int16_t) (w.timeMs + 32) }; // SetRect(time, 0, time + 32, 32)
+        waves.push_back(w);
+
+        ++index;
+        timeSamples = (int32_t) ((int64_t) (int16_t) (index * intervalMs) * rate / 1000);
+        if (timeSamples > endLimit) break;
+    }
+    return waves;
 }
 
 int32_t autoLoopPoint(const std::vector<int16_t>& data, int32_t loopStart, int32_t loopEnd, bool moveEnd, int direction)

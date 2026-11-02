@@ -3,10 +3,15 @@
 // docs/RE-NOTES.md has the details. Loop points are sample indices, -1 = none.
 #pragma once
 
+#include "MacMath.h"
+#include "Patch.h"
+
 #include <cstdint>
 #include <vector>
 
 namespace turbosynth::sampleedit {
+
+using mac::Fixed;
 
 // Sample Rate Conversion (F28_01870 with kernel F28_0594A): linear
 // interpolation in place; the loop points are scaled with the sound.
@@ -32,6 +37,17 @@ void silence(std::vector<int16_t>& data, int32_t from, int32_t to);
 // Save loop as waveform (F25_002B6): the loop resampled to the oscillator's
 // 256 points with its resampler (F39_02870), then normalized.
 std::vector<int16_t> loopAsWaveform(const std::vector<int16_t>& data, int32_t loopStart, int32_t loopEnd);
+
+// Convert to Envelope (F6_011B0, dialog 10014): the sound in blocks of
+// responseMs; each block's peak gives a point (level 0..100 at the peak's time
+// in ms), kept when it comes later than the last point and its level differs
+// from the last two points' levels.
+std::vector<EnvPoint> extractEnvelope(const std::vector<int16_t>& data, int32_t rate, int responseMs);
+
+// Convert to Oscillator (F6_00F62, dialog 10015): a 256-point waveform every
+// intervalMs, one cycle of the fundamental found by matching the previous
+// cycle (and, with track, the next cycle's start), each stamped with its time.
+std::vector<Waveform> extractWaveforms(const std::vector<int16_t>& data, int32_t rate, Fixed frequency, int intervalMs, bool track);
 
 // The Loop window's Auto arrows (CODE 35 with F6_00DDA): move the loop end
 // (moveEnd) or start in direction (+1/-1) to the best match, over the whole

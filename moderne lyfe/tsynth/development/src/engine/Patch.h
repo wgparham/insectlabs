@@ -78,8 +78,10 @@ bool loadPatch(const std::string& path, Patch& out, std::string* error);
 std::vector<uint8_t> writePatch(const Patch& patch);
 bool savePatch(const std::string& path, const Patch& patch, std::string* error);
 const char* moduleTypeName(int type);
+std::string nextModuleName(const Patch&, int type); // the name a newly placed module gets (F16_02BAA)
 // A new module with the defaults the editor uses.
-Module makeModule(int type, int32_t sampleRate, int32_t length);
+Module makeModule(int type, int32_t sampleRate, int32_t length); // a new Oscillator has no waveforms, as in the original
+Waveform sineWaveform();
 // Removes module index (1-based) and renumbers the connections.
 void removeModule(Patch& patch, int index);
 // A stereo document has two output jacks: Output L (type 100, icon 7001) and

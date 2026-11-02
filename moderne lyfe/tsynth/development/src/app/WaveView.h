@@ -5,6 +5,7 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 
 #include <array>
+#include <set>
 #include <vector>
 
 class WaveView : public juce::Component
@@ -111,9 +112,12 @@ class WaveTimeline : public juce::Component, public juce::TooltipClient
 public:
     struct Wave { int timeMs; const std::array<int16_t, 257>* samples; juce::String name; };
     std::vector<Wave> waves;
-    int durationMs = 1000, selected = 0;
-    std::function<void(int)> onSelect;          // index
-    std::function<void(int, int)> onMoved;       // index, new time (ms), on release
+    int durationMs = 1000;
+    std::set<int> selection;                    // the original keeps a selected flag on each waveform (+338)
+    std::function<void(int)> onSelect;          // the selection changed; the waveform clicked, or -1
+    std::function<void(int)> onMoved;           // the selected waveforms moved by this many ms, on release
+    bool placing = false;                       // the next click places a waveform chosen from the palette
+    std::function<void(int)> onPlace;           // the time (ms) it was placed at
     void paint(juce::Graphics&) override;
     void mouseDown(const juce::MouseEvent&) override;
     void mouseDrag(const juce::MouseEvent&) override;
@@ -124,8 +128,9 @@ private:
     float xFor(int ms) const;
     int msAt(float x) const;
     int hit(juce::Point<float>) const;
-    int dragging = -1, dragTime = 0;
-    float grabDx = 0.0f;
+    bool moving = false, selecting = false, boxToggles = false;
+    int moveMs = 0;
+    juce::Point<float> dragStart, dragNow;
 };
 
 // An editor's tool palette, as in the original module windows: icons two to

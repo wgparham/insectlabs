@@ -2,4 +2,4 @@
 
 The [SVF 1.0.1 release](versions/1.0.1/README.md) exposes HIGH, BAND and LOW taps from the documented Synthi 100 HPF state-variable core, with two independently controlled channels. The product combines the planned HPF/LPF/BPF roles as a dual three-output filter; it does not claim to reproduce every Synthi 100 revision or the separate 34/00 LPF board.
 
-The current working pair is in [development](development/README.md). Shared Synthi filter research, original scans, photos and demonstrations are catalogued under [series references](../references/Synthi-100-Filters/INITIAL-RESEARCH.md).
+The immutable source pair is in [SVF 1.0.1](versions/1.0.1/README.md); start future revisions from that archive. Shared Synthi filter research, original scans, photos and demonstrations are catalogued under [series references](../references/Synthi-100-Filters/INITIAL-RESEARCH.md).

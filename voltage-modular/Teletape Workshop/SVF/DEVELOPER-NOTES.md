@@ -1,6 +1,6 @@
 # SVF developer notes — 1.0.1
 
-Teletape Workshop; Java class `svf`, package `com.insectlabs.svf`; Filters category. Canon is `svf.java`, `svf.vmod`, and `svf_hero.png` in this folder. The editable working pair is in `../../development/`. The product name reflects three simultaneously exposed state-variable taps, while the documented source is specifically the Synthi 100 HPF board 34/01 / Hilton drawing 32/01.
+Teletape Workshop; Java class `svf`, package `com.insectlabs.svf`; Filters category. Canon is `versions/1.0.1/svf.java`, `svf.vmod`, and `svf_hero.png`. Start future revisions from that immutable archive. The product name reflects three simultaneously exposed state-variable taps, while the documented source is specifically the Synthi 100 HPF board 34/01 / Hilton drawing 32/01.
 
 ## DSP
 

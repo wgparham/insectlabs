@@ -288,6 +288,43 @@ bool saveWaveform(const std::string& path, const Waveform& wf, std::string* erro
 
 namespace turbosynth {
 
+// CODE 16's name table, then F16_02BAA: the lowest number that gives a name no module in the
+// document has. The comparison is exact (F1_0239C), and it covers every type and renamed modules.
+std::string nextModuleName(const Patch& patch, int type)
+{
+    const char* prefix = "";
+    switch (type) {
+    case kOscillator: prefix = "Osc-"; break;
+    case kSample: prefix = "Samp-"; break;
+    case kNoise: prefix = "Noise-"; break;
+    case kAmpEnv: prefix = "Amp Env-"; break;
+    case kFilter: prefix = "Filter-"; break;
+    case kSpectralInverter: prefix = "Spectral Inv-"; break;
+    case kDelay: prefix = "Delay-"; break;
+    case kStretchExpand: prefix = "Stretcher-"; break;
+    case kStretchCompress: prefix = "Time Comp-"; break;
+    case kPitchShifter: prefix = "Pitch Shifter-"; break;
+    case kPitchEnv: prefix = "Pitch Env-"; break;
+    case kModulator: prefix = "Modulator-"; break;
+    case kResonator: prefix = "Resonator-"; break;
+    case kDiffuser: prefix = "Diffuse-"; break;
+    case kWaveshaper: prefix = "Waveshaper-"; break;
+    case kMixer: prefix = "Mixer-"; break;
+    default: return moduleTypeName(type);
+    }
+    for (int n = 1;; ++n) {
+        const std::string name = prefix + std::to_string(n);
+        if (std::none_of(patch.modules.begin(), patch.modules.end(), [&name](const Module& m) { return m.name == name; })) return name;
+    }
+}
+
+Waveform sineWaveform()
+{
+    Waveform w; w.name = "Sine";
+    for (int i = 0; i < 256; ++i) w.samples[(size_t) i] = (int16_t) std::lround(32767.0 * std::sin(6.283185307179586 * i / 256.0));
+    return w;
+}
+
 Module makeModule(int type, int32_t sampleRate, int32_t length)
 {
     Module m;
@@ -301,9 +338,6 @@ Module makeModule(int type, int32_t sampleRate, int32_t length)
     case kOscillator: {
         m.kind = 2000;
         m.oscFreq = 440 << 16;
-        Waveform w; w.name = "Sine";
-        for (int i = 0; i < 256; ++i) w.samples[(size_t) i] = (int16_t) std::lround(32767.0 * std::sin(6.283185307179586 * i / 256.0));
-        m.waveforms.push_back(w);
         break; }
     case kSample: m.kind = 2001; break;
     case kAmpEnv: m.kind = 3000; env(100, 0); m.normalize = false; break;
