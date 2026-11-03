@@ -29,7 +29,7 @@ inline void writeBe16(uint8_t* p, uint16_t v) { p[0] = (uint8_t) (v >> 8); p[1] 
 struct Patch {
     // The partials stay as the file's bytes. The kernels walk break point records
     // by address and can read past the ones in use, so the layout is the behaviour.
-    std::vector<uint8_t> partials;
+    std::vector<uint8_t> partials = std::vector<uint8_t>(kPartialBytes, 0);
     std::array<uint8_t, 0x40> nameField{}; // Pascal string; bytes after it are kept
     int32_t length = 0, rate = 0;          // samples, Hz
     int32_t frequency = 0;                 // 16.16 Hz
